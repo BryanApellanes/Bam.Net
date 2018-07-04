@@ -157,8 +157,10 @@
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="Encryption\CredentialInfo.cs" />
     <Compile Include="Encryption\CredentialProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationCredentialProvider.cs" />
+    <Compile Include="Encryption\ICredentialManager.cs" />
     <Compile Include="Encryption\IServiceCredentialProvider.cs" />
     <Compile Include="Encryption\ICredentialProvider.cs" />
     <Compile Include="Encryption\INamedCredentialProvider.cs" />

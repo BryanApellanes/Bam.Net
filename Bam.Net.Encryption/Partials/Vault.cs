@@ -29,7 +29,7 @@ namespace Bam.Net.Encryption
     /// <summary>
     /// An encrypted key value store used to prevent
     /// casual access to sensitive data like passwords.  Encrypted data is stored
-    /// in a sqlite file by default or a Database you specify
+    /// in a sqlite file by default or a Database you specify.
     /// </summary>
 	public partial class Vault
 	{
@@ -192,17 +192,32 @@ namespace Bam.Net.Encryption
 
         public static Vault Load(string filePath, string vaultName)
         {
-            return Load(new FileInfo(filePath), vaultName);            
+            return Load(new FileInfo(filePath), vaultName, out VaultDatabase ignore);
+        }
+
+        public static Vault Load(string filePath, string vaultName, out VaultDatabase vaultDb)
+        {
+            return Load(new FileInfo(filePath), vaultName, out vaultDb);            
         }
 
         public static Vault Load(FileInfo file, string vaultName)
         {
-            return Load(file, vaultName, "".RandomLetters(16)); // password will only be used if the file doesn't exist
+            return Load(file, vaultName, out VaultDatabase ignore);
+        }
+
+        public static Vault Load(FileInfo file, string vaultName, out VaultDatabase vaultDb)
+        {
+            return Load(file, vaultName, "".RandomLetters(16), out vaultDb); // password will only be used if the file doesn't exist
         }
 
         static Dictionary<string, Vault> _loadedVaults = new Dictionary<string, Vault>();
         static object _loadedVaultsLock = new object();
         public static Vault Load(FileInfo file, string vaultName, string password, ILogger logger = null)
+        {
+            return Load(file, vaultName, password, out VaultDatabase ignore, logger);
+        }
+
+        public static Vault Load(FileInfo file, string vaultName, string password, out VaultDatabase vaultDb, ILogger logger = null)
         {
             string key = $"{file.FullName}.{vaultName}";
             lock (_loadedVaultsLock)
@@ -218,6 +233,7 @@ namespace Bam.Net.Encryption
                     _loadedVaults.Add(key, Retrieve(db, vaultName, password));
                 }
             }
+            vaultDb = _loadedVaults[key].Database;
             return _loadedVaults[key];
         }
 

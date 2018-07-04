@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CredentialManager.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Decrypted.cs">
       <SubType>Code</SubType>

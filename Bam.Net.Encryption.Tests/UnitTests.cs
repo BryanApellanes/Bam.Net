@@ -35,6 +35,188 @@ namespace Bam.Net.Encryption.Tests
     public class UnitTests : CommandLineTestInterface
     {
         [UnitTest]
+        public void CredentialManagerCanSetAndGetCredentialInfo()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            CredentialInfo info = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password"
+            };
+            mgr.SetCredentials(info);
+
+            CredentialInfo retrieved = mgr.GetCredentials();
+
+            Expect.AreEqual(info.UserName, retrieved.UserName);
+            Expect.AreEqual(info.Password, retrieved.Password);
+            Expect.IsNull(info.TargetService);
+            Expect.IsNull(info.MachineName);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetCredentialInfoServiceTarget()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            CredentialInfo info1 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password1",
+                TargetService = "MyAwesomeService1"
+            };
+            CredentialInfo info2 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password2",
+                TargetService = "MyAwesomeService2"
+            };
+            mgr.SetCredentials(info1);
+            mgr.SetCredentials(info2);
+
+            CredentialInfo check1 = mgr.GetCredentials(info1.TargetService);
+            CredentialInfo check2 = mgr.GetCredentials(info2.TargetService);
+
+            Expect.AreEqual(info1.UserName, check1.UserName);
+            Expect.AreEqual(info1.Password, check1.Password);
+            Expect.AreEqual(info1.TargetService, check1.TargetService);
+            Expect.IsNull(info1.MachineName);
+            Expect.IsFalse(info1.Password.Equals(check2.Password));
+            Expect.AreEqual(info2.UserName, check2.UserName);
+            Expect.AreEqual(info2.Password, check2.Password);
+            Expect.AreEqual(info2.TargetService, check2.TargetService);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetCredentialInfoMachine()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            CredentialInfo info1 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password1",
+                TargetService = "MyAwesomeService1",
+                MachineName = "Machine1"
+            };
+            CredentialInfo info2 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password2",
+                TargetService = "MyAwesomeService2"
+            };
+            mgr.SetCredentials(info1);
+            mgr.SetCredentials(info2);
+
+            CredentialInfo check1 = mgr.GetCredentials(info1.MachineName,info1.TargetService);
+            CredentialInfo check2 = mgr.GetCredentials(info2.TargetService);
+
+            Expect.AreEqual(info1.UserName, check1.UserName);
+            Expect.AreEqual(info1.Password, check1.Password);
+            Expect.AreEqual(info1.TargetService, check1.TargetService);
+            Expect.IsNull(info2.MachineName);
+            Expect.IsFalse(info1.Password.Equals(check2.Password));
+            Expect.AreEqual(info2.UserName, check2.UserName);
+            Expect.AreEqual(info2.Password, check2.Password);
+            Expect.AreEqual(info2.TargetService, check2.TargetService);
+        }
+
+        [UnitTest]
+        public void CredentialManagerReturnsNullForUnkownUser()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            CredentialInfo info1 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password1",
+                TargetService = "MyAwesomeService1",
+                MachineName = "Machine1"
+            };
+            CredentialInfo info2 = new CredentialInfo
+            {
+                UserName = "Monkey",
+                Password = "Password2",
+                TargetService = "MyAwesomeService2"
+            };
+            mgr.SetCredentials(info1);
+            mgr.SetCredentials(info2);
+
+            CredentialInfo info = mgr.GetCredentials(9.RandomLetters());
+            Expect.IsNullOrEmpty(info.UserName);
+            Expect.IsNullOrEmpty(info.Password);
+            Expect.IsTrue(info.IsNull);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetUserName()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string userName = "Monkey";
+            mgr.SetUserName(userName);
+
+            string retrieved = mgr.CredentialProvider.GetUserName();
+            Expect.AreEqual(userName, retrieved);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetUserNameFor()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string userName = "Monkey";
+            string someApplication = "The name of an application or service";
+            mgr.SetUserNameFor(someApplication, userName);
+
+            string retrieved = mgr.GetUserNameFor(someApplication);
+            Expect.AreEqual(userName, retrieved);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetUserNameForMachineName()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string userName = "Monkey";
+            string someApplication = "The name of an application or service";
+            string machineName = "my awesome machine";
+            mgr.SetUserNameFor(machineName, someApplication, userName);
+
+            string retrieved = mgr.GetUserNameFor(machineName, someApplication);
+            Expect.AreEqual(userName, retrieved);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetPassword()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string password = "My awesome password";
+            mgr.SetPassword(password);
+
+            string retrieved = mgr.GetPassword();
+            Expect.AreEqual(password, retrieved);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetPasswordFor()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string password = "My awesome password";
+            string someApplicationName = "My awesome application";
+            mgr.SetPasswordFor(someApplicationName, password);
+
+            string retrieved = mgr.GetPasswordFor(someApplicationName);
+            Expect.AreEqual(password, retrieved);
+        }
+
+        [UnitTest]
+        public void CredentialManagerCanSetAndGetPasswordForMachineName()
+        {
+            CredentialManager mgr = new CredentialManager(GetTestCredentialVault());
+            string password = "My awesome password";
+            string someApplicationName = "My awesome application";
+            string machineName = "the computer";
+            mgr.SetPasswordFor(machineName, someApplicationName, password);
+
+            string retrieved = mgr.GetPasswordFor(machineName, someApplicationName);
+            Expect.AreEqual(password, retrieved);
+        }
+
+        [UnitTest]
         public void CanLoadVault()
         {
             SQLiteDatabase db = GetVaultDatabase();
@@ -374,6 +556,15 @@ namespace Bam.Net.Encryption.Tests
             });
         }
 
+        [AfterUnitTests]
+        public static void CleanUp()
+        {
+            OutLine("Cleaning up test vaults...", ConsoleColor.Yellow);
+            GetTestCredentialVault(out VaultDatabase db);
+            Vault.LoadAll(db).Delete(db);
+            OutLine("Clean up test vaults complete", ConsoleColor.Green);
+        }
+
         private static Vault CreateTestVault(out string password)
         {
             password = "Password_".RandomLetters(7);
@@ -391,9 +582,20 @@ namespace Bam.Net.Encryption.Tests
             }
         }
 
+        private static Vault GetTestCredentialVault()
+        {
+            return GetTestCredentialVault(out VaultDatabase ignore);
+        }
+
+        private static Vault GetTestCredentialVault(out VaultDatabase db)
+        {
+            string filePath = Path.Combine(Paths.Data, "TestVaults.vault.sqlite");
+            return Vault.Load(new FileInfo(filePath), 8.RandomLetters(), out db);
+        }
+
         private static SQLiteDatabase GetVaultDatabase()
         {
-            SQLiteDatabase db = new SQLiteDatabase(".\\VaultData", "VaultData");
+            SQLiteDatabase db = new SQLiteDatabase(Paths.Data, "TestVaultData");
             db.TryEnsureSchema<Vault>();
             return db;
         }

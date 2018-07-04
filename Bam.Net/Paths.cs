@@ -26,6 +26,8 @@ namespace Bam.Net
             }
         }
 
+        public static string Apps { get; private set; }
+        public static string Local { get; private set; }
         public static string Content { get; private set; }
         public static string Conf { get; private set; }
         public static string Sys { get; private set; }
@@ -43,6 +45,8 @@ namespace Bam.Net
 
         private static void SetPaths()
         {
+            Apps = Path.Combine(Root, "apps");
+            Local = Path.Combine(Root, "local");
             Content = Path.Combine(Root, "content");
             Conf = Path.Combine(Root, "conf");
             Sys = Path.Combine(Root, "sys");

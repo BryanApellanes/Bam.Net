@@ -15,6 +15,7 @@ using System.Xml;
 using System.Threading;
 using Bam.Net.System;
 using System.Management;
+using Bam.Net.Encryption;
 
 namespace Bam.Net.Automation
 {
@@ -278,6 +279,7 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
+            
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory();
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
@@ -310,7 +312,7 @@ namespace Bam.Net.Automation
                 }
             }
         }
-
+        
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
         public static void Test()
         {
@@ -1284,7 +1286,8 @@ namespace Bam.Net.Automation
 
             OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
             latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
-            CallServiceExecutable(svcInfo, "Install", remoteFile, "-i");
+            string installSwitch = GetInstallSwitch(svcInfo.Host, svcInfo.Name);
+            CallServiceExecutable(svcInfo, "Install", remoteFile, installSwitch);
 
             if (svcInfo.AppSettings != null)
             {
@@ -1292,6 +1295,26 @@ namespace Bam.Net.Automation
             }
 
             CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
+        }
+
+        private static string GetInstallSwitch(string machineName, string serviceName)
+        {
+            CredentialInfo credentialInfo = CredentialManager.Local.GetCredentials(machineName, serviceName);
+            if (credentialInfo.IsNull)
+            {
+                credentialInfo = CredentialManager.Local.GetCredentials(serviceName);
+            }
+            string installSwitch = credentialInfo.IsNull ? "-i" : $"-i -u:{credentialInfo.UserName} -p:{credentialInfo.Password}";
+            if (!credentialInfo.IsNull)
+            {
+                OutLineFormat("Found local credentials for service: Machine={0}, Service={1}, UserName={2}", ConsoleColor.Yellow, credentialInfo.MachineName, credentialInfo.TargetService, credentialInfo.UserName);
+            }
+            else
+            {
+                OutLineFormat("No credentials found for service: Machine={0}, Service={1}, UserName={2}", ConsoleColor.DarkYellow, credentialInfo.MachineName, credentialInfo.TargetService, credentialInfo.UserName);
+            }
+
+            return installSwitch;
         }
 
         private static void StopAndDeleteBamDaemonOnHosts(DeployInfo deployInfo, string targetHost)
@@ -1325,6 +1348,7 @@ namespace Bam.Net.Automation
             latestBinaries.CopyTo(host, new FileInfo(bamdLocalPathNotation).Directory.FullName);
             OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
 
+            string installSwitch = GetInstallSwitch(host, "bamd");
             CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, "-i");
 
             //      write DaemonProcessInfos using above

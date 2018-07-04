@@ -49,6 +49,18 @@ namespace vault
                 OutLineFormat("{0}: {1}", key, vault[key]);
             }
         }
+        
+        [ConsoleAction("importCredentials", "Import credentials from a json file")]
+        public void ImportCredentials()
+        {
+            CredentialManager mgr = CredentialManager.Local;
+            string jsonFile = GetArgument("importCredentials");
+            CredentialInfo[] infos = jsonFile.FromJsonFile<CredentialInfo[]>();
+            foreach(CredentialInfo info in infos)
+            {
+                mgr.SetCredentials(info);
+            }
+        }
 
         // TODO: write value, set password, export password
         private string GetVaultPath()

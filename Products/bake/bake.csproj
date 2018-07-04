@@ -139,6 +139,10 @@
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>

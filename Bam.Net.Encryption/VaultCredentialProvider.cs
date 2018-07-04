@@ -17,14 +17,18 @@ namespace Bam.Net.Encryption
 
         public VaultCredentialProvider(VaultInfo vaultInfo, string userNameKey = "User", string passwordKey = "Password") : this(Vault.Load(vaultInfo))
         { }
-
-        static CredentialProvider _instance;
+        
+        static VaultCredentialProvider _instance;
         static object _instanceLock = new object();
-        public static CredentialProvider Instance
+        public static VaultCredentialProvider Instance
         {
             get
             {
                 return _instanceLock.DoubleCheckLock(ref _instance, () => new VaultCredentialProvider(Vault.System));
+            }
+            set
+            {
+                _instance = value;
             }
         }
                 
@@ -62,34 +66,5 @@ namespace Bam.Net.Encryption
             return Vault[$"{machineName}.{serviceName}.{PasswordKey}"];
         }
 
-        public void SetUserName(string userName)
-        {
-            Vault[UserNameKey] = userName;
-        }
-
-        public void SetPassword(string password)
-        {
-            Vault[PasswordKey] = password;
-        }
-
-        public void SetUserNameFor(string targetIdentifier, string userName)
-        {
-            Vault[$"{targetIdentifier}.{UserNameKey}"] = userName;
-        }
-
-        public void SetPasswordFor(string targetIdentifier, string password)
-        {
-            Vault[$"{targetIdentifier}.{PasswordKey}"] = password;
-        }
-
-        public void SetUserNameFor(string machineName, string serviceName, string userName)
-        {
-            Vault[$"{machineName}.{serviceName}.{UserNameKey}"] = userName;
-        }
-
-        public void SetPasswordFor(string machineName, string serviceName, string password)
-        {
-            Vault[$"{machineName}.{serviceName}.{PasswordKey}"] = password;
-        }
     }
 }

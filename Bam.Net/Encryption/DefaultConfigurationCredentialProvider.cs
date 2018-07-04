@@ -14,6 +14,17 @@ namespace Bam.Net.Encryption
             CredentialKey = credentialKey;
         }
 
+        /// <summary>
+        /// Gets or sets the name of the key used to retrieve credentials.
+        /// For example, "User" would imply that there is a key value
+        /// pair with a key of User whose value is the name of the user and a key
+        /// value pair with a key of UserPassword whose value is the password.
+        /// </summary>
+        /// <value>
+        /// The credential key.
+        /// </value>
+        public string CredentialKey { get; set; }
+
         static CredentialProvider _instance;
         static object _instanceLock = new object();
         public static CredentialProvider Instance
