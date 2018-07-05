@@ -123,8 +123,10 @@ namespace Bam.Net.ServiceProxy.Secure
                         }
                     }
 
-                    app = new Application();
-                    app.Name = applicationName;
+                    app = new Application
+                    {
+                        Name = applicationName
+                    };
                     app.Save(database);
                     AddKey(app, userResolver, context);
 

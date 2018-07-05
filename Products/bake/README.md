@@ -24,12 +24,16 @@ When deploy mode is selected, the Bam based Windows services and Daemon executab
 specified deploy config are deployed.  The json in the specified deploy config should deserizlize
 to a DeployInfo instance.
 
-Each Windows service defined in the deploy config is an executable that defines a ServiceExe
-derivative in such a way that ServiceExe.ProcessCommandLineArgs is called for each of the command line
-switches defined therein.
+Each Windows service defined in the deploy config is an executable where the main entry point
+is defined in a class that extends ServiceExe.  Command line switches defined in ServiceExe.ProcessCommandLineArgs
+are used to stop, uninstall, install and start the Windows service defined in the executable.  If
+credentials are found using the local credential manager (Bam.Net.Encryption.CredentialManager.Local) the
+service is set to use the credentials found.
 
 Each Daemon defined in the deploy config is a long running process but is not necessarily a Windows service.
-Daemons are executed and monitored by the Bam Daemon, see [bamd](../bamd/).
+Daemons are executed and monitored by the Bam Daemon, see [bamd](../bamd/).  If
+credentials are found for "bamd" using the local credential manager (Bam.Net.Encryption.CredentialManager.Local) the
+service is set to use the credentials found.
 
 ## Test
 
