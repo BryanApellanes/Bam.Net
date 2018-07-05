@@ -758,6 +758,10 @@ namespace Bam.Net.Incubation
                         object ctorParam = GetCtorParameterValue(type, paramInfo.Name);
                         if(ctorParam != null)
                         {
+                            if(ctorParam is Delegate d)
+                            {
+                                ctorParam = d.DynamicInvoke();
+                            }
                             ctorParams.Add(ctorParam);
                         }
                         else
@@ -765,6 +769,10 @@ namespace Bam.Net.Incubation
                             object existing = this[paramInfo.ParameterType] ?? Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
                             if (existing != null)
                             {
+                                if(existing is Delegate d)
+                                {
+                                    existing = d.DynamicInvoke();
+                                }
                                 ctorParams.Add(existing);
                             }
                             else
