@@ -13,10 +13,16 @@ namespace Bam.Net.UserAccounts.DirectoryServices
         const string DistinguishedName = "distinguishedname";
         const string DefaultNamingContext = "defaultNamingContext";
 
+        static ActiveDirectoryReader()
+        {
+            UserGroups = new Dictionary<string, HashSet<string>>();
+            GroupMembers = new Dictionary<string, HashSet<string>>();
+        }
+
         public ActiveDirectoryReader(string server, ILogger logger = null)
         {
             SearchResults = new Dictionary<string, Dictionary<string, string>>();
-            DirectoryEntries = new Dictionary<string, DirectoryEntry>();
+            DirectoryEntries = new Dictionary<string, DirectoryEntry>();            
             Server = server;
             Logger = logger ?? Log.Default;
         }
@@ -33,6 +39,9 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 
         protected Dictionary<string, DirectoryEntry> DirectoryEntries { get; set; }
         
+        protected static Dictionary<string, HashSet<string>> UserGroups { get; set; }
+
+        protected static Dictionary<string, HashSet<string>> GroupMembers { get; set; }
         /// <summary>
         /// Gets or sets the server.  This can be the domain or domain controller hostname.
         /// </summary>
@@ -60,10 +69,31 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 
         [Verbosity(VerbosityLevel.Information, MessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserFound;
-        
-        public bool IsMemberOfGroup(string userName, string groupName)
+
+        static readonly object _memberLock = new object();
+        public bool IsMemberOfGroup(string userName, string groupName, bool reload = false)
         {
-            return GetGroupNames(userName).Contains(groupName);
+            if (reload && UserGroups.ContainsKey(userName))
+            {
+                lock (_memberLock)
+                {
+                    UserGroups.Remove(userName);
+                }
+            }
+
+            if (!UserGroups.ContainsKey(userName))
+            {
+                PreLoadGroups(userName);
+            }
+            return UserGroups[userName].Contains(groupName);
+        }
+
+        public void PreLoadGroups(string userName)
+        {
+            lock (_memberLock)
+            {
+                UserGroups.Add(userName, new HashSet<string>(GetGroupNames(userName)));
+            }
         }
 
         public string[] GetGroupNames(string userName)
@@ -131,51 +161,51 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             return groups.ToArray();
         }
 
-        public DirectoryEntry GetDirectoryEntry(string userName, bool reload = false)
+        public DirectoryEntry GetDirectoryEntry(string samAccountName, bool reload = false)
         {
-            if(DirectoryEntries.ContainsKey(userName) && DirectoryEntries[userName] != null && !reload)
+            if(DirectoryEntries.ContainsKey(samAccountName) && DirectoryEntries[samAccountName] != null && !reload)
             {
-                return DirectoryEntries[userName];
+                return DirectoryEntries[samAccountName];
             }
-            GetDistinguishedName(userName, out DirectoryEntry result, reload);
+            GetDistinguishedName(samAccountName, out DirectoryEntry result, reload);
             return result;
         }
 
-        public string GetDistinguishedName(string userName, bool reload = false, bool throwIfNotFound = false)
+        public string GetDistinguishedName(string samAccountName, bool reload = false, bool throwIfNotFound = false)
         {
-            return GetDistinguishedName(userName, out DirectoryEntry ignore, reload, throwIfNotFound);
+            return GetDistinguishedName(samAccountName, out DirectoryEntry ignore, reload, throwIfNotFound);
         }
 
         /// <summary>
         /// Gets the distinguishedName (LDAP notation locator) of the specified user.
         /// </summary>
-        /// <param name="userName">The sam account name of the user to retrieve the distinguishedName for.  Exclude the domain.</param>
+        /// <param name="samAccountName">The sam account name of the user to retrieve the distinguishedName for.  Exclude the domain.</param>
         /// <param name="reload">If set to <c>true</c> reload the properties of the specified user.</param>
         /// <param name="throwIfNotFound">If set to <c>true</c> throw an InvalidOperationException if the specified user is not found.</param>
         /// <param name="entry"></param>
         /// <returns></returns>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public string GetDistinguishedName(string userName, out DirectoryEntry entry, bool reload = false, bool throwIfNotFound = false)
+        public string GetDistinguishedName(string samAccountName, out DirectoryEntry entry, bool reload = false, bool throwIfNotFound = false)
         {
             entry = null;
-            if (!SearchResults.ContainsKey(userName))
+            if (!SearchResults.ContainsKey(samAccountName))
             {
-                SearchResults.Add(userName, new Dictionary<string, string>());
-                DirectoryEntries.Add(userName, null);
+                SearchResults.Add(samAccountName, new Dictionary<string, string>());
+                DirectoryEntries.Add(samAccountName, null);
             }
 
-            if (!SearchResults[userName].ContainsKey(DistinguishedName) || reload)
+            if (!SearchResults[samAccountName].ContainsKey(DistinguishedName) || reload)
             {
                 using (DirectorySearcher searcher = GetDirectoryRootSearcher())
                 {
-                    searcher.Filter = $"(sAMAccountName={userName})";
+                    searcher.Filter = $"(sAMAccountName={samAccountName})";
                     SearchResult result = searcher.FindOne();
                     Dictionary<string, string> properties = new Dictionary<string, string>();
                     if (result != null)
                     {
                         entry = result.GetDirectoryEntry();
-                        DirectoryEntries[userName] = entry;
-                        FireEvent(UserFound, new ActiveDirectoryEventArgs { UserName = userName, Server = Server });
+                        DirectoryEntries[samAccountName] = entry;
+                        FireEvent(UserFound, new ActiveDirectoryEventArgs { UserName = samAccountName, Server = Server });
                         ResultPropertyCollection fields = result.Properties;
                         foreach (string field in fields.PropertyNames)
                         {
@@ -191,21 +221,21 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                                 }
                             }
                         }
-                        SearchResults[userName] = properties;
+                        SearchResults[samAccountName] = properties;
                     }
                     else
                     {
                         FireEvent(UserNotFound);
                         if (throwIfNotFound)
                         {
-                            throw new InvalidOperationException($"User {userName} not found");
+                            throw new InvalidOperationException($"User {samAccountName} not found");
                         }
                     }
                 }
             }
-            if(SearchResults.ContainsKey(userName) && SearchResults[userName].ContainsKey(DistinguishedName))
+            if(SearchResults.ContainsKey(samAccountName) && SearchResults[samAccountName].ContainsKey(DistinguishedName))
             {
-                return SearchResults[userName][DistinguishedName];
+                return SearchResults[samAccountName][DistinguishedName];
             }
             return string.Empty;
         }

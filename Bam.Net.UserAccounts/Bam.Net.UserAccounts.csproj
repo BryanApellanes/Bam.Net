@@ -151,10 +151,6 @@
   <ItemGroup>
     <Compile Include="AccountConfirmationEmailData.cs" />
     <Compile Include="AccountCreationFailedException.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectoryAuthenticator.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectoryEventArgs.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectoryReader.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectoryRoleReader.cs" />
     <Compile Include="Authenticator.cs" />
     <Compile Include="CheckEmailResponse.cs" />
     <Compile Include="CheckUserNameResponse.cs" />
@@ -382,7 +378,9 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DirectoryServices\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="C:\bam\nuget\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('C:\bam\nuget\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <PropertyGroup>

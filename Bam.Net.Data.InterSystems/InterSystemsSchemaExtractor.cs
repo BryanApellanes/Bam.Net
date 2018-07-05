@@ -91,9 +91,9 @@ namespace Bam.Net.Data.Intersystems
             {
                 AutoSave = false,
                 SchemaTempPathProvider = SchemaTempPathProvider
-            };
+            };    
+            
             SchemaDefinition result = Extract(schemaManager);
-            result.Tables.Each(t => t.AddColumn("ID", DataTypes.String, true));
             return result;
         }
 
@@ -127,7 +127,8 @@ namespace Bam.Net.Data.Intersystems
 
         public override string[] GetColumnNames(string tableName)
         {
-            List<string> results = new List<string>();
+            HashSet<string> results = new HashSet<string>();
+            results.Add("ID");
             foreach(InterSystemsFieldDescriptor fieldDescriptor in FieldDescriptorsByTable[tableName])
             {
                 results.Add(fieldDescriptor.SqlFieldName);
@@ -148,7 +149,7 @@ namespace Bam.Net.Data.Intersystems
 
         public override string GetKeyColumnName(string tableName)
         {
-            return string.Empty;
+            return "ID";
         }
 
         public override string GetSchemaName()
