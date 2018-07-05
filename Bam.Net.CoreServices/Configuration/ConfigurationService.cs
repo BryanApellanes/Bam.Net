@@ -98,7 +98,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/", "Admin")]
-        public void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName)
+        public virtual void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName)
         {
             SetApplicationConfiguration(configuration, applicationName, configurationName);
         }
