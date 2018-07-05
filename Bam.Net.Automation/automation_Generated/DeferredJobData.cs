@@ -172,7 +172,7 @@ namespace Bam.Net.Automation.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

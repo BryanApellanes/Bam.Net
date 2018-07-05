@@ -228,7 +228,7 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

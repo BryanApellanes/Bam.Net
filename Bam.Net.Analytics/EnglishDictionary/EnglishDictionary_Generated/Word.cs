@@ -158,7 +158,7 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

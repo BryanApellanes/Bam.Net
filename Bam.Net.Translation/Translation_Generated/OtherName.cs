@@ -179,7 +179,7 @@ namespace Bam.Net.Translation
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

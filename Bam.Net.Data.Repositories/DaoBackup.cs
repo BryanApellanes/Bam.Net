@@ -272,7 +272,7 @@ namespace Bam.Net.Data.Repositories
 					dao.IdValue = null;
 					dao.DataRow = null;
 					dao.ForceInsert = true;
-					dao.UniqueFilterProvider = () =>
+					dao.UniqueFilterProvider = (d) =>
 					{
 						return Query.Where("Uuid") == uuid;
 					};

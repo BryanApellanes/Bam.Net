@@ -233,7 +233,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

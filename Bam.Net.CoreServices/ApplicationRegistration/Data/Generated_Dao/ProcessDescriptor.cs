@@ -410,7 +410,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

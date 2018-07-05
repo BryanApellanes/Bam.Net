@@ -158,7 +158,7 @@ namespace Bam.Net.Presentation.Unicode
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

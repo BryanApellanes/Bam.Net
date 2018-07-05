@@ -193,7 +193,7 @@ namespace Bam.Net.Messaging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
