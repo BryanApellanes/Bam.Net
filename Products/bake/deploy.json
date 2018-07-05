@@ -53,7 +53,7 @@
     },
     {
       "Copy": true,
-      "Host": "core",
+      "Host": "integration",
       "Name": "TestingServicesRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:TestingServicesRegistry /verbose:true",
@@ -64,7 +64,7 @@
         "AssemblySearchPattern": "Bam.Net.Automation.dll",
         "HostNames": "int.bamapps.net,int.threeheadz.io",
         "Ssl": false,
-        "Port": 80,
+        "Port": 8080,
         "ApplicationName": "int.bamapps.net"
       }
     }
