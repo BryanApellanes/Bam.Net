@@ -32,6 +32,7 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 
 
         protected Dictionary<string, DirectoryEntry> DirectoryEntries { get; set; }
+        
         /// <summary>
         /// Gets or sets the server.  This can be the domain or domain controller hostname.
         /// </summary>
@@ -59,8 +60,11 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 
         [Verbosity(VerbosityLevel.Information, MessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserFound;
-
         
+        public bool IsMemberOfGroup(string userName, string groupName)
+        {
+            return GetGroupNames(userName).Contains(groupName);
+        }
 
         public string[] GetGroupNames(string userName)
         {
