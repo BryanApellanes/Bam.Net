@@ -158,7 +158,7 @@ namespace Bam.Net.Logging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

@@ -249,7 +249,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

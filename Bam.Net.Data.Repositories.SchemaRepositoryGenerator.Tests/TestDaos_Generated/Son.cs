@@ -149,7 +149,7 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes.Daos
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

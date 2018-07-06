@@ -200,7 +200,7 @@ namespace Bam.Net.Services.OpenApi
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

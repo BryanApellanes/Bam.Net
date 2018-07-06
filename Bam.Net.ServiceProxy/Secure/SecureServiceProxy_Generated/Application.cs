@@ -214,7 +214,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

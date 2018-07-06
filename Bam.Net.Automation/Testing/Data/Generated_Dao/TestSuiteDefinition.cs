@@ -227,7 +227,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{

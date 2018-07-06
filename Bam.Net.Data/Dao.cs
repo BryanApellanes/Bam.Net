@@ -979,7 +979,7 @@ namespace Bam.Net.Data
         public abstract IQueryFilter GetUniqueFilter();
 
 
-        public Func<IQueryFilter> UniqueFilterProvider
+        public Func<Dao, IQueryFilter> UniqueFilterProvider
         {
             get;
             set;
