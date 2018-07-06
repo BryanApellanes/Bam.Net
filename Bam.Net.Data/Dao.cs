@@ -1151,8 +1151,7 @@ namespace Bam.Net.Data
         public static string GetKeyColumnName(Type type)
         {
             string name = "Id";
-            KeyColumnAttribute attribute;
-            type.GetFirstProperyWithAttributeOfType<KeyColumnAttribute>(out attribute);
+            type.GetFirstProperyWithAttributeOfType<KeyColumnAttribute>(out KeyColumnAttribute attribute);
             if (attribute != null)
             {
                 name = attribute.Name;
