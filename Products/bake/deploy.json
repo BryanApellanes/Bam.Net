@@ -25,6 +25,24 @@
       }
     }
   ],
+  "DaemonServices": [
+    {
+      "Host": "core",
+      "Port": 8477,
+      "HostNames": "bamd-core",
+      "Ssl": false,
+      "ApplicationName": "bamd-core",
+      "LogType": "TextFile"
+    },
+    {
+      "Host": "integration",
+      "Port": 8477,
+      "HostNames": "bamd-integration",
+      "Ssl": false,
+      "ApplicationName": "bamd-integration",
+      "LogType": "TextFile"
+    }
+  ],
   "Daemons": [
     {
       "Copy": false,

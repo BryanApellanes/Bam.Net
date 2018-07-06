@@ -104,6 +104,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DaemonServiceInfo.cs" />
     <Compile Include="BuildConfig.cs" />
     <Compile Include="BuildInfo.cs" />
     <Compile Include="DeployInfo.cs" />

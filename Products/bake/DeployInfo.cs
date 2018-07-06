@@ -14,6 +14,7 @@ namespace Bam.Net.Application
             WindowsServices = new WindowsServiceInfo[] { };
         }
 
+        public DaemonServiceInfo[] DaemonServices { get; set; }
         public DaemonInfo[] Daemons { get; set; }
         public WindowsServiceInfo[] WindowsServices { get; set; }
     }
