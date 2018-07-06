@@ -1302,6 +1302,7 @@ namespace Bam.Net.Automation
             {
                 CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
                 CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
+                KillProcess(svcInfo.Host, svcInfo.FileName);
                 string host = svcInfo.Host;
                 TryDeleteDirectory(remoteDirectoryInfo, host);
             }
