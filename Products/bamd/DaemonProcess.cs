@@ -75,19 +75,27 @@ namespace Bam.Net.Application
 
         public ProcessOutput Start(EventHandler onExit = null)
         {
-            ExitHandler = onExit;
-            ProcessStartInfo startInfo = new ProcessStartInfo(FileName, Arguments)
+            try
             {
-                WorkingDirectory = WorkingDirectory,
-                UseShellExecute = false,
-                ErrorDialog = false,
-                CreateNoWindow = true
-            };
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-            ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = error }));
-            ProcessOutput = startInfo.Run(onExit, collector);
-            return ProcessOutput;
+                ExitHandler = onExit;
+                ProcessStartInfo startInfo = new ProcessStartInfo(FileName, Arguments)
+                {
+                    WorkingDirectory = WorkingDirectory,
+                    UseShellExecute = false,
+                    ErrorDialog = false,
+                    CreateNoWindow = true
+                };
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = error }));
+                ProcessOutput = startInfo.Run(ExitHandler, collector);
+                return ProcessOutput;
+            }
+            catch (Exception ex)
+            {
+                FireEvent(ErrorOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = ex.Message });
+                return null;
+            }
         }
 
         public string ToCommandLine()

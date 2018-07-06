@@ -301,17 +301,17 @@ namespace Bam.Net.Automation
                     hostDaemonServiceInfos.Add(daemon.Host, new DaemonServiceInfo { Host = daemon.Host, HostNames = $"bamd-{daemon.Host}" });
                 }
             }
-            Dictionary<string, DaemonInfo> daemonInfosByHost = deployInfo.Daemons.ToDictionary(d => d.Host);
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             DirectoryInfo bamdLocalPathDirectory = new FileInfo(bamdLocalPathNotation).Directory;
-            foreach (string host in daemonInfosByHost.Keys)
+            foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
             {
+                string host = daemonInfo.Host;
                 if (!processedHosts.Contains(host))
                 {
                     if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                     {
                         UninstallBamDaemon(host);
-                        InstallDaemonFilesOnHost(daemonInfosByHost[host], latestBinaries);
+                        InstallDaemonFilesOnHost(daemonInfo, latestBinaries);
                         SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
                         ConfigureAndStartBamDaemon(latestBinaries, host, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());
                         processedHosts.Add(host);
