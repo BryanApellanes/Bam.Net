@@ -60,6 +60,7 @@ namespace Bam.Net.Automation.Testing
                 .For<ILogger>().Use(logger)
                 .For<AppConf>().Use(new AppConf(Name))
                 .For<SystemLoggerService>().Use<SystemLoggerService>()
+                .For<SystemLogReader>().Use<SystemLogReader>()
                 .For<TestReportService>().Use<TestReportService>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>();
