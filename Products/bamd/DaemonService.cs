@@ -34,7 +34,6 @@ namespace Bam.Net.Application
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
                     ILogger logger = GetLogger();
-                    Log.Default = logger.RestartLoggingThread();
                     try
                     {
                         ProcessMonitorService = new DaemonProcessMonitorService(logger);
@@ -83,9 +82,11 @@ namespace Bam.Net.Application
             return ServiceConfig.GetConfiguredHostPrefixes();
         }
 
+        static ILogger _logger;
+        static object _loggerLock = new object();
         private static ILogger GetLogger()
-        {   
-            return ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName));
+        {
+            return _loggerLock.DoubleCheckLock(ref _logger, () => ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName)));
         }
     }
 }
