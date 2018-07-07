@@ -321,11 +321,12 @@ namespace Bam.Net.Automation
                     }
                 }
             }
-            foreach(string host in hostDaemonServiceInfos.Keys)
+
+            OutLine("Checking for left overs", ConsoleColor.Cyan);
+            foreach (string host in hostDaemonServiceInfos.Keys)
             {
                 if(string.IsNullOrEmpty(targetHost) || host.EndsWith(targetHost))
                 {
-                    OutLine("Checking for left overs", ConsoleColor.Cyan);
                     if (!processedHosts.Contains(host))
                     {
                         OutLineFormat("Processing left over host {0}", ConsoleColor.DarkCyan, host);

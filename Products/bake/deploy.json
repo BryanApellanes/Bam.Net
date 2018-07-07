@@ -58,7 +58,7 @@
       "Name": "GlooTestRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:GlooTestRegistry /verbose:true",
-      "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry"
+      "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry",
       "AppSettings": {
         "CoreHostName": "int-heart.bamapps.net",
         "CorePort": 80,
