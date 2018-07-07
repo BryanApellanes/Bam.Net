@@ -2,7 +2,7 @@
 Logging using Bam.Net is done through the static convenience class
 Log and it's various AddEntry methods.
 
-Configuring logging with Bam.Net is as simple as adding an entry to the 
+Configuring logging with Bam.Net is done by adding an entry to the 
 appSettings section of the app.config or web.config file.
 
 ```xml
@@ -42,9 +42,8 @@ public class CustomLogger: Logger
 }
 ```
 
-To configure the application to use a custom logger not included in Bam.Net you 
-will need to specify the assembly qualified name in the app.config or web.config file
-as the value for the LogType entry.
+To configure the application to use a custom logger not included in Bam.Net, specify the assembly 
+qualified name in the app.config or web.config file as the value for the LogType entry.
 
 
 
