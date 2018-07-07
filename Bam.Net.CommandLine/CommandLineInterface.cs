@@ -263,7 +263,7 @@ namespace Bam.Net.CommandLine
                     try
                     {
                         Process.GetProcessById(int.Parse(pid)).Kill();
-                        Console.WriteLine("Killed old process ({0}) {1}", pid, commandLineArgs);
+                        Console.WriteLine("Killed old process ({0})", pid);
                     }
                     catch (Exception ex)
                     {
@@ -272,7 +272,7 @@ namespace Bam.Net.CommandLine
                 }
                 else
                 {
-                    Console.WriteLine("Did NOT kill pid ({0}), command line args didn't match: PidFile={1}, Current={2}", pid, argsInFile, commandLineArgs);
+                    Console.WriteLine("Did NOT kill pid ({0}), command line args didn't match", pid);
                 }
             }
         }
