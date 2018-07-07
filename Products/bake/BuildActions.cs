@@ -1377,7 +1377,8 @@ namespace Bam.Net.Automation
             //      copy the latest binaries to c:\bam\sys\{Name}
             string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
             OutLineFormat("Installing daemon {0} on {1}: Copy={2}", ConsoleColor.Blue, daemonInfo.Name, daemonInfo.Host, daemonInfo.Copy.ToString());
-            KillProcess(daemonInfo.Host, daemonInfo.FileName);
+            FileInfo daemonFile = new FileInfo(daemonInfo.FileName);
+            KillProcess(daemonInfo.Host, daemonFile.Name);
             if (daemonInfo.Copy)
             {
                 DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
