@@ -33,7 +33,7 @@ namespace Bam.Net.Application
             {
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
-                    ILogger logger = GetLogger();
+                    ILogger logger = GetDaemonServiceLogger();
                     try
                     {
                         ProcessMonitorService = new DaemonProcessMonitorService(logger);
@@ -59,22 +59,29 @@ namespace Bam.Net.Application
         {
             try
             {
-                Log.AddLogger(GetLogger());
+                Log.AddLogger(GetDaemonServiceLogger());
                 Log.AddEntry("{0} starting", ServiceInfo.ServiceName);
                 Server.Start();
                 ProcessMonitorService.Start();
             }
             catch (Exception ex)
             {
-                Log.AddEntry("Error starting service: {0}", ex, ex.Message);
+                Log.AddEntry("Error starting bam daemon service: {0}", ex, ex.Message);
             }
         }
 
         protected override void OnStop()
         {
-            Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
-            Server.Stop();
-            ProcessMonitorService.Stop();            
+            try
+            {
+                Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
+                Server.Stop();
+                ProcessMonitorService.Stop();
+            }
+            catch (Exception ex)
+            {
+                Log.AddEntry("Error stopping {0}: {1}", LogEventType.Warning, ServiceInfo.ServiceName, ex.Message);
+            }
         }
 
         private static HostPrefix[] GetConfiguredHostPrefixes()
@@ -82,11 +89,11 @@ namespace Bam.Net.Application
             return ServiceConfig.GetConfiguredHostPrefixes();
         }
 
-        static ILogger _logger;
-        static object _loggerLock = new object();
-        private static ILogger GetLogger()
+        static ILogger _daemonServiceLogger;
+        static object _daemonServiceLoggerLock = new object();
+        private static ILogger GetDaemonServiceLogger()
         {
-            return _loggerLock.DoubleCheckLock(ref _logger, () => ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName)));
+            return _daemonServiceLoggerLock.DoubleCheckLock(ref _daemonServiceLogger, () => ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName)));
         }
     }
 }

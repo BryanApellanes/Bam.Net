@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Clients
 {
+    /// <summary>
+    /// A ProxyableService that is also a client of a core services server.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.ProxyableService" />
+    /// <seealso cref="Bam.Net.Services.Clients.IHasCoreClient" />
     [Encrypt]
     public abstract class CoreProxyableService: ProxyableService, IHasCoreClient
     {

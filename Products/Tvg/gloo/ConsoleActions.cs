@@ -30,7 +30,7 @@ namespace Bam.Net.Application
         static GlooServer glooServer;
         
         [ConsoleAction("startGlooServer", "Start the gloo server")]
-        public void StartGlooServer()
+        public void StartGlooServerAndPause()
         {
             ConsoleLogger logger = GetLogger();
             StartGlooServer(logger);

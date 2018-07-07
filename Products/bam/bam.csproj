@@ -57,6 +57,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>bam.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -88,6 +91,7 @@
     <None Include="README.MD" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bam.ico" />
     <Content Include="bamtoolkit_files.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

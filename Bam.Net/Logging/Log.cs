@@ -147,7 +147,7 @@ namespace Bam.Net.Logging
             return AddLogger(CreateLogger(loggerType));
         }
 
-        public static MultiTargetLogger AddLogger(this ILogger loggerInstance)
+        public static MultiTargetLogger AddLogger(ILogger loggerInstance)
         {
             MultiTargetLogger main = null;
 

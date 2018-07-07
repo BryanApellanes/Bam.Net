@@ -67,7 +67,8 @@
         "HostNames": "gloo-test.bamapps.net,gloo-test.threeheadz.io",
         "Ssl": false,
         "Port": 9100,
-        "ApplicationName": "gloo-test.bamapps.net"
+        "ApplicationName": "gloo-test.bamapps.net",
+        "ProcessMode":  "Test"
       }
     },
     {
@@ -85,7 +86,9 @@
         "HostNames": "int.bamapps.net,int.threeheadz.io",
         "Ssl": false,
         "Port": 8080,
-        "ApplicationName": "int.bamapps.net"
+        "ApplicationName": "int.bamapps.net",
+        "ProcessMode": "Test",
+        "LogType":  "TextFile"
       }
     }
   ]
