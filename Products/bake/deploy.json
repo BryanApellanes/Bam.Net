@@ -56,7 +56,7 @@
       "Copy": true,
       "Host": "integration",
       "Name": "GlooTestRegistry",
-      "FileName": "gloo.exe",
+      "FileName": "C:\\bam\\sys\\GlooTestRegistry\\gloo.exe",
       "Arguments": "/registries:GlooTestRegistry /verbose:true",
       "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry",
       "AppSettings": {
@@ -76,7 +76,7 @@
       "Copy": true,
       "Host": "integration",
       "Name": "TestingServicesRegistry",
-      "FileName": "gloo.exe",
+      "FileName": "C:\\bam\\sys\\TestingServicesRegistry\\gloo.exe",
       "Arguments": "/registries:TestingServicesRegistry /verbose:true",
       "WorkingDirectory": "C:\\bam\\sys\\TestingServicesRegistry",
       "AppSettings": {

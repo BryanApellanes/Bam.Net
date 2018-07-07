@@ -280,7 +280,8 @@ namespace Bam.Net.Automation
             }
             string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
             
-            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory();
+            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
+            OutLineFormat("Deploying commit: {0}", ConsoleColor.Green, commit);
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
             foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
@@ -1187,9 +1188,10 @@ namespace Bam.Net.Automation
             }
         }
 
-        private static DirectoryInfo GetLatestBuildBinaryDirectory()
+        private static DirectoryInfo GetLatestBuildBinaryDirectory(out string commitHash)
         {
-            return GetCommitBinaryDirectory(GetLatestBuildCommitHash());
+            commitHash = GetLatestBuildCommitHash();
+            return GetCommitBinaryDirectory(commitHash);
         }
 
         private static DirectoryInfo GetCommitBinaryDirectory(string commitPrefix)
@@ -1375,6 +1377,7 @@ namespace Bam.Net.Automation
             //      copy the latest binaries to c:\bam\sys\{Name}
             string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
             OutLineFormat("Installing daemon {0} on {1}: Copy={2}", ConsoleColor.Blue, daemonInfo.Name, daemonInfo.Host, daemonInfo.Copy.ToString());
+            KillProcess(daemonInfo.Host, daemonInfo.FileName);
             if (daemonInfo.Copy)
             {
                 DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
