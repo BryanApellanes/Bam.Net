@@ -30,14 +30,16 @@ namespace Bam.Net.Logging
 			List<LogEntry> results = new List<LogEntry>();
 			foreach(Data.Event eventData in data)
 			{
-				LogEntry entry = new LogEntry();
-				entry.Source = eventData.SourceNameOfSourceNameId.Value;
-				entry.Category = eventData.CategoryNameOfCategoryNameId.Value;
-				entry.EventID = Convert.ToInt32(eventData.Id);
-				entry.User = eventData.UserNameOfUserNameId.Value;
-				entry.Time = eventData.Time.Value;
-				entry.MessageSignature = eventData.SignatureOfSignatureId.Value;
-				List<Data.Param> args = new List<Data.Param>(eventData.Params);
+                LogEntry entry = new LogEntry
+                {
+                    Source = eventData.SourceNameOfSourceNameId.Value,
+                    Category = eventData.CategoryNameOfCategoryNameId.Value,
+                    EventID = Convert.ToInt32(eventData.Id),
+                    User = eventData.UserNameOfUserNameId.Value,
+                    Time = eventData.Time.Value,
+                    MessageSignature = eventData.SignatureOfSignatureId.Value
+                };
+                List<Data.Param> args = new List<Data.Param>(eventData.Params);
 				args.Sort((one, two) => one.Position.Value.CompareTo(two.Position.Value));
 				entry.MessageVariableValues = args.Select(p => p.Value).ToArray();
 				entry.Message = entry.MessageSignature._Format(args.ToArray());

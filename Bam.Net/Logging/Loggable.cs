@@ -158,12 +158,27 @@ namespace Bam.Net.Logging
         /// <param name="eventArgs"></param>
 		protected void FireEvent(EventHandler eventHandler, EventArgs eventArgs)
 		{
-            eventHandler?.Invoke(this, eventArgs);
+            try
+            {
+
+                eventHandler?.Invoke(this, eventArgs);
+            }
+            catch (Exception ex)
+            {
+                Trace.Write($"Exception in FireEvent: {ex.Message}");
+            }
         }
 
         protected void FireEvent(EventHandler eventHandler, object sender, EventArgs eventArgs)
         {
-            eventHandler?.Invoke(sender, eventArgs);
+            try
+            {
+                eventHandler?.Invoke(sender, eventArgs);
+            }
+            catch (Exception ex)
+            {
+                Trace.Write($"Exception in FireEvent2: {ex.Message}");
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Bam.Net.Application
             Logger.AddEntry("ErrorLog for {0} is {1}", Process.Name, ErrorLogName);
             StandardOutLog = new FileInfo(OutLogName);
             ErrorOutLog = new FileInfo(ErrorLogName);
+
             StartTimedFlush();
         }
 
@@ -59,7 +60,7 @@ namespace Bam.Net.Application
         {
             if(RetryCount < MaxRetries)
             {
-                Log.AddEntry("Restarting {0}", Process.Name);
+                Logger.AddEntry("Restarting {0}", Process.Name);
                 RetryCount++;
                 Process.Start(TryRestart);
             }
@@ -67,19 +68,43 @@ namespace Bam.Net.Application
 
         public void Flush()
         {
-            LogIfNull(Process, "Process");
-            LogIfNull(Process.ProcessOutput, "Process.ProcessOutput");
+            try
+            {
+                LogIfNull(Process, "Process");
+                LogIfNull(Process.ProcessOutput, "Process.ProcessOutput");
 
-            string std = Process.StandardOutSoFar;
-            SetNextLogFiles();
-            std.SafeWriteToFile(StandardOutLog.FullName, true);
-            Logger.AddEntry("Flushed: {0}", std);
-            Process.StandardOutSoFar = string.Empty;
+                CreateLogFiles();
 
-            string err = Process.StandardErrorSoFar;
-            err.SafeWriteToFile(ErrorOutLog.FullName, true);
-            Logger.AddEntry("Flushed err: {0}", err);
-            Process.StandardErrorSoFar = string.Empty;
+                string std = Process.StandardOutSoFar;
+                SetNextLogFiles();
+                std.SafeWriteToFile(StandardOutLog.FullName, true);
+                Logger.AddEntry("Flushed: {0}", std);
+                Process.StandardOutSoFar = string.Empty;
+
+                string err = Process.StandardErrorSoFar;
+                err.SafeWriteToFile(ErrorOutLog.FullName, true);
+                Logger.AddEntry("Flushed err: {0}", err);
+                Process.StandardErrorSoFar = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Logger.AddEntry("Exception during flush: {0}", ex, ex.Message);
+            }
+        }
+
+        private void CreateLogFiles()
+        {
+            if (!StandardOutLog.Directory.Exists)
+            {
+                StandardOutLog.Directory.Create();
+                "init".SafeWriteToFile(StandardOutLog.FullName, true);
+            }
+
+            if (!ErrorOutLog.Directory.Exists)
+            {
+                ErrorOutLog.Directory.Create();
+                "init".SafeWriteToFile(ErrorOutLog.FullName, true);
+            }
         }
 
         private void SetNextLogFiles()
@@ -98,13 +123,13 @@ namespace Bam.Net.Application
         {
             if(obj == null)
             {
-                Log.AddEntry("{0} is null", LogEventType.Warning, name);
+                Logger.AddEntry("{0} is null", LogEventType.Warning, name);
             }
         }
 
         public void TryFlush()
         {
-            Log.AddEntry("trying flush {0}", Process.Name);
+            Logger.AddEntry("trying flush {0}", Process.Name);
             try
             {
                 int standardLineCount = Process.StandardOutLineCount;

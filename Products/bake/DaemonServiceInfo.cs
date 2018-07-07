@@ -34,7 +34,6 @@ namespace Bam.Net.Application
         {
             return new Dictionary<string, string>
             {
-                { "Host", Host },
                 { "Port", Port.ToString() },
                 { "HostNames", HostNames },
                 { "Ssl", Ssl.ToString() },

@@ -31,9 +31,8 @@ namespace Bam.Net.Logging
 			foreach(Data.LogEvent eventData in data)
 			{
 				LogEntry entry = eventData.CopyAs<LogEntry>();
-				Severity s;
-				Enum.TryParse<Severity>(eventData.Severity, out s);
-				entry.Severity = s;
+                Enum.TryParse<Severity>(eventData.Severity, out Severity s);
+                entry.Severity = s;
 				entry.MessageVariableValues = eventData.MessageVariableValues.DelimitSplit(",", ";");
 				results.Add(entry);
 			}
