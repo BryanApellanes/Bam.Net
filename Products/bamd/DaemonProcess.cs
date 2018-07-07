@@ -85,6 +85,7 @@ namespace Bam.Net.Application
                     ErrorDialog = false,
                     CreateNoWindow = true
                 };
+                Log.AddEntry("Starting {0} working directory: {1}", FileName, WorkingDirectory);
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
                 ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = error }));

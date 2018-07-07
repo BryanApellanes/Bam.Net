@@ -58,6 +58,7 @@
       "Name": "GlooTestRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:GlooTestRegistry /verbose:true",
+      "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry",
       "AppSettings": {
         "CoreHostName": "int-heart.bamapps.net",
         "CorePort": 80,
@@ -67,7 +68,8 @@
         "Ssl": false,
         "Port": 9100,
         "ApplicationName": "gloo-test.bamapps.net",
-        "ProcessMode":  "Test"
+        "ProcessMode": "Test",
+        "LogType": "TextFile"
       }
     },
     {
@@ -76,6 +78,7 @@
       "Name": "TestingServicesRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:TestingServicesRegistry /verbose:true",
+      "WorkingDirectory": "C:\\bam\\sys\\TestingServicesRegistry",
       "AppSettings": {
         "CoreHostName": "int-heart.bamapps.net",
         "CorePort": 80,
@@ -86,7 +89,7 @@
         "Port": 8080,
         "ApplicationName": "int.bamapps.net",
         "ProcessMode": "Test",
-        "LogType":  "TextFile"
+        "LogType": "TextFile"
       }
     }
   ]
