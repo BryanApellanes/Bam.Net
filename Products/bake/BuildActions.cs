@@ -320,7 +320,7 @@ namespace Bam.Net.Automation
                 if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                 {
                     UninstallBamDaemonService(host);
-                    InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());
+                    InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.CopyAs<DaemonProcessInfo>()).ToList());
                     //      start new bamd
                     SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
                     CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
@@ -1349,7 +1349,7 @@ namespace Bam.Net.Automation
             }
         }
 
-        private static void InstallBamDaemonService(string host, DirectoryInfo latestBinaries, List<DaemonProcess> daemonProcesses)
+        private static void InstallBamDaemonService(string host, DirectoryInfo latestBinaries, List<DaemonProcessInfo> daemonProcesses)
         {
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
