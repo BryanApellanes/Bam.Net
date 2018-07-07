@@ -1374,15 +1374,20 @@ namespace Bam.Net.Automation
             Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
             //      copy the latest binaries to c:\bam\sys\{Name}
             string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
+            OutLineFormat("Installing daemon {0} on {1}: Copy={2}", ConsoleColor.Blue, daemonInfo.Name, daemonInfo.Host, daemonInfo.Copy.ToString());
             if (daemonInfo.Copy)
             {
                 DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
                 if (adminSharePath.Exists)
                 {
+                    OutLineFormat("Deleting {0}", ConsoleColor.Cyan, adminSharePath.FullName);
                     adminSharePath.Delete(true);
+                    OutLineFormat("Done deleting {0}", ConsoleColor.DarkCyan, adminSharePath.FullName);
                 }
                 daemonInfo.WorkingDirectory = directoryPathOnRemote;
+                OutLineFormat("Copying files for {0} to remote: {1}", ConsoleColor.Cyan, daemonInfo.Name, daemonInfo.Host);
                 latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
+                OutLineFormat("Done copying files for {0} to remote: {1}", ConsoleColor.DarkCyan, daemonInfo.Name, daemonInfo.Host);
             }
         }
 
