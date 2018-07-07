@@ -42,7 +42,7 @@ namespace Bam.Net.CoreServices
         }
 
         Database _database;
-        public Database Database
+        public override Database Database
         {
             get
             {
@@ -248,6 +248,7 @@ namespace Bam.Net.CoreServices
         {
             ApplicationRegistrationService result = new ApplicationRegistrationService(DataSettings, AppConf, ApplicationRegistrationRepository, Logger);
             result.CopyProperties(this);
+            result.CopyEventHandlers(this);
             return result;
         }
 

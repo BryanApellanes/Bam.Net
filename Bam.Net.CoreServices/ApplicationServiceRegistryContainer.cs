@@ -36,11 +36,22 @@ namespace Bam.Net.CoreServices
         public const string RegistryName = "CoreServiceRegistry";
         static object _coreIncubatorLock = new object();
         static ServiceRegistry _coreServiceRegistry;
-        
+
+        static Dictionary<ProcessModes, Func<ServiceRegistry>> _factories;
+        static ApplicationServiceRegistryContainer()
+        {
+            _factories = new Dictionary<ProcessModes, Func<ServiceRegistry>>
+            {
+                { ProcessModes.Dev, Dev },
+                { ProcessModes.Test, Test },
+                { ProcessModes.Prod, Prod }
+            };
+        }
+
         [ServiceRegistryLoader(RegistryName)]
         public static ServiceRegistry GetServiceRegistry()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
+            return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, _factories[ProcessMode.Current.Mode]);
         }
 
         static ServiceRegistry _instance;
@@ -52,6 +63,23 @@ namespace Bam.Net.CoreServices
                 return _instanceLock.DoubleCheckLock(ref _instance, Create);
             }
         }
+
+        // place holders for customization if necessary
+        public static ServiceRegistry Dev()
+        {
+            return Create();
+        }
+
+        public static ServiceRegistry Test()
+        {
+            return Create();
+        }
+
+        public static ServiceRegistry Prod()
+        {
+            return Create();
+        }
+        // --
 
         public static ServiceRegistry Create()
         {
@@ -126,7 +154,8 @@ namespace Bam.Net.CoreServices
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
-                .For<NotificationService>().Use<NotificationService>();                
+                .For<NotificationService>().Use<NotificationService>()
+                .For<ILogReader>().Use<SystemLogReader>();
 
             reg.For<ServiceRegistry>().Use(reg)
                 .For<DiagnosticService>().Use<DiagnosticService>();

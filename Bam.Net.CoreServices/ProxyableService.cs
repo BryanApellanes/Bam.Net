@@ -246,7 +246,7 @@ namespace Bam.Net.CoreServices
         public AppConf AppConf { get; set; }
 
         [Exclude]
-        public Database Database { get; set; }
+        public virtual Database Database { get; set; }
 
         [Exclude]
         public void RenderAppTemplate(string templateName, object toRender, Stream output)

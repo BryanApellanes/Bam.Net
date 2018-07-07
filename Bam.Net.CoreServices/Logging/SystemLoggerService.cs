@@ -44,7 +44,13 @@ namespace Bam.Net.CoreServices
             Logger = Log.AddLogger(_logger);
         }
 
-        public virtual void CommitLogEvent(Logging.LogEvent logEvent)
+        [Exclude]
+        public DaoLogger2 GetLogger()
+        {
+            return _logger;
+        }
+
+        public virtual void CommitLogEvent(Net.Logging.LogEvent logEvent)
         {
             Logger.CommitLogEvent(logEvent);
         }
