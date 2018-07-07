@@ -32,6 +32,16 @@ namespace Bam.Net.ServiceProxy
             if (min) Compress();
         }
 
+        public string Ctors()
+        {
+            return DaoProxyRegistration.GetDaoJsCtorScript(_serviceProvider, _serviceProvider.ClassNames).ToString();
+        }
+
+        public string Proxies()
+        {
+            return ServiceProxySystem.GenerateJsProxyScript(_serviceProvider, _serviceProvider.ClassNames).ToString();
+        }
+
         private void Compress()
         {
             JavaScriptCompressor jsc = new JavaScriptCompressor();
@@ -52,16 +62,5 @@ namespace Bam.Net.ServiceProxy
         {
             return ServiceProxySystem.GenerateJsProxyScript(_serviceProvider, classNames);
         }
-
-        public string Ctors()
-        {
-            return DaoProxyRegistration.GetDaoJsCtorScript(_serviceProvider, _serviceProvider.ClassNames).ToString();
-        }
-
-        public string Proxies()
-        {
-            return ServiceProxySystem.GenerateJsProxyScript(_serviceProvider, _serviceProvider.ClassNames).ToString();
-        }
-
     }
 }

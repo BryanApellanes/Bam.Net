@@ -509,6 +509,10 @@ namespace {0}
                     string protocol = request.Url.Scheme;
                     string host = request.Url.Host;
                     int port = request.Url.Port;
+                    if (!string.IsNullOrEmpty(request.Headers["X-Forwarded-For"])) // if the request was passed through a proxy set the port to 80
+                    {
+                        port = 80;
+                    }
                     stringBuilder.Append(var);
                     stringBuilder.Append(".protocol = \"{0}\";\r\n"._Format(protocol));
                     stringBuilder.Append(var);
