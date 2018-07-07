@@ -310,9 +310,9 @@ namespace Bam.Net.Automation
                 {
                     if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                     {
-                        UninstallBamDaemon(host);
+                        UninstallBamDaemonService(host);
                         InstallDaemons(daemonInfo, latestBinaries);
-                        InstallBamDaemon(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());                        
+                        InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());                        
                         //      start new bamd
                         CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
 
@@ -329,9 +329,9 @@ namespace Bam.Net.Automation
                     if (!processedHosts.Contains(host))
                     {
                         OutLineFormat("Processing left over host {0}", ConsoleColor.DarkCyan, host);
-                        UninstallBamDaemon(host);
+                        UninstallBamDaemonService(host);
                         SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
-                        InstallBamDaemon(host, latestBinaries, new List<DaemonProcess>());
+                        InstallBamDaemonService(host, latestBinaries, new List<DaemonProcess>());
                         processedHosts.Add(host);
                     }
                 }
@@ -1343,7 +1343,7 @@ namespace Bam.Net.Automation
             return installSwitch;
         }
 
-        private static void UninstallBamDaemon(string host)
+        private static void UninstallBamDaemonService(string host)
         {
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             DirectoryInfo bamdLocalPathDirectory = new FileInfo(bamdLocalPathNotation).Directory;
@@ -1358,7 +1358,7 @@ namespace Bam.Net.Automation
             }
         }
 
-        private static void InstallBamDaemon(string host, DirectoryInfo latestBinaries, List<DaemonProcess> daemonProcesses)
+        private static void InstallBamDaemonService(string host, DirectoryInfo latestBinaries, List<DaemonProcess> daemonProcesses)
         {
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
