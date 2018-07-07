@@ -58,7 +58,6 @@
       "Name": "GlooTestRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:GlooTestRegistry /verbose:true",
-      "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry",
       "AppSettings": {
         "CoreHostName": "int-heart.bamapps.net",
         "CorePort": 80,
@@ -77,7 +76,6 @@
       "Name": "TestingServicesRegistry",
       "FileName": "gloo.exe",
       "Arguments": "/registries:TestingServicesRegistry /verbose:true",
-      "WorkingDirectory":  "C:\\bam\\sys\\TestingServicesRegistry",
       "AppSettings": {
         "CoreHostName": "int-heart.bamapps.net",
         "CorePort": 80,

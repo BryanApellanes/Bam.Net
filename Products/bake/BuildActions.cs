@@ -291,7 +291,6 @@ namespace Bam.Net.Automation
                 }
             }
 
-            HashSet<string> processedHosts = new HashSet<string>();
             Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices.ToDictionary(d => d.Host);
             foreach(DaemonInfo daemon in deployInfo.Daemons)
             {
@@ -303,38 +302,28 @@ namespace Bam.Net.Automation
             }
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             DirectoryInfo bamdLocalPathDirectory = new FileInfo(bamdLocalPathNotation).Directory;
+
+            // install the monitored daemon executables (not to be confused with the bamd monitor service itself)
             foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
             {
                 string host = daemonInfo.Host;
-                if (!processedHosts.Contains(host))
-                {
-                    if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
-                    {
-                        UninstallBamDaemonService(host);
-                        InstallDaemons(daemonInfo, latestBinaries);
-                        InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());                        
-                        //      start new bamd
-                        CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
-
-                        SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());                        
-                        processedHosts.Add(host);
-                    }
+                if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                {                    
+                    InstallDaemon(daemonInfo, latestBinaries);
+                    SetDaemonAppSettings(daemonInfo);
                 }
             }
 
-            OutLine("Checking for left overs", ConsoleColor.Cyan);
-            foreach (string host in hostDaemonServiceInfos.Keys)
+            // install the bamd monitor service on each host
+            foreach(string host in hostDaemonServiceInfos.Keys)
             {
-                if(string.IsNullOrEmpty(targetHost) || host.EndsWith(targetHost))
+                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                 {
-                    if (!processedHosts.Contains(host))
-                    {
-                        OutLineFormat("Processing left over host {0}", ConsoleColor.DarkCyan, host);
-                        UninstallBamDaemonService(host);
-                        SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
-                        InstallBamDaemonService(host, latestBinaries, new List<DaemonProcess>());
-                        processedHosts.Add(host);
-                    }
+                    UninstallBamDaemonService(host);
+                    InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.ToDaemonProcess()).ToList());
+                    //      start new bamd
+                    SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
+                    CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
                 }
             }
         }
@@ -1290,6 +1279,7 @@ namespace Bam.Net.Automation
             FileInfo configFile = new FileInfo(configPath);
             string adminSharePath = configFile.GetAdminSharePath(host);
             OutLineFormat("Setting appsettings in {0}", ConsoleColor.DarkCyan, adminSharePath);
+            OutLine(appSettings.ToJson(true), ConsoleColor.DarkGreen);
             DefaultConfiguration.SetAppSettings(adminSharePath, appSettings);
         }
         
@@ -1373,15 +1363,16 @@ namespace Bam.Net.Automation
             //      write DaemonProcessInfos using above
             string adminShareDaemonConfig = $"{typeof(DaemonProcess).Name.Pluralize()}.json".GetAdminSharePath(host, Paths.Conf);
             OutLineFormat("Writing {0}", ConsoleColor.DarkCyan, adminShareDaemonConfig);
-            daemonProcesses.ToJsonFile(adminShareDaemonConfig);
+            string daemonProcessesJson = daemonProcesses.ToJson(true);
+            OutLine(daemonProcessesJson, ConsoleColor.DarkGreen);
+            daemonProcessesJson.SafeWriteToFile(adminShareDaemonConfig, true);
         }
 
-        private static void InstallDaemons(DaemonInfo daemonInfo, DirectoryInfo latestBinaries)
+        private static void InstallDaemon(DaemonInfo daemonInfo, DirectoryInfo latestBinaries)
         {
             Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
             Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
             //      copy the latest binaries to c:\bam\sys\{Name}
-            //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
             string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
             if (daemonInfo.Copy)
             {
@@ -1391,9 +1382,13 @@ namespace Bam.Net.Automation
                     adminSharePath.Delete(true);
                 }
                 daemonInfo.WorkingDirectory = directoryPathOnRemote;
-                latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);             
+                latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
             }
+        }
 
+        private static void SetDaemonAppSettings(DaemonInfo daemonInfo)
+        {
+            string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
             if (daemonInfo.AppSettings != null)
             {
                 //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
