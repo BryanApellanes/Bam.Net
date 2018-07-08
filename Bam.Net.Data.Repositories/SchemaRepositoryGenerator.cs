@@ -17,9 +17,9 @@ namespace Bam.Net.Data.Repositories
     {
         /// <summary>
         /// Instantiate an instance of SchemaRepositoryGenerator that
-        /// can be used to generate a schema specific repository for the
-        /// specified typeAssembly for types in the specified 
-        /// sourceNamespace
+        /// is used to generate a schema specific repository for the
+        /// specified assembly for types in the specified 
+        /// namespace.
         /// </summary>
         /// <param name="typeAssembly"></param>
         /// <param name="sourceNamespace"></param>

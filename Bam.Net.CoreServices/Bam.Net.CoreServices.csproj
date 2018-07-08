@@ -441,6 +441,9 @@
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
     <Compile Include="TemplatePrecedence.cs" />
+    <Compile Include="WebHooks\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\WebHookService.cs" />
+    <Compile Include="WebHooks\WebHookSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />

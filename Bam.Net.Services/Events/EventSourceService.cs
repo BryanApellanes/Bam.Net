@@ -110,6 +110,7 @@ namespace Bam.Net.Services.Events
                 }
             });
         }
+
         protected HashSet<string> SupportedEvents { get; set; }
 
         private void InvokeEventSubscriptions(string eventName, EventArgs args = null)
