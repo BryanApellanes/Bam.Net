@@ -9,6 +9,7 @@ using Bam.Net.Incubation;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using System.Collections.Generic;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
@@ -135,6 +136,13 @@ namespace Bam.Net.CoreServices
         {
             Assembly assembly = GetAssembly(type);
             return ConstructProxy(type, assembly, ServiceProvider);
+        }
+
+        public static T DownloadProxy<T>(string hostName, int port = 9100, ILogger logger = null, HashSet<Assembly> addedReferenceAssemblies = null)
+        {
+            logger = logger ?? Log.Default;
+            ProxyFactory factory = new ProxyFactory(DataSettings.Current.GetWorkspaceDirectory(typeof(ProxyFactory)).FullName, logger);
+            return factory.GetProxy<T>(hostName, port, logger);
         }
 
         /// <summary>

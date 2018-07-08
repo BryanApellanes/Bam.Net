@@ -79,6 +79,25 @@ namespace Bam.Net.CoreServices
                 throw new InvalidOperationException("Current user not logged in");
             }
         }
+
+        /// <summary>
+        /// Determines whether the current user is in the specified role name.
+        /// </summary>
+        /// <param name="roleName">Name of the role.</param>
+        /// <returns>
+        ///   <c>true</c> if the current user is in the specified role name; otherwise, <c>false</c>.
+        /// </returns>
+        protected bool IsInRole(string roleName)
+        {
+            return RoleResolver.IsInRole(UserResolver, roleName);
+        }
+
+        [Exclude]
+        public IUserResolver UserResolver { get; set; }
+
+        [Exclude]
+        public IRoleResolver RoleResolver { get; set; }
+
         /// <summary>
         /// Connect the specified client
         /// </summary>
@@ -110,7 +129,7 @@ namespace Bam.Net.CoreServices
         
         [Exclude]
         public abstract object Clone();
-
+        
         [Exclude]
         public ILogger Logger { get; set; }
 
@@ -208,12 +227,6 @@ namespace Bam.Net.CoreServices
             }
         }
         
-        [Exclude]
-        public IUserResolver UserResolver { get; set; }
-
-        [Exclude]
-        public IRoleResolver RoleResolver { get; set; }
-
         DaoRepository _daoRepository;
         [Exclude]
         public DaoRepository DaoRepository

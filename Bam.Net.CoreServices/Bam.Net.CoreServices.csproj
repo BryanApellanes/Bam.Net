@@ -424,7 +424,7 @@
     <Compile Include="ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />
-    <Compile Include="Users\CoreUserRegistryService.cs" />
+    <Compile Include="Users\UserRegistryService.cs" />
     <Compile Include="Configuration\ConfigurationService.cs" />
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\DiagnosticService.cs" />
@@ -441,9 +441,40 @@
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
     <Compile Include="TemplatePrecedence.cs" />
-    <Compile Include="WebHooks\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallWrapper.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWrapper.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHooksContext.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHooksRepository.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberWrapper.cs" />
+    <Compile Include="WebHooks\Data\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\WebHookDescriptor.cs" />
     <Compile Include="WebHooks\WebHookService.cs" />
-    <Compile Include="WebHooks\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\WebHookSubscriptionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />
@@ -451,7 +482,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ApplicationRegistration\regen_core_registration_dao.cmd" />
+    <None Include="ApplicationRegistration\regen_applicationregistration_dao.cmd" />
     <None Include="Bam.Net.CoreServices.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -464,6 +495,9 @@
     </None>
     <None Include="OAuth\regen_oauth_dao.cmd" />
     <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
+    <None Include="WebHooks\regen_webhooks_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
