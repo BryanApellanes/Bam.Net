@@ -245,9 +245,7 @@ namespace Bam.Net.ServiceProxy
             try
             {
                 string tmp = string.Empty;
-                string queryStringParameters;
-                ServiceProxyVerbs verb;
-                GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out verb);
+                GetQueryStringAndVerb(methodName, parameters, out string queryStringParameters, out ServiceProxyVerbs verb);
 
                 if (verb == ServiceProxyVerbs.POST)
                 {

@@ -78,6 +78,8 @@
     <Compile Include="CoreLoggerClient.cs" />
     <Compile Include="IHasCoreClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebHookClient.cs" />
+    <Compile Include="WebHookClientEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">

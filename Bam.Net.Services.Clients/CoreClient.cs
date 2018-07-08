@@ -75,7 +75,7 @@ namespace Bam.Net.Services.Clients
         /// default configuration file (app.config or web.config).  If no values are specified then bamapps.net:80
         /// is used.
         /// </summary>
-        public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
+        public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "core.bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
         {
         }
 

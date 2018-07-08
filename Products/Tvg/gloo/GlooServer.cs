@@ -33,7 +33,7 @@ namespace Bam.Net.Application
             };
             ServiceTypes = new HashSet<Type>();
         }
-
+        
         public override void Start()
         {
             if(MonitorDirectories.Length > 0)

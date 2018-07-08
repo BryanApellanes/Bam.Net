@@ -132,6 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmtpSettingsTests.cs" />
     <Compile Include="UnitTests.cs" />
+    <Compile Include="WebHooksUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
@@ -233,6 +234,10 @@
     <ProjectReference Include="..\DaoRef\DaoRef.csproj">
       <Project>{88b5d719-69ed-45d8-9f04-c33d3fc5dcbe}</Project>
       <Name>DaoRef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Products\Tvg\gloo\gloo.csproj">
+      <Project>{aa380b69-17e8-4fe3-b332-3e625e8b6036}</Project>
+      <Name>gloo</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
