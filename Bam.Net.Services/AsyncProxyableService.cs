@@ -19,6 +19,11 @@ using System.Reflection;
 
 namespace Bam.Net.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.ApplicationProxyableService" />
+    /// <seealso cref="Bam.Net.ServiceProxy.IHasServiceProvider" />
     public abstract class AsyncProxyableService : ApplicationProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;

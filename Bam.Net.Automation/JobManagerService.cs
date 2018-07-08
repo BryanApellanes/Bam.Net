@@ -22,7 +22,7 @@ using Bam.Net.Data.Repositories;
 namespace Bam.Net.Automation
 {
     /// <summary>
-    /// The conductor for all jobs.
+    /// The manager for all jobs.
     /// </summary>
     [Proxy("jobManagerSvc")]
     public class JobManagerService: AsyncProxyableService
