@@ -137,7 +137,7 @@ namespace Bam.Net.Data.MsSql
             return columnNames.ToArray();
         }
 
-        public override BAS.DataTypes GetColumnDataType(string tableName, string columnName)
+        public override DataTypes GetColumnDataType(string tableName, string columnName)
         {
             Smo.SqlDataType dbDataType = (Smo.SqlDataType)Enum.Parse(typeof(Smo.SqlDataType), GetColumnDbDataType(tableName, columnName));
             return TranslateDataType(dbDataType);
@@ -179,78 +179,78 @@ namespace Bam.Net.Data.MsSql
             return _database.Tables[tableName].Columns[columnName].Nullable;
         }
 
-        protected internal BAS.DataTypes TranslateDataType(Smo.SqlDataType sqlDataType)
+        protected internal DataTypes TranslateDataType(Smo.SqlDataType sqlDataType)
         {
             switch (sqlDataType)
             {
                 case Smo.SqlDataType.BigInt:
-                    return BAS.DataTypes.Long;
+                    return DataTypes.Long;
                 case Smo.SqlDataType.Binary:
-                    return BAS.DataTypes.ByteArray;
+                    return DataTypes.ByteArray;
                 case Smo.SqlDataType.Bit:
-                    return BAS.DataTypes.Boolean;
+                    return DataTypes.Boolean;
                 case Smo.SqlDataType.Char:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.DateTime:
-                    return BAS.DataTypes.DateTime;
+                    return DataTypes.DateTime;
                 case Smo.SqlDataType.Decimal:
-                    return BAS.DataTypes.Decimal;
+                    return DataTypes.Decimal;
                 case Smo.SqlDataType.Float:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Image:
-                    return BAS.DataTypes.ByteArray;
+                    return DataTypes.ByteArray;
                 case Smo.SqlDataType.Int:
-                    return BAS.DataTypes.Int;
+                    return DataTypes.Int;
                 case Smo.SqlDataType.Money:
-                    return BAS.DataTypes.Decimal;
+                    return DataTypes.Decimal;
                 case Smo.SqlDataType.NChar:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.NText:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.NVarChar:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.NVarCharMax:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.None:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Numeric:
-                    return BAS.DataTypes.Long;
+                    return DataTypes.Long;
                 case Smo.SqlDataType.Real:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.SmallDateTime:
-                    return BAS.DataTypes.DateTime;
+                    return DataTypes.DateTime;
                 case Smo.SqlDataType.SmallInt:
-                    return BAS.DataTypes.Int;
+                    return DataTypes.Int;
                 case Smo.SqlDataType.SmallMoney:
-                    return BAS.DataTypes.Decimal;
+                    return DataTypes.Decimal;
                 case Smo.SqlDataType.SysName:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Text:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Timestamp:
-                    return BAS.DataTypes.DateTime;
+                    return DataTypes.DateTime;
                 case Smo.SqlDataType.TinyInt:
-                    return BAS.DataTypes.Int;
+                    return DataTypes.Int;
                 case Smo.SqlDataType.UniqueIdentifier:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.UserDefinedDataType:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.UserDefinedType:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.VarBinary:
-                    return BAS.DataTypes.ByteArray;
+                    return DataTypes.ByteArray;
                 case Smo.SqlDataType.VarBinaryMax:
-                    return BAS.DataTypes.ByteArray;
+                    return DataTypes.ByteArray;
                 case Smo.SqlDataType.VarChar:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.VarCharMax:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Variant:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 case Smo.SqlDataType.Xml:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
                 default:
-                    return BAS.DataTypes.String;
+                    return DataTypes.String;
             }
         }
         

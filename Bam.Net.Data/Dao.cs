@@ -319,6 +319,56 @@ namespace Bam.Net.Data
             }
         }
 
+        public TypeCode GetTypeCode(DataTypes dataTypes)
+        {
+            switch (dataTypes)
+            {
+                case DataTypes.Default:
+                    return TypeCode.Int64;
+                case DataTypes.Boolean:
+                    return TypeCode.Boolean;
+                case DataTypes.Int:
+                    return TypeCode.Int32;
+                case DataTypes.Long:
+                    return TypeCode.Int64;
+                case DataTypes.Decimal:
+                    return TypeCode.Decimal;
+                case DataTypes.String:
+                    return TypeCode.String;
+                case DataTypes.ByteArray:
+                    return TypeCode.Object;
+                case DataTypes.DateTime:
+                    return TypeCode.DateTime;
+                default:
+                    return TypeCode.Object;
+            }
+        }
+
+        public DataTypes GetDataType(string columnName)
+        {
+            return Database.GetDataTypeTranslator().TranslateDataType(columnName);
+        }
+
+        public string GetDbDataType<T>(string columnName)
+        {
+            return GetDbDataType(typeof(T), columnName);
+        }
+
+        public string GetDbDataType(Type type, string columnName)
+        {
+            PropertyInfo prop = type.GetProperty(columnName);
+            if (prop == null)
+            {
+                prop = type.GetProperties().FirstOrDefault(pi =>
+                {
+                    pi.HasCustomAttributeOfType(out ColumnAttribute column);
+                    return column.Name.Equals(columnName);
+                });
+            }
+            ColumnAttribute attr = prop.GetCustomAttributeOfType<ColumnAttribute>();
+            return attr.DbDataType;
+        }
+
         public T Column<T>(string columnName, object value = null)
         {
             return Column<T>(columnName, value);
@@ -334,6 +384,12 @@ namespace Bam.Net.Data
         /// <returns></returns>
         public T ColumnValue<T>(string columnName, object value = null)
         {
+            object val = ColumnValue(columnName, value);
+            return val == null ? default(T) : (T)val;
+        }
+
+        public object ColumnValue(string columnName, object value = null)
+        {
             DataTable table = DataRow.Table;
             if (!table.Columns.Contains(columnName) && value != null)
             {
@@ -347,9 +403,9 @@ namespace Bam.Net.Data
             
             if(currentValue == null || currentValue == DBNull.Value)
             {
-                return default(T);
+                return null;
             }
-            return (T)currentValue;
+            return currentValue;
         }
 
         /// <summary>
@@ -1163,6 +1219,11 @@ namespace Bam.Net.Data
             }
             return name;
         }
+
+        //public object GetKey()
+        //{
+
+        //}
 
         long? _idValue;
         [Exclude]

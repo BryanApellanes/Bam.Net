@@ -53,7 +53,7 @@ namespace Bam.Net.Breve
             string propertyType = (string)property.Value;
             if (!propertyType.Equals("object", StringComparison.InvariantCultureIgnoreCase))
             {
-                Data.Schema.DataTypes dataType = propertyType.ToEnum<Data.Schema.DataTypes>();
+                Data.DataTypes dataType = propertyType.ToEnum<Data.DataTypes>();
                 propertyType = BreveTypes.Map[Language, dataType];
             }
             string propertyName = property.Name;

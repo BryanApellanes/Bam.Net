@@ -4111,6 +4111,14 @@ namespace Bam.Net
                 return created;
             }
         }
+
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
         public static object FromDictionary(this Dictionary<object, object> dictionary, Type type, params object[] ctorParams)
         {
             object result = type.Construct(ctorParams);
@@ -4118,6 +4126,15 @@ namespace Bam.Net
             return result;
         }
 
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
         public static TResult FromDictionary<TKey, TValue, TResult>(this Dictionary<TKey, TValue> dictionary, params object[] ctorParams)
         {
             return FromDictionary<TKey, TValue, TResult>(dictionary, (k) => k.ToString(), (p, v) => v, ctorParams);

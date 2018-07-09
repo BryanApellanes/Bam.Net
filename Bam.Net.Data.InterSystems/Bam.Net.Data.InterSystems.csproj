@@ -66,6 +66,7 @@
     <Compile Include="InterSystemsCredentials.cs" />
     <Compile Include="InterSystemsDatabase.cs" />
     <Compile Include="InterSystemsDatabaseInitializer.cs" />
+    <Compile Include="InterSystemsDataTypeTranslator.cs" />
     <Compile Include="InterSystemsFieldDescriptor.cs" />
     <Compile Include="InterSystemsFormatProvder.cs" />
     <Compile Include="InterSystemsJavascriptSqlProvider.cs" />

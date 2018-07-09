@@ -64,6 +64,7 @@ namespace Bam.Net.Data
 			incubator.Set<SqlStringBuilder>(() => new MySqlSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new MySqlSqlStringBuilder());
             incubator.Set<QuerySet>(() => new MySqlQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new MySqlDataTypeTranslator());
         }
     }
 }

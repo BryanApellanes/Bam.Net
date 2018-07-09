@@ -129,6 +129,8 @@
     <Compile Include="DatabaseInfo.cs" />
     <Compile Include="DatabaseInitializationFailedException.cs" />
     <Compile Include="DatabaseProvider.cs" />
+    <Compile Include="DataTypes.cs" />
+    <Compile Include="DataTypeTranslator.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="Delete.cs" />
     <Compile Include="DoesntContainComparison.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="ICommittableDelegate.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseProvider.cs" />
+    <Compile Include="IDataTypeTranslator.cs" />
     <Compile Include="IHasConnectionStringResolver.cs" />
     <Compile Include="ILoadable.cs" />
     <Compile Include="IRegistrarCaller.cs" />

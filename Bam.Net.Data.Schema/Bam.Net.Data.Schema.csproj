@@ -116,7 +116,6 @@
     <Compile Include="AutoIdSchemaManager.cs" />
     <Compile Include="ColumnNameToPropertyName.cs" />
     <Compile Include="CuidSchemaManager.cs" />
-    <Compile Include="DataTypes.cs" />
     <Compile Include="IHasSchemaTempPathProvider.cs" />
     <Compile Include="INameFormatter.cs" />
     <Compile Include="EchoNameFormatter.cs" />

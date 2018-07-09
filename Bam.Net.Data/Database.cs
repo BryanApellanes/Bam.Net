@@ -216,6 +216,11 @@ namespace Bam.Net.Data
             return sql;
         }
 
+        public virtual IDataTypeTranslator GetDataTypeTranslator()
+        {
+            return ServiceProvider.Get<IDataTypeTranslator>() ?? new DataTypeTranslator();
+        }
+
         public DbParameter[] GetParameters(SqlStringBuilder sqlStrinbuilder)
         {
             IParameterBuilder paramBuilder = GetService<IParameterBuilder>();

@@ -85,6 +85,10 @@
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34C5016D-5265-4394-A9BA-CB2F70D8E93B}</Project>
       <Name>Bam.Net.Javascript</Name>

@@ -69,6 +69,7 @@ namespace Bam.Net.Data
             incubator.Set<SqlStringBuilder>(() => new InterSystemsSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new InterSystemsSqlStringBuilder());
             incubator.Set<QuerySet>(() => new InterSystemsQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new InterSystemsDataTypeTranslator());
         }
     }
 }

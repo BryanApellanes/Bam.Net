@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="MySqlDatabase.cs" />
     <Compile Include="MySqlDatabaseInitializer.cs" />
+    <Compile Include="MySqlDataTypeTranslator.cs" />
     <Compile Include="MySqlFormatProvider.cs" />
     <Compile Include="MySqlParameterBuilder.cs" />
     <Compile Include="MySqlQuerySet.cs" />
