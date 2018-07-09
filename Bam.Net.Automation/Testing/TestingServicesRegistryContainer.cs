@@ -21,24 +21,24 @@ namespace Bam.Net.Automation.Testing
     [ServiceRegistryContainer]    
     public class TestingServicesRegistryContainer
     {
-        public const string Name = "TestingServicesRegistry";
+        public const string RegistryName = "TestingServicesRegistry";
         static object _registryLock = new object();
 
-        [ServiceRegistryLoader(Name, ProcessModes.Dev)]
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Dev)]
         public static ServiceRegistry CreateTestingServicesRegistryForDev()
         {
             CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
             return GetServiceRegistry(coreClient);
         }
 
-        [ServiceRegistryLoader(Name, ProcessModes.Test)]
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Test)]
         public static ServiceRegistry CreateTestingServicesRegistryForTest()
         {
             CoreClient coreClient = new CoreClient("int-heart.bamapps.net", 80);
             return GetServiceRegistry(coreClient);
         }
 
-        [ServiceRegistryLoader(Name, ProcessModes.Prod)]
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Prod)]
         public static ServiceRegistry CreateTestingServicesRegistryForProd()
         {
             CoreClient coreClient = new CoreClient("heart.bamapps.net", 80);
@@ -52,14 +52,19 @@ namespace Bam.Net.Automation.Testing
             IDatabaseProvider dbProvider = new DataSettingsDatabaseProvider(DataSettings.Current, logger);
             coreClient.UserRegistryService.DatabaseProvider = dbProvider;
             coreClient.UserRegistryService.ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
+            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
+            SystemLoggerService loggerSvc = new SystemLoggerService(conf);
+            dbProvider.SetDatabases(loggerSvc);
+            loggerSvc.SetLogger();
 
             return (ServiceRegistry)(new ServiceRegistry())
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(coreClient.UserRegistryService)
                 .For<DataSettings>().Use(DataSettings.Current)
                 .For<ILogger>().Use(logger)
-                .For<AppConf>().Use(new AppConf(Name))
-                .For<SystemLoggerService>().Use<SystemLoggerService>()
+                .For<IDaoLogger>().Use(logger)
+                .For<AppConf>().Use(conf)
+                .For<SystemLoggerService>().Use(loggerSvc)
                 .For<SystemLogReader>().Use<SystemLogReader>()
                 .For<TestReportService>().Use<TestReportService>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)

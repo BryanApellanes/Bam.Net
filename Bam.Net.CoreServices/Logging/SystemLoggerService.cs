@@ -74,6 +74,7 @@ namespace Bam.Net.CoreServices
         {
             SystemLoggerService clone = new SystemLoggerService(AppConf);
             clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
             return clone;
         }
     }
