@@ -319,6 +319,11 @@ namespace Bam.Net.Data
             }
         }
 
+        public T Column<T>(string columnName, object value = null)
+        {
+            return Column<T>(columnName, value);
+        }
+
         /// <summary>
         /// Get the value of the specified column, setting it if
         /// value is specified.
@@ -350,7 +355,7 @@ namespace Bam.Net.Data
         /// <summary>
         /// If true, any references to the current
         /// record will be deleted prior to deleting
-        /// the current record when Delete() is called as long as
+        /// the current record when Delete() is called, as long as
         /// those references were hydrated on
         /// the current instance.
         /// </summary>
