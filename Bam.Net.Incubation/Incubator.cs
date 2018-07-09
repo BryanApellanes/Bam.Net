@@ -655,7 +655,12 @@ namespace Bam.Net.Incubation
             {
                 if (_typeInstanceDictionary.ContainsKey(type))
                 {
-                    return _typeInstanceDictionary[type];
+                    object result = _typeInstanceDictionary[type];
+                    if(result is Delegate d)
+                    {
+                        result = d.DynamicInvoke();
+                    }
+                    return result;
                 }
                 else
                 {
