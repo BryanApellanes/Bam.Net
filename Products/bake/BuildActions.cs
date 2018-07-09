@@ -1384,9 +1384,16 @@ namespace Bam.Net.Automation
                 DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
                 if (adminSharePath.Exists)
                 {
-                    OutLineFormat("Deleting {0}", ConsoleColor.Cyan, adminSharePath.FullName);
-                    adminSharePath.Delete(true);
-                    OutLineFormat("Done deleting {0}", ConsoleColor.DarkCyan, adminSharePath.FullName);
+                    try
+                    {
+                        OutLineFormat("Deleting {0}", ConsoleColor.Cyan, adminSharePath.FullName);
+                        adminSharePath.Delete(true);
+                        OutLineFormat("Done deleting {0}", ConsoleColor.DarkCyan, adminSharePath.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        OutLineFormat("Zoinks!:: Error deleting directory: {0}", ConsoleColor.Magenta, ex.Message);
+                    }
                 }
                 daemonInfo.WorkingDirectory = directoryPathOnRemote;
                 OutLineFormat("Copying files for {0} to remote: {1}", ConsoleColor.Cyan, daemonInfo.Name, daemonInfo.Host);
