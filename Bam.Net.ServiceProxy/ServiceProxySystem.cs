@@ -592,7 +592,7 @@ namespace {0}
             if(type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ||
                 method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>())
             {
-                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);");
+                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);\r\n");
             }
             builder.AppendFormat("\t\treturn b.{0}('{1}', '{2}', [{3}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {4} : options);\r\n", methodName, type.Name, method.Name, parameters, "{success: options}");
             
