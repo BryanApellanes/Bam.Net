@@ -97,6 +97,7 @@ namespace Bam.Net.Data
 		{
 			return (T)row.ToInstanceOf(typeof(T), throwIfColumnPropertyNotFound);
 		}
+
         public static IEnumerable<object> ToEnumerableOf(this DataTable table, Type type, bool throwIfColumnPropertyNotFound = false)
         {
             foreach(DataRow row in table.Rows)
@@ -104,10 +105,12 @@ namespace Bam.Net.Data
                 yield return row.ToInstanceOf(type, throwIfColumnPropertyNotFound);
             }
         }
+
         public static List<object> ToListOf(this DataTable table, Type type, bool throwIfColumnPropertyNotFound = false)
         {
             return ToEnumerableOf(table, type, throwIfColumnPropertyNotFound).ToList();
         }
+
         public static object ToInstanceOf(this DataRow row, Type type, bool throwIfColumnPropertyNotFound = false)
 		{
 			object result = type.Construct();
@@ -141,6 +144,13 @@ namespace Bam.Net.Data
 		public static DataRow ToDataRow(this object instance, string tableName = null)
 		{
 			Type instanceType = instance.GetType();
+            if(instanceType.HasCustomAttributeOfType(out TableAttribute tableAttribute))
+            {
+                if (string.IsNullOrEmpty(tableName))
+                {
+                    tableName = tableAttribute.TableName;
+                }
+            }
 			tableName = tableName ?? instanceType.Name;
 			PropertyInfo[] properties = instanceType.GetProperties();
 
@@ -148,13 +158,12 @@ namespace Bam.Net.Data
 			List<object> rowValues = new List<object>();
 			foreach (PropertyInfo property in properties)
 			{
-				ColumnAttribute column;
-				if (property.HasCustomAttributeOfType<ColumnAttribute>(true, out column))
-				{
-					table.Columns.Add(column.Name);
-					rowValues.Add(property.GetValue(instance, null));
-				}
-			}
+                if (property.HasCustomAttributeOfType(true, out ColumnAttribute column))
+                {
+                    table.Columns.Add(column.Name);
+                    rowValues.Add(property.GetValue(instance, null));
+                }
+            }
 
 			return table.Rows.Add(rowValues.ToArray());
 		}

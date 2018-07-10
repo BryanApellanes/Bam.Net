@@ -12,6 +12,8 @@ using Bam.Net.Incubation;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data
 {
@@ -1209,6 +1211,15 @@ namespace Bam.Net.Data
             return GetKeyColumnName(typeof(T));
         }
 
+        /// <summary>
+        /// Gets the name of the key column by reading the 
+        /// Name property of the first KeyColumnAttribute found
+        /// addorning a property on the specified type.  "Id" is
+        /// returned if no property with a KeyColumnAttribute is
+        /// found.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public static string GetKeyColumnName(Type type)
         {
             string name = "Id";
@@ -1220,30 +1231,24 @@ namespace Bam.Net.Data
             return name;
         }
 
-        //public object GetKey()
-        //{
-
-        //}
-
         long? _idValue;
         [Exclude]
         public long? IdValue
         {
             get
             {
-                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
+                object value = PrimaryKey;
+                if (value != null && value != DBNull.Value)
                 {
-                    object value = DataRow[KeyColumnName];
-                    if (value != null && value != DBNull.Value)
+                    try
                     {
-                        try
-                        {
-                            _idValue = new long?(Convert.ToInt64(value));
-                        }
-                        catch
-                        {
-                            _idValue = null;
-                        }
+                        _idValue = new long?(Convert.ToInt64(value));
+                    }
+                    catch (Exception ex)
+                    {
+                        Type type = GetType();
+                        Assembly assembly = type.Assembly;
+                        Log.AddEntry("Exception getting IdValue for Dao instance of type ({0}.{1}) in Assembly ({2}) with hash (sha256) ({3})", ex, type.Namespace, type.Name, assembly.FullName, assembly.GetFileInfo().Sha256());
                     }
                 }
                 return _idValue;
@@ -1262,7 +1267,41 @@ namespace Bam.Net.Data
             KeyColumnName = GetKeyColumnName(this.GetType());
         }
 
-        bool _forceInsert;
+        object _primaryKey;
+        /// <summary>
+        /// Gets the primary key.  If the current instance is backed
+        /// by a DataRow because it was hydrated from a database query
+        /// the primary key value is the value in DataRow[KeyColumnName.
+        /// Otherwise, null.
+        /// </summary>
+        /// <value>
+        /// The primary key.
+        /// </value>
+        [Exclude]
+        public object PrimaryKey
+        {
+            get
+            {
+                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
+                {
+                    _primaryKey = DataRow[KeyColumnName];
+                }
+
+                return _primaryKey;
+            }
+            set
+            {
+                _primaryKey = value;
+                if (DataRow != null)
+                {
+                    if (!DataRow.Table.Columns.Contains(KeyColumnName))
+                    {
+                        DataRow.Table.Columns.Add(new DataColumn(KeyColumnName));
+                    }
+                    DataRow[KeyColumnName] = _primaryKey;
+                }
+            }
+        }
 
         /// <summary>
         /// Overrides default logic as to whether 
@@ -1272,17 +1311,7 @@ namespace Bam.Net.Data
         /// whether it should insert or update
         /// </summary>
         [Exclude]
-        public bool ForceInsert
-        {
-            get
-            {
-                return _forceInsert;
-            }
-            set
-            {
-                _forceInsert = value;
-            }
-        }
+        public bool ForceInsert { get; set; }
 
         /// <summary>
         /// Overrides default logic as to whether 
@@ -1296,11 +1325,11 @@ namespace Bam.Net.Data
         {
             get
             {
-                return !_forceInsert;
+                return !ForceInsert;
             }
             set
             {
-                _forceInsert = !value;
+                ForceInsert = !value;
             }
         }
 
@@ -1368,20 +1397,6 @@ namespace Bam.Net.Data
         {
             get;
             set;
-        }
-
-        object _primaryKey;
-        protected object PrimaryKey
-        {
-            get
-            {
-                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
-                {
-                    _primaryKey = DataRow[KeyColumnName];
-                }
-
-                return _primaryKey;
-            }
         }
 
         protected internal DataRow ToDataRow()
@@ -1551,6 +1566,7 @@ namespace Bam.Net.Data
         {
             if (columnName.Equals(KeyColumnName))
             {
+                PrimaryKey = value;
                 if (value != null && value != DBNull.Value)
                 {
                     IdValue = new long?(Convert.ToInt64(value));
