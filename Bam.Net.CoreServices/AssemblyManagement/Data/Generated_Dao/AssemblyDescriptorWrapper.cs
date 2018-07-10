@@ -55,7 +55,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 		{
 			get
 			{
-				if(_processRuntimeDescriptors == null)
+				if(_processRuntimeDescriptors == null || _processRuntimeDescriptors.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorProcessRuntimeDescriptor,  Bam.Net.CoreServices.AssemblyManagement.Data.Dao.ProcessRuntimeDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
@@ -77,7 +77,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 		{
 			get
 			{
-				if(_assemblyReferenceDescriptors == null)
+				if(_assemblyReferenceDescriptors == null || _assemblyReferenceDescriptors.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor,  Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

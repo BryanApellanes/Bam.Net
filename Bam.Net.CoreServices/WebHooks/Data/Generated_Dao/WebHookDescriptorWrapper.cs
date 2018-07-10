@@ -70,7 +70,7 @@ System.Collections.Generic.List<Bam.Net.CoreServices.WebHooks.Data.WebHookCall> 
 		{
 			get
 			{
-				if(_webHookSubscribers == null)
+				if(_webHookSubscribers == null || _webHookSubscribers.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber,  Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

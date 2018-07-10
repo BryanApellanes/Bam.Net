@@ -189,11 +189,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		/// </param>
 		public static OrganizationUserCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<OrganizationUser>();
 			Database db = database ?? Db.For<OrganizationUser>();
-			var results = new OrganizationUserCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<OrganizationUser>();
+			var results = new OrganizationUserCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -203,14 +205,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<OrganizationUser>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationUserColumns columns = new OrganizationUserColumns();
 				var orderBy = Bam.Net.Data.Order.By<OrganizationUserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -235,14 +237,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<OrganizationUserColumns> where, Action<IEnumerable<OrganizationUser>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationUserColumns columns = new OrganizationUserColumns();
 				var orderBy = Bam.Net.Data.Order.By<OrganizationUserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -267,13 +269,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OrganizationUserColumns> where, Action<IEnumerable<OrganizationUser>> batchProcessor, Bam.Net.Data.OrderBy<OrganizationUserColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationUserColumns columns = new OrganizationUserColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

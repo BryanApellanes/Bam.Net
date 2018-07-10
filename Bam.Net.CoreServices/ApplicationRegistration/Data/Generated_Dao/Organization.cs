@@ -55,10 +55,12 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Application_OrganizationId", new ApplicationCollection(Database.GetQuery<ApplicationColumns, Application>((c) => c.OrganizationId == GetLongValue("Id")), this, "OrganizationId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("OrganizationUser_OrganizationId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.OrganizationId == GetLongValue("Id")), this, "OrganizationId"));				
 			}			
@@ -297,11 +299,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		/// </param>
 		public static OrganizationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Organization>();
 			Database db = database ?? Db.For<Organization>();
-			var results = new OrganizationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Organization>();
+			var results = new OrganizationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -311,14 +315,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Organization>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationColumns columns = new OrganizationColumns();
 				var orderBy = Bam.Net.Data.Order.By<OrganizationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -343,14 +347,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<OrganizationColumns> where, Action<IEnumerable<Organization>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationColumns columns = new OrganizationColumns();
 				var orderBy = Bam.Net.Data.Order.By<OrganizationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -375,13 +379,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OrganizationColumns> where, Action<IEnumerable<Organization>> batchProcessor, Bam.Net.Data.OrderBy<OrganizationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OrganizationColumns columns = new OrganizationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

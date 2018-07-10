@@ -266,11 +266,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		/// </param>
 		public static ConfigurationSettingCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ConfigurationSetting>();
 			Database db = database ?? Db.For<ConfigurationSetting>();
-			var results = new ConfigurationSettingCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ConfigurationSetting>();
+			var results = new ConfigurationSettingCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -280,14 +282,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationSettingColumns columns = new ConfigurationSettingColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigurationSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -312,14 +314,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ConfigurationSettingColumns> where, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationSettingColumns columns = new ConfigurationSettingColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigurationSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -344,13 +346,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ConfigurationSettingColumns> where, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Bam.Net.Data.OrderBy<ConfigurationSettingColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationSettingColumns columns = new ConfigurationSettingColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

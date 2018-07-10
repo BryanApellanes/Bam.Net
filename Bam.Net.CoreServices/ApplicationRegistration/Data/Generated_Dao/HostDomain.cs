@@ -55,6 +55,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("HostDomainApplication_HostDomainId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.HostDomainId == GetLongValue("Id")), this, "HostDomainId"));				
@@ -312,11 +313,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		/// </param>
 		public static HostDomainCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<HostDomain>();
 			Database db = database ?? Db.For<HostDomain>();
-			var results = new HostDomainCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<HostDomain>();
+			var results = new HostDomainCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -326,14 +329,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<HostDomain>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				HostDomainColumns columns = new HostDomainColumns();
 				var orderBy = Bam.Net.Data.Order.By<HostDomainColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -358,14 +361,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<HostDomainColumns> where, Action<IEnumerable<HostDomain>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				HostDomainColumns columns = new HostDomainColumns();
 				var orderBy = Bam.Net.Data.Order.By<HostDomainColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -390,13 +393,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<HostDomainColumns> where, Action<IEnumerable<HostDomain>> batchProcessor, Bam.Net.Data.OrderBy<HostDomainColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				HostDomainColumns columns = new HostDomainColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

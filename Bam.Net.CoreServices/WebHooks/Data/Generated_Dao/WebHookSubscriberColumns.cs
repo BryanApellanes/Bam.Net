@@ -56,6 +56,34 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
                 return new WebHookSubscriberColumns("SharedSecret");
             }
         }
+        public WebHookSubscriberColumns CreatedBy
+        {
+            get
+            {
+                return new WebHookSubscriberColumns("CreatedBy");
+            }
+        }
+        public WebHookSubscriberColumns ModifiedBy
+        {
+            get
+            {
+                return new WebHookSubscriberColumns("ModifiedBy");
+            }
+        }
+        public WebHookSubscriberColumns Modified
+        {
+            get
+            {
+                return new WebHookSubscriberColumns("Modified");
+            }
+        }
+        public WebHookSubscriberColumns Deleted
+        {
+            get
+            {
+                return new WebHookSubscriberColumns("Deleted");
+            }
+        }
         public WebHookSubscriberColumns Created
         {
             get

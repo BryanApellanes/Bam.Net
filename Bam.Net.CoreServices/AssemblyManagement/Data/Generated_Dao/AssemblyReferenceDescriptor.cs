@@ -55,6 +55,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyReferenceDescriptorId == GetLongValue("Id")), this, "AssemblyReferenceDescriptorId"));				
@@ -228,11 +229,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// </param>
 		public static AssemblyReferenceDescriptorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<AssemblyReferenceDescriptor>();
 			Database db = database ?? Db.For<AssemblyReferenceDescriptor>();
-			var results = new AssemblyReferenceDescriptorCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<AssemblyReferenceDescriptor>();
+			var results = new AssemblyReferenceDescriptorCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -242,14 +245,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyReferenceDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyReferenceDescriptorColumns columns = new AssemblyReferenceDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyReferenceDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -274,14 +277,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<AssemblyReferenceDescriptorColumns> where, Action<IEnumerable<AssemblyReferenceDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyReferenceDescriptorColumns columns = new AssemblyReferenceDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyReferenceDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -306,13 +309,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<AssemblyReferenceDescriptorColumns> where, Action<IEnumerable<AssemblyReferenceDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<AssemblyReferenceDescriptorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyReferenceDescriptorColumns columns = new AssemblyReferenceDescriptorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

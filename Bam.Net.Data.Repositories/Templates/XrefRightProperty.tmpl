@@ -7,7 +7,7 @@
 		{
 			get
 			{
-				if(_@(Model.Left.Name.Pluralize().CamelCase()) == null)
+				if(_@(Model.Left.Name.Pluralize().CamelCase()) == null || _@(Model.Left.Name.Pluralize().CamelCase()).@(Model.LeftLengthOrCount) == 0)
 				{
 					 var xref = new XrefDaoCollection<@(xrefTableName), @Model.DaoNamespace.@(Model.Left.Name)>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

@@ -56,7 +56,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Wrappers
 		{
 			get
 			{
-				if(_webHookDescriptors == null)
+				if(_webHookDescriptors == null || _webHookDescriptors.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber, Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

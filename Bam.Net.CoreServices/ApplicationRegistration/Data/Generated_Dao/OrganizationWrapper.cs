@@ -70,7 +70,7 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Application[] _applications;
 		{
 			get
 			{
-				if(_users == null)
+				if(_users == null || _users.Length == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.User>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

@@ -55,7 +55,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 		{
 			get
 			{
-				if(_applications == null)
+				if(_applications == null || _applications.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

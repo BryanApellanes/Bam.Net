@@ -71,7 +71,7 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription[] _subscriptions;
 		{
 			get
 			{
-				if(_organizations == null)
+				if(_organizations == null || _organizations.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Organization>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

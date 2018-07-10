@@ -56,7 +56,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Wrappers
 		{
 			get
 			{
-				if(_serviceDescriptors == null)
+				if(_serviceDescriptors == null || _serviceDescriptors.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptorServiceRegistryDescriptor, Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

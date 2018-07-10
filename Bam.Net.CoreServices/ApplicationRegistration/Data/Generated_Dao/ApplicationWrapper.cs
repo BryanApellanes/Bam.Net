@@ -130,7 +130,7 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Organization _organization;
 		{
 			get
 			{
-				if(_machines == null)
+				if(_machines == null || _machines.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.ApplicationMachine,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Machine>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
@@ -153,7 +153,7 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Organization _organization;
 		{
 			get
 			{
-				if(_hostDomains == null)
+				if(_hostDomains == null || _hostDomains.Count == 0)
 				{
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomain>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);

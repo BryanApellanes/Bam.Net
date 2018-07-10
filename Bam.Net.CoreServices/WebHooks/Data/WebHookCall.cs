@@ -22,5 +22,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data
         public bool Succeeded { get; set; }
 
         public string Response { get; set; }
+
+        public long WebHookDescriptorId { get; set; }
     }
 }

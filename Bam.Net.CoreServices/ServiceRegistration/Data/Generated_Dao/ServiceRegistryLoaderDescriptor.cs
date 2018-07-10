@@ -273,9 +273,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// </param>
 		public static ServiceRegistryLoaderDescriptorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ServiceRegistryLoaderDescriptor>();
 			Database db = database ?? Db.For<ServiceRegistryLoaderDescriptor>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ServiceRegistryLoaderDescriptor>();
 			var results = new ServiceRegistryLoaderDescriptorCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -289,14 +289,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ServiceRegistryLoaderDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLoaderDescriptorColumns columns = new ServiceRegistryLoaderDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLoaderDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -321,14 +321,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ServiceRegistryLoaderDescriptorColumns> where, Action<IEnumerable<ServiceRegistryLoaderDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLoaderDescriptorColumns columns = new ServiceRegistryLoaderDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLoaderDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -353,13 +353,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ServiceRegistryLoaderDescriptorColumns> where, Action<IEnumerable<ServiceRegistryLoaderDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<ServiceRegistryLoaderDescriptorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLoaderDescriptorColumns columns = new ServiceRegistryLoaderDescriptorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

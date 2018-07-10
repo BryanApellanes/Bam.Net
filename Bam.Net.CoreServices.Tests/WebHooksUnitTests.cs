@@ -43,17 +43,23 @@ namespace Bam.Net.CoreServices.Tests
             }
 
             CoreServiceResponse<WebHookSubscriptionInfo> response = svc.ListSubscribers(testWebHookName);
-            OutLine(response.Data.ToStrin());
+            WebHookSubscriptionInfo[] info = response.ToArray<WebHookSubscriptionInfo>();
+            Expect.AreEqual(3, info.Length);
+            List<string> actual = info.Select(whsi => whsi.Url).ToList();
+            foreach(string expected in testWebHookUrls)
+            {
+                Expect.IsTrue(actual.Contains(expected));
+            }
         }
 
         [AfterEachUnitTest]
         public void Cleanup()
         {
             WebHooksRepository repo = new WebHooksRepository();
-            WebHooks.Data.Dao.WebHookCall.LoadAll().Delete(repo.Database);
-            WebHooks.Data.Dao.WebHookSubscriber.LoadAll().Delete(repo.Database);
-            WebHooks.Data.Dao.WebHookDescriptor.LoadAll().Delete(repo.Database);
-            
+            WebHooks.Data.Dao.WebHookCall.LoadAll(repo.Database).Delete(repo.Database);
+            WebHooks.Data.Dao.WebHookSubscriber.LoadAll(repo.Database).Delete(repo.Database);
+            WebHooks.Data.Dao.WebHookDescriptor.LoadAll(repo.Database).Delete(repo.Database);
+            WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber.LoadAll(repo.Database).Delete(repo.Database);
         }
     }
 }

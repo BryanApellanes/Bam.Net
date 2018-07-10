@@ -55,22 +55,28 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Configuration_MachineId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("HostAddress_MachineId", new HostAddressCollection(Database.GetQuery<HostAddressColumns, HostAddress>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("ProcessDescriptor_MachineId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Nic_MachineId", new NicCollection(Database.GetQuery<NicColumns, Nic>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Client_MachineId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("ApplicationMachine_MachineId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
 			}						
@@ -419,11 +425,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		/// </param>
 		public static MachineCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Machine>();
 			Database db = database ?? Db.For<Machine>();
-			var results = new MachineCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Machine>();
+			var results = new MachineCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -433,14 +441,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Machine>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MachineColumns columns = new MachineColumns();
 				var orderBy = Bam.Net.Data.Order.By<MachineColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -465,14 +473,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<MachineColumns> where, Action<IEnumerable<Machine>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MachineColumns columns = new MachineColumns();
 				var orderBy = Bam.Net.Data.Order.By<MachineColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -497,13 +505,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MachineColumns> where, Action<IEnumerable<Machine>> batchProcessor, Bam.Net.Data.OrderBy<MachineColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MachineColumns columns = new MachineColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

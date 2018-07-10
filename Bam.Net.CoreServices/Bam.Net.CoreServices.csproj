@@ -227,6 +227,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionCollection.cs" />
@@ -329,7 +330,6 @@
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="AssemblyManagement\AssemblyService.cs" />
-    <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorCollection.cs" />
@@ -482,7 +482,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ApplicationRegistration\regen_applicationregistration_dao.cmd" />
+    <None Include="ApplicationRegistration\regen_applicationregistration_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Bam.Net.CoreServices.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -494,7 +496,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="OAuth\regen_oauth_dao.cmd" />
-    <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
+    <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="WebHooks\regen_webhooks_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

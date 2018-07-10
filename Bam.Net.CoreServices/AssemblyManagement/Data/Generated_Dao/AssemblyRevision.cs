@@ -245,11 +245,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// </param>
 		public static AssemblyRevisionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<AssemblyRevision>();
 			Database db = database ?? Db.For<AssemblyRevision>();
-			var results = new AssemblyRevisionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<AssemblyRevision>();
+			var results = new AssemblyRevisionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -259,14 +261,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyRevision>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyRevisionColumns columns = new AssemblyRevisionColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyRevisionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -291,14 +293,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<AssemblyRevisionColumns> where, Action<IEnumerable<AssemblyRevision>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyRevisionColumns columns = new AssemblyRevisionColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyRevisionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -323,13 +325,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<AssemblyRevisionColumns> where, Action<IEnumerable<AssemblyRevision>> batchProcessor, Bam.Net.Data.OrderBy<AssemblyRevisionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyRevisionColumns columns = new AssemblyRevisionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
