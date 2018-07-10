@@ -395,11 +395,11 @@ namespace Bam.Net.Data
             DataTable table = DataRow.Table;
             if (!table.Columns.Contains(columnName) && value != null)
             {
-                table.Columns.Add(columnName);
+                table.Columns.Add(columnName, value.GetType());
             }
             if(value != null)
             {
-                DataRow[columnName] = value;
+                DataRow[columnName] = value;                
             }
             object currentValue = GetCurrentValue(columnName);
             
@@ -1401,19 +1401,18 @@ namespace Bam.Net.Data
 
         protected internal DataRow ToDataRow()
         {
-            return ToDataRow(this);
+            return ToDataRow(this, _database?.GetDataTypeTranslator());
         }
 
-        protected internal static DataRow ToDataRow(Dao instance)
+        protected internal static DataRow ToDataRow(Dao instance, IDataTypeTranslator dataTypeTranslator = null)
         {
             if (instance.DataRow != null)
             {
                 return instance.DataRow;
             }
 
-            return ((object)instance).ToDataRow(TableName(instance));
+            return ((object)instance).ToDataRow(TableName(instance), dataTypeTranslator);
         }
-
 
         protected internal object GetOriginalValue(string columnName)
         {
@@ -1423,7 +1422,7 @@ namespace Bam.Net.Data
             }
             else if (columnName.Equals(KeyColumnName))
             {
-                return IdValue;
+                return PrimaryKey;
             }
 
             return null;
@@ -1434,10 +1433,10 @@ namespace Bam.Net.Data
             object result = null;
             if (columnName.Equals(KeyColumnName))
             {
-                result = IdValue;
+                result = PrimaryKey;
                 if (result == null)
                 {
-                    result = PrimaryKey;
+                    result = GetOriginalValue(columnName);
                 }
             }
             else

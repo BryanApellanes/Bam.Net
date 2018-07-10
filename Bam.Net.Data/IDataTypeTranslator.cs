@@ -8,6 +8,8 @@ namespace Bam.Net.Data
 {
     public interface IDataTypeTranslator
     {
+        Type TypeFromDbDataType(string dbDataType);
+        Type TypeFromDataType(DataTypes dataType);
         DataTypes TranslateDataType(string sqlDataType);
     }
 }

@@ -139,9 +139,9 @@ namespace Bam.Net.Data
             }
             return table.Rows.Add();
         }
-            
 
-		public static DataRow ToDataRow(this object instance, string tableName = null)
+
+        public static DataRow ToDataRow(this object instance, string tableName = null, IDataTypeTranslator translator = null)
 		{
 			Type instanceType = instance.GetType();
             if(instanceType.HasCustomAttributeOfType(out TableAttribute tableAttribute))
@@ -160,7 +160,8 @@ namespace Bam.Net.Data
 			{
                 if (property.HasCustomAttributeOfType(true, out ColumnAttribute column))
                 {
-                    table.Columns.Add(column.Name);
+                    Type columnType = translator == null ? typeof(object) : translator.TypeFromDbDataType(column.DbDataType);
+                    table.Columns.Add(column.Name, columnType);
                     rowValues.Add(property.GetValue(instance, null));
                 }
             }

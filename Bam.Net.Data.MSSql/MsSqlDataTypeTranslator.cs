@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public class MsSqlDataTypeTranslator : IDataTypeTranslator
+    public class MsSqlDataTypeTranslator : DataTypeTranslator
     {
-        public DataTypes TranslateDataType(string sqlDataType)
+        public override DataTypes TranslateDataType(string sqlDataType)
         {
             switch (sqlDataType.ToLowerInvariant())
             {

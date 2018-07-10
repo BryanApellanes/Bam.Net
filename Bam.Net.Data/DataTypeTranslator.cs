@@ -8,9 +8,39 @@ namespace Bam.Net.Data
 {
     public class DataTypeTranslator : IDataTypeTranslator
     {
-        public DataTypes TranslateDataType(string sqlDataType)
+        public virtual Type TypeFromDbDataType(string dbDataType)
         {
-            string dataType = sqlDataType.ToLowerInvariant();
+            return TypeFromDataType(TranslateDataType(dbDataType));
+        }
+
+        public virtual Type TypeFromDataType(DataTypes dataType)
+        {
+            switch (dataType)
+            {
+                case DataTypes.Default:
+                    return typeof(object);
+                case DataTypes.Boolean:
+                    return typeof(bool);
+                case DataTypes.Int:
+                    return typeof(int);
+                case DataTypes.Long:
+                    return typeof(long);
+                case DataTypes.Decimal:
+                    return typeof(decimal);
+                case DataTypes.String:
+                    return typeof(string);
+                case DataTypes.ByteArray:
+                    return typeof(byte[]);
+                case DataTypes.DateTime:
+                    return typeof(DateTime);
+                default:
+                    return typeof(object);
+            }
+        }
+
+        public virtual DataTypes TranslateDataType(string dbDataType)
+        {
+            string dataType = dbDataType.ToLowerInvariant();
             switch (dataType)
             {
                 case "bigint":

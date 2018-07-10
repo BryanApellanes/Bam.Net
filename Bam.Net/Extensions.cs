@@ -3953,9 +3953,7 @@ namespace Bam.Net
         {
             lock (_buildDynamicTypeLock)
             {
-                TypeBuilder typeBuilder;
-                AssemblyBuilder assemblyBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                GetAssemblyAndTypeBuilder(typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder);
                 List<object> all = new List<object>();
                 all.Add(instance);
                 all.AddRange(toMerge);
@@ -4035,10 +4033,12 @@ namespace Bam.Net
         {
             return dictionary.ToDynamicType(typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
+
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
             return ToDynamicType(dictionary, typeName, recursionThusFar, new List<Type>(), out assemblyBuilder, useCache);
         }
+
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
             ThrowIfLimitReached(recursionThusFar);
@@ -4249,8 +4249,7 @@ namespace Bam.Net
 
         public static Type MergeToDynamicType(this List<object> objects, string typeName, int recursionThusFar, bool useCache = true)
         {
-            AssemblyBuilder ignore;
-            return MergeToDynamicType(objects, typeName, recursionThusFar, out ignore, useCache);
+            return MergeToDynamicType(objects, typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
 
         public static Type MergeToDynamicType(this List<object> objects, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
@@ -4334,14 +4333,13 @@ namespace Bam.Net
 
         public static Type ToDynamicType(this DataRow row)
         {
-            AssemblyBuilder ignore;
             string typeName = 8.RandomLetters();
             if (row.Table != null)
             {
                 typeName = row.Table.TableName.Or(typeName);
             }
 
-            return ToDynamicType(row, typeName, out ignore);
+            return ToDynamicType(row, typeName, out AssemblyBuilder ignore);
         }
 
         public static Type ToDynamicType(this DataRow row, string typeName, out AssemblyBuilder assemblyBuilder)
@@ -4367,15 +4365,17 @@ namespace Bam.Net
                 }
             }
         }
+
         public static Type BuildDynamicType(this string typeName, params string[] propertyNames)
         {
             return BuildDynamicType(typeName, string.Empty, propertyNames);
         }
+
         public static Type BuildDynamicType(this string typeName, string nameSpace, params string[] propertyNames)
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType(typeName, nameSpace, out ignore, propertyNames);
+            return BuildDynamicType(typeName, nameSpace, out AssemblyBuilder ignore, propertyNames);
         }
+
         public static Type BuildDynamicType(this string typeName, string nameSpace, out AssemblyBuilder assemblyBuilder, params string[] propertyNames)
         {
             lock (_buildDynamicTypeLock)

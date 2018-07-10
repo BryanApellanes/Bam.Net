@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public class InterSystemsDataTypeTranslator : IDataTypeTranslator
+    public class InterSystemsDataTypeTranslator : DataTypeTranslator
     {
-        public DataTypes TranslateDataType(string sqlDataType)
-        {
+        public override DataTypes TranslateDataType(string sqlDataType)
+        {            
             switch (sqlDataType)
             {
                 case "bigint":
