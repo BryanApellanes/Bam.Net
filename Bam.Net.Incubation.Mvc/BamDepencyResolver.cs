@@ -39,15 +39,7 @@ namespace Bam.Net.Incubation.Mvc
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            try
-            {
-                return new List<object>() { ServiceRegistry.Get(serviceType) };
-            }
-            catch (Exception ex)
-            {
-                Logger.Warning("Failed to get serviceS of type {0}, falling back to DefaultResolver: {1}", serviceType.Name, ex.Message);
-                return DefaultResolver.GetServices(serviceType);
-            }
+            return DefaultResolver.GetServices(serviceType);
         }
     }
 }

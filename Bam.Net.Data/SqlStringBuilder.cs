@@ -77,8 +77,7 @@ namespace Bam.Net.Data
 
         public bool TryExecute(Database db)
         {
-            Exception ignore;
-            return TryExecute(db, out ignore);
+            return TryExecute(db, out Exception ignore);
         }
 
         /// <summary>

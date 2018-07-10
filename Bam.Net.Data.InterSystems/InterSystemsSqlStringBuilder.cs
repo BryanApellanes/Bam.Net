@@ -23,6 +23,12 @@ namespace Bam.Net.Data
             SelectStar = true;
         }
 
+        /// <summary>
+        /// Gets or sets the table name prefix.
+        /// </summary>
+        /// <value>
+        /// The table name prefix.
+        /// </value>
         public string TableNamePrefix { get; set; }
 
         public static void Register(Incubator incubator)
