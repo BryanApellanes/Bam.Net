@@ -18,6 +18,12 @@ namespace Bam.Net.Data
             ColumnNameFormatter = c => c;
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+            GoText = "\r\n";
+        }
+
         public string TableNamePrefix { get; set; }
 
         public override SqlStringBuilder Where(IQueryFilter filter)

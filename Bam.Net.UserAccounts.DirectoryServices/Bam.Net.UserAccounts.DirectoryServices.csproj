@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveDirectoryAuthenticator.cs" />
+    <Compile Include="ActiveDirectoryCredentials.cs" />
     <Compile Include="ActiveDirectoryEventArgs.cs" />
     <Compile Include="ActiveDirectoryReader.cs" />
     <Compile Include="ActiveDirectoryRoleReader.cs" />

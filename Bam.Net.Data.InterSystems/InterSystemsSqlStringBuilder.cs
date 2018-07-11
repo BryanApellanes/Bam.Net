@@ -23,6 +23,11 @@ namespace Bam.Net.Data
             SelectStar = true;
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+            GoText = "\r\n";
+        }
         /// <summary>
         /// Gets or sets the table name prefix.
         /// </summary>

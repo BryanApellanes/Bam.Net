@@ -110,6 +110,7 @@
     <Compile Include="FailedTest.cs" />
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
+    <Compile Include="Integration\IntegrationTestMethod.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
     <Compile Include="ITestRunListener.cs" />
     <Compile Include="ITestRunner.cs" />

@@ -100,7 +100,7 @@ namespace Bam.Net.Testing
         }
 
         /// <summary>
-        /// Runs the unit tests in file.
+        /// Runs the unit tests in specified assemlby.
         /// </summary>
         /// <param name="assemblyPath">The assembly path.</param>
         /// <param name="endDirectory">The end directory.</param>
@@ -124,6 +124,11 @@ namespace Bam.Net.Testing
             }
         }
 
+        /// <summary>
+        /// Runs the integration tests in the specified file.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="endDirectory">The end directory.</param>
         [ConsoleAction("IntegrationTests", "[path_to_test_assembly]", "Run integration tests in the specified assemlby")]
         public static void RunIntegrationTestsInFile(string assemblyPath = null, string endDirectory = null)
         {

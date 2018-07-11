@@ -15,6 +15,7 @@ namespace Bam.Net.Testing.Integration
 		public IntegrationTestAttribute()
 		{
 		}
+
 		public IntegrationTestAttribute(string description)
 		{
 			this.Description = description;

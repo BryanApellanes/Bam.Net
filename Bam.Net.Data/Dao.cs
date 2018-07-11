@@ -85,7 +85,7 @@ namespace Bam.Net.Data
 
         Dictionary<string, ILoadable> _childCollections;
         /// <summary>
-        /// Actions, keyed by type, to take after contruction.
+        /// Actions, keyed by type, to take after construction.
         /// </summary>
         public static Dictionary<Type, Action<Dao>> PostConstructActions { get; set; }
 
@@ -1581,10 +1581,6 @@ namespace Bam.Net.Data
             if (columnName.Equals(KeyColumnName))
             {
                 PrimaryKey = value;
-                if (value != null && value != DBNull.Value)
-                {
-                    IdValue = new long?(Convert.ToInt64(value));
-                }
             }
             else if (this.NewValues.ContainsKey(columnName))
             {
