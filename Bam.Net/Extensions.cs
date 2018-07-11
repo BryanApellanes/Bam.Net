@@ -3113,6 +3113,16 @@ namespace Bam.Net
             return returnValue.ToString();
         }
 
+        /// <summary>
+        /// Returns a camel cased string from the specified string using the specified 
+        /// separators.  For example, the input "The quick brown fox jumps over the lazy
+        /// dog" with the separators of "new string[]{" "}" should return the string 
+        /// "theQuickBrownFoxJumpsOverTheLazyDog".
+        /// </summary>
+        /// <param name="stringToCamelize">The string to camelize.</param>
+        /// <param name="preserveInnerUppers">if set to <c>true</c> [preserve inner uppers].</param>
+        /// <param name="separators">The separators.</param>
+        /// <returns></returns>
         public static string CamelCase(this string stringToCamelize, bool preserveInnerUppers = true, params string[] separators)
         {
             if (stringToCamelize.Length > 0)

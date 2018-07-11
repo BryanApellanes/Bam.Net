@@ -109,6 +109,8 @@
     <Compile Include="BuildConfig.cs" />
     <Compile Include="BuildInfo.cs" />
     <Compile Include="DeployInfo.cs" />
+    <Compile Include="TestInfo.cs" />
+    <Compile Include="TestTypes.cs" />
     <Compile Include="WindowsServiceInfo.cs" />
     <Compile Include="WixComponent.cs" />
     <Compile Include="WixDirectory.cs" />
@@ -134,6 +136,7 @@
     </None>
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
+    <None Include="test.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">

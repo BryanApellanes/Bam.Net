@@ -20,18 +20,27 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "/bam/bot/tools/OpenCover/OpenCover.Console.exe";
+                return "/bam/tools/OpenCover/OpenCover.Console.exe";
             }
         }
 
+        /// <summary>
+        /// Gets the output root.
+        /// </summary>
+        /// <value>
+        /// The output root.
+        /// </value>
         protected static string OutputRoot
         {
             get
             {
-                return "/bam/bot/tests/";
+                return "/bam/tests/";
             }
         }
 
+        /// <summary>
+        /// Runs the tests with coverage.
+        /// </summary>
         [ConsoleAction("TestsWithCoverage", "Run tests with coverage using opencover.console")]
         public static void RunTestsWithCoverage()
         {

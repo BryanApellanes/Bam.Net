@@ -332,7 +332,15 @@ namespace Bam.Net.Automation
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
         public static void Test()
         {
-            throw new NotImplementedException();
+            string testConfigPath = GetArgument("test", "Please enter the path to the test config file.");
+            if (!File.Exists(testConfigPath))
+            {
+                OutLineFormat("Test config not found: {0}", ConsoleColor.Magenta, testConfigPath);
+                Thread.Sleep(1000);
+                Exit(1);
+            }
+            TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
+            $".\\bamtestrunner.exe /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}".Run((s)=> OutLine(s, ConsoleColor.Cyan), (e)=> OutLine(e, ConsoleColor.Magenta), 600000);
         }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
