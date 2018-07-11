@@ -749,6 +749,7 @@ namespace Bam.Net.Data.Schema
             Assembly[] assembliesToReference = new Assembly[]{typeof(SchemaTemplate).Assembly, 
 					typeof(DaoGenerator).Assembly,
 					typeof(ServiceProxySystem).Assembly, 
+                    typeof(DataTypes).Assembly,
 					typeof(Providers).Assembly};
             return assembliesToReference;
         }

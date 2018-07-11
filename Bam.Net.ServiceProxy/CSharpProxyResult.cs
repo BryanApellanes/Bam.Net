@@ -38,6 +38,7 @@ namespace Bam.Net.ServiceProxy
         public override void ExecuteResult(ControllerContext context)
         {
             Uri uri = context.HttpContext.Request.Url;
+            // TODO: check for X-Forwarded-For and set port to 80 if it is present
             string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(uri);
 
             StringBuilder code = GenerateCSharpProxyCode(defaultBaseAddress);

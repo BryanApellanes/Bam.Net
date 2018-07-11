@@ -99,6 +99,11 @@ namespace Bam.Net.Testing
             RunUnitTestsInFile(assemblyPath, Environment.CurrentDirectory);
         }
 
+        /// <summary>
+        /// Runs the unit tests in file.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="endDirectory">The end directory.</param>
         public static void RunUnitTestsInFile(string assemblyPath, string endDirectory)
         {
             OutLineFormat("Running UnitTests: {0}", ConsoleColor.DarkGreen, assemblyPath);

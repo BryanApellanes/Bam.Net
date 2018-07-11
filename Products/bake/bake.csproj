@@ -136,7 +136,9 @@
     </None>
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
-    <None Include="test.json" />
+    <None Include="unit-tests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">

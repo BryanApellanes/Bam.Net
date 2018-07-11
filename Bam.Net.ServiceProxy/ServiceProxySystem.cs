@@ -286,6 +286,7 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
+        // TODO: check for X-Forwarded-For before calling this and set port to 80 if it is present
         public static string GetBaseAddress(Uri uri)
         {
             string defaultBaseAddress = string.Format("{0}://{1}{2}", uri.Scheme, uri.Host, uri.IsDefaultPort ? "/" : string.Format(":{0}/", uri.Port));
