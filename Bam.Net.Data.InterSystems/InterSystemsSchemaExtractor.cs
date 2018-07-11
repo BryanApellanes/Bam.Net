@@ -12,14 +12,13 @@ namespace Bam.Net.Data.Intersystems
     public class InterSystemsSchemaExtractor : SchemaExtractor
     {
         InterSystemsSchemaExtractorConfig _config;
-        InterSystemsDatabase _cacheDatabase;
         List<InterSystemsFieldDescriptor> _fieldDescriptors;
         object _fieldDescriptorLock = new object();
 
         public InterSystemsSchemaExtractor(InterSystemsSchemaExtractorConfig config)
         {
             _config = config;
-            _cacheDatabase = new InterSystemsDatabase(config.ConnectionString);
+            Database = new InterSystemsDatabase(config.ConnectionString);
         }
 
         #region Don't look at me, I'm hideous
@@ -35,7 +34,7 @@ namespace Bam.Net.Data.Intersystems
         {
             get
             {
-                return _fieldDescriptorLock.DoubleCheckLock(ref _fieldDescriptors, () => _cacheDatabase.ExecuteReader<InterSystemsFieldDescriptor>(FieldDescriptorQuery.NamedFormat(_config), new CacheParameter[] { }).ToList());
+                return _fieldDescriptorLock.DoubleCheckLock(ref _fieldDescriptors, () => Database.ExecuteReader<InterSystemsFieldDescriptor>(FieldDescriptorQuery.NamedFormat(_config), new CacheParameter[] { }).ToList());
             }
         }
 
@@ -116,6 +115,10 @@ namespace Bam.Net.Data.Intersystems
             if(cfd.CacheType.EndsWith(".boolean", StringComparison.InvariantCultureIgnoreCase))
             {
                 return "BOOLEAN";
+            }
+            if(cfd.CacheType.EndsWith(".utc", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return "DATETIME";
             }
             return "VARCHAR";
         }
