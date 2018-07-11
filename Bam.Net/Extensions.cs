@@ -34,6 +34,7 @@ namespace Bam.Net
         static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
         static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
         static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
+        static Dictionary<string, SerializationFormat> _serializationFormats;
         static Extensions()
         {
             SetDictionaries();
@@ -107,10 +108,45 @@ namespace Bam.Net
                         }
                     },
                     { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
-                    { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
-                    { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
+                    { SerializationFormat.Json, (stream, type) => stream.FromJsonStream(type) }, // this might not work; should be tested
+                    { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream(type) }, // this might not work; should be tested
                     { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
                 };
+            }
+            if(_serializationFormats == null)
+            {
+                _serializationFormats = new Dictionary<string, SerializationFormat>
+                {
+                    { ".yaml", SerializationFormat.Yaml },
+                    { ".yml", SerializationFormat.Yaml },
+                    { ".json", SerializationFormat.Json },
+                    { ".xml", SerializationFormat.Xml },
+                    { ".dat", SerializationFormat.Binary },
+                    { ".bin", SerializationFormat.Binary }
+                };
+            }
+        }
+
+        public static T FromFile<T>(this FileInfo file)
+        {
+            return Deserialize<T>(file);
+        }
+
+        public static T Deserialize<T>(this FileInfo file)
+        {
+            return (T)Deserialize(file, typeof(T));
+        }
+
+        public static object Deserialize(this FileInfo file, Type type)
+        {
+            string fileExtension = file.Extension;
+            if (!_serializationFormats.ContainsKey(fileExtension))
+            {
+                throw new ArgumentException($"File extension ({fileExtension}) not supported for deserialization, use one of ({string.Join(",", _serializationFormats.Keys.ToArray())})");
+            }
+            using (FileStream fs = file.OpenRead())
+            {
+                return _deserializers[_serializationFormats[fileExtension]](fs, type);
             }
         }
 
@@ -1771,6 +1807,18 @@ namespace Bam.Net
             using (StreamReader sr = new StreamReader(ms))
             {
                 return sr.ReadToEnd().FromJson<T>();
+            }
+        }
+
+        public static object FromJsonStream(this Stream stream, Type type)
+        {
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            using (StreamReader sr = new StreamReader(ms))
+            {
+                return sr.ReadToEnd().FromJson(type);
             }
         }
 
