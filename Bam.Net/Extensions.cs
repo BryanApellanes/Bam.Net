@@ -3558,8 +3558,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static Type BuildDynamicType<PropertyAttributeFilter>(this Type typeToClone) where PropertyAttributeFilter : Attribute, new()
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType<PropertyAttributeFilter>(typeToClone, out ignore, false);
+            return BuildDynamicType<PropertyAttributeFilter>(typeToClone, out AssemblyBuilder ignore, false);
         }
 
         /// <summary>
@@ -3573,8 +3572,7 @@ namespace Bam.Net
         /// <returns>An in memory type that is not persisted to disk.</returns>
         public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out ignore, concreteAttribute);
+            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out AssemblyBuilder ignore, concreteAttribute);
         }
 
         /// <summary>

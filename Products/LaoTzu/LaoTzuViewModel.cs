@@ -435,8 +435,10 @@ namespace laotzu
 
         private DaoAssemblyGenerator GetDaoAssemblyGenerator()
         {
-            DaoAssemblyGenerator generator = new DaoAssemblyGenerator(this.MappedSchemaDefinition.SchemaDefinition, this.MappedSchemaDefinition.SchemaNameMap);
-            generator.Namespace = Namespace ?? DefaultNamespace;
+            DaoAssemblyGenerator generator = new DaoAssemblyGenerator(this.MappedSchemaDefinition.SchemaDefinition, this.MappedSchemaDefinition.SchemaNameMap)
+            {
+                Namespace = Namespace ?? DefaultNamespace
+            };
 
             generator.OnTableStarted += (ns, table) =>
             {

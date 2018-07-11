@@ -708,8 +708,10 @@ namespace Bam.Net.Data.Schema
 
         private void WriteColumnsClass(SchemaDefinition schema, Func<string, Stream> targetResolver, string root, Table table)
         {
-            RazorParser<TableTemplate> parser = new RazorParser<TableTemplate>(RazorResultInspector);
-            parser.GetDefaultAssembliesToReference = GetReferenceAssemblies;
+            RazorParser<TableTemplate> parser = new RazorParser<TableTemplate>(RazorResultInspector)
+            {
+                GetDefaultAssembliesToReference = GetReferenceAssemblies
+            };
             Stream s = null;
 
             OnBeforeColumnsClassParse(Namespace, table);

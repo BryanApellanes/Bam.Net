@@ -351,12 +351,21 @@ namespace Bam.Net.Data
             return Database.GetDataTypeTranslator().TranslateDataType(columnName);
         }
 
-        public string GetDbDataType<T>(string columnName)
+        Dictionary<string, string> _columnDataTypes;
+        public virtual string GetDbDataType(string columnName)
         {
-            return GetDbDataType(typeof(T), columnName);
+            if(_columnDataTypes == null)
+            {
+                _columnDataTypes = new Dictionary<string, string>();
+            }
+            if (!_columnDataTypes.ContainsKey(columnName))
+            {
+                _columnDataTypes.Add(columnName, GetDbDataType(GetType(), columnName));
+            }
+            return _columnDataTypes[columnName];
         }
 
-        public string GetDbDataType(Type type, string columnName)
+        public static string GetDbDataType(Type type, string columnName)
         {
             PropertyInfo prop = type.GetProperty(columnName);
             if (prop == null)
@@ -371,6 +380,13 @@ namespace Bam.Net.Data
             return attr.DbDataType;
         }
 
+        /// <summary>
+        /// Gets and/or sets the value of the specified column.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public T Column<T>(string columnName, object value = null)
         {
             return Column<T>(columnName, value);
@@ -395,7 +411,8 @@ namespace Bam.Net.Data
             DataTable table = DataRow.Table;
             if (!table.Columns.Contains(columnName) && value != null)
             {
-                table.Columns.Add(columnName, value.GetType());
+                Type columnType = Database.GetDataTypeTranslator().TypeFromDbDataType(GetDbDataType(columnName));
+                table.Columns.Add(columnName, columnType);
             }
             if(value != null)
             {
@@ -774,10 +791,10 @@ namespace Bam.Net.Data
 
         public void PreLoadChildCollections()
         {
-            foreach (ILoadable loadable in ChildCollections.Values)
+            Parallel.ForEach(ChildCollections.Values, (loadable) =>
             {
                 loadable.Load(Database);
-            }
+            });
         }
 
         protected virtual void Delete<C>(Func<C, IQueryFilter<C>> where) where C : IFilterToken, new()
@@ -956,7 +973,6 @@ namespace Bam.Net.Data
         /// Creates an in memory dynamic type representing
         /// the current Dao's Columns only.
         /// </summary>
-        /// <param name="daoObject"></param>
         /// <returns></returns>
         public object ToJsonSafe()
         {
@@ -1296,7 +1312,7 @@ namespace Bam.Net.Data
                 {
                     if (!DataRow.Table.Columns.Contains(KeyColumnName))
                     {
-                        DataRow.Table.Columns.Add(new DataColumn(KeyColumnName));
+                        DataRow.Table.Columns.Add(new DataColumn(KeyColumnName, typeof(object)));
                     }
                     DataRow[KeyColumnName] = _primaryKey;
                 }
@@ -1510,9 +1526,8 @@ namespace Bam.Net.Data
                 {
                     return new bool?((int)val > 0);
                 }
-                else if (val is string)
+                else if (val is string str)
                 {
-                    string str = (string)val;
                     return new bool?(str.ToLowerInvariant().Equals("true") || str.Equals("1"));
                 }
                 else
