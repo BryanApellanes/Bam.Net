@@ -16,6 +16,7 @@ using System.Threading;
 using Bam.Net.System;
 using System.Management;
 using Bam.Net.Encryption;
+using System.Diagnostics;
 
 namespace Bam.Net.Automation
 {
@@ -346,13 +347,26 @@ namespace Bam.Net.Automation
             OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
 
             string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
-            PsExec.Run(
-                testInfo.RunOnHost,
-                $"{bamtestrunner} /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}", 
-                (s) => OutLine(s, ConsoleColor.Cyan), 
-                (e) => OutLine(e, ConsoleColor.Magenta), 
-                600000
-            );            
+            if (testInfo.RunOnHost.Equals("."))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = bamtestrunner,
+                    Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
+                    WorkingDirectory = Path.Combine(Paths.Tests)
+                };
+                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);
+            }
+            else
+            {
+                PsExec.Run(
+                    testInfo.RunOnHost,
+                    $"{bamtestrunner} /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
+                    (s) => OutLine(s, ConsoleColor.Cyan),
+                    (e) => OutLine(e, ConsoleColor.Magenta),
+                    600000
+                );
+            }
         }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
