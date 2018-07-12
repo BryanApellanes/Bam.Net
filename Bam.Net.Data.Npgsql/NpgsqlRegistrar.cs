@@ -64,6 +64,7 @@ namespace Bam.Net.Data
 			incubator.Set<SqlStringBuilder>(() => new NpgsqlSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new NpgsqlSqlStringBuilder());
             incubator.Set<QuerySet>(() => new NpgsqlQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new DataTypeTranslator());
         }
     }
 }
