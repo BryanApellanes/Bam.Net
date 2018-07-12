@@ -11,6 +11,7 @@ namespace Bam.Net.UserAccounts.DirectoryServices
         public string Domain { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string DomainController { get; set; }
 
         public override string ToString()
         {

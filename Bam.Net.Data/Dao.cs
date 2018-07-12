@@ -372,12 +372,15 @@ namespace Bam.Net.Data
             {
                 prop = type.GetProperties().FirstOrDefault(pi =>
                 {
-                    pi.HasCustomAttributeOfType(out ColumnAttribute column);
-                    return column.Name.Equals(columnName);
+                    if(pi.HasCustomAttributeOfType(out ColumnAttribute column))
+                    {
+                        return column.Name.Equals(columnName);
+                    }
+                    return false;
                 });
             }
-            ColumnAttribute attr = prop.GetCustomAttributeOfType<ColumnAttribute>();
-            return attr.DbDataType;
+
+            return prop?.GetCustomAttributeOfType<ColumnAttribute>()?.DbDataType ?? "VARCHAR";
         }
 
         /// <summary>
@@ -1400,7 +1403,7 @@ namespace Bam.Net.Data
         /// <summary>
         /// Returns true if properties of the
         /// current Dao instance have been set
-        /// since its instanciation
+        /// since its instanciation.
         /// </summary>
         protected internal bool HasNewValues
         {
@@ -1409,6 +1412,7 @@ namespace Bam.Net.Data
                 return NewValues.Count > 0;
             }
         }
+
         protected internal Dictionary<string, object> NewValues
         {
             get;
