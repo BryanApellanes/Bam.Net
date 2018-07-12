@@ -24,7 +24,7 @@ namespace Bam.Net.ServiceProxy
         {
             IRequest request = context.Request;
             IResponse response = context.Response;
-            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
+            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request);
             string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
             string contractNameSpace = "{0}.Contracts"._Format(nameSpace);
             string[] classNames = request.QueryString["classes"] == null ? serviceProvider.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
