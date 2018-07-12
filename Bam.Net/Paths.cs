@@ -31,6 +31,7 @@ namespace Bam.Net
         public static string Content { get; private set; }
         public static string Conf { get; private set; }
         public static string Sys { get; private set; }
+        public static string Tests { get; private set; }
         public static string Logs { get; private set; }
         public static string Data { get; private set; }
         public static string Tools { get; private set; }
@@ -50,6 +51,7 @@ namespace Bam.Net
             Content = Path.Combine(Root, "content");
             Conf = Path.Combine(Root, "conf");
             Sys = Path.Combine(Root, "sys");
+            Tests = Path.Combine(Root, "tests");
             Logs = Path.Combine(Root, "logs");
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");

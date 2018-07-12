@@ -8,6 +8,7 @@ namespace Bam.Net.Application
 {
     public class TestInfo
     {
+        public string RunOnHost { get; set; }
         public TestTypes Type { get; set; } 
         public string TestReportHost { get; set; }
         public int TestReportPort { get; set; } 

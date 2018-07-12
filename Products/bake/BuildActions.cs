@@ -340,7 +340,19 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
-            $".\\bamtestrunner.exe /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}".Run((s)=> OutLine(s, ConsoleColor.Cyan), (e)=> OutLine(e, ConsoleColor.Magenta), 600000);
+            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
+            DeployTestFiles(latestBinaries, testInfo);
+
+            OutLineFormat("Testing commit {1}", ConsoleColor.DarkGreen, commit);
+            testInfo.Tag = $"{testInfo.Tag}-{commit.First(6)}";
+            string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
+            PsExec.Run(
+                testInfo.RunOnHost,
+                $"{bamtestrunner} /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}", 
+                (s) => OutLine(s, ConsoleColor.Cyan), 
+                (e) => OutLine(e, ConsoleColor.Magenta), 
+                600000
+            );            
         }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
@@ -1297,7 +1309,7 @@ namespace Bam.Net.Automation
         {
             Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
             Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
-            //      copy the latest binaries to \\computer\c$\bam\tools\{Name}
+            //      copy the latest binaries to \\computer\c$\bam\sys\{Name}
             string remoteDirectory = Path.Combine(Paths.Sys, svcInfo.Name);
             string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
 
@@ -1322,6 +1334,19 @@ namespace Bam.Net.Automation
             }
 
             CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
+        }
+
+        private static void DeployTestFiles(DirectoryInfo latestBinaries, TestInfo testInfo)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(testInfo.RunOnHost), "RunOnHost not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(testInfo.Tag), "Tag not specified");
+            //      copy the latest binaries to \\computer\c$\bam\tests\{Tag}
+            string remoteDirectory = Path.Combine(Paths.Tests, testInfo.Tag);            
+
+            DirectoryInfo remoteDirectoryInfo = remoteDirectory.GetAdminShareDirectory(testInfo.RunOnHost);
+            OutLineFormat("Copying files for testing to {0}...", ConsoleColor.Cyan, remoteDirectoryInfo.FullName);
+            latestBinaries.CopyTo(testInfo.RunOnHost, remoteDirectory);
+            OutLine("Done copying files for testing...", ConsoleColor.DarkCyan);
         }
 
         private static string GetInstallSwitch(string machineName, string serviceName)

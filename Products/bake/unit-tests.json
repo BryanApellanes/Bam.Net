@@ -1,7 +1,8 @@
 ﻿{
+  "RunOnHost": ".",
   "Type": "Unit",
   "TestReportHost": "int.bamapps.net",
   "TestReportPort": 80,
   "Tag": "test",
-  "Search":  ".\\*.Tests.*"
+  "Search": ".\\*.Tests.*"
 }

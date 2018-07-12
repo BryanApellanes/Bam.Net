@@ -334,11 +334,11 @@ namespace Bam.Net.UserAccounts
             get
             {
                 IHttpContext context = HttpContext;
-                Func<string, string> func = (token) =>
+                string func(string token)
                 {
-                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request.Url);
+                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request);
                     return string.Format("{0}auth/confirmAccount?token={1}&layout=basic", baseAddress, token);
-                };
+                }
 
                 return func;
             }
@@ -362,7 +362,7 @@ namespace Bam.Net.UserAccounts
                 IHttpContext context = HttpContext;
                 Func<string, string> func = (token) =>
                 {
-                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request.Url);
+                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request);
                     return string.Format("{0}auth/resetPassword?token={1}&layout=basic", baseAddress, token);
                 };
 

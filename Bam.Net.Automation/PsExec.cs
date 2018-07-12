@@ -20,5 +20,10 @@ namespace Bam.Net.Automation
         {
             return $"{Path} \\\\{computerName} {command}".Run(timeout);
         }
+
+        public static ProcessOutput Run(string computerName, string command, Action<string> standout, Action<string> errorout, int timeout = 600000)
+        {
+            return $"{Path} \\\\{computerName} {command}".Run(standout, errorout, timeout);
+        }
     }
 }

@@ -16,16 +16,19 @@ namespace Bam.Net.System
             {
                 remoteDirectory += "\\";
             }
+
             List<Task> copyTasks = new List<Task>();
             foreach(FileInfo file in directory.GetFiles())
             {
                 copyTasks.Add(Task.Run(() => file.CopyTo(computerName, remoteDirectory)));
             }
+
             foreach(DirectoryInfo dir in directory.GetDirectories())
             {
                 string subPath = dir.FullName.TruncateFront(directory.FullName.Length);
                 copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, remoteDirectory + subPath)));
             }
+
             Task.WaitAll(copyTasks.ToArray());
         }
 

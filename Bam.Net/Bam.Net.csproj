@@ -300,9 +300,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Bam.Net.ruleset" />
-    <EmbeddedResource Include="commit">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Include="Documentation\XmlDocumentation.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -310,11 +307,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="signing.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="buildnum">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
