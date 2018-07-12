@@ -341,10 +341,10 @@ namespace Bam.Net.Automation
             }
             TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
-            DeployTestFiles(latestBinaries, testInfo);
-
-            OutLineFormat("Testing commit {1}", ConsoleColor.DarkGreen, commit);
             testInfo.Tag = $"{testInfo.Tag}-{commit.First(6)}";
+            DeployTestFiles(latestBinaries, testInfo);
+            OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
+
             string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
             PsExec.Run(
                 testInfo.RunOnHost,
@@ -1341,11 +1341,18 @@ namespace Bam.Net.Automation
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.RunOnHost), "RunOnHost not specified");
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.Tag), "Tag not specified");
             //      copy the latest binaries to \\computer\c$\bam\tests\{Tag}
-            string remoteDirectory = Path.Combine(Paths.Tests, testInfo.Tag);            
+            string path = Path.Combine(Paths.Tests, testInfo.Tag);            
 
-            DirectoryInfo remoteDirectoryInfo = remoteDirectory.GetAdminShareDirectory(testInfo.RunOnHost);
-            OutLineFormat("Copying files for testing to {0}...", ConsoleColor.Cyan, remoteDirectoryInfo.FullName);
-            latestBinaries.CopyTo(testInfo.RunOnHost, remoteDirectory);
+            DirectoryInfo remoteDirectoryInfo = path.GetAdminShareDirectory(testInfo.RunOnHost);
+            OutLineFormat("Copying files for testing to {0} on {1}...", ConsoleColor.Cyan, path, testInfo.RunOnHost);
+            if (testInfo.RunOnHost.Equals("."))
+            {
+                latestBinaries.Copy(path, true);
+            }
+            else
+            {
+                latestBinaries.CopyTo(testInfo.RunOnHost, path);
+            }
             OutLine("Done copying files for testing...", ConsoleColor.DarkCyan);
         }
 
