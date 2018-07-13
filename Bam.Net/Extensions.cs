@@ -2661,10 +2661,9 @@ namespace Bam.Net
 
             Type type = obj.GetType();
             PropertyInfo[] properties = type.GetProperties();
-            return obj.PropertiesToString(properties, separator);
+            return PropertiesToString(obj, properties, separator);
         }
 
-        [DebuggerStepThrough]
         public static string PropertiesToString(this object obj, PropertyInfo[] properties, string separator = "\r\n")
         {
             try
