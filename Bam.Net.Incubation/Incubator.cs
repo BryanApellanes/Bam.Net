@@ -328,7 +328,7 @@ namespace Bam.Net.Incubation
                 {
                     return fn() ?? Get(type, GetCtorParams(type));
                 }
-                else
+                else if(result == null)
                 {
                     result = Get(type, GetCtorParams(type));
                 }
