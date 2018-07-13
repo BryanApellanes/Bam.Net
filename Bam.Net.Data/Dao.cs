@@ -1453,10 +1453,10 @@ namespace Bam.Net.Data
             object result = null;
             if (columnName.Equals(KeyColumnName))
             {
-                result = PrimaryKey;
+                result = IdValue;
                 if (result == null)
                 {
-                    result = GetOriginalValue(columnName);
+                    result = PrimaryKey;
                 }
             }
             else
