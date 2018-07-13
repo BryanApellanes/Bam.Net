@@ -29,9 +29,9 @@ namespace Bam.Net.Data
             Parent = parent;
             _values = new List<L>();
             _book = new Book<L>();
-            Database = parent.Database;
+            Database = parent?.Database;
 
-            if (load)
+            if (load && Database != null)
             {
                 Load(Database);
             }
