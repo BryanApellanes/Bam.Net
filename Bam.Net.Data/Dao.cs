@@ -1257,7 +1257,7 @@ namespace Bam.Net.Data
             get
             {
                 object value = PrimaryKey;
-                if (value != null && value != DBNull.Value)
+                if (value != null && value != DBNull.Value && value.IsNumber())
                 {
                     try
                     {

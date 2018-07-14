@@ -3229,6 +3229,21 @@ namespace Bam.Net
             return (val > 47 && val < 58);
         }
 
+        public static bool IsNumber(this object value)
+        {
+            return value is sbyte
+                    || value is byte
+                    || value is short
+                    || value is ushort
+                    || value is int
+                    || value is uint
+                    || value is long
+                    || value is ulong
+                    || value is float
+                    || value is double
+                    || value is decimal;
+        }
+
         public static bool IsLetter(this char c)
         {
             int val = Convert.ToInt32(c);
