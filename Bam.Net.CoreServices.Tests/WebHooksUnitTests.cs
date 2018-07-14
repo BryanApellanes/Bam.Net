@@ -3,6 +3,8 @@ using Bam.Net.CommandLine;
 using Bam.Net.CoreServices.WebHooks;
 using Bam.Net.CoreServices.WebHooks.Data;
 using Bam.Net.CoreServices.WebHooks.Data.Dao.Repository;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Data.SQLite;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 using System;
@@ -16,6 +18,19 @@ namespace Bam.Net.CoreServices.Tests
     [Serializable]
     public class WebHooksUnitTests : CommandLineTestInterface    
     {
+        [UnitTest]
+        public void CanSaveWebHookSubscriberDao()
+        {
+            WebHooks.Data.Dao.WebHookSubscriber dao = new WebHooks.Data.Dao.WebHookSubscriber
+            {
+                Url = "test"
+            };
+            SQLiteDatabase db = new SQLiteDatabase(DataSettings.Current.AppDataDirectory, nameof(CanSaveWebHookSubscriberDao));
+            db.TryEnsureSchema<WebHooks.Data.Dao.WebHookSubscriber>();
+            dao.Save(db);
+            Expect.IsGreaterThan(dao.IdValue.Value, 0);
+        }
+
         [UnitTest]
         public void CanSubscribeWebHook()
         {

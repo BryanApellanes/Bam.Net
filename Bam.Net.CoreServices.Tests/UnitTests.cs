@@ -228,7 +228,7 @@ namespace Bam.Net.CoreServices.Tests
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
                 string typeName = type.Name;
-                if(typeName.StartsWith("Core") && typeName.EndsWith("Service") && type.IsSubclassOf(typeof(ProxyableService)))
+                if(typeName.EndsWith("Service") && type.IsSubclassOf(typeof(ProxyableService)))
                 {
                     foundOne = true;
                     OutLine(type.FullName, ConsoleColor.Cyan);

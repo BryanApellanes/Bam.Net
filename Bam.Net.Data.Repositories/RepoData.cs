@@ -127,7 +127,7 @@ namespace Bam.Net.Data.Repositories
             });
         }
         
-        protected internal bool IsPersisted { get; set; }
+        public bool IsPersisted { get; protected internal set; }
         protected internal IRepository Repository { get; set; } // gets set by Repository.Save
     }
 }

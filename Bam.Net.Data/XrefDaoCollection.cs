@@ -29,11 +29,14 @@ namespace Bam.Net.Data
             Parent = parent;
             _values = new List<L>();
             _book = new Book<L>();
-            Database = parent?.Database;
-
-            if (load && Database != null)
+            if (!parent.IsNew)
             {
-                Load(Database);
+                Database = parent?.Database;
+
+                if (load && Database != null)
+                {
+                    Load(Database);
+                }
             }
             _setDatabases = true;
         }
