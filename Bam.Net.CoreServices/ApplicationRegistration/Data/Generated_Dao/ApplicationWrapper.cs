@@ -132,10 +132,14 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Organization _organization;
 			{
 				if(_machines == null || _machines.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.ApplicationMachine,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Machine>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _machines = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Machine>().ToList();
-					 SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.ApplicationMachine,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Machine>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _machines = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Machine>().ToList();
+						 SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));					
+					}
 				}
 
 				return _machines;
@@ -155,10 +159,14 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Organization _organization;
 			{
 				if(_hostDomains == null || _hostDomains.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomain>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _hostDomains = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.HostDomain>().ToList();
-					 SetUpdatedXrefCollectionProperty("HostDomains", this.GetType().GetProperty("HostDomains"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomain>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _hostDomains = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.HostDomain>().ToList();
+						 SetUpdatedXrefCollectionProperty("HostDomains", this.GetType().GetProperty("HostDomains"));					
+					}
 				}
 
 				return _hostDomains;

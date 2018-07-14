@@ -57,10 +57,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Wrappers
 			{
 				if(_serviceRegistryDescriptors == null || _serviceRegistryDescriptors.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptorServiceRegistryDescriptor,  Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceRegistryDescriptor>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _serviceRegistryDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor>().ToList();
-					 SetUpdatedXrefCollectionProperty("ServiceRegistryDescriptors", this.GetType().GetProperty("ServiceRegistry"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptorServiceRegistryDescriptor,  Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceRegistryDescriptor>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _serviceRegistryDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor>().ToList();
+						 SetUpdatedXrefCollectionProperty("ServiceRegistryDescriptors", this.GetType().GetProperty("ServiceRegistry"));					
+					}
 				}
 
 				return _serviceRegistryDescriptors;

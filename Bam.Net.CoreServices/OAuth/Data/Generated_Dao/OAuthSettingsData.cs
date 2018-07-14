@@ -199,59 +199,59 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 	}
 
-	// property:AuthCallbackUrl, columnName:AuthCallbackUrl	
-	[Bam.Net.Data.Column(Name="AuthCallbackUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AuthCallbackUrl
+	// property:AuthorizationUrl, columnName:AuthorizationUrl	
+	[Bam.Net.Data.Column(Name="AuthorizationUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationUrl
 	{
 		get
 		{
-			return GetStringValue("AuthCallbackUrl");
+			return GetStringValue("AuthorizationUrl");
 		}
 		set
 		{
-			SetValue("AuthCallbackUrl", value);
+			SetValue("AuthorizationUrl", value);
 		}
 	}
 
-	// property:TokenCallbackUrl, columnName:TokenCallbackUrl	
-	[Bam.Net.Data.Column(Name="TokenCallbackUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string TokenCallbackUrl
+	// property:AuthorizationCallbackUrl, columnName:AuthorizationCallbackUrl	
+	[Bam.Net.Data.Column(Name="AuthorizationCallbackUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationCallbackUrl
 	{
 		get
 		{
-			return GetStringValue("TokenCallbackUrl");
+			return GetStringValue("AuthorizationCallbackUrl");
 		}
 		set
 		{
-			SetValue("TokenCallbackUrl", value);
+			SetValue("AuthorizationCallbackUrl", value);
 		}
 	}
 
-	// property:AuthorizationEndpointFormat, columnName:AuthorizationEndpointFormat	
-	[Bam.Net.Data.Column(Name="AuthorizationEndpointFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AuthorizationEndpointFormat
+	// property:AuthorizationUrlFormat, columnName:AuthorizationUrlFormat	
+	[Bam.Net.Data.Column(Name="AuthorizationUrlFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationUrlFormat
 	{
 		get
 		{
-			return GetStringValue("AuthorizationEndpointFormat");
+			return GetStringValue("AuthorizationUrlFormat");
 		}
 		set
 		{
-			SetValue("AuthorizationEndpointFormat", value);
+			SetValue("AuthorizationUrlFormat", value);
 		}
 	}
 
-	// property:TokenEndpointFormat, columnName:TokenEndpointFormat	
-	[Bam.Net.Data.Column(Name="TokenEndpointFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string TokenEndpointFormat
+	// property:AuthorizationCallbackUrlFormat, columnName:AuthorizationCallbackUrlFormat	
+	[Bam.Net.Data.Column(Name="AuthorizationCallbackUrlFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationCallbackUrlFormat
 	{
 		get
 		{
-			return GetStringValue("TokenEndpointFormat");
+			return GetStringValue("AuthorizationCallbackUrlFormat");
 		}
 		set
 		{
-			SetValue("TokenEndpointFormat", value);
+			SetValue("AuthorizationCallbackUrlFormat", value);
 		}
 	}
 
@@ -357,11 +357,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// </param>
 		public static OAuthSettingsDataCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<OAuthSettingsData>();
 			Database db = database ?? Db.For<OAuthSettingsData>();
-			var results = new OAuthSettingsDataCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<OAuthSettingsData>();
+			var results = new OAuthSettingsDataCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -371,14 +373,14 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<OAuthSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -403,14 +405,14 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<OAuthSettingsDataColumns> where, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<OAuthSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -435,13 +437,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OAuthSettingsDataColumns> where, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -798,6 +800,25 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<OAuthSettingsDataColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<OAuthSettingsDataCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static OAuthSettingsDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<OAuthSettingsData>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<OAuthSettingsData>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

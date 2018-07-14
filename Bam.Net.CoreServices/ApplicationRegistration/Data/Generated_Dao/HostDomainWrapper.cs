@@ -57,10 +57,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 			{
 				if(_applications == null || _applications.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>().ToList();
-					 SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>().ToList();
+						 SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));					
+					}
 				}
 
 				return _applications;

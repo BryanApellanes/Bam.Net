@@ -58,10 +58,14 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Wrappers
 			{
 				if(_webHookDescriptors == null || _webHookDescriptors.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber, Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _webHookDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor>().ToList();
-					 SetUpdatedXrefCollectionProperty("WebHookDescriptors", this.GetType().GetProperty("Descriptors"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber, Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _webHookDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor>().ToList();
+						 SetUpdatedXrefCollectionProperty("WebHookDescriptors", this.GetType().GetProperty("Descriptors"));					
+					}
 				}
 
 				return _webHookDescriptors;

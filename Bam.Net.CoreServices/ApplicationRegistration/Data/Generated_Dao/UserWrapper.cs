@@ -73,10 +73,14 @@ Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription[] _subscriptions;
 			{
 				if(_organizations == null || _organizations.Count == 0)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Organization>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Organization>().ToList();
-					 SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));
+					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
+                    if (isPersisted)
+					{
+						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Organization>(Repository.GetDaoInstance(this), false);
+						 xref.Load(Repository.Database);
+						 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Organization>().ToList();
+						 SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));					
+					}
 				}
 
 				return _organizations;

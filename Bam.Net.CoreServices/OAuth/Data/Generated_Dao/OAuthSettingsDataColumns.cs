@@ -91,32 +91,32 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
                 return new OAuthSettingsDataColumns("ClientSecret");
             }
         }
-        public OAuthSettingsDataColumns AuthCallbackUrl
+        public OAuthSettingsDataColumns AuthorizationUrl
         {
             get
             {
-                return new OAuthSettingsDataColumns("AuthCallbackUrl");
+                return new OAuthSettingsDataColumns("AuthorizationUrl");
             }
         }
-        public OAuthSettingsDataColumns TokenCallbackUrl
+        public OAuthSettingsDataColumns AuthorizationCallbackUrl
         {
             get
             {
-                return new OAuthSettingsDataColumns("TokenCallbackUrl");
+                return new OAuthSettingsDataColumns("AuthorizationCallbackUrl");
             }
         }
-        public OAuthSettingsDataColumns AuthorizationEndpointFormat
+        public OAuthSettingsDataColumns AuthorizationUrlFormat
         {
             get
             {
-                return new OAuthSettingsDataColumns("AuthorizationEndpointFormat");
+                return new OAuthSettingsDataColumns("AuthorizationUrlFormat");
             }
         }
-        public OAuthSettingsDataColumns TokenEndpointFormat
+        public OAuthSettingsDataColumns AuthorizationCallbackUrlFormat
         {
             get
             {
-                return new OAuthSettingsDataColumns("TokenEndpointFormat");
+                return new OAuthSettingsDataColumns("AuthorizationCallbackUrlFormat");
             }
         }
         public OAuthSettingsDataColumns CreatedBy
