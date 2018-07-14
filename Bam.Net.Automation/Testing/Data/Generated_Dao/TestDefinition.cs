@@ -55,6 +55,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("TestExecution_TestDefinitionId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestDefinitionId == GetLongValue("Id")), this, "TestDefinitionId"));				
@@ -335,11 +336,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// </param>
 		public static TestDefinitionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestDefinition>();
 			Database db = database ?? Db.For<TestDefinition>();
-			var results = new TestDefinitionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TestDefinition>();
+			var results = new TestDefinitionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -349,14 +352,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestDefinition>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestDefinitionColumns columns = new TestDefinitionColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -381,14 +384,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TestDefinitionColumns> where, Action<IEnumerable<TestDefinition>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestDefinitionColumns columns = new TestDefinitionColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -413,13 +416,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestDefinitionColumns> where, Action<IEnumerable<TestDefinition>> batchProcessor, Bam.Net.Data.OrderBy<TestDefinitionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestDefinitionColumns columns = new TestDefinitionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -776,6 +779,25 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<TestDefinitionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TestDefinitionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TestDefinitionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TestDefinition>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TestDefinition>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

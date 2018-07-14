@@ -357,11 +357,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// </param>
 		public static TestExecutionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestExecution>();
 			Database db = database ?? Db.For<TestExecution>();
-			var results = new TestExecutionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TestExecution>();
+			var results = new TestExecutionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -371,14 +373,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestExecution>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestExecutionColumns columns = new TestExecutionColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestExecutionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -403,14 +405,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TestExecutionColumns> where, Action<IEnumerable<TestExecution>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestExecutionColumns columns = new TestExecutionColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestExecutionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -435,13 +437,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestExecutionColumns> where, Action<IEnumerable<TestExecution>> batchProcessor, Bam.Net.Data.OrderBy<TestExecutionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestExecutionColumns columns = new TestExecutionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -798,6 +800,25 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<TestExecutionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TestExecutionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TestExecutionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TestExecution>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TestExecution>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

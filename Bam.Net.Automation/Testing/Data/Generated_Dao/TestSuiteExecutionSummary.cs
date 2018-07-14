@@ -55,6 +55,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("TestExecution_TestSuiteExecutionSummaryId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestSuiteExecutionSummaryId == GetLongValue("Id")), this, "TestSuiteExecutionSummaryId"));				
@@ -300,11 +301,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// </param>
 		public static TestSuiteExecutionSummaryCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestSuiteExecutionSummary>();
 			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
-			var results = new TestSuiteExecutionSummaryCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TestSuiteExecutionSummary>();
+			var results = new TestSuiteExecutionSummaryCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -314,14 +317,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestSuiteExecutionSummaryColumns columns = new TestSuiteExecutionSummaryColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestSuiteExecutionSummaryColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -346,14 +349,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TestSuiteExecutionSummaryColumns> where, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestSuiteExecutionSummaryColumns columns = new TestSuiteExecutionSummaryColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestSuiteExecutionSummaryColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -378,13 +381,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestSuiteExecutionSummaryColumns> where, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Bam.Net.Data.OrderBy<TestSuiteExecutionSummaryColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestSuiteExecutionSummaryColumns columns = new TestSuiteExecutionSummaryColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -741,6 +744,25 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<TestSuiteExecutionSummaryColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TestSuiteExecutionSummaryCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TestSuiteExecutionSummaryCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TestSuiteExecutionSummary>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

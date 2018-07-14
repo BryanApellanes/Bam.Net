@@ -17,30 +17,30 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 	// schema = Testing
 	// connection Name = Testing
 	[Serializable]
-	[Bam.Net.Data.Table("TestSuiteDefinition", "Testing")]
-	public partial class TestSuiteDefinition: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("NotificationSubscription", "Testing")]
+	public partial class NotificationSubscription: Bam.Net.Data.Dao
 	{
-		public TestSuiteDefinition():base()
+		public NotificationSubscription():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestSuiteDefinition(DataRow data)
+		public NotificationSubscription(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestSuiteDefinition(Database db)
+		public NotificationSubscription(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestSuiteDefinition(Database db, DataRow data)
+		public NotificationSubscription(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,18 +48,14 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator TestSuiteDefinition(DataRow data)
+		public static implicit operator NotificationSubscription(DataRow data)
 		{
-			return new TestSuiteDefinition(data);
+			return new NotificationSubscription(data);
 		}
 
 		private void SetChildren()
 		{
-
-			if(_database != null)
-			{
-				this.ChildCollections.Add("TestDefinition_TestSuiteDefinitionId", new TestDefinitionCollection(Database.GetQuery<TestDefinitionColumns, TestDefinition>((c) => c.TestSuiteDefinitionId == GetLongValue("Id")), this, "TestSuiteDefinitionId"));				
-			}						
+						
 		}
 
 	// property:Id, columnName:Id	
@@ -105,73 +101,31 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 	}
 
-	// property:Title, columnName:Title	
-	[Bam.Net.Data.Column(Name="Title", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Title
+	// property:EmailAddress, columnName:EmailAddress	
+	[Bam.Net.Data.Column(Name="EmailAddress", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string EmailAddress
 	{
 		get
 		{
-			return GetStringValue("Title");
+			return GetStringValue("EmailAddress");
 		}
 		set
 		{
-			SetValue("Title", value);
+			SetValue("EmailAddress", value);
 		}
 	}
 
-	// property:CreatedBy, columnName:CreatedBy	
-	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string CreatedBy
+	// property:IsActive, columnName:IsActive	
+	[Bam.Net.Data.Column(Name="IsActive", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsActive
 	{
 		get
 		{
-			return GetStringValue("CreatedBy");
+			return GetBooleanValue("IsActive");
 		}
 		set
 		{
-			SetValue("CreatedBy", value);
-		}
-	}
-
-	// property:ModifiedBy, columnName:ModifiedBy	
-	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ModifiedBy
-	{
-		get
-		{
-			return GetStringValue("ModifiedBy");
-		}
-		set
-		{
-			SetValue("ModifiedBy", value);
-		}
-	}
-
-	// property:Modified, columnName:Modified	
-	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Modified
-	{
-		get
-		{
-			return GetDateTimeValue("Modified");
-		}
-		set
-		{
-			SetValue("Modified", value);
-		}
-	}
-
-	// property:Deleted, columnName:Deleted	
-	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Deleted
-	{
-		get
-		{
-			return GetDateTimeValue("Deleted");
-		}
-		set
-		{
-			SetValue("Deleted", value);
+			SetValue("IsActive", value);
 		}
 	}
 
@@ -192,31 +146,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 
 				
-
-	[Bam.Net.Exclude]	
-	public TestDefinitionCollection TestDefinitionsByTestSuiteDefinitionId
-	{
-		get
-		{
-			if (this.IsNew)
-			{
-				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-			}
-
-			if(!this.ChildCollections.ContainsKey("TestDefinition_TestSuiteDefinitionId"))
-			{
-				SetChildren();
-			}
-
-			var c = (TestDefinitionCollection)this.ChildCollections["TestDefinition_TestSuiteDefinitionId"];
-			if(!c.Loaded)
-			{
-				c.Load(Database);
-			}
-			return c;
-		}
-	}
-			
+		
 
 		/// <summary>
 		/// Gets a query filter that should uniquely identify
@@ -232,26 +162,24 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			}
 			else
 			{
-				var colFilter = new TestSuiteDefinitionColumns();
+				var colFilter = new NotificationSubscriptionColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the TestSuiteDefinition table.
+		/// Return every record in the NotificationSubscription table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static TestSuiteDefinitionCollection LoadAll(Database database = null)
+		public static NotificationSubscriptionCollection LoadAll(Database database = null)
 		{
-			Database db = database ?? Db.For<TestSuiteDefinition>();
-			SqlStringBuilder sql = db.GetSqlStringBuilder();
-			sql.Select<TestSuiteDefinition>();
-			var results = new TestSuiteDefinitionCollection(db, sql.GetDataTable(db))
-			{
-				Database = db
-			};
+			SqlStringBuilder sql = new SqlStringBuilder();
+			sql.Select<NotificationSubscription>();
+			Database db = database ?? Db.For<NotificationSubscription>();
+			var results = new NotificationSubscriptionCollection(db, sql.GetDataTable(db));
+			results.Database = db;
 			return results;
 		}
 
@@ -259,16 +187,16 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<NotificationSubscription>> batchProcessor, Database database = null)
 		{
-			await System.Threading.Tasks.Task.Run(async ()=>
+			await Task.Run(async ()=>
 			{
-				TestSuiteDefinitionColumns columns = new TestSuiteDefinitionColumns();
-				var orderBy = Bam.Net.Data.Order.By<TestSuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				NotificationSubscriptionColumns columns = new NotificationSubscriptionColumns();
+				var orderBy = Bam.Net.Data.Order.By<NotificationSubscriptionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await System.Threading.Tasks.Task.Run(()=>
+					await Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -282,7 +210,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<NotificationSubscription>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -291,21 +219,21 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<TestSuiteDefinitionColumns> where, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<NotificationSubscriptionColumns> where, Action<IEnumerable<NotificationSubscription>> batchProcessor, Database database = null)
 		{
-			await System.Threading.Tasks.Task.Run(async ()=>
+			await Task.Run(async ()=>
 			{
-				TestSuiteDefinitionColumns columns = new TestSuiteDefinitionColumns();
-				var orderBy = Bam.Net.Data.Order.By<TestSuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				NotificationSubscriptionColumns columns = new NotificationSubscriptionColumns();
+				var orderBy = Bam.Net.Data.Order.By<NotificationSubscriptionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await System.Threading.Tasks.Task.Run(()=>
+					await Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (TestSuiteDefinitionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (NotificationSubscriptionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
@@ -314,7 +242,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Bam.Net.Data.OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<NotificationSubscription>> batchProcessor, Bam.Net.Data.OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
 		{
 			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
 		}
@@ -323,104 +251,104 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestSuiteDefinitionColumns> where, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Bam.Net.Data.OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<NotificationSubscriptionColumns> where, Action<IEnumerable<NotificationSubscription>> batchProcessor, Bam.Net.Data.OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
 		{
-			await System.Threading.Tasks.Task.Run(async ()=>
+			await Task.Run(async ()=>
 			{
-				TestSuiteDefinitionColumns columns = new TestSuiteDefinitionColumns();
+				NotificationSubscriptionColumns columns = new NotificationSubscriptionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await System.Threading.Tasks.Task.Run(()=>
+					await Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
 					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
-					results = Top(batchSize, (TestSuiteDefinitionColumns)where(columns) && orderBy.Column > top, orderBy, database);
+					results = Top(batchSize, (NotificationSubscriptionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
 
-		public static TestSuiteDefinition GetById(int id, Database database = null)
+		public static NotificationSubscription GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static TestSuiteDefinition GetById(long id, Database database = null)
+		public static NotificationSubscription GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static TestSuiteDefinition GetByUuid(string uuid, Database database = null)
+		public static NotificationSubscription GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static TestSuiteDefinition GetByCuid(string cuid, Database database = null)
+		public static NotificationSubscription GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Query(QueryFilter filter, Database database = null)
+		public static NotificationSubscriptionCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static TestSuiteDefinitionCollection Where(QueryFilter filter, Database database = null)
+		public static NotificationSubscriptionCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => filter;
+			WhereDelegate<NotificationSubscriptionColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A Func delegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Where(Func<TestSuiteDefinitionColumns, QueryFilter<TestSuiteDefinitionColumns>> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static NotificationSubscriptionCollection Where(Func<NotificationSubscriptionColumns, QueryFilter<NotificationSubscriptionColumns>> where, OrderBy<NotificationSubscriptionColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<TestSuiteDefinition>();
-			return new TestSuiteDefinitionCollection(database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where, orderBy), true);
+			database = database ?? Db.For<NotificationSubscription>();
+			return new NotificationSubscriptionCollection(database.GetQuery<NotificationSubscriptionColumns, NotificationSubscription>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static NotificationSubscriptionCollection Where(WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<TestSuiteDefinition>();
-			var results = new TestSuiteDefinitionCollection(database, database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where), true);
+			database = database ?? Db.For<NotificationSubscription>();
+			var results = new NotificationSubscriptionCollection(database, database.GetQuery<NotificationSubscriptionColumns, NotificationSubscription>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static NotificationSubscriptionCollection Where(WhereDelegate<NotificationSubscriptionColumns> where, OrderBy<NotificationSubscriptionColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<TestSuiteDefinition>();
-			var results = new TestSuiteDefinitionCollection(database, database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where, orderBy), true);
+			database = database ?? Db.For<NotificationSubscription>();
+			var results = new NotificationSubscriptionCollection(database, database.GetQuery<NotificationSubscriptionColumns, NotificationSubscription>(where, orderBy), true);
 			return results;
 		}
 
@@ -428,13 +356,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;TestSuiteDefinitionColumns&gt;.
+		/// WhereDelegate&lt;NotificationSubscriptionColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static TestSuiteDefinitionCollection Where(QiQuery where, Database database = null)
+		public static NotificationSubscriptionCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new TestSuiteDefinitionCollection(database, Select<TestSuiteDefinitionColumns>.From<TestSuiteDefinition>().Where(where, database));
+			var results = new NotificationSubscriptionCollection(database, Select<NotificationSubscriptionColumns>.From<NotificationSubscription>().Where(where, database));
 			return results;
 		}
 				
@@ -444,7 +372,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition GetOneWhere(QueryFilter where, Database database = null)
+		public static NotificationSubscription GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -463,9 +391,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition OneWhere(QueryFilter where, Database database = null)
+		public static NotificationSubscription OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => where;
+			WhereDelegate<NotificationSubscriptionColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -478,12 +406,12 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition GetOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static NotificationSubscription GetOneWhere(WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
+				NotificationSubscriptionColumns c = new NotificationSubscriptionColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -495,15 +423,15 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single TestSuiteDefinition instance by its Id/Key value
+		/// single NotificationSubscription instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition OneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static NotificationSubscription OneWhere(WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -513,11 +441,11 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<TestSuiteDefinitionColumns>.
+		/// WhereDelegate<NotificationSubscriptionColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static TestSuiteDefinition OneWhere(QiQuery where, Database database = null)
+		public static NotificationSubscription OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -527,13 +455,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static NotificationSubscription FirstOneWhere(WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -550,13 +478,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
+		public static NotificationSubscription FirstOneWhere(WhereDelegate<NotificationSubscriptionColumns> where, OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -572,15 +500,15 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinition FirstOneWhere(QueryFilter where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static NotificationSubscription FirstOneWhere(QueryFilter where, OrderBy<NotificationSubscriptionColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => where;
+			WhereDelegate<NotificationSubscriptionColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -601,13 +529,13 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static NotificationSubscriptionCollection Top(int count, WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -621,9 +549,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -632,29 +560,29 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
+		public static NotificationSubscriptionCollection Top(int count, WhereDelegate<NotificationSubscriptionColumns> where, OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
 		{
-			TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
+			NotificationSubscriptionColumns c = new NotificationSubscriptionColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<TestSuiteDefinition>();
+			Database db = database ?? Db.For<NotificationSubscription>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<TestSuiteDefinition>(count);
+			query.Top<NotificationSubscription>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<TestSuiteDefinitionColumns>(orderBy);
+				query.OrderBy<NotificationSubscriptionColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
+			var results = query.Results.As<NotificationSubscriptionCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Top(int count, QueryFilter where, Database database)
+		public static NotificationSubscriptionCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -678,39 +606,20 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Top(int count, QueryFilter where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static NotificationSubscriptionCollection Top(int count, QueryFilter where, OrderBy<NotificationSubscriptionColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<TestSuiteDefinition>();
+			Database db = database ?? Db.For<NotificationSubscription>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<TestSuiteDefinition>(count);
+			query.Top<NotificationSubscription>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<TestSuiteDefinitionColumns>(orderBy);
+				query.OrderBy<NotificationSubscriptionColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
-			results.Database = db;
-			return results;
-		}
-
-		[Bam.Net.Exclude]
-		public static TestSuiteDefinitionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
-		{
-			Database db = database ?? Db.For<TestSuiteDefinition>();
-			QuerySet query = GetQuerySet(db);
-			query.Top<TestSuiteDefinition>(count);
-			query.Where(where);
-
-			if(orderBy != null)
-			{
-				query.OrderBy(orderBy, sortOrder);
-			}
-
-			query.Execute(db);
-			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
+			var results = query.Results.As<NotificationSubscriptionCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -731,29 +640,29 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static TestSuiteDefinitionCollection Top(int count, QiQuery where, Database database = null)
+		public static NotificationSubscriptionCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<TestSuiteDefinition>();
+			Database db = database ?? Db.For<NotificationSubscription>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<TestSuiteDefinition>(count);
+			query.Top<NotificationSubscription>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
+			var results = query.Results.As<NotificationSubscriptionCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of TestSuiteDefinitions
+		/// Return the count of NotificationSubscriptions
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<TestSuiteDefinition>();
+			Database db = database ?? Db.For<NotificationSubscription>();
             QuerySet query = GetQuerySet(db);
-            query.Count<TestSuiteDefinition>();
+            query.Count<NotificationSubscription>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -761,22 +670,22 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
+		/// between NotificationSubscriptionColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
+		public static long Count(WhereDelegate<NotificationSubscriptionColumns> where, Database database = null)
 		{
-			TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
+			NotificationSubscriptionColumns c = new NotificationSubscriptionColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<TestSuiteDefinition>();
+			Database db = database ?? Db.For<NotificationSubscription>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<TestSuiteDefinition>();
+			query.Count<NotificationSubscription>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -784,18 +693,18 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<TestSuiteDefinition>();
+		    Database db = database ?? Db.For<NotificationSubscription>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<TestSuiteDefinition>();
+			query.Count<NotificationSubscription>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static TestSuiteDefinition CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static NotificationSubscription CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<TestSuiteDefinition>();			
-			var dao = new TestSuiteDefinition();
+			Database db = database ?? Db.For<NotificationSubscription>();			
+			var dao = new NotificationSubscription();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -804,7 +713,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			return dao;
 		}
 		
-		private static TestSuiteDefinition OneOrThrow(TestSuiteDefinitionCollection c)
+		private static NotificationSubscription OneOrThrow(NotificationSubscriptionCollection c)
 		{
 			if(c.Count == 1)
 			{
