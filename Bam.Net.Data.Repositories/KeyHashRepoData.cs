@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
+    /// <summary>
+    /// Extend this class to define a type that uses multiple properties to determine
+    /// persistence instance uniqueness.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Data.Repositories.RepoData" />
+    /// <seealso cref="Bam.Net.Data.Repositories.IHasKeyHash" />
     [Serializable]
     public abstract class KeyHashRepoData : RepoData, IHasKeyHash
     {

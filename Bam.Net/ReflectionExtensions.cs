@@ -386,6 +386,46 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// If instance is null return the specified alternative other return the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="instead">The instead.</param>
+        /// <returns></returns>
+        public static T Or<T>(this T instance, T instead)
+        {
+            if(instance == null)
+            {
+                return instead;
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// Tries to get the value of the specified property, using the specified value if
+        /// the property is not found on the specified instance. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="ifPropertyNotFound">If property not found.</param>
+        /// <param name="value">The value.</param>
+        public static void TryGetPropertyValue<T>(this object instance, string propertyName, T ifPropertyNotFound, out T value)
+        {
+            Args.ThrowIfNull(instance, "instance");
+            Type type = instance.GetType();
+            PropertyInfo property = type.GetProperties().FirstOrDefault(pi => pi.Name.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
+            if(property == null)
+            {
+                value = ifPropertyNotFound;
+            }
+            else
+            {
+                value = (T)property.GetValue(instance);
+            }
+        }
+
+        /// <summary>
         /// Get the property of the current instance with the specified name
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -408,7 +448,7 @@ namespace Bam.Net
         {
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType();
-            PropertyInfo property = type.GetProperties().FirstOrDefault(pi => pi.Name.ToLowerInvariant().Equals(propertyName.ToLowerInvariant()));
+            PropertyInfo property = type.GetProperties().FirstOrDefault(pi => pi.Name.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
             if (property == null)
             {
                 if (throwIfPropertyNotFound)
