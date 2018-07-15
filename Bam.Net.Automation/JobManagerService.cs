@@ -18,6 +18,7 @@ using System.Threading;
 using Bam.Net.Services;
 using Bam.Net.Automation;
 using Bam.Net.Data.Repositories;
+using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Automation
 {
@@ -49,6 +50,7 @@ namespace Bam.Net.Automation
 
         public JobManagerService(IApplicationNameProvider appNameProvider, DataSettings dataSettings, ProfigurationSet profiguration = null)
         {
+            TypeResolver = new TypeResolver();
             DataSettings = dataSettings;
             ApplicationNameProvider = appNameProvider;
             JobsDirectory = dataSettings.GetAppDataDirectory(appNameProvider, "Jobs").FullName;

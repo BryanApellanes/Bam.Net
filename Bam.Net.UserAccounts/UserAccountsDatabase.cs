@@ -35,7 +35,12 @@ namespace Bam.Net.UserAccounts
             get
             {
                 return _defaultLock.DoubleCheckLock(ref _default, 
-                    () => new UserAccountsDatabase(new SQLiteDatabase(RuntimeSettings.AppDataFolder, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName())));
+                    () => 
+                    {
+                        UserAccountsDatabase db = new UserAccountsDatabase(new SQLiteDatabase(RuntimeSettings.AppDataFolder, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName()));
+                        db.Database.TryEnsureSchema<UserAccounts.Data.User>();
+                        return db;
+                    });
             }
         }
     }

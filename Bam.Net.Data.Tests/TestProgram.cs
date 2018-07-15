@@ -188,6 +188,7 @@ namespace Bam.Net.Data.Tests
         [UnitTest]
         public void DaoDataGetSetTest()
         {
+            Db.For<TestTable>(new SQLiteDatabase());
             TestTable instance = new TestTable();
             string propValue = "ByProperty";
             instance.Name = propValue;

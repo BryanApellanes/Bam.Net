@@ -3954,6 +3954,17 @@ namespace Bam.Net
             return temp;
         }
 
+        public static object ToDynamicData(this Dictionary<string, object> instance, string typeName)
+        {
+            Type type = instance.ToDynamicType(typeName);
+            object temp = type.Construct();
+            foreach(string key in instance.Keys)
+            {
+                temp.Property(key, instance[key]);
+            }
+            return temp;
+        }
+
         private static bool DataTypeFilter(PropertyInfo prop)
         {
             return prop.PropertyType == typeof(string) ||
@@ -4422,12 +4433,39 @@ namespace Bam.Net
                 }
                 else
                 {
-                    TypeBuilder typeBuilder;
-                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
 
                     foreach (DataColumn column in row.Table.Columns)
                     {
                         CustomPropertyInfo propInfo = new CustomPropertyInfo(column.ColumnName, row[column].GetType());
+                        AddPropertyToDynamicType(typeBuilder, propInfo);
+                    }
+
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
+            }
+        }
+
+        public static Type ToDynamicType(this Dictionary<string, object> dictionary, string typeName)
+        {
+            return ToDynamicType(dictionary, typeName, out AssemblyBuilder ignore);
+        }
+
+        public static Type ToDynamicType(this Dictionary<string, object> dictionary, string typeName, out AssemblyBuilder assemblyBuilder)
+        {
+            lock (_buildDynamicTypeLock)
+            {
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null)
+                {
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
+                }
+                else
+                {
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
+
+                    foreach (string propertyName in dictionary.Keys)
+                    {
+                        CustomPropertyInfo propInfo = new CustomPropertyInfo(propertyName, dictionary[propertyName].GetType());
                         AddPropertyToDynamicType(typeBuilder, propInfo);
                     }
 

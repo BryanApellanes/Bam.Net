@@ -61,7 +61,7 @@ namespace Bam.Net.Server.Rest
                     IRenderer renderer = RendererFactory.CreateRenderer(context.Request, restRequest.Extension);
                     if (restRequest.Query.Count > 0)
                     {
-                        renderer.Render(new RestResponse { Success = true, Data = Repository.Query(type, restRequest.Query) }, response.OutputStream);
+                        renderer.Render(new RestResponse { Success = true, Data = Repository.Query(type, restRequest.Query.ToDynamicData(4.RandomLetters())) }, response.OutputStream);
                         result = true;
                     }
                     else if (restRequest.Id > 0)

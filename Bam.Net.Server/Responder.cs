@@ -86,10 +86,15 @@ namespace Bam.Net.Server
         /// </summary>
         public event ResponderEventHandler NotResponded;
 
+        BamConf _bamconf;
         public BamConf BamConf
         {
-            get;
-            set;
+            get { return _bamconf; }
+            set
+            {
+                _bamconf = value;
+                _serverRoot = _bamconf.Fs;
+            }
         }
 
         Fs _serverRoot;

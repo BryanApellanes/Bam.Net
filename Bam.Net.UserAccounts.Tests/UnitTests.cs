@@ -228,27 +228,6 @@ namespace Bam.Net.UserAccounts.Tests
             Expect.IsNotNull(session.LastActivity, "LastActivity was null");
             Instant lastActivity = new Instant(session.LastActivity.Value);
         }
-
-        [UnitTest]
-        public void SessionGetShouldUpdateLastActivity()
-        {
-            IHttpContext context = A.Fake<IHttpContext>();
-            context.Request = new TestRequest();
-            Database db = new SQLiteDatabase();
-            db.TryEnsureSchema<Session>();
-            Db.For<Session>(db);
-            Session session = Session.Init(context);
-
-            Instant created = new Instant(session.CreationDate.Value);
-            Instant lastActivity = new Instant(session.LastActivity.Value);
-            Expect.AreEqual(lastActivity, created, "LastActivity should have been the same as CreationDate");
-            Thread.Sleep(30);
-            session = Session.Get(context);
-            lastActivity = new Instant(session.LastActivity.Value);
-            int diff = lastActivity.DiffInMilliseconds(created);
-            Expect.IsGreaterThan(diff, 30);
-        }
-
         
         [UnitTest]
         public void ShouldBeEqual()

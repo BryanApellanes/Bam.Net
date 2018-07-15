@@ -1584,6 +1584,7 @@ namespace Bam.Net.Data
         {
             // Note To Self: Please don't mess with this logic.  You've faced the consequences of that decision 
             // too many times now.  Trust that this moronic looking logic is needed for all to function correctly.
+            // - BA (07/14/2018)
             if (columnName.Equals(KeyColumnName))
             {
                 if (value != null && value != DBNull.Value)

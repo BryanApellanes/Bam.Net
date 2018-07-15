@@ -25,7 +25,7 @@ namespace Bam.Net.UserAccounts.Tests
     {
         static void Main(string[] args)
         {
-			IsolateMethodCalls = true;
+			IsolateMethodCalls = false;
             PreInit();
             Initialize(args);
         }

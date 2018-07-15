@@ -21,17 +21,19 @@ using Microsoft.Build.Execution;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
 using System.CodeDom.Compiler;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class JobManagerUnitTests : CommandLineTestInterface
     {
-        [UnitTest("JobConductor:: Verify Jobs Folder in AppDataFolder for new JobConductor")]
+        [UnitTest("JobManager:: Verify Jobs Folder in AppDataFolder for new JobConductor")]
         public void JobsDirectoryShouldBeInAppDataFolder()
         {
             JobManagerService jobConductor = new JobManagerService();
-            Expect.AreEqual(Path.Combine(RuntimeSettings.AppDataFolder, "Jobs"), jobConductor.JobsDirectory);
+            string expected = DataSettings.Current.GetAppDataDirectory(DefaultConfigurationApplicationNameProvider.Instance, "Jobs").FullName;
+            Expect.AreEqual(expected, jobConductor.JobsDirectory);
         }
 
         public void DeleteJobsDirectory()
@@ -44,7 +46,7 @@ namespace Bam.Net.Automation.Tests
             }
         }
 
-        [UnitTest("JobConductor:: Should Create JobConf")]
+        [UnitTest("JobManager:: Should Create JobConf")]
         public void JobConductorShouldCreaetJobConf()
         {
             JobManagerService jc = new JobManagerService()
@@ -57,7 +59,7 @@ namespace Bam.Net.Automation.Tests
             Expect.IsTrue(File.Exists(path));
         }
 
-        [UnitTest("JobConductor:: JobExists should be true after create")]
+        [UnitTest("JobManager:: JobExists should be true after create")]
         public void ExistsShouldBeTrueAfterCreate()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -99,7 +101,7 @@ public class FuncProvider
             return jc;
         }
 
-        [UnitTest("JobConductor:: CreateJob should throw an exception if it already exists")]
+        [UnitTest("JobManager:: CreateJob should throw an exception if it already exists")]
         public void CreateJobShouldThrowExceptionIfItExists()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -111,7 +113,7 @@ public class FuncProvider
         }
 
 
-        [UnitTest("JobConductor:: JobDirectory should be set on JobConf")]
+        [UnitTest("JobManager:: JobDirectory should be set on JobConf")]
         public void JobConductorShouldCreateJobConfWithJobDirectorySet()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -121,7 +123,7 @@ public class FuncProvider
             Expect.IsTrue(conf.JobDirectory.StartsWith(foreman.JobsDirectory), "conf directory wasn't set correctly");
         }
 
-        [UnitTest("JobConductor:: GetJob should create new job")]
+        [UnitTest("JobManager:: GetJob should create new job")]
         public void GetJobShouldCreateNewJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -135,7 +137,7 @@ public class FuncProvider
             Expect.IsTrue(File.Exists(validate.GetFilePath()));
         }
 
-        [UnitTest("JobConductor:: GetJob should return existingJob")]
+        [UnitTest("JobManager:: GetJob should return existingJob")]
         public void GetJobShouldReturnExistingJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -149,7 +151,7 @@ public class FuncProvider
             Expect.AreEqual(name, validate.Name);
         }
 
-        [UnitTest("JobConductor:: Job should run if job runner thread is running")]
+        [UnitTest("JobManager:: Job should run if job runner thread is running")]
         public void JobShouldRunIfRunnerThreadIsRunning()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -178,7 +180,7 @@ public class FuncProvider
             Expect.IsTrue(finished == true);
         }
 
-        [UnitTest("JobConductor:: Add Worker to non existent job should create new job")]
+        [UnitTest("JobManager:: Add Worker to non existent job should create new job")]
         public void AddWorkerShouldCreateJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -191,7 +193,7 @@ public class FuncProvider
             Expect.IsTrue(jc.JobExists(jobName));
         }
 
-        [UnitTest("JobConductor:: AddWorker should throw ArgumentNullException if type not found")]
+        [UnitTest("JobManager:: AddWorker should throw ArgumentNullException if type not found")]
         public void AddWorkerShouldThrowArgumentNullException()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -205,7 +207,7 @@ public class FuncProvider
             }, "Should have thrown an exception but didn't");
         }
 
-        [UnitTest("JobConductor:: AddWorker should create worker")]
+        [UnitTest("JobManager:: AddWorker should create worker")]
         public void AddWorkerShouldSetWorkerName()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -216,7 +218,7 @@ public class FuncProvider
             Expect.IsTrue(jc.WorkerExists(jobName, workerName));
         }
 
-        [UnitTest("JobConductor:: AddWorker should create worker and Job should know")]
+        [UnitTest("JobManager:: AddWorker should create worker and Job should know")]
         public void ShouldBeAbleToAddWorker()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -230,7 +232,7 @@ public class FuncProvider
             Expect.IsTrue(job.WorkerExists(workerName));
         }
 
-        [UnitTest("JobConductor:: After AddWorker job create should have expected worker count")]
+        [UnitTest("JobManager:: After AddWorker job create should have expected worker count")]
         public void AfterAddWorkerCreateJobShouldHaveCorrectWorkers()
         {
             string name = MethodBase.GetCurrentMethod().Name;
@@ -249,7 +251,7 @@ public class FuncProvider
             Expect.AreEqual("two", job["two"].Name);
         }
 
-        [UnitTest("JobConductor:: Should be able to run job with specified (0) based step number")]
+        [UnitTest("JobManager:: Should be able to run job with specified (0) based step number")]
         public void ShouldBeAbleToRunJobWithSpecifiedStepNumber()
         {
             string name = MethodBase.GetCurrentMethod().Name;

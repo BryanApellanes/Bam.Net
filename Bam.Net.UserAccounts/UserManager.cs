@@ -48,7 +48,7 @@ namespace Bam.Net.UserAccounts
         public UserManager()
         {
             SmtpSettingsProvider = new SmtpSettingsProvider();
-            SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
+            SmtpSettingsVaultPath = Path.Combine(Paths.AppData, "SmtpSettings.vault.sqlite");
             PasswordResetTokensExpireInThisManyMinutes = 15;
             LastException = new NullException();
         }
@@ -56,7 +56,6 @@ namespace Bam.Net.UserAccounts
         public UserManager(UserAccountsDatabase db): this()
         {
             Database = db;
-            Authenticator = new DaoAuthenticator(Database);
         }
 
         [Exclude]
@@ -394,6 +393,7 @@ namespace Bam.Net.UserAccounts
             {
                 _database = value;
                 DaoUserResolver.Database = _database;
+                Authenticator = new DaoAuthenticator(_database);
                 User.UserDatabase = _database;
             }
         }

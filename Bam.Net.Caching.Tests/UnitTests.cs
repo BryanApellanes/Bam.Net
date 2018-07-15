@@ -76,8 +76,7 @@ namespace Bam.Net.Caching.Tests
             };
             Func<dynamic, byte[]> readFromCache = (context) =>
             {
-                BinaryFileCache textCache = context.BinaryFileCache;
-                return textCache.GetBytes(testFile);
+                return context.BinaryFileCache.GetBytes(testFile);
             };
             readFromFile(testFilePath); // prime
             readFromCache(new { BinaryFileCache = cache }); //prime

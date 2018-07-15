@@ -50,7 +50,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(".\\ObjectRepositoryData"));
+                return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(Path.Combine(DataSettings.Current.AppDataDirectory, "ObjectRepositoryData")));
 			}
 			set
 			{
@@ -374,19 +374,21 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         protected Meta GetMeta(object data, Type type = null)
 		{
-			Meta meta = data as Meta;
-			if (meta != null)
-			{
-				data = meta.Data;
+            if (data is Meta meta)
+            {
+                data = meta.Data;
                 meta.ObjectReaderWriter = this;
-			}
-			else
-			{
-				SetId(data);
-				SetUuid(data);
-				meta = new Meta(data, this);
-			}
-            meta.Type = type;
+            }
+            else
+            {
+                SetId(data);
+                SetUuid(data);
+                meta = new Meta(data, this);
+            }
+            if(type != typeof(object))
+            {
+                meta.Type = type;
+            }
 			return meta;
 		}
 
@@ -505,7 +507,7 @@ namespace Bam.Net.Data.Repositories
         /// <param name="value">The value.</param>
         protected void WriteObjectProperties(Type type, object value)
         {
-            foreach (PropertyInfo prop in type
+            PropertyInfo[] properties = type
                 .GetProperties()
                 .Where(prop => prop.PropertyType == typeof(string) ||
                     prop.PropertyType == typeof(bool) ||
@@ -518,7 +520,8 @@ namespace Bam.Net.Data.Repositories
                     prop.PropertyType == typeof(decimal?) ||
                     prop.PropertyType == typeof(byte[]) ||
                     prop.PropertyType == typeof(DateTime) ||
-                    prop.PropertyType == typeof(DateTime?)))
+                    prop.PropertyType == typeof(DateTime?)).ToArray();
+            foreach (PropertyInfo prop in properties)
             {
                 WriteProperty(type, prop, value);
             }
@@ -743,23 +746,19 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-		protected virtual string GetUuidHash(string uuid, Type type)
+		protected string GetUuidHash(string uuid, Type type)
 		{
-			string hash = "{0}::{1}"._Format(uuid, type.FullName).Md5();
-			return hash;
+            return Meta.GetUuidHash(uuid, type);
 		}
 
 		protected virtual string GetIdHash(object value, Type type = null)
 		{
-			type = type ?? value.GetType();
-			long id = Meta.GetId(value).Value;
-			return GetIdHash(id, type);
+            return Meta.GetIdHash(value, type);
 		}
 
 		protected virtual string GetIdHash(long id, Type type)
 		{
-			string hash = "{0}::{1}"._Format(id, type.FullName).Md5();
-			return hash;
+            return Meta.GetIdHash(id, type);
 		}
 
 		//protected internal List<FileInfo> GetPropertyFiles(PropertyInfo prop, string hash)
@@ -902,12 +901,15 @@ namespace Bam.Net.Data.Repositories
 			foreach (string hash in hashes)
 			{
 				object instance = ReadByHash(type, hash);
-				Meta meta = new Meta(instance, this);
-				if (predicate(instance) && !metaList.Contains(meta))
-				{
-					metaList.Add(meta);
-					results.Add(instance);
-				}
+                if(instance != null)
+                {
+                    Meta meta = new Meta(instance, this);
+                    if (predicate(instance) && !metaList.Contains(meta))
+                    {
+                        metaList.Add(meta);
+                        results.Add(instance);
+                    }
+                }
 			}
 
 			return results.ToArray();
