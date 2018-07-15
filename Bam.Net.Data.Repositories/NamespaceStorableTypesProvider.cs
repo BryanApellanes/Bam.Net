@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Data.Repositories;
+using System.Diagnostics;
 
 namespace Bam.Net.CoreServices
 {
@@ -25,6 +26,8 @@ namespace Bam.Net.CoreServices
             }
         }
         public string[] Namespaces { get; set; }
+
+        [DebuggerStepThrough]
         public override HashSet<Type> GetTypes()
         {
             List<string> namespaces = new List<string>(Namespaces);

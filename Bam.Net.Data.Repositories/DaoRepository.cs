@@ -881,10 +881,6 @@ namespace Bam.Net.Data.Repositories
 
         public IEnumerable<TChildType> ForeignKeyCollectionLoader<TParentType, TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
 		{
-            if(!poco.Property<bool>("IsPersisted", false))
-            {
-                return new List<TChildType>();
-            }
 			// get all the child types where the foreign key property value equals the parent id
 			TypeFk fkDescriptor = TypeSchema.ForeignKeys.FirstOrDefault(tfk => tfk.PrimaryKeyType == typeof(TParentType) && tfk.ForeignKeyType == typeof(TChildType));
 
@@ -902,7 +898,8 @@ namespace Bam.Net.Data.Repositories
             long parentId = GetIdValue(poco).Value;
             if (parentId <= 0)
             {
-                Logger.AddEntry("IdValue not found for specified parent instance: {0}", poco.TryPropertiesToString());
+                Type pocoType = poco.GetType();
+                Logger.AddEntry("IdValue not found for specified parent instance: Type={0}.{1}, {2}", pocoType.Namespace, pocoType.Name, poco.ToString());
                 return new List<TChildType>();
             }
             QueryFilter filter = Bam.Net.Data.Query.Where(foreignKeyName) == parentId;

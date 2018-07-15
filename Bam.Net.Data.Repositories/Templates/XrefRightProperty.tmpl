@@ -9,14 +9,10 @@
 			{
 				if(_@(Model.Left.Name.Pluralize().CamelCase()) == null || _@(Model.Left.Name.Pluralize().CamelCase()).@(Model.LeftLengthOrCount) == 0)
 				{
-					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
-                    if (isPersisted)
-					{
-						 var xref = new XrefDaoCollection<@(xrefTableName), @Model.DaoNamespace.@(Model.Left.Name)>(Repository.GetDaoInstance(this), false);
-						 xref.Load(Repository.Database);
-						 _@(Model.Left.Name.Pluralize().CamelCase()) = ((IEnumerable)xref).CopyAs<@(Model.Left.Namespace).@(Model.Left.Name)>().To@(Model.LeftArrayOrList)();
-						 SetUpdatedXrefCollectionProperty("@(Model.LeftDaoName.Pluralize())", this.GetType().GetProperty("@(Model.LeftCollectionProperty.Name)"));					
-					}
+					var xref = new XrefDaoCollection<@(xrefTableName), @Model.DaoNamespace.@(Model.Left.Name)>(Repository.GetDaoInstance(this), false);
+					xref.Load(Repository.Database);
+					_@(Model.Left.Name.Pluralize().CamelCase()) = ((IEnumerable)xref).CopyAs<@(Model.Left.Namespace).@(Model.Left.Name)>().To@(Model.LeftArrayOrList)();
+					SetUpdatedXrefCollectionProperty("@(Model.LeftDaoName.Pluralize())", this.GetType().GetProperty("@(Model.LeftCollectionProperty.Name)"));					
 				}
 
 				return _@(Model.Left.Name.Pluralize().CamelCase());

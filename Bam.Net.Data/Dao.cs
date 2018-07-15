@@ -1290,7 +1290,7 @@ namespace Bam.Net.Data
         /// <summary>
         /// Gets the primary key.  If the current instance is backed
         /// by a DataRow because it was hydrated from a database query
-        /// the primary key value is the value in DataRow[KeyColumnName.
+        /// the primary key value is the value in DataRow[KeyColumnName].
         /// Otherwise, null.
         /// </summary>
         /// <value>
@@ -1582,9 +1582,14 @@ namespace Bam.Net.Data
 
         protected internal void SetValue(string columnName, object value)
         {
+            // Note To Self: Please don't mess with this logic.  You've faced the consequences of that decision 
+            // too many times now.  Trust that this moronic looking logic is needed for all to function correctly.
             if (columnName.Equals(KeyColumnName))
             {
-                PrimaryKey = value;
+                if (value != null && value != DBNull.Value)
+                {
+                    IdValue = new long?(Convert.ToInt64(value));
+                }
             }
             else if (this.NewValues.ContainsKey(columnName))
             {
