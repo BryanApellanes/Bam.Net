@@ -10,7 +10,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data
     [Serializable]
     public class WebHookDescriptor: AuditRepoData
     {
-        public WebHookDescriptor() { Subscribers = new List<WebHookSubscriber>(); }
+        public WebHookDescriptor() { }
         public string WebHookName { get; set; }
         public string Description { get; set; }
         public string SharedSecret { get; set; }

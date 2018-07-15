@@ -72,14 +72,10 @@ System.Collections.Generic.List<Bam.Net.CoreServices.WebHooks.Data.WebHookCall> 
 			{
 				if(_webHookSubscribers == null || _webHookSubscribers.Count == 0)
 				{
-					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
-                    if (isPersisted)
-					{
-						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber,  Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber>(Repository.GetDaoInstance(this), false);
-						 xref.Load(Repository.Database);
-						 _webHookSubscribers = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber>().ToList();
-						 SetUpdatedXrefCollectionProperty("WebHookSubscribers", this.GetType().GetProperty("Subscribers"));					
-					}
+					var xref = new XrefDaoCollection<Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptorWebHookSubscriber,  Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber>(Repository.GetDaoInstance(this), false);
+					xref.Load(Repository.Database);
+					_webHookSubscribers = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber>().ToList();
+					SetUpdatedXrefCollectionProperty("WebHookSubscribers", this.GetType().GetProperty("Subscribers"));					
 				}
 
 				return _webHookSubscribers;

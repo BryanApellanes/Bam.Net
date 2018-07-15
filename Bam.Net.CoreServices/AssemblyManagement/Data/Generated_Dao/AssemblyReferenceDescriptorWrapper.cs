@@ -58,14 +58,10 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 			{
 				if(_assemblyDescriptors == null || _assemblyDescriptors.Count == 0)
 				{
-					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
-                    if (isPersisted)
-					{
-						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor, Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptor>(Repository.GetDaoInstance(this), false);
-						 xref.Load(Repository.Database);
-						 _assemblyDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyDescriptor>().ToList();
-						 SetUpdatedXrefCollectionProperty("AssemblyDescriptors", this.GetType().GetProperty("AssemblyDescriptors"));					
-					}
+					var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor, Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptor>(Repository.GetDaoInstance(this), false);
+					xref.Load(Repository.Database);
+					_assemblyDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyDescriptor>().ToList();
+					SetUpdatedXrefCollectionProperty("AssemblyDescriptors", this.GetType().GetProperty("AssemblyDescriptors"));					
 				}
 
 				return _assemblyDescriptors;

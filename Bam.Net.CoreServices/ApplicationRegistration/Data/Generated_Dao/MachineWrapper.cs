@@ -133,14 +133,10 @@ System.Collections.Generic.List<Bam.Net.CoreServices.ApplicationRegistration.Dat
 			{
 				if(_applications == null || _applications.Count == 0)
 				{
-					this.TryGetPropertyValue("IsPersisted", true, out bool isPersisted);
-                    if (isPersisted)
-					{
-						 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.ApplicationMachine, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
-						 xref.Load(Repository.Database);
-						 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>().ToList();
-						 SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));					
-					}
+					var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.ApplicationMachine, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
+					xref.Load(Repository.Database);
+					_applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>().ToList();
+					SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));					
 				}
 
 				return _applications;

@@ -493,6 +493,9 @@
     <None Include="OAuth\regen_oauth_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="regen.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
