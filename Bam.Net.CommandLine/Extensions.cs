@@ -418,10 +418,10 @@ namespace Bam.Net.CommandLine
             {
                 UseShellExecute = false,
                 ErrorDialog = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
             };
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
 
             if (promptForAdmin)
             {

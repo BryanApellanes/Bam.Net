@@ -4,5 +4,5 @@
   "TestReportHost": "int.bamapps.net",
   "TestReportPort": 80,
   "Tag": "tests",
-  "Search": ".\\*.Tests.*"
+  "Search": ".\\*.Tests.exe"
 }

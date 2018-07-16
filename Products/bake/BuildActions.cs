@@ -346,11 +346,16 @@ namespace Bam.Net.Automation
             DeployTestFiles(latestBinaries, testInfo);
             OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
 
-            string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
+            string bamtestrunner = Path.Combine(Paths.Tests, testInfo.Tag, "bamtestrunner.exe");
             if (testInfo.RunOnHost.Equals("."))
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
+                    UseShellExecute = false,
+                    ErrorDialog = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     FileName = bamtestrunner,
                     Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
                     WorkingDirectory = Path.Combine(Paths.Tests)
