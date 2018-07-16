@@ -13,7 +13,7 @@ namespace Bam.Net.CoreServices
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     [ServiceSubdomain("config")]
-    public class ConfigurationService : ApplicationProxyableService
+    public class ConfigurationService : ApplicationProxyableService, ICoreConfigurationService
     {
         public const string CommonConfigName = "Common";
         protected ConfigurationService() { }
@@ -95,6 +95,12 @@ namespace Bam.Net.CoreServices
                 }
                 return new Dictionary<string, string>();
             }
+        }
+
+        [RoleRequired("/", "Admin")]
+        public virtual void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName)
+        {
+            SetApplicationConfiguration(configuration, applicationName, configurationName);
         }
 
         [RoleRequired("/", "Admin")]

@@ -69,6 +69,7 @@ namespace Bam.Net.Data
             incubator.Set<SqlStringBuilder>(() => new OleDbSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new OleDbSqlStringBuilder());
             incubator.Set<QuerySet>(() => new OleDbQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new DataTypeTranslator());
         }
     }
 }

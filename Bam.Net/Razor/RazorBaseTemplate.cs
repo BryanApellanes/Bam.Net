@@ -11,6 +11,17 @@ namespace Bam.Net.Razor
 {
     public abstract class RazorBaseTemplate
     {
+        static readonly Dictionary<ProcessModes, Action<string>> _inspectors;        
+        static RazorBaseTemplate()
+        {
+            _inspectors = new Dictionary<ProcessModes, Action<string>>
+            {
+                { ProcessModes.Dev, (s) => { Console.WriteLine(s); } },
+                { ProcessModes.Test, (s) => {Console.WriteLine(s); } },
+                { ProcessModes.Prod, (s) => {Console.WriteLine("Parsing Razor Template..."); } }
+            };
+        }
+
         public StringBuilder Generated { get; protected set; }
 
         public abstract void Execute();
@@ -25,7 +36,8 @@ namespace Bam.Net.Razor
             Generated.Append(value);
         }
 
-        static Action<string> _defaultInspector = (s) => { Console.WriteLine(s); };
+        static Action<string> _defaultInspector;
+        static object _defaultInspectorLock = new object();
 	    /// <summary>
 	    /// The default Action that will be given razor parse results; primarily for
 		/// debugging
@@ -34,7 +46,7 @@ namespace Bam.Net.Razor
         {
             get
             {
-                return _defaultInspector;
+                return _defaultInspectorLock.DoubleCheckLock(ref _defaultInspector, () => _inspectors[ProcessMode.Current.Mode]);
             }
             set
             {

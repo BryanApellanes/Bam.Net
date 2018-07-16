@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Bam.Net
 {
-    internal class CustomPropertyInfo: _PropertyInfo
+    public class CustomPropertyInfo: _PropertyInfo
     {
         internal CustomPropertyInfo(string name, Type propertyType)
         {

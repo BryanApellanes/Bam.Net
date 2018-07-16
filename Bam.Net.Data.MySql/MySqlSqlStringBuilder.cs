@@ -25,16 +25,19 @@ namespace Bam.Net.Data
             TableNameFormatter = (s) => "`{0}`"._Format(s);
             ColumnNameFormatter = (s) => s;
         }
+
         public override SqlStringBuilder Id(string idAs)
         {
             Builder.AppendFormat("{0}SELECT last_insert_id() AS {1}", this.GoText, idAs);
             return this;
         }
-        public virtual void Reset()
+
+        public override void Reset()
         {
             base.Reset();
             this.GoText = ";\r\n";
         }
+
         public static void Register(Incubator incubator)
         {
             MySqlSqlStringBuilder builder = new MySqlSqlStringBuilder();
@@ -75,6 +78,7 @@ namespace Bam.Net.Data
 
             return string.Format("{0} {1}{2}{3}", column.Name, type, max, column.AllowNull ? "" : " NOT NULL");
         }
+
         public override SqlStringBuilder Where(IQueryFilter filter)
         {
             WhereFormat where = MySqlFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
@@ -82,6 +86,7 @@ namespace Bam.Net.Data
             this.parameters.AddRange(where.Parameters);
             return this;
         }
+
         public override SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             Builder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
@@ -93,14 +98,12 @@ namespace Bam.Net.Data
 
         protected override void WriteDropForeignKeys(Type daoType)
         {
-            TableAttribute table = null;
-            if (daoType.HasCustomAttributeOfType<TableAttribute>(out table))
+            if (daoType.HasCustomAttributeOfType(out TableAttribute table))
             {
                 PropertyInfo[] properties = daoType.GetProperties();
                 foreach (PropertyInfo prop in properties)
                 {
-                    ForeignKeyAttribute fk = null;
-                    if (prop.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
+                    if (prop.HasCustomAttributeOfType(out ForeignKeyAttribute fk))
                     {
                         Builder.AppendFormat("ALTER TABLE `{0}` DROP FOREIGN KEY {1}", table.TableName, fk.ForeignKeyName);
                         Go();

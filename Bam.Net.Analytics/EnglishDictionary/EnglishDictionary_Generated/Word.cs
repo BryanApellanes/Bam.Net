@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics.EnglishDictionary
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Definition_WordId", new DefinitionCollection(Database.GetQuery<DefinitionColumns, Definition>((c) => c.WordId == GetLongValue("Id")), this, "WordId"));				
@@ -157,7 +158,7 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -177,8 +178,10 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Word>();
 			Database db = database ?? Db.For<Word>();
-			var results = new WordCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new WordCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			if(orderBy != null)
 			{
 				query.OrderBy<WordColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<WordCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static WordCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Word>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Word>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

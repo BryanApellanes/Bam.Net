@@ -55,6 +55,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.ProcessRuntimeDescriptorId == GetLongValue("Id")), this, "ProcessRuntimeDescriptorId"));				
@@ -239,7 +240,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -256,11 +257,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// </param>
 		public static ProcessRuntimeDescriptorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ProcessRuntimeDescriptor>();
 			Database db = database ?? Db.For<ProcessRuntimeDescriptor>();
-			var results = new ProcessRuntimeDescriptorCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ProcessRuntimeDescriptor>();
+			var results = new ProcessRuntimeDescriptorCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -270,14 +273,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ProcessRuntimeDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ProcessRuntimeDescriptorColumns columns = new ProcessRuntimeDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ProcessRuntimeDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -302,14 +305,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ProcessRuntimeDescriptorColumns> where, Action<IEnumerable<ProcessRuntimeDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ProcessRuntimeDescriptorColumns columns = new ProcessRuntimeDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ProcessRuntimeDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -334,13 +337,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ProcessRuntimeDescriptorColumns> where, Action<IEnumerable<ProcessRuntimeDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<ProcessRuntimeDescriptorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ProcessRuntimeDescriptorColumns columns = new ProcessRuntimeDescriptorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

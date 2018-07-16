@@ -21,6 +21,7 @@ namespace Bam.Net.Data.SQLite
             ConnectionString = database.ConnectionString;
             _pragmaTables = new Dictionary<string, DataTable>();
         }
+
         public override DataTypes GetColumnDataType(string tableName, string columnName)
         {
             return TranslateDataType(GetColumnDbDataType(tableName, columnName));

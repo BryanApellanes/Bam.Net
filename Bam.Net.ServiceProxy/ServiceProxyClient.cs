@@ -48,7 +48,7 @@ namespace Bam.Net.ServiceProxy
 
         /// <summary>
         /// The class responsible for providing the name of the
-        /// current application
+        /// current application.
         /// </summary>
         public IApplicationNameProvider ClientApplicationNameProvider { get; set; }
 

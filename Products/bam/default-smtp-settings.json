@@ -1,0 +1,8 @@
+﻿{
+  "SmtpHost": "mail.privateemail.com",
+  "Port": 587,
+  "UserName": "support@threeheadz.com",
+  "From": "support@threeheadz.com",
+  "DisplayName": "Three Headz",
+  "EnableSsl":  true
+}

@@ -55,10 +55,12 @@ namespace Bam.Net.Encryption
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("VaultItem_VaultId", new VaultItemCollection(Database.GetQuery<VaultItemColumns, VaultItem>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("VaultKey_VaultId", new VaultKeyCollection(Database.GetQuery<VaultKeyColumns, VaultKey>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
 			}						
@@ -184,7 +186,7 @@ namespace Bam.Net.Encryption
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -204,8 +206,10 @@ namespace Bam.Net.Encryption
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Vault>();
 			Database db = database ?? Db.For<Vault>();
-			var results = new VaultCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new VaultCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -642,6 +646,25 @@ namespace Bam.Net.Encryption
 			if(orderBy != null)
 			{
 				query.OrderBy<VaultColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<VaultCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static VaultCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Vault>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Vault>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

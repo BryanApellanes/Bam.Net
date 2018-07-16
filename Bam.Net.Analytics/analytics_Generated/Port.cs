@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Url_PortId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.PortId == GetLongValue("Id")), this, "PortId"));				
@@ -157,7 +158,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -177,8 +178,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Port>();
 			Database db = database ?? Db.For<Port>();
-			var results = new PortCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new PortCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<PortColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<PortCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static PortCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Port>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Port>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

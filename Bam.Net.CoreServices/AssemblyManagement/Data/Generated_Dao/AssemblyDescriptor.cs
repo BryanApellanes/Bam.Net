@@ -55,10 +55,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
 			}			
@@ -278,7 +280,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -295,11 +297,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// </param>
 		public static AssemblyDescriptorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<AssemblyDescriptor>();
 			Database db = database ?? Db.For<AssemblyDescriptor>();
-			var results = new AssemblyDescriptorCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<AssemblyDescriptor>();
+			var results = new AssemblyDescriptorCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -309,14 +313,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyDescriptorColumns columns = new AssemblyDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -341,14 +345,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<AssemblyDescriptorColumns> where, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyDescriptorColumns columns = new AssemblyDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -373,13 +377,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<AssemblyDescriptorColumns> where, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<AssemblyDescriptorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AssemblyDescriptorColumns columns = new AssemblyDescriptorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

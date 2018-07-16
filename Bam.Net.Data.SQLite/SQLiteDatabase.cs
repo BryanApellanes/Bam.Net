@@ -104,5 +104,19 @@ namespace Bam.Net.Data.SQLite
                 return _databaseFile;
             }
         }
+
+        public static SQLiteDatabase FromFile(string filePath)
+        {
+            return FromFile(new FileInfo(filePath));
+        }
+
+        public static SQLiteDatabase FromFile(FileInfo sqliteDatabaseFile)
+        {
+            string sqliteDatabaseFilePath = sqliteDatabaseFile.FullName;
+            return new SQLiteDatabase
+            {
+                ConnectionString = string.Format("Data Source={0};Version=3;", sqliteDatabaseFilePath)
+            };
+        }
     }
 }

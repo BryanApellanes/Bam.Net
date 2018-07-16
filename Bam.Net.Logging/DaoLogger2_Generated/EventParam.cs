@@ -172,7 +172,7 @@ namespace Bam.Net.Logging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -192,8 +192,10 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<EventParam>();
 			Database db = database ?? Db.For<EventParam>();
-			var results = new EventParamCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new EventParamCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -630,6 +632,25 @@ namespace Bam.Net.Logging.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<EventParamColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<EventParamCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static EventParamCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<EventParam>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<EventParam>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

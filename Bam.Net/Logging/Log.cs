@@ -117,7 +117,7 @@ namespace Bam.Net.Logging
 
                     if (loggerType == null)
                     {
-                        throw new InvalidOperationException(string.Format("The specified logType ({0}) could not be found.", logType));
+                        throw new InvalidOperationException(string.Format("The specified logType ({0}) was not found.", logType));
                     }
                 }
 
@@ -139,7 +139,7 @@ namespace Bam.Net.Logging
                 throw new InvalidOperationException(string.Format("The specified logType ({0}) doesn't have a parameterless constructor.", loggerType.FullName));
             }
 
-            return (ILogger)ctor.Invoke(null);
+            return ((ILogger)ctor.Invoke(null)).StartLoggingThread();
         }
 
         public static MultiTargetLogger AddLogger(Type loggerType)
@@ -147,7 +147,7 @@ namespace Bam.Net.Logging
             return AddLogger(CreateLogger(loggerType));
         }
 
-        public static MultiTargetLogger AddLogger(this ILogger loggerInstance)
+        public static MultiTargetLogger AddLogger(ILogger loggerInstance)
         {
             MultiTargetLogger main = null;
 
@@ -249,11 +249,19 @@ namespace Bam.Net.Logging
         #endregion
 
         /// <summary>
+        /// Restarts the background logging commit thread.
+        /// </summary>
+        public static void Restart()
+        {
+            Default.RestartLoggingThread();
+        }
+
+        /// <summary>
         /// Starts the background logging commit thread.
         /// </summary>
         public static void Start()
         {
-            Default.RestartLoggingThread();
+            Default.StartLoggingThread();
         }
 
         /// <summary>

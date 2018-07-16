@@ -13,7 +13,7 @@ namespace Bam.Net.ServiceProxy.Secure
 {
     /// <summary>
     /// A class used to retrieve an applications Api Key and 
-    /// client Id to be used in SecureServiceProxy sessions.
+    /// client Id used in SecureServiceProxy sessions.
     /// Implementers of this class need only implement the
     /// GetApplicationClientId and GetApplicationApiKey methods, 
     /// retrieving each from an appropriate location.  For example,

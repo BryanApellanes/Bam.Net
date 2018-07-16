@@ -204,7 +204,7 @@ namespace Bam.Net.Data.Repositories.Tests
 				DaoBackup backup = new DaoBackup(typeof(MainObject).Assembly, toBackup, repo);
 				backup.Backup();
 				SQLiteDatabase restored = GetTestDatabase("{0}_Restored_For_{1}"._Format(MethodBase.GetCurrentMethod().Name, repo.GetType().Name));
-				//MsSqlDatabase restored = new MsSqlDatabase("192.168.0.59", "DaoRef", new MsSqlCredentials { UserName = "naizari", Password = "N41z4r1P455w0rd!" });
+
 				HashSet<OldToNewIdMapping> restoreInfo = backup.Restore(restored);
 				List<string> keys = restoreInfo.Select(i => i.Uuid).ToList();
 				main.Each(new { Uuids = keys }, (ctx, m) =>
@@ -292,9 +292,11 @@ namespace Bam.Net.Data.Repositories.Tests
 			SQLiteDatabase dest;
 			CreateTestDatabases(sourceName, destName, out source, out dest);
 
-			MainObject main = new MainObject();
-			main.Name = "The Main Parent";
-			main.Save(source);
+            MainObject main = new MainObject
+            {
+                Name = "The Main Parent"
+            };
+            main.Save(source);
 			SecondaryObject secondary = main.SecondaryObjectsByMainId.AddNew();
 			string secondaryOneName = 8.RandomLetters();
 			secondary.Name = secondaryOneName;
@@ -314,11 +316,12 @@ namespace Bam.Net.Data.Repositories.Tests
 			Expect.IsTrue(check.SecondaryObjectsByMainId.Count == 2);
 
 			string methodName = MethodBase.GetCurrentMethod().Name;
-			List<IRepository> repos = new List<IRepository>();
-			repos.Add(new DaoRepository(new SQLiteDatabase("BackupRepo_{0}"._Format(methodName), "BackupRepoDb")));
-			//repos.Add(new ObjectRepository("ObjectRepo_{0}"._Format(methodName)));
+            List<IRepository> repos = new List<IRepository>
+            {
+                new ObjectRepository("ObjectRepo_{0}"._Format(methodName))
+            };
 
-			foreach (IRepository repo in repos)
+            foreach (IRepository repo in repos)
 			{
 				DaoBackup backup = new DaoBackup(typeof(MainObject).Assembly, source, repo);
 				backup.Backup();
@@ -337,6 +340,7 @@ namespace Bam.Net.Data.Repositories.Tests
 				Expect.IsTrue(ternaryCheck.SecondaryObjects.Count == 1);
 			}
 		}
+
         private static Func<Type, bool> TestDaoPredicate
         {
             get
@@ -344,6 +348,7 @@ namespace Bam.Net.Data.Repositories.Tests
                 return t => t.HasCustomAttributeOfType<TableAttribute>() && t.Namespace.Equals(typeof(MainObject).Namespace);
             }
         }
+
 		private static void CreateTestDatabases(string sourceName, string destName, out SQLiteDatabase source, out SQLiteDatabase dest)
 		{
 			source = new SQLiteDatabase(".\\{0}"._Format(sourceName), "{0}Db"._Format(sourceName));
@@ -351,6 +356,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			dest = new SQLiteDatabase(".\\{0}"._Format(destName), "{0}Db"._Format(destName));
 			dest.TryEnsureSchema(typeof(MainObject), new ConsoleLogger());
 		}
+
 		private static void FillDatabaseWithTestData(SQLiteDatabase toBackup)
 		{
 			3.Times(i =>

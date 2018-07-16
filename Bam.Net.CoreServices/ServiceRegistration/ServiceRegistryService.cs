@@ -51,6 +51,12 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
+        public static ServiceRegistryService GetLocalServiceRegistryService(string assemblySearchPattern = "*Services.dll", ILogger logger = null)
+        {
+            return GetLocalServiceRegistryService(DataSettings.Current, DefaultConfigurationApplicationNameProvider.Instance, assemblySearchPattern, logger);
+        }
+
+        [Local]
         public static ServiceRegistryService GetLocalServiceRegistryService(DataSettings dataSettings, IApplicationNameProvider appNameProvider, string assemblySearchPattern, ILogger logger = null)
         {
             logger = logger ?? Log.Default;
@@ -179,7 +185,7 @@ namespace Bam.Net.CoreServices
 
         /// <summary>
         /// Register the containers in the specified assembly and 
-        /// return result descriptors for each one found
+        /// return result descriptors for each one found.
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
@@ -254,6 +260,13 @@ namespace Bam.Net.CoreServices
             return GetServiceRegistry(loader);
         }
 
+        /// <summary>
+        /// Gets the service registry for the specified descriptor.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="setProperties">if set to <c>true</c> [set properties].</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         [Local]
         public ServiceRegistry GetServiceRegistry(ServiceRegistryLoaderDescriptor descriptor, bool setProperties = false)
         {
@@ -367,6 +380,12 @@ namespace Bam.Net.CoreServices
         }
 
         static object _registerLoaderLock = new object();
+        /// <summary>
+        /// Registers the service registry loader descriptor.
+        /// </summary>
+        /// <param name="loader">The loader.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        /// <returns></returns>
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryLoaderDescriptor RegisterServiceRegistryLoaderDescriptor(ServiceRegistryLoaderDescriptor loader, bool overwrite)
         {

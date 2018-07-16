@@ -101,6 +101,7 @@
     <Compile Include="MsSqlConnectionStringResolver.cs" />
     <Compile Include="MsSqlCredentials.cs" />
     <Compile Include="MsSqlDatabaseInitializer.cs" />
+    <Compile Include="MsSqlDataTypeTranslator.cs" />
     <Compile Include="MsSqlSchemaExtractor.cs" />
     <Compile Include="MsSqlJavscriptSqlProvider.cs" />
     <Compile Include="MsSqlQuerySet.cs" />

@@ -286,9 +286,23 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
+        public static string GetBaseAddress(IRequest request)
+        {
+            string scheme = request.Url.Scheme;
+            string host = request.Url.Host;
+            int port = request.Url.Port;
+            if (!string.IsNullOrEmpty(request.Headers["X-Forwarded-For"])) // if the request was passed through a proxy set the port to 80
+            {
+                port = 80;
+            }
+            return GetBaseAddress(new Uri($"{scheme}://{host}:{port}/"));
+        }
+
         public static string GetBaseAddress(Uri uri)
         {
-            string defaultBaseAddress = string.Format("{0}://{1}{2}", uri.Scheme, uri.Host, uri.IsDefaultPort ? "/" : string.Format(":{0}/", uri.Port));
+            string port = uri.IsDefaultPort ? "/" : string.Format(":{0}/", uri.Port);
+
+            string defaultBaseAddress = string.Format("{0}://{1}{2}", uri.Scheme, uri.Host, port);
             return defaultBaseAddress;
         }
 
@@ -509,6 +523,10 @@ namespace {0}
                     string protocol = request.Url.Scheme;
                     string host = request.Url.Host;
                     int port = request.Url.Port;
+                    if (!string.IsNullOrEmpty(request.Headers["X-Forwarded-For"])) // if the request was passed through a proxy set the port to 80
+                    {
+                        port = 80;
+                    }
                     stringBuilder.Append(var);
                     stringBuilder.Append(".protocol = \"{0}\";\r\n"._Format(protocol));
                     stringBuilder.Append(var);
@@ -588,7 +606,7 @@ namespace {0}
             if(type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ||
                 method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>())
             {
-                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);");
+                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);\r\n");
             }
             builder.AppendFormat("\t\treturn b.{0}('{1}', '{2}', [{3}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {4} : options);\r\n", methodName, type.Name, method.Name, parameters, "{success: options}");
             

@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace Bam.Net.Logging
 {
+    [Serializable]
     public class LogEntry
     {
 		public string Source

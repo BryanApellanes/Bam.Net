@@ -32,6 +32,11 @@ namespace Bam.Net.ServiceProxy.Tests
     /// </summary>
     public class ServiceProxyTestHelpers
     {
+        static ServiceProxyTestHelpers()
+        {
+            AppDomain.CurrentDomain.DomainUnload += (o, a) => StopServers();
+        }
+
         public class JsonTestRequest: TestRequest
         {
             public override string ContentType => "application/json";
@@ -219,6 +224,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             StartTestServer<Echo>(out baseAddress, out server);
         }
+
         public static void StartTestServer<T>(out string baseAddress, out BamServer server)
         {
             InjectTestConfiguration();
@@ -229,6 +235,7 @@ namespace Bam.Net.ServiceProxy.Tests
             server.Start(true);
             // /end- Test server to catch calls
         }
+
         public static void StartTestServer<T1, T2>(out string baseAddress, out BamServer server)
         {
             InjectTestConfiguration();
@@ -241,10 +248,11 @@ namespace Bam.Net.ServiceProxy.Tests
             server.Start(true);
             // /end- Test server to catch calls
         }
+
         public static void CreateServer(out string baseAddress, out BamServer server)
         {
             BamConf conf = new BamConf();
-            baseAddress = "http://localhost:8080"; // this works because of the contents of C:\BamContent\apps\localhost
+            baseAddress = "http://localhost:8080"; 
             server = new BamServer(conf);
         }
 

@@ -55,13 +55,16 @@ namespace Bam.Net.ServiceProxy.Secure
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("SecureSession_ApplicationId", new SecureSessionCollection(Database.GetQuery<SecureSessionColumns, SecureSession>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
 			}						
@@ -211,7 +214,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -231,8 +234,10 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Application>();
 			Database db = database ?? Db.For<Application>();
-			var results = new ApplicationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ApplicationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -669,6 +674,25 @@ namespace Bam.Net.ServiceProxy.Secure
 			if(orderBy != null)
 			{
 				query.OrderBy<ApplicationColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ApplicationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ApplicationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Application>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Application>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -1178,46 +1178,6 @@ namespace Bam.Net.Server.Tests
         }
 
         [UnitTest]
-        public void AppContentResponderShouldCombineAppScriptsOnInitialize()
-        {
-            string testAppName = MethodBase.GetCurrentMethod().Name;
-            DirectoryInfo dir = new DirectoryInfo("C:\\temp\\{0}_"._Format(testAppName).RandomLetters(4));
-            CreateTestRootAndSetDefaultConfig(dir);
-            BamServer server = CreateServer(dir.FullName);
-            server.Initialize();
-            AppContentResponder appResponder = server.CreateApp(testAppName, null, 9191);
-            appResponder.Logger = new ConsoleLogger();
-            appResponder.Logger.StartLoggingThread();
-            string jsGuid = Guid.NewGuid().ToString().Replace("-", "");
-            string pageGuid = Guid.NewGuid().ToString().Replace("-", "");
-            string viewModelGuid = Guid.NewGuid().ToString().Replace("-", "");
-
-            string testJsName = "testScript_{0}.js"._Format(jsGuid);
-            string testPageJsName = "testPageScript_{0}.js"._Format(pageGuid);
-            string testViewModelJsName = "testViewModelScript_{0}.js"._Format(viewModelGuid);
-
-            appResponder.AppRoot.WriteFile("~/js/{0}"._Format(testJsName), "function _" + jsGuid + "(){};");
-            appResponder.AppRoot.WriteFile("~/pages/{0}"._Format(testPageJsName), "function _" + pageGuid + "(){};");
-            appResponder.AppRoot.WriteFile("~/viewModels/{0}"._Format(testViewModelJsName), "function _" + viewModelGuid + "(){};");
-            appResponder.Initialize();
-            string scriptPath;
-            string minAppScriptPath;
-            Expect.IsTrue(appResponder.AppRoot.FileExists("~/{0}.js"._Format(testAppName), out scriptPath));
-            Expect.IsTrue(appResponder.AppRoot.FileExists("~/{0}.min.js"._Format(testAppName), out minAppScriptPath));
-            string script = File.ReadAllText(scriptPath);
-            string minScript = File.ReadAllText(minAppScriptPath);
-            Expect.IsTrue(script.Contains(jsGuid), "js guid wasn't in the script");
-            Expect.IsTrue(script.Contains(pageGuid), "page guid wasn't in the script");
-            Expect.IsTrue(script.Contains(viewModelGuid), "viewModel guid wasn't in the scirpt");
-
-            Expect.IsTrue(minScript.Contains(jsGuid), "js guid wasn't in the script");
-            Expect.IsTrue(minScript.Contains(pageGuid), "page guid wasn't in the script");
-            Expect.IsTrue(minScript.Contains(viewModelGuid), "viewModel guid wasn't in the scirpt");
-
-            _directoriesToDelete.Add(dir.FullName);
-        }
-
-        [UnitTest]
         public void OutputAssemblyLocation()
         {
             OutLineFormat(Assembly.GetExecutingAssembly().Location);

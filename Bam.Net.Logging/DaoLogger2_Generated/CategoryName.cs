@@ -55,6 +55,7 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Event_CategoryNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.CategoryNameId == GetLongValue("Id")), this, "CategoryNameId"));				
@@ -157,7 +158,7 @@ namespace Bam.Net.Logging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -177,8 +178,10 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<CategoryName>();
 			Database db = database ?? Db.For<CategoryName>();
-			var results = new CategoryNameCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new CategoryNameCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Logging.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<CategoryNameColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<CategoryNameCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static CategoryNameCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<CategoryName>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<CategoryName>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

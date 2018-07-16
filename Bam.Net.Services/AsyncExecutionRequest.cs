@@ -19,6 +19,14 @@ namespace Bam.Net.Services
             UseCachedResponse = true;
         }
         public int ResponseMaxAgeInMinutes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use a previously received
+        /// response to the execution request.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> to use a cached response; otherwise, <c>false</c>.
+        /// </value>
         public bool UseCachedResponse { get; set; }
         public string RespondToHostName { get; set; }
         public int RespondToPort { get; set; }

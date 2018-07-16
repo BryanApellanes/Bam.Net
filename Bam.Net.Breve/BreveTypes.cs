@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Data;
 using Bam.Net.Data.Schema;
 
 namespace Bam.Net.Breve

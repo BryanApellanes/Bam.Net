@@ -15,13 +15,15 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Bam.Net.Configuration;
 using System.Linq;
+using Bam.Net.System;
+using System.Diagnostics;
+using System.Security;
 
 namespace Bam.Net.Application
 {
     [Serializable]
     public class UtilityActions: CommandLineTestInterface
     {
-
         [ConsoleAction("createBamProjectSrcPackage", "Create a BamProject package from a solution or project")]
         public static void CreateBamProjectPackage()
         {

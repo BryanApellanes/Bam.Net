@@ -35,17 +35,19 @@ namespace Bam.Net.Logging
 
         public override void CommitLogEvent(LogEvent logEvent)
         {
-            Data.LogEvent logData = new Data.LogEvent();
-            logData.Source = logEvent.Source.First(4000);
-            logData.Category = logEvent.Category.First(4000);
-            logData.EventId = logEvent.EventID;
-            logData.User = logEvent.User.First(4000);
-            logData.Time = logEvent.Time;
-            logData.MessageSignature = logEvent.MessageSignature.First(4000);
-            logData.MessageVariableValues = logEvent.MessageVariableValues.ToDelimited(v => v, ",").First(4000);
-            logData.Message = logEvent.Message.First(4000);
-            logData.Computer = logEvent.Computer.First(4000);
-            logData.Severity = logEvent.Severity.ToString().First(4000);
+            Data.LogEvent logData = new Data.LogEvent
+            {
+                Source = logEvent.Source.First(4000),
+                Category = logEvent.Category.First(4000),
+                EventId = logEvent.EventID,
+                User = logEvent.User.First(4000),
+                Time = logEvent.Time,
+                MessageSignature = logEvent.MessageSignature.First(4000),
+                MessageVariableValues = logEvent.MessageVariableValues.ToDelimited(v => v, ",").First(4000),
+                Message = logEvent.Message.First(4000),
+                Computer = logEvent.Computer.First(4000),
+                Severity = logEvent.Severity.ToString().First(4000)
+            };
 
             logData.Save(Database);
         }

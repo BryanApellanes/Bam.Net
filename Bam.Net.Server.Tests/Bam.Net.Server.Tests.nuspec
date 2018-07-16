@@ -2,21 +2,21 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Server.Tests</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <title>Bam.Net.Server.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Server.Tests</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="FakeItEasy" version="1.25.3" />
       <dependency id="Lucene.Net" version="3.0.3" />
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="Moq" version="4.2.1510.2205" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />

@@ -12,8 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Linq;
 using System.Threading;
+using Bam.Net.System;
+using System.Management;
+using Bam.Net.Encryption;
+using System.Diagnostics;
 
 namespace Bam.Net.Automation
 {
@@ -42,6 +45,13 @@ namespace Bam.Net.Automation
         }
 
         static string _outputDirectory;
+        /// <summary>
+        /// Gets the output directory.  Either the binary output or the nuget package output results
+        /// from packing.
+        /// </summary>
+        /// <value>
+        /// The output directory.
+        /// </value>
         public static string OutputDirectory
         {
             get
@@ -171,7 +181,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("init", "Initialize nuget related paths to values expected by Bam.Net.")]
-        public static void InitNugetEnvironment()
+        public static void Init()
         {
             BakeSettings settings = GetSettings();
             string setRepoPath = $"config -Set repositoryPath=\"{settings.PackagesDirectory}\"";
@@ -183,7 +193,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("clean", "Clear all local nuget caches by issuing the command: nuget locals all -clear")]
-        public static void CleanNuget()
+        public static void Clean()
         {
             OutLine("Clearing local nuget caches", ConsoleColor.Cyan);
             $"{NugetPath}".RunAndWait("locals all -clear");
@@ -191,90 +201,219 @@ namespace Bam.Net.Automation
             OutLine("Done clearing local nuget caches", ConsoleColor.Green);
         }
 
-        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest package from the internal source and republish.")]
-        public static void PackLatest()
+        [ConsoleAction("build", "Build the specified branch.")]
+        public static void Build()
         {
-            string latestFile = Path.Combine(Builds, "latest");
-            if (!File.Exists(latestFile))
+            string buildConfigPath = GetArgument("build", "Please enter the path to the build config file.");
+            if (!File.Exists(buildConfigPath))
             {
-                OutLineFormat("The file {0} was not found", ConsoleColor.Magenta, latestFile);
+                OutLineFormat("Build config not found: {0}", ConsoleColor.Magenta, buildConfigPath);
+                Thread.Sleep(1000);
                 Exit(1);
             }
-            BakeBuildInfo info = latestFile.FromJsonFile<BakeBuildInfo>();
+            BuildConfig buildConfig = buildConfigPath.FromJsonFile<BuildConfig>();
+            if (string.IsNullOrEmpty(buildConfig.BamBotRoot))
+            {
+                OutLineFormat("BamBotRoot not defined in config file: {0}", ConsoleColor.Magenta, buildConfigPath);
+                Exit(1);
+            }
+
+            // get latest
+            string cloneIn = $"{buildConfig.BamBotRoot}\\src";
+            if (!Directory.Exists(cloneIn))
+            {
+                Directory.CreateDirectory(cloneIn);
+            }
+            string clone = Path.Combine(cloneIn, buildConfig.RepoName);
+
+            CloneRepository(buildConfig, cloneIn, clone);
+
+            CheckoutBranch(buildConfig, clone);
+
+            GetLatest(clone);
+
+            string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
+            string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
+            NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
+
+            FileInfo msbuild = new FileInfo(buildConfig.MsBuildPath);
+            if (!msbuild.Exists)
+            {
+                msbuild = new FileInfo(GetArgument("MsBuildPath", "Please enter the path to msbuild.exe."));
+            }
+            string msBuildPath = msbuild.FullName;
+            //The root path where binaries are built.  Binaries will be in {Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
+            DirectoryInfo clonedDir = new DirectoryInfo(clone);
+            string commitHash = clonedDir.GetCommitHash();
+            string outputPath = buildConfig.GetOutputPath(Builds, commitHash);
+            string command = $"/t:Build /filelogger /p:OutDir={outputPath};GenerateDocumentation=true;Configuration={buildConfig.Config};Platform=\"{buildConfig.Platform}\";TargetFrameworkVersion={buildConfig.FrameworkVersion};CompilerVersion={buildConfig.FrameworkVersion} {buildConfig.ProjectFile} /m:1";
+            OutLineFormat("Using msbuild: {0}", ConsoleColor.Yellow, msBuildPath);
+            ProcessOutput output = msBuildPath.ToStartInfo(command, clone)
+                .RunAndWait(o => Console.WriteLine(o), e => Console.WriteLine(e), 600000);
+            if (output.ExitCode != 0)
+            {
+                OutLineFormat("Build Failed: {0}", ConsoleColor.Magenta, output.ExitCode);
+                Thread.Sleep(1000);
+                Exit(output.ExitCode);
+            }
+            else
+            {
+                string latestFile = Path.Combine(Builds, "latest");
+                BuildInfo buildInfo = new BuildInfo { LastBuild = DateTime.Now.ToLongDateString(), BuildConfig = buildConfig, Commit = commitHash };
+                buildInfo.ToJsonFile(latestFile);
+                OutLine("Build Succeeded", ConsoleColor.Green);
+                OutLineFormat("Files output to\r\n   {0}", ConsoleColor.Cyan, outputPath);
+                Thread.Sleep(1000);
+                Exit(0);
+            }
+        }
+
+        [ConsoleAction("deploy", @"Deploy Windows Services and Daemons from the latest build to the folder C:\bam\sys\ of the hosts in the specified deploy file")]
+        public static void Deploy()
+        {
+            // read deploy.json
+            string deployConfigPath = GetArgument("deploy", "Please enter the path to the deploy config file.");
+            if (!File.Exists(deployConfigPath))
+            {
+                OutLineFormat("Deploy config not found: {0}", ConsoleColor.Magenta, deployConfigPath);
+                Thread.Sleep(1000);
+                Exit(1);
+            }
+            string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
+            
+            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
+            OutLineFormat("Deploying commit: {0}", ConsoleColor.Green, commit);
+            DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
+            // for each windows service
+            foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
+            {
+                if(string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
+                {
+                    DeployWindowsService(latestBinaries, svcInfo);
+                }
+            }
+
+            Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices.ToDictionary(d => d.Host);
+            foreach(DaemonInfo daemon in deployInfo.Daemons)
+            {
+                if (!hostDaemonServiceInfos.ContainsKey(daemon.Host))
+                {
+                    OutLineFormat("Corresponding host DaemonService entry not found for Daemon entry (Host={0}, Name={1}), using default settings", ConsoleColor.Yellow, daemon.Host, daemon.Name);
+                    hostDaemonServiceInfos.Add(daemon.Host, new DaemonServiceInfo { Host = daemon.Host, HostNames = $"bamd-{daemon.Host}" });
+                }
+            }
+            string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
+            DirectoryInfo bamdLocalPathDirectory = new FileInfo(bamdLocalPathNotation).Directory;
+
+            // install the monitored daemon executables (not to be confused with the bamd monitor service itself)
+            foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
+            {
+                string host = daemonInfo.Host;
+                if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                {                    
+                    InstallDaemon(daemonInfo, latestBinaries);
+                    SetDaemonAppSettings(daemonInfo);
+                }
+            }
+
+            // install the bamd monitor service on each host
+            foreach(string host in hostDaemonServiceInfos.Keys)
+            {
+                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                {
+                    UninstallBamDaemonService(host);
+                    InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.CopyAs<DaemonProcessInfo>()).ToList());
+                    //      start new bamd
+                    SetAppSettings(host, bamdLocalPathDirectory.FullName, "bamd.exe", hostDaemonServiceInfos[host].ToDictionary());
+                    CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
+                }
+            }
+        }
+        
+        [ConsoleAction("test", "Run unit and integration tests for the specified build")]
+        public static void Test()
+        {
+            string testConfigPath = GetArgument("test", "Please enter the path to the test config file.");
+            if (!File.Exists(testConfigPath))
+            {
+                OutLineFormat("Test config not found: {0}", ConsoleColor.Magenta, testConfigPath);
+                Thread.Sleep(1000);
+                Exit(1);
+            }
+            TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
+            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
+            testInfo.Tag = $"{testInfo.Tag}-{commit.First(6)}";
+            DeployTestFiles(latestBinaries, testInfo);
+            OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
+
+            string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
+            if (testInfo.RunOnHost.Equals("."))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = bamtestrunner,
+                    Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
+                    WorkingDirectory = Path.Combine(Paths.Tests)
+                };
+                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);
+            }
+            else
+            {
+                PsExec.Run(
+                    testInfo.RunOnHost,
+                    $"{bamtestrunner} /TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
+                    (s) => OutLine(s, ConsoleColor.Cyan),
+                    (e) => OutLine(e, ConsoleColor.Magenta),
+                    600000
+                );
+            }
+        }
+
+        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
+        public static void Latest()
+        {
+            BuildInfo info = GetLatestBuildInfo();
             string latestArg = Arguments["latest"];
             OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
             if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
-            {                
+            {
                 Exit(0);
             }
-            CleanNuget();
-            DirectoryInfo _binRoot = GetCommitBinFolder(info.Commit.First(8));
+            Clean();
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(info.Commit.First(8));
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-latest";
             DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
             OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
             bamLatest.Delete(true);
             _binRoot.Copy(bamLatest.FullName, true);
-            CreateNugetPackages();
-        }
-
-        private static void DeleteDevLatestPackages()
-        {
-            OutLineFormat("Deleting *-Dev-latest from {0}", ConsoleColor.Yellow, NugetInternalSource);
-            DirectoryInfo internalSource = new DirectoryInfo(NugetInternalSource);
-            foreach (DirectoryInfo packageDirectory in internalSource.GetDirectories())
-            {
-                foreach (DirectoryInfo devLatestDirectory in packageDirectory.GetDirectories("*-Dev-latest"))
-                {
-                    OutLineFormat("Deleting {0}", ConsoleColor.Yellow, devLatestDirectory.FullName);
-                    devLatestDirectory.Delete(true);
-                }
-            }
+            Nuget();
         }
 
         [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
-        public static void PackCommit()
+        public static void Commit()
         {
             string commitArg = Arguments["commit"];
 
-            DirectoryInfo _binRoot = GetCommitBinFolder(commitArg);
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(commitArg);
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
-            CreateNugetPackages();
-        }
-
-        private static DirectoryInfo GetCommitBinFolder(string commitPrefix)
-        {
-            //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
-            DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
-            DirectoryInfo[] subDirectories = debugRoot.GetDirectories($"_{commitPrefix}*");
-            if (subDirectories.Length == 0)
-            {
-                OutLineFormat("Specified commit was not found in the builds directory ({0}): {1}", ConsoleColor.Magenta, debugRoot.FullName, commitPrefix);
-                Exit(1);
-            }
-            if (subDirectories.Length > 1)
-            {
-                OutLineFormat("Multiple directories found for specific commit hash prefix ({0}), specifiy more characters of the hash to isolate a single commit", ConsoleColor.Magenta, commitPrefix);
-                Exit(1);
-            }
-            DirectoryInfo _binRoot = subDirectories[0];
-            return _binRoot;
+            Nuget();
         }
 
         [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
-        public static void PackDev()
+        public static void Dev()
         {
             _nugetArg = Arguments["dev"];
             int buildNum = GetBuildNum();
 
             string commit = GetCommitHash();
             _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
-            CreateNugetPackages();
+            Nuget();
         }
-
+        
         [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and an msi file.")]
-        public static void BuildRelease()
+        public static void Release()
         {
             // update version
             string targetPath = GetTargetPath();            
@@ -301,10 +440,10 @@ namespace Bam.Net.Automation
                     {
                         OutLineFormat("Failed to update msi version", ConsoleColor.Magenta);
                     }
-                    else if(BuildMsi())
+                    else if(Msi())
                     {
                         _nugetArg = settings.OutputPath;
-                        CreateNugetPackages();
+                        Nuget();
                     }
                     else
                     {
@@ -362,16 +501,17 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("tag", "Create and commit version tag")]
-        public static void CommitTag()
+        public static void Tag()
         {
-            string version = GetVersionTag();
             DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
+            string version = GetVersionTag();
+            
             Commit(version, sourceRoot);
             Tag(version, sourceRoot);
         }
 
         [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
-        public static bool BuildMsi()
+        public static bool Msi()
         {
             string srcRoot = GetTargetPath();
             string releaseFolder = GetArgument("ReleaseFolder", "Please enter the path to the release folder.");
@@ -400,19 +540,19 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("nuget", "Pack one or more binaries as nuget packages provided they have associated nuspec files.")]
-        public static void CreateNugetPackages()
+        public static void Nuget()
         {
             string targetPath = GetNugetArgument();
             if (targetPath.Equals("init"))
             {
-                SetNuspecFiles();
+                Nuspec();
             }
-            else if (System.IO.File.Exists(targetPath))
+            else if (File.Exists(targetPath))
             {
                 FileInfo assemblyFile = new FileInfo(targetPath);
                 PackAssembly(assemblyFile);
             }
-            else if (System.IO.Directory.Exists(targetPath))
+            else if (Directory.Exists(targetPath))
             {
                 // look for nuspec files in the targetPath
                 // assume that assemblies are in the targetPath
@@ -423,11 +563,11 @@ namespace Bam.Net.Automation
                     string fileName = Path.GetFileNameWithoutExtension(nuspecFile.Name);
                     string dllName = Path.Combine(nuspecFile.Directory.FullName, $"{fileName}.dll");
                     string exeName = Path.Combine(nuspecFile.Directory.FullName, $"{fileName}.exe");
-                    if (System.IO.File.Exists(dllName))
+                    if (File.Exists(dllName))
                     {
                         tasks.Add(Task.Run(() => PackAssembly(new FileInfo(dllName))));
                     }
-                    else if (System.IO.File.Exists(exeName))
+                    else if (File.Exists(exeName))
                     {
                         tasks.Add(Task.Run(() => PackAssembly(new FileInfo(exeName))));
                     }
@@ -441,7 +581,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("bam", "Create a single bam.exe by using ILMerge.exe to combine all Bam.Net binaries into one.")]
-        public static void CreateBamDotExe()
+        public static void Bam()
         {
             string ilMergePath = GetArgument("ILMergePath", "Please specify the path to ILMerge.exe");
             string root = GetArgument("root", "Please specify the path to the Bam.Net binaries and nuspec files");
@@ -474,7 +614,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("nuspec", "Initialize or update project nuspec files.")]
-        public static void SetNuspecFiles()
+        public static void Nuspec()
         {
             string argValue = Arguments["nuspec"];
             List<Task> tasks = new List<Task>();
@@ -488,13 +628,13 @@ namespace Bam.Net.Automation
                 string version = GetVersion(sourceRoot);
                 tasks.AddRange(SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate));
             }
-            else if (System.IO.Directory.Exists(argValue))
+            else if (Directory.Exists(argValue))
             {
                 DirectoryInfo target = new DirectoryInfo(argValue);
                 string version = GetVersion(target);
                 tasks.AddRange(SetSolutionNuspecInfos(target, version, owners, authors, predicate));
             }
-            else if (System.IO.File.Exists(argValue))
+            else if (File.Exists(argValue))
             {
                 FileInfo fileArg = new FileInfo(argValue);
                 string version = GetVersion(fileArg.Directory);
@@ -509,16 +649,6 @@ namespace Bam.Net.Automation
             }
 
             Task.WaitAll(tasks.ToArray());
-        }
-
-        private static string GetVersionTag()
-        {
-            string tag = Arguments["tag"];
-            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
-            {
-                tag = Arguments["v"];
-            }
-            return tag;
         }
 
         /// <summary>
@@ -585,7 +715,7 @@ namespace Bam.Net.Automation
                     NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"));
                     nuspecFile.Version = new PackageVersion(version);
                     nuspecFile.Save();
-                    if (!System.IO.File.Exists(nuspecFile.Path))
+                    if (!File.Exists(nuspecFile.Path))
                     {
                         nuspecFile = new NuspecFile(nuspecFile.Path)
                         {
@@ -679,7 +809,7 @@ namespace Bam.Net.Automation
         protected static BamInfo GetBamInfo(DirectoryInfo srcRootDir)
         {
             string bamInfoPath = Path.Combine(srcRootDir.FullName, "bam.json");
-            if (!System.IO.File.Exists(bamInfoPath))
+            if (!File.Exists(bamInfoPath))
             {
                 OutLineFormat("Unable to find bam.json, expected it at ({0})", ConsoleColor.Magenta, bamInfoPath);
                 Exit(1);
@@ -689,6 +819,16 @@ namespace Bam.Net.Automation
             OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
             OutLine("***", ConsoleColor.Cyan);
             return info;
+        }
+
+        private static string GetVersionTag()
+        {
+            string tag = Arguments["tag"];
+            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
+            {
+                tag = Arguments["v"];
+            }
+            return tag;
         }
 
         private static string GetVersion(DirectoryInfo referenceDirectory)
@@ -857,9 +997,9 @@ namespace Bam.Net.Automation
                 stage.Create();
             }
             string libPath = Path.Combine(stage.FullName, "lib", lib ?? NugetLib);
-            if (!System.IO.Directory.Exists(libPath))
+            if (!Directory.Exists(libPath))
             {
-                System.IO.Directory.CreateDirectory(libPath);
+                Directory.CreateDirectory(libPath);
             }
             assemblyFile.CopyTo(Path.Combine(libPath, assemblyFile.Name), true);
             if (xmlFile.Exists)
@@ -882,12 +1022,12 @@ namespace Bam.Net.Automation
             string fileName = Path.GetFileNameWithoutExtension(assemblyOrNuspec.Name);
             string existingNuspec = Path.Combine(assemblyOrNuspec.Directory.FullName, $"{fileName}.nuspec");
             string stageNuspec = Path.Combine(stage.FullName, $"{fileName}.nuspec");
-            if (System.IO.File.Exists(existingNuspec))
+            if (File.Exists(existingNuspec))
             {
-                System.IO.File.Copy(existingNuspec, stageNuspec, true);
+                File.Copy(existingNuspec, stageNuspec, true);
             }
             NuspecFile nuspecFile = new NuspecFile(stageNuspec);
-            if (!System.IO.File.Exists(nuspecFile.Path))
+            if (!File.Exists(nuspecFile.Path))
             {
                 nuspecFile.Id = fileName;
                 nuspecFile.Title = fileName;
@@ -1029,6 +1169,314 @@ namespace Bam.Net.Automation
             }
 
             return commit;
+        }
+
+        private static void GetLatest(string clone)
+        {
+            OutLineFormat("Getting latest: {0}", ConsoleColor.DarkGreen, clone);
+            ProcessOutput pullProcess = GitPath.ToStartInfo("pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (pullProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, pullProcess.StandardOutput, pullProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(pullProcess.ExitCode);
+            }
+        }
+
+        private static void CheckoutBranch(BuildConfig buildConfig, string clone)
+        {
+            OutLineFormat("Checking out branch: {0}", ConsoleColor.DarkGray, buildConfig.Branch);
+            ProcessOutput checkoutProcess = GitPath.ToStartInfo($"checkout {buildConfig.Branch}", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (checkoutProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, checkoutProcess.StandardOutput, checkoutProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(checkoutProcess.ExitCode);
+            }
+        }
+
+        private static void CloneRepository(BuildConfig buildConfig, string cloneIn, string clone)
+        {
+            if (Directory.Exists(clone) && buildConfig.Clean)
+            {
+                try
+                {
+                    Directory.Delete(clone, true);
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Yikes! Error on clean: {0}", ConsoleColor.DarkYellow, ex.Message);
+                }
+            }
+
+            if (!Directory.Exists(clone))
+            {
+                OutLineFormat("Cloning repository to: {0}", ConsoleColor.DarkGreen, clone);
+                ProcessOutput cloneProcess = GitPath.ToStartInfo($"clone {buildConfig.RepoRoot}/{buildConfig.RepoName}", cloneIn).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+                if (cloneProcess.ExitCode != 0)
+                {
+                    OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, cloneProcess.StandardOutput, cloneProcess.StandardError);
+                    Thread.Sleep(1000);
+                    Exit(cloneProcess.ExitCode);
+                }
+            }
+        }
+
+        private static DirectoryInfo GetLatestBuildBinaryDirectory(out string commitHash)
+        {
+            commitHash = GetLatestBuildCommitHash();
+            return GetCommitBinaryDirectory(commitHash);
+        }
+
+        private static DirectoryInfo GetCommitBinaryDirectory(string commitPrefix)
+        {
+            //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
+            DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
+            DirectoryInfo[] subDirectories = debugRoot.GetDirectories($"_{commitPrefix}*");
+            if (subDirectories.Length == 0)
+            {
+                OutLineFormat("Specified commit was not found in the builds directory ({0}): {1}", ConsoleColor.Magenta, debugRoot.FullName, commitPrefix);
+                Exit(1);
+            }
+            if (subDirectories.Length > 1)
+            {
+                OutLineFormat("Multiple directories found for specific commit hash prefix ({0}), specifiy more characters of the hash to isolate a single commit", ConsoleColor.Magenta, commitPrefix);
+                Exit(1);
+            }
+            DirectoryInfo _binRoot = subDirectories[0];
+            return _binRoot;
+        }
+
+        private static string GetLatestBuildCommitHash()
+        {
+            return GetLatestBuildInfo().Commit;
+        }
+
+        private static BuildInfo GetLatestBuildInfo()
+        {
+            string latestFile = Path.Combine(Builds, "latest");
+            if (!File.Exists(latestFile))
+            {
+                OutLineFormat("The file {0} was not found", ConsoleColor.Magenta, latestFile);
+                Exit(1);
+            }
+            BuildInfo info = latestFile.FromJsonFile<BuildInfo>();
+            return info;
+        }
+
+        private static void DeleteDevLatestPackages()
+        {
+            OutLineFormat("Deleting *-Dev-latest from {0}", ConsoleColor.Yellow, NugetInternalSource);
+            DirectoryInfo internalSource = new DirectoryInfo(NugetInternalSource);
+            foreach (DirectoryInfo packageDirectory in internalSource.GetDirectories())
+            {
+                foreach (DirectoryInfo devLatestDirectory in packageDirectory.GetDirectories("*-Dev-latest"))
+                {
+                    OutLineFormat("Deleting {0}", ConsoleColor.Yellow, devLatestDirectory.FullName);
+                    devLatestDirectory.Delete(true);
+                }
+            }
+        }
+
+        private static void CallServiceExecutable(WindowsServiceInfo svcInfo, string action, string pathOnRemote, string commandSwitch)
+        {
+            string host = svcInfo.Host;
+            string name = svcInfo.Name;
+
+            CallServiceExecutable(host, name, action, pathOnRemote, commandSwitch);
+        }
+
+        private static void CallServiceExecutable(string host, string serviceName, string action, string pathOnRemote, string commandSwitch)
+        {
+            OutLineFormat("Trying to {0} service {1} on {2} > {3}", ConsoleColor.Yellow, action, serviceName, host, pathOnRemote);
+            ProcessOutput uninstallOutput = PsExec.Run(host, $"{pathOnRemote} {commandSwitch}");
+            OutputActionResult(action, uninstallOutput);
+        }
+
+        private static void OutputActionResult(string action, ProcessOutput actionOutput)
+        {
+            OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, actionOutput.StandardOutput);
+            if (!string.IsNullOrEmpty(actionOutput.StandardError))
+            {
+                OutLineFormat("{0} error output:\r\n{1}", ConsoleColor.DarkMagenta, action, actionOutput.StandardError);
+            }
+        }
+
+        private static void KillProcess(string host, string processNameOrId)
+        {
+            OutLineFormat("Calling pskill on {0} for process {1}", host, processNameOrId);
+            ProcessOutput  killOutput = PsKill.Run(host, processNameOrId);
+            OutputActionResult(string.Format("PsKill {0} on {1}", processNameOrId, host), killOutput);
+        }
+
+        private static void SetAppSettings(string host, string directoryPathOnRemote, string fileName, Dictionary<string, string> appSettings)
+        {
+            string configPath = Path.Combine(directoryPathOnRemote, $"{fileName}.config");
+            FileInfo configFile = new FileInfo(configPath);
+            string adminSharePath = configFile.GetAdminSharePath(host);
+            OutLineFormat("Setting appsettings in {0}", ConsoleColor.DarkCyan, adminSharePath);
+            OutLine(appSettings.ToJson(true), ConsoleColor.DarkGreen);
+            DefaultConfiguration.SetAppSettings(adminSharePath, appSettings);
+        }
+        
+        private static void DeployWindowsService(DirectoryInfo latestBinaries, WindowsServiceInfo svcInfo)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
+            //      copy the latest binaries to \\computer\c$\bam\sys\{Name}
+            string remoteDirectory = Path.Combine(Paths.Sys, svcInfo.Name);
+            string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
+
+            DirectoryInfo remoteDirectoryInfo = remoteDirectory.GetAdminShareDirectory(svcInfo.Host);
+            if (remoteDirectoryInfo.Exists)
+            {
+                CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
+                CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
+                KillProcess(svcInfo.Host, svcInfo.FileName);
+                string host = svcInfo.Host;
+                TryDeleteDirectory(remoteDirectoryInfo, host);
+            }
+
+            OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
+            latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
+            string installSwitch = GetInstallSwitch(svcInfo.Host, svcInfo.Name);
+            CallServiceExecutable(svcInfo, "Install", remoteFile, installSwitch);
+
+            if (svcInfo.AppSettings != null)
+            {
+                SetAppSettings(svcInfo.Host, remoteDirectory, svcInfo.FileName, svcInfo.AppSettings);
+            }
+
+            CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
+        }
+
+        private static void DeployTestFiles(DirectoryInfo latestBinaries, TestInfo testInfo)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(testInfo.RunOnHost), "RunOnHost not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(testInfo.Tag), "Tag not specified");
+            //      copy the latest binaries to \\computer\c$\bam\tests\{Tag}
+            string path = Path.Combine(Paths.Tests, testInfo.Tag);            
+
+            DirectoryInfo remoteDirectoryInfo = path.GetAdminShareDirectory(testInfo.RunOnHost);
+            OutLineFormat("Copying files for testing to {0} on {1}...", ConsoleColor.Cyan, path, testInfo.RunOnHost);
+            if (testInfo.RunOnHost.Equals("."))
+            {
+                latestBinaries.Copy(path, true);
+            }
+            else
+            {
+                latestBinaries.CopyTo(testInfo.RunOnHost, path);
+            }
+            OutLine("Done copying files for testing...", ConsoleColor.DarkCyan);
+        }
+
+        private static string GetInstallSwitch(string machineName, string serviceName)
+        {
+            CredentialInfo credentialInfo = CredentialManager.Local.GetCredentials(machineName, serviceName);
+            if (credentialInfo.IsNull) // if machine specific credentials aren't found, try just for the service
+            {
+                credentialInfo = CredentialManager.Local.GetCredentials(serviceName);
+            }
+            string installSwitch = credentialInfo.IsNull ? "-i" : $"-i -u:{credentialInfo.UserName} -p:{credentialInfo.Password}";
+            if (!credentialInfo.IsNull)
+            {
+                OutLineFormat("Found local credentials for service: Machine={0}, Service={1}, UserName={2}", ConsoleColor.Yellow, credentialInfo.MachineName, credentialInfo.TargetService, credentialInfo.UserName);
+            }
+            else
+            {
+                OutLineFormat("No credentials found for service: Machine={0}, Service={1}, UserName={2}", ConsoleColor.DarkYellow, credentialInfo.MachineName, credentialInfo.TargetService, credentialInfo.UserName);
+            }
+
+            return installSwitch;
+        }
+
+        private static void UninstallBamDaemonService(string host)
+        {
+            string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
+            DirectoryInfo bamdLocalPathDirectory = new FileInfo(bamdLocalPathNotation).Directory;
+            DirectoryInfo remoteDirectoryInfo = bamdLocalPathDirectory.FullName.GetAdminShareDirectory(host);
+            if (remoteDirectoryInfo.Exists)
+            {
+                CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
+                KillProcess(host, "bamd");
+                CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
+
+                TryDeleteDirectory(remoteDirectoryInfo, host);
+            }
+        }
+
+        private static void InstallBamDaemonService(string host, DirectoryInfo latestBinaries, List<DaemonProcessInfo> daemonProcesses)
+        {
+            string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
+            OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+            //      copy new bamd
+            latestBinaries.CopyTo(host, new FileInfo(bamdLocalPathNotation).Directory.FullName);
+            OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+
+            string installSwitch = GetInstallSwitch(host, "bamd");
+            CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, installSwitch);
+
+            //      write DaemonProcessInfos using above
+            string adminShareDaemonConfig = $"{typeof(DaemonProcess).Name.Pluralize()}.json".GetAdminSharePath(host, Paths.Conf);
+            OutLineFormat("Writing {0}", ConsoleColor.DarkCyan, adminShareDaemonConfig);
+            string daemonProcessesJson = daemonProcesses.ToJson(true);
+            OutLine(daemonProcessesJson, ConsoleColor.DarkGreen);
+            daemonProcessesJson.SafeWriteToFile(adminShareDaemonConfig, true);
+        }
+
+        private static void InstallDaemon(DaemonInfo daemonInfo, DirectoryInfo latestBinaries)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
+            //      copy the latest binaries to c:\bam\sys\{Name}
+            string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
+            OutLineFormat("Installing daemon {0} on {1}: Copy={2}", ConsoleColor.Blue, daemonInfo.Name, daemonInfo.Host, daemonInfo.Copy.ToString());
+            FileInfo daemonFile = new FileInfo(daemonInfo.FileName);
+            KillProcess(daemonInfo.Host, daemonFile.Name);
+            if (daemonInfo.Copy)
+            {
+                DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
+                if (adminSharePath.Exists)
+                {
+                    try
+                    {
+                        OutLineFormat("Deleting {0}", ConsoleColor.Cyan, adminSharePath.FullName);
+                        adminSharePath.Delete(true);
+                        OutLineFormat("Done deleting {0}", ConsoleColor.DarkCyan, adminSharePath.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        OutLineFormat("Zoinks!:: Error deleting directory: {0}", ConsoleColor.Magenta, ex.Message);
+                    }
+                }
+                daemonInfo.WorkingDirectory = directoryPathOnRemote;
+                OutLineFormat("Copying files for {0} to remote: {1}", ConsoleColor.Cyan, daemonInfo.Name, daemonInfo.Host);
+                latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
+                OutLineFormat("Done copying files for {0} to remote: {1}", ConsoleColor.DarkCyan, daemonInfo.Name, daemonInfo.Host);
+            }
+        }
+
+        private static void SetDaemonAppSettings(DaemonInfo daemonInfo)
+        {
+            string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
+            if (daemonInfo.AppSettings != null)
+            {
+                //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
+                SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
+            }
+        }
+
+        private static void TryDeleteDirectory(DirectoryInfo remoteDirectoryInfo, string host)
+        {
+            try
+            {
+                OutLineFormat("Deleting {0} from {1}", ConsoleColor.DarkYellow, remoteDirectoryInfo.FullName, host);
+                remoteDirectoryInfo.Delete(true);
+            }
+            catch (Exception ex)
+            {
+                OutLineFormat("Exception occurred deleting {0}: {1} ", ConsoleColor.DarkMagenta, remoteDirectoryInfo.FullName, ex.Message);
+            }
         }
     }
 }

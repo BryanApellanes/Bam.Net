@@ -350,17 +350,36 @@ namespace Bam.Net.Data.Repositories
 		protected string GetUuidHash()
 		{
             Type type = Type ?? Type.Missing.GetType();
-			string hash = "{0}::{1}"._Format(Uuid, type.FullName).Md5();
-			return hash;
+            return GetUuidHash(Uuid, type);
 		}
+    
+        public static string GetUuidHash(string uuid, Type type)
+        {
+            return "{0}::{1}"._Format(uuid, type.FullName).Md5();
+        }
+
+        public static string GetIdHash(object value, Type type = null)
+        {
+            type = type ?? value.GetType();
+            long id = Meta.GetId(value).Value;
+            return GetIdHash(id, type);
+        }
+
+        public static string GetIdHash(long id, Type type)
+        {
+            return "{0}::{1}"._Format(id, type.FullName).Md5();
+        }
+
         protected internal static string GetUuid(object data, bool throwIfUuidPropertyMissing = false)
         {
             return GetPropValue(data, "Uuid", throwIfUuidPropertyMissing);
         }
+
         protected internal static string GetCuid(object data, bool throwIfCuidPropertyMissing = false)
         {
             return GetPropValue(data, "Cuid", throwIfCuidPropertyMissing);
         }
+
         protected internal static string GetPropValue(object data, string propName, bool throwIfPropertyMissing = false)
 		{
 			string result = string.Empty;

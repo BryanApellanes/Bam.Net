@@ -64,7 +64,7 @@ namespace Bam.Net.Server
         {
             if (multiTargetLogger == null)
             {
-                MultiTargetLogger multiLogger = new MultiTargetLogger();
+                MultiTargetLogger multiLogger = new MultiTargetLogger();                
                 multiLogger.AddLogger(logger);
                 multiLogger.StartLoggingThread();
                 multiTargetLogger = multiLogger;

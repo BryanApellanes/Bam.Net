@@ -56,7 +56,7 @@ namespace Bam.Net
             }
         }
 
-        static object lastDitchLock = new object();
+        static readonly object lastDitchLock = new object();
         protected static void FileLog(Exception fatalEx)
         {
             lock (lastDitchLock)
@@ -164,6 +164,25 @@ namespace Bam.Net
                 if ((args[0].Equals("-i") && (args[1].Equals("1") || args[1].ToLower().Equals("true"))))
                 {
                     Install(serviceName, displayName, description, null, true);
+                    return true;
+                }
+            }
+
+            //if length 3 expect -i -u:username -p:password
+            if(args.Length == 3)
+            {
+                if (args[0].Equals("-i"))
+                {
+                    string userNameArg = args[1];                    
+                    string passwordArg = args[2];                    
+
+                    if(userNameArg.StartsWith("-u:") && passwordArg.StartsWith("-p:"))
+                    {
+                        string userName = args[1].TruncateFront("-u:".Length);
+                        string password = args[2].TruncateFront("-p:".Length);
+                        Install(serviceName, displayName, description, userName, password);
+                        return true;
+                    }
                 }
             }
 
@@ -280,22 +299,32 @@ namespace Bam.Net
 
         public static void Install(string serviceName, string displayName, string description, string credentialKey, bool allowDesktopInteract)
         {
+            string userName = string.IsNullOrEmpty(credentialKey) ? null : DefaultConfiguration.GetAppSetting(credentialKey);
+            string password = string.IsNullOrEmpty(credentialKey) ? null : DefaultConfiguration.GetAppSetting(credentialKey + "Password");
+            userName = string.IsNullOrEmpty(userName) ? null : userName;
+            password = string.IsNullOrEmpty(password) ? null : password;
+
+            Install(serviceName, displayName, description, allowDesktopInteract, userName, password);
+        }
+
+        public static void Install(string serviceName, string displayName, string description, string serviceAccountName, string serviceAccountPassword)
+        {
+            Install(serviceName, displayName, description, false, serviceAccountName, serviceAccountPassword);
+        }
+
+        public static void Install(string serviceName, string displayName, string description, bool allowDesktopInteraction, string serviceAccountName, string serviceAccountPassword)
+        {
             OnStartInstall();
             try
             {
                 bool withIssues = false;
-                string startName = string.IsNullOrEmpty(credentialKey) ? null : DefaultConfiguration.GetAppSetting(credentialKey);
-                string startPassword = string.IsNullOrEmpty(credentialKey) ? null : DefaultConfiguration.GetAppSetting(credentialKey + "Password");
-                startName = string.IsNullOrEmpty(startName) ? null : startName;
-                startPassword = string.IsNullOrEmpty(startPassword) ? null : startPassword;
                 Assembly cur = Assembly.GetEntryAssembly();
                 Console.WriteLine("INFO:: Creating service from " + cur.Location);
                 ManagementClass win32Service = new ManagementClass(@"\\.\root\cimv2:Win32_Service");
 
-                Console.WriteLine("INFO:: ServiceName={0},DisplayName={1},Description={2}",
-                    serviceName, displayName, description);
-                                
-                object ret = win32Service.InvokeMethod("Create", new object[] { serviceName, displayName, cur.Location, 16, 0, "Automatic", allowDesktopInteract, startName, startPassword, null, null, null });
+                Console.WriteLine("INFO:: ServiceName={0},DisplayName={1},Description={2}", serviceName, displayName, description);
+
+                object ret = win32Service.InvokeMethod("Create", new object[] { serviceName, displayName, cur.Location, 16, 0, "Automatic", allowDesktopInteraction, serviceAccountName, serviceAccountPassword, null, null, null });
                 if (ret.ToString().Equals("0"))
                 {
                     Console.WriteLine("INFO:: Service was created successfully");

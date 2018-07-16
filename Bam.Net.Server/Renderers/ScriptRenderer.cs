@@ -57,14 +57,7 @@ namespace Bam.Net.Server.Renderers
             SetResult();
         }
 
-        static string[] _extensions = new string[] { ".js", ".jsonp", ".min" };
-        public static string[] Extensions
-        {
-            get
-            {
-                return _extensions;
-            }
-        }
+        public static new string[] Extensions { get; } = new string[] { ".js", ".jsonp", ".min" };
 
         private void SetResult()
         {

@@ -249,7 +249,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -269,8 +269,10 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ApiKey>();
 			Database db = database ?? Db.For<ApiKey>();
-			var results = new ApiKeyCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ApiKeyCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -707,6 +709,25 @@ namespace Bam.Net.ServiceProxy.Secure
 			if(orderBy != null)
 			{
 				query.OrderBy<ApiKeyColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ApiKeyCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ApiKeyCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<ApiKey>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<ApiKey>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

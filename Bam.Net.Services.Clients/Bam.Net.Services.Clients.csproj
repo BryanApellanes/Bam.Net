@@ -70,6 +70,7 @@
     <Compile Include="ApplicationLogDatabase.cs" />
     <Compile Include="ApplicationLogger.cs" />
     <Compile Include="ApplicationServiceRegistry.cs" />
+    <Compile Include="ConfigurationServiceCredentialProvider.cs" />
     <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
     <Compile Include="CoreProxyableService.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="CoreLoggerClient.cs" />
     <Compile Include="IHasCoreClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebHookClient.cs" />
+    <Compile Include="WebHookClientEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
@@ -202,6 +205,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceRegistries\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

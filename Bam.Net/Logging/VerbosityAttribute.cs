@@ -3,6 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace Bam.Net.Logging
 		/// </summary>
         public string MessageFormat { get; set; }
 
+        [DebuggerStepThrough]
         public bool TryGetMessage(object value, out string message)
         {
             try

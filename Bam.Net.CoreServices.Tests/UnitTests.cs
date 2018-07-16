@@ -228,7 +228,7 @@ namespace Bam.Net.CoreServices.Tests
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
                 string typeName = type.Name;
-                if(typeName.StartsWith("Core") && typeName.EndsWith("Service") && type.IsSubclassOf(typeof(ProxyableService)))
+                if(typeName.EndsWith("Service") && type.IsSubclassOf(typeof(ProxyableService)))
                 {
                     foundOne = true;
                     OutLine(type.FullName, ConsoleColor.Cyan);
@@ -322,6 +322,11 @@ namespace Bam.Net.CoreServices.Tests
             Machine machine = Machine.Current;
             repo.Delete(machine);
             Machine retrieved = repo.Query<Machine>(Filter.Where("Name") == machine.Name && Filter.Where("Cuid") == machine.Cuid).FirstOrDefault();
+            if(retrieved != null)
+            {
+                repo.Delete(retrieved);
+            }
+            retrieved = repo.Query<Machine>(Filter.Where("Name") == machine.Name && Filter.Where("Cuid") == machine.Cuid).FirstOrDefault();
             Expect.IsNull(retrieved);
             Machine ensured = machine.EnsureSingle<Machine>(repo, "Test UserName of modifier", "Cuid");
             Expect.IsNotNull(ensured, "Ensured was null");

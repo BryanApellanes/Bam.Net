@@ -19,9 +19,11 @@ namespace Bam.Net.Data.MySql
     {
         public static SetFormat GetSetFormat(string tableName, StringBuilder stringBuilder, int? startNumber, params AssignValue[] values)
         {
-            SetFormat set = new SetFormat();
-            set.ColumnNameFormatter = (c) => c;
-            set.ParameterPrefix = "@";
+            SetFormat set = new SetFormat
+            {
+                ColumnNameFormatter = (c) => c,
+                ParameterPrefix = "@"
+            };
             foreach (AssignValue value in values)
             {
                 set.AddAssignment(value);

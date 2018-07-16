@@ -13,7 +13,7 @@ namespace Bam.Net.Server
         public SimpleServer(R responder, ILogger logger)
         {
             Responder = responder;
-            Logger = logger;
+            Logger = logger ?? Log.Default;
             CreatedOrChangedHandler = (o, a) => { };
             RenamedHandler = (o, a) => { };
             HostPrefixes = new HashSet<HostPrefix>

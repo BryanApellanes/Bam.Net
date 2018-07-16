@@ -20,18 +20,27 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "/bam/bot/tools/OpenCover/OpenCover.Console.exe";
+                return "/bam/tools/OpenCover/OpenCover.Console.exe";
             }
         }
 
+        /// <summary>
+        /// Gets the output root.
+        /// </summary>
+        /// <value>
+        /// The output root.
+        /// </value>
         protected static string OutputRoot
         {
             get
             {
-                return "/bam/bot/tests/";
+                return "/bam/tests/";
             }
         }
 
+        /// <summary>
+        /// Runs the tests with coverage.
+        /// </summary>
         [ConsoleAction("TestsWithCoverage", "Run tests with coverage using opencover.console")]
         public static void RunTestsWithCoverage()
         {
@@ -90,6 +99,11 @@ namespace Bam.Net.Testing
             RunUnitTestsInFile(assemblyPath, Environment.CurrentDirectory);
         }
 
+        /// <summary>
+        /// Runs the unit tests in specified assemlby.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="endDirectory">The end directory.</param>
         public static void RunUnitTestsInFile(string assemblyPath, string endDirectory)
         {
             OutLineFormat("Running UnitTests: {0}", ConsoleColor.DarkGreen, assemblyPath);
@@ -110,6 +124,11 @@ namespace Bam.Net.Testing
             }
         }
 
+        /// <summary>
+        /// Runs the integration tests in the specified file.
+        /// </summary>
+        /// <param name="assemblyPath">The assembly path.</param>
+        /// <param name="endDirectory">The end directory.</param>
         [ConsoleAction("IntegrationTests", "[path_to_test_assembly]", "Run integration tests in the specified assemlby")]
         public static void RunIntegrationTestsInFile(string assemblyPath = null, string endDirectory = null)
         {

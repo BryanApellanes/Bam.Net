@@ -82,8 +82,7 @@ namespace Bam.Net.Data
                 List<IParameterInfo> temp = new List<IParameterInfo>();
                 foreach (IFilterToken token in Filters)
                 {
-                    IParameterInfo parameter = token as IParameterInfo;
-                    if (parameter != null)
+                    if (token is IParameterInfo parameter)
                     {
                         temp.Add(parameter);
                     }
@@ -112,8 +111,7 @@ namespace Bam.Net.Data
 
             foreach (IFilterToken token in this.Filters)
             {
-                IParameterInfo c = token as IParameterInfo;
-                if (c != null)
+                if (token is IParameterInfo c)
                 {
                     number = c.SetNumber(number);
                 }
@@ -168,10 +166,12 @@ namespace Bam.Net.Data
             this.Add(new InComparison(this.ColumnName, values, parameterPrefix));
             return this;
         }
+
 		public QueryFilter In(long[] values)
 		{
 			return In(values, "@");
 		}
+
         internal QueryFilter In(long[] values, string parameterPrefix)
         {
             this.Add(new InComparison(this.ColumnName, values, parameterPrefix));
@@ -182,6 +182,7 @@ namespace Bam.Net.Data
 		{
 			return In(values, "@");
 		}
+
         internal QueryFilter In(string[] values, string parameterPrefix)
         {
             this.Add(new InComparison(this.ColumnName, values, parameterPrefix));
@@ -435,7 +436,7 @@ namespace Bam.Net.Data
             }
         }
 
-        public QueryFilter<C> In(object[] values)
+        public QueryFilter<C> In(params object[] values)
         {
             this.Add(new InComparison(this.ColumnName, values));
             return this;

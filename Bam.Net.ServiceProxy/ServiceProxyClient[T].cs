@@ -245,9 +245,7 @@ namespace Bam.Net.ServiceProxy
             try
             {
                 string tmp = string.Empty;
-                string queryStringParameters;
-                ServiceProxyVerbs verb;
-                GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out verb);
+                GetQueryStringAndVerb(methodName, parameters, out string queryStringParameters, out ServiceProxyVerbs verb);
 
                 if (verb == ServiceProxyVerbs.POST)
                 {
@@ -294,17 +292,13 @@ namespace Bam.Net.ServiceProxy
         /// <returns></returns>
         protected internal HttpWebRequest GetServiceProxyRequest<ST>(string methodName, params object[] parameters)
         {
-            ServiceProxyVerbs verb;
-            string queryStringParameters;
-            GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out verb);
+            GetQueryStringAndVerb(methodName, parameters, out string queryStringParameters, out ServiceProxyVerbs verb);
             return GetServiceProxyRequest<ST>(verb, methodName, queryStringParameters);
         }
 
         protected internal HttpWebRequest GetServiceProxyRequest<ST>(ServiceProxyVerbs verb, string methodName, params object[] parameters)
         {
-            ServiceProxyVerbs ignore;
-            string queryStringParameters;
-            GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out ignore);
+            GetQueryStringAndVerb(methodName, parameters, out string queryStringParameters, out ServiceProxyVerbs ignore);
             return GetServiceProxyRequest<ST>(verb, methodName, queryStringParameters);
         }
 

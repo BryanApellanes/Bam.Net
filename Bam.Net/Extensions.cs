@@ -34,6 +34,7 @@ namespace Bam.Net
         static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
         static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
         static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
+        static Dictionary<string, SerializationFormat> _serializationFormats;
         static Extensions()
         {
             SetDictionaries();
@@ -107,10 +108,45 @@ namespace Bam.Net
                         }
                     },
                     { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
-                    { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
-                    { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
+                    { SerializationFormat.Json, (stream, type) => stream.FromJsonStream(type) }, // this might not work; should be tested
+                    { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream(type) }, // this might not work; should be tested
                     { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
                 };
+            }
+            if(_serializationFormats == null)
+            {
+                _serializationFormats = new Dictionary<string, SerializationFormat>
+                {
+                    { ".yaml", SerializationFormat.Yaml },
+                    { ".yml", SerializationFormat.Yaml },
+                    { ".json", SerializationFormat.Json },
+                    { ".xml", SerializationFormat.Xml },
+                    { ".dat", SerializationFormat.Binary },
+                    { ".bin", SerializationFormat.Binary }
+                };
+            }
+        }
+
+        public static T FromFile<T>(this FileInfo file)
+        {
+            return Deserialize<T>(file);
+        }
+
+        public static T Deserialize<T>(this FileInfo file)
+        {
+            return (T)Deserialize(file, typeof(T));
+        }
+
+        public static object Deserialize(this FileInfo file, Type type)
+        {
+            string fileExtension = file.Extension;
+            if (!_serializationFormats.ContainsKey(fileExtension))
+            {
+                throw new ArgumentException($"File extension ({fileExtension}) not supported for deserialization, use one of ({string.Join(",", _serializationFormats.Keys.ToArray())})");
+            }
+            using (FileStream fs = file.OpenRead())
+            {
+                return _deserializers[_serializationFormats[fileExtension]](fs, type);
             }
         }
 
@@ -709,6 +745,12 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Parse the string as the specified generic enum.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public static T ToEnum<T>(this string value)
         {
             return (T)Enum.Parse(typeof(T), value);
@@ -926,22 +968,58 @@ namespace Bam.Net
             });
             return result;
         }
+
+        /// <summary>
+        /// Parses key value pairs from the string.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="pascalCasify">if set to <c>true</c> [pascal casify].</param>
+        /// <param name="keyValueSeparator">The key value separator.</param>
+        /// <param name="elementSeparator">The element separator.</param>
+        /// <returns></returns>
+        public static Dictionary<string, object> ParseKeyValuePairs(this string input, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";")
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            string[] elements = input.DelimitSplit(elementSeparator);
+            elements.Each(element =>
+            {
+                GetKeyValue(pascalCasify, keyValueSeparator, element, out string key, out string value);
+
+                if (result.ContainsKey(key))
+                {
+                    Args.Throw<InvalidOperationException>("The key {0} exists more than once in the specified string: {1}", key, input);
+                }
+                result.Add(key, value);
+            });
+
+            return result;
+        }
+
         public static T ParseKeyValuePairs<T>(this string input, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";") where T : class, new()
         {
             T result = new T();
             string[] elements = input.DelimitSplit(elementSeparator);
             elements.Each(element =>
             {
-                string[] kvp = element.DelimitSplit(keyValueSeparator);
-                Args.ThrowIf<ArgumentException>(kvp.Length != 2, "Unrecognized Key Value pair format: ({0})", element);
-
-                string key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
-                string value = pascalCasify ? kvp[1].PascalCase() : kvp[1];
+                GetKeyValue(pascalCasify, keyValueSeparator, element, out string key, out string value);
 
                 result.Property(key, value);
             });
 
             return result;
+        }
+        
+        private static void GetKeyValue(bool pascalCasify, string keyValueSeparator, string element, out string key, out string value)
+        {
+            string[] kvp = element.DelimitSplit(keyValueSeparator);
+            Args.ThrowIf<ArgumentException>(kvp.Length < 1 || kvp.Length > 2, "Unrecognized Key Value pair format: ({0})", element);
+
+            key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
+            value = string.Empty;
+            if (kvp.Length == 2)
+            {
+                value = pascalCasify ? kvp[1].PascalCase() : kvp[1];
+            }
         }
 
         /// <summary>
@@ -1551,7 +1629,7 @@ namespace Bam.Net
         /// <summary>
         /// Double null check the specified toInit locking on the current
         /// object using the specified ifNull function to instantiate if 
-        /// toInit is null.  This guarantess thread safe access to the
+        /// toInit is null.  This guarantees thread safe access to the
         /// resulting object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -1729,6 +1807,18 @@ namespace Bam.Net
             using (StreamReader sr = new StreamReader(ms))
             {
                 return sr.ReadToEnd().FromJson<T>();
+            }
+        }
+
+        public static object FromJsonStream(this Stream stream, Type type)
+        {
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            using (StreamReader sr = new StreamReader(ms))
+            {
+                return sr.ReadToEnd().FromJson(type);
             }
         }
 
@@ -2571,10 +2661,9 @@ namespace Bam.Net
 
             Type type = obj.GetType();
             PropertyInfo[] properties = type.GetProperties();
-            return obj.PropertiesToString(properties, separator);
+            return PropertiesToString(obj, properties, separator);
         }
 
-        [DebuggerStepThrough]
         public static string PropertiesToString(this object obj, PropertyInfo[] properties, string separator = "\r\n")
         {
             try
@@ -3023,6 +3112,16 @@ namespace Bam.Net
             return returnValue.ToString();
         }
 
+        /// <summary>
+        /// Returns a camel cased string from the specified string using the specified 
+        /// separators.  For example, the input "The quick brown fox jumps over the lazy
+        /// dog" with the separators of "new string[]{" "}" should return the string 
+        /// "theQuickBrownFoxJumpsOverTheLazyDog".
+        /// </summary>
+        /// <param name="stringToCamelize">The string to camelize.</param>
+        /// <param name="preserveInnerUppers">if set to <c>true</c> [preserve inner uppers].</param>
+        /// <param name="separators">The separators.</param>
+        /// <returns></returns>
         public static string CamelCase(this string stringToCamelize, bool preserveInnerUppers = true, params string[] separators)
         {
             if (stringToCamelize.Length > 0)
@@ -3130,6 +3229,21 @@ namespace Bam.Net
             return (val > 47 && val < 58);
         }
 
+        public static bool IsNumber(this object value)
+        {
+            return value is sbyte
+                    || value is byte
+                    || value is short
+                    || value is ushort
+                    || value is int
+                    || value is uint
+                    || value is long
+                    || value is ulong
+                    || value is float
+                    || value is double
+                    || value is decimal;
+        }
+
         public static bool IsLetter(this char c)
         {
             int val = Convert.ToInt32(c);
@@ -3198,6 +3312,15 @@ namespace Bam.Net
             }
 
             return result.ToString();
+        }
+
+        public static bool StartsWithLetter(this string theString)
+        {
+            if (string.IsNullOrEmpty(theString))
+            {
+                return false;
+            }
+            return theString[0].IsLetter();
         }
 
         /// <summary>
@@ -3449,8 +3572,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static Type BuildDynamicType<PropertyAttributeFilter>(this Type typeToClone) where PropertyAttributeFilter : Attribute, new()
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType<PropertyAttributeFilter>(typeToClone, out ignore, false);
+            return BuildDynamicType<PropertyAttributeFilter>(typeToClone, out AssemblyBuilder ignore, false);
         }
 
         /// <summary>
@@ -3464,8 +3586,7 @@ namespace Bam.Net
         /// <returns>An in memory type that is not persisted to disk.</returns>
         public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out ignore, concreteAttribute);
+            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out AssemblyBuilder ignore, concreteAttribute);
         }
 
         /// <summary>
@@ -3564,8 +3685,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ValuePropertiesToDynamic(this object instance)
         {
-            Type ignore;
-            return ValuePropertiesToDynamic(instance, out ignore);
+            return ValuePropertiesToDynamic(instance, out Type ignore);
         }
 
         /// <summary>
@@ -3576,10 +3696,9 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ValuePropertiesToDynamic(this object instance, out Type dynamicType)
         {
-            AssemblyBuilder ignore;
             Type instanceType = instance.GetType();
             string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
-            dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out ignore);
+            dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out AssemblyBuilder ignore);
             ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
             object valuesOnlyInstance = ctor.Invoke(null);
             DefaultConfiguration.CopyProperties(instance, valuesOnlyInstance);
@@ -3835,6 +3954,17 @@ namespace Bam.Net
             return temp;
         }
 
+        public static object ToDynamicData(this Dictionary<string, object> instance, string typeName)
+        {
+            Type type = instance.ToDynamicType(typeName);
+            object temp = type.Construct();
+            foreach(string key in instance.Keys)
+            {
+                temp.Property(key, instance[key]);
+            }
+            return temp;
+        }
+
         private static bool DataTypeFilter(PropertyInfo prop)
         {
             return prop.PropertyType == typeof(string) ||
@@ -3904,9 +4034,7 @@ namespace Bam.Net
         {
             lock (_buildDynamicTypeLock)
             {
-                TypeBuilder typeBuilder;
-                AssemblyBuilder assemblyBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                GetAssemblyAndTypeBuilder(typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder);
                 List<object> all = new List<object>();
                 all.Add(instance);
                 all.AddRange(toMerge);
@@ -3986,10 +4114,12 @@ namespace Bam.Net
         {
             return dictionary.ToDynamicType(typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
+
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
             return ToDynamicType(dictionary, typeName, recursionThusFar, new List<Type>(), out assemblyBuilder, useCache);
         }
+
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
             ThrowIfLimitReached(recursionThusFar);
@@ -4062,12 +4192,57 @@ namespace Bam.Net
                 return created;
             }
         }
+
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
         public static object FromDictionary(this Dictionary<object, object> dictionary, Type type, params object[] ctorParams)
         {
             object result = type.Construct(ctorParams);
             SetProperties(dictionary, result);
             return result;
         }
+
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
+        public static TResult FromDictionary<TKey, TValue, TResult>(this Dictionary<TKey, TValue> dictionary, params object[] ctorParams)
+        {
+            return FromDictionary<TKey, TValue, TResult>(dictionary, (k) => k.ToString(), (p, v) => v, ctorParams);
+        }
+
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="keyMunger">The key munger.</param>
+        /// <param name="valueMunger">The value munger.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
+        public static TResult FromDictionary<TKey, TValue, TResult>(this Dictionary<TKey, TValue> dictionary, Func<TKey, string> keyMunger, Func<PropertyInfo, TValue, object> valueMunger, params object[] ctorParams)
+        {
+            TResult result = Construct<TResult>(typeof(TResult), ctorParams);
+            foreach(TKey key in dictionary.Keys)
+            {
+                string propertyName = keyMunger(key);
+                result.Property(propertyName, valueMunger(typeof(TResult).GetProperty(propertyName), dictionary[key]));
+            }
+            return result;
+        }
+
         /// <summary>
         /// Convert the specified dicationary to an instance
         /// of type T
@@ -4089,6 +4264,39 @@ namespace Bam.Net
             {
                 result.Property(key.ToString(), dictionary[key]);
             }
+        }
+
+        public static Dictionary<string, T> ToDictionary<T>(this object instance, Func<PropertyInfo, string> keyMunger, Func<object, T> valueConverter)
+        {
+            Type dyn = instance.GetType();
+            Dictionary<string, T> result = new Dictionary<string, T>();
+            foreach (PropertyInfo prop in dyn.GetProperties())
+            {
+                string key = keyMunger(prop);
+                result[key] = valueConverter(prop.GetValue(instance));
+            }
+            return result;
+
+        }
+
+        /// <summary>
+        /// Intended to turn a dynamic object into a dictionary. For example,
+        /// new { key1 = value1, key2 = value 2} becomes a dictionary with
+        /// two keys.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="valueConverter">The value converter.</param>
+        /// <returns></returns>
+        public static Dictionary<string, T> ToDictionary<T>(this object instance, Func<object, T> valueConverter)
+        {
+            Type dyn = instance.GetType();
+            Dictionary<string, T> result = new Dictionary<string, T>();
+            foreach (PropertyInfo prop in dyn.GetProperties())
+            {
+                result[prop.Name] = valueConverter(prop.GetValue(instance));
+            }
+            return result;
         }
 
         /// <summary>
@@ -4122,8 +4330,7 @@ namespace Bam.Net
 
         public static Type MergeToDynamicType(this List<object> objects, string typeName, int recursionThusFar, bool useCache = true)
         {
-            AssemblyBuilder ignore;
-            return MergeToDynamicType(objects, typeName, recursionThusFar, out ignore, useCache);
+            return MergeToDynamicType(objects, typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
 
         public static Type MergeToDynamicType(this List<object> objects, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
@@ -4207,14 +4414,13 @@ namespace Bam.Net
 
         public static Type ToDynamicType(this DataRow row)
         {
-            AssemblyBuilder ignore;
             string typeName = 8.RandomLetters();
             if (row.Table != null)
             {
                 typeName = row.Table.TableName.Or(typeName);
             }
 
-            return ToDynamicType(row, typeName, out ignore);
+            return ToDynamicType(row, typeName, out AssemblyBuilder ignore);
         }
 
         public static Type ToDynamicType(this DataRow row, string typeName, out AssemblyBuilder assemblyBuilder)
@@ -4227,8 +4433,7 @@ namespace Bam.Net
                 }
                 else
                 {
-                    TypeBuilder typeBuilder;
-                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
 
                     foreach (DataColumn column in row.Table.Columns)
                     {
@@ -4240,15 +4445,45 @@ namespace Bam.Net
                 }
             }
         }
+
+        public static Type ToDynamicType(this Dictionary<string, object> dictionary, string typeName)
+        {
+            return ToDynamicType(dictionary, typeName, out AssemblyBuilder ignore);
+        }
+
+        public static Type ToDynamicType(this Dictionary<string, object> dictionary, string typeName, out AssemblyBuilder assemblyBuilder)
+        {
+            lock (_buildDynamicTypeLock)
+            {
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null)
+                {
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
+                }
+                else
+                {
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
+
+                    foreach (string propertyName in dictionary.Keys)
+                    {
+                        CustomPropertyInfo propInfo = new CustomPropertyInfo(propertyName, dictionary[propertyName].GetType());
+                        AddPropertyToDynamicType(typeBuilder, propInfo);
+                    }
+
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
+            }
+        }
+
         public static Type BuildDynamicType(this string typeName, params string[] propertyNames)
         {
             return BuildDynamicType(typeName, string.Empty, propertyNames);
         }
+
         public static Type BuildDynamicType(this string typeName, string nameSpace, params string[] propertyNames)
         {
-            AssemblyBuilder ignore;
-            return BuildDynamicType(typeName, nameSpace, out ignore, propertyNames);
+            return BuildDynamicType(typeName, nameSpace, out AssemblyBuilder ignore, propertyNames);
         }
+
         public static Type BuildDynamicType(this string typeName, string nameSpace, out AssemblyBuilder assemblyBuilder, params string[] propertyNames)
         {
             lock (_buildDynamicTypeLock)

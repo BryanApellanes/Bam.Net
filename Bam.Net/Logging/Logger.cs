@@ -9,7 +9,6 @@ using System.Threading;
 using System.Diagnostics;
 using Bam.Net.Configuration;
 using System.Collections.Concurrent;
-//using Bam.Net.Helpers;
 
 namespace Bam.Net.Logging
 {
@@ -342,6 +341,7 @@ namespace Bam.Net.Logging
         {
             return CreateInfoEvent(message, new string[] { });
         }
+
         protected LogEvent CreateInfoEvent(string messageSignature, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Information, null, messageVariableValues);
@@ -351,6 +351,7 @@ namespace Bam.Net.Logging
         {
             return CreateWarningEvent(message, new string[] { });
         }
+
         protected LogEvent CreateWarningEvent(string messageSignature, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Warning, null, messageVariableValues);
@@ -424,8 +425,6 @@ namespace Bam.Net.Logging
 			Args.SetMessageAndStackTrace(ex, message, stack);
         }
 
-		
-
         /// <summary>
         /// Returns an id for the specified applicationName and messageSignature.
         /// </summary>
@@ -436,7 +435,6 @@ namespace Bam.Net.Logging
         {
             return EventIdProvider.GetEventId(applicationName, messageSignature);
         }
-
 
         public void AddEntry(string messageSignature, LogEventType verbosity)
         {

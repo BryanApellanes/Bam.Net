@@ -61,25 +61,20 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>.C:\bam\nuget\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -227,6 +222,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionCollection.cs" />
@@ -237,6 +233,7 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
+    <Compile Include="Configuration\ICoreConfigurationService.cs" />
     <Compile Include="DataSettingsSmtpSettingsProvider.cs" />
     <Compile Include="DiagnosableSettings.cs" />
     <Compile Include="Diagnostic\IDiagnosable.cs" />
@@ -261,12 +258,14 @@
     <Compile Include="ApplicationRegistration\Data\HostAddress.cs" />
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
+    <Compile Include="Logging\SystemLogReader.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="Notification\INotificationService.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="RepositoryChunkStorage.cs" />
+    <Compile Include="Requesting.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistries.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesCollection.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesColumns.cs" />
@@ -326,7 +325,6 @@
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="AssemblyManagement\AssemblyService.cs" />
-    <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorCollection.cs" />
@@ -421,7 +419,7 @@
     <Compile Include="ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />
-    <Compile Include="Users\CoreUserRegistryService.cs" />
+    <Compile Include="Users\UserRegistryService.cs" />
     <Compile Include="Configuration\ConfigurationService.cs" />
     <Compile Include="Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Diagnostic\DiagnosticService.cs" />
@@ -438,6 +436,40 @@
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
     <Compile Include="TemplatePrecedence.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\Qi\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookCallWrapper.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWebHookSubscriberQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookDescriptorWrapper.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHooksContext.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHooksRepository.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberCollection.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberColumns.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberPagedQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberQuery.cs" />
+    <Compile Include="WebHooks\Data\Generated_Dao\WebHookSubscriberWrapper.cs" />
+    <Compile Include="WebHooks\Data\WebHookCall.cs" />
+    <Compile Include="WebHooks\Data\WebHookDescriptor.cs" />
+    <Compile Include="WebHooks\WebHookService.cs" />
+    <Compile Include="WebHooks\Data\WebHookSubscriber.cs" />
+    <Compile Include="WebHooks\WebHookSubscriptionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />
@@ -445,7 +477,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ApplicationRegistration\regen_core_registration_dao.cmd" />
+    <None Include="ApplicationRegistration\regen_applicationregistration_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Bam.Net.CoreServices.nuspec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -456,8 +490,18 @@
     <None Include="AssemblyManagement\regen_assemblymanagement_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="OAuth\regen_oauth_dao.cmd" />
-    <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
+    <None Include="OAuth\regen_oauth_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="regen.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="WebHooks\regen_webhooks_dao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -50,7 +50,7 @@ namespace Bam.Net.Server.Meta
             {
                 return _loggerLock.DoubleCheckLock(ref _logger, () =>
                 {
-                    Log.Start();
+                    Log.Restart();
                     return Log.Default;
                 });
             }

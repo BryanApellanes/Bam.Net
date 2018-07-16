@@ -55,6 +55,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetLongValue("Id")), this, "MainId"));				
@@ -171,7 +172,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -191,8 +192,10 @@ namespace Bam.Net.Data.Repositories.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<MainObject>();
 			Database db = database ?? Db.For<MainObject>();
-			var results = new MainObjectCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new MainObjectCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -629,6 +632,25 @@ namespace Bam.Net.Data.Repositories.Tests
 			if(orderBy != null)
 			{
 				query.OrderBy<MainObjectColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<MainObjectCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static MainObjectCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<MainObject>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<MainObject>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

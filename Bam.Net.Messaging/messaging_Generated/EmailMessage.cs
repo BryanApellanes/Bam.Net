@@ -193,7 +193,7 @@ namespace Bam.Net.Messaging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -213,8 +213,10 @@ namespace Bam.Net.Messaging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<EmailMessage>();
 			Database db = database ?? Db.For<EmailMessage>();
-			var results = new EmailMessageCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new EmailMessageCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

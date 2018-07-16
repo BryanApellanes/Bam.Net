@@ -55,6 +55,7 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("EventParam_EventId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.EventId == GetLongValue("Id")), this, "EventId"));				
@@ -386,7 +387,7 @@ namespace Bam.Net.Logging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -406,8 +407,10 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Event>();
 			Database db = database ?? Db.For<Event>();
-			var results = new EventCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new EventCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -844,6 +847,25 @@ namespace Bam.Net.Logging.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<EventColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<EventCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static EventCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Event>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Event>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

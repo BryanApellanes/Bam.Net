@@ -1,5 +1,5 @@
 # Gloo
-Using Gloo you can create and expose a web service simply by creating a class
+Using Gloo you can create and expose a web service by creating a class
 and serving that class with gloo.exe.
 
 

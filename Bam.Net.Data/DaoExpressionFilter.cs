@@ -117,8 +117,7 @@ namespace Bam.Net.Data
 
         private static string GetColumnName(MemberInfo info)
         {
-            ColumnAttribute attr;
-            if (info.HasCustomAttributeOfType<ColumnAttribute>(out attr))
+            if (info.HasCustomAttributeOfType(out ColumnAttribute attr))
             {
                 return attr.Name;
             }

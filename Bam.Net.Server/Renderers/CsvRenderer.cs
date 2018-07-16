@@ -30,6 +30,7 @@ namespace Bam.Net.Server.Renderers
             response.AddHeader("Content-Disposition", "attachment;filename=" + FileName + ".csv");
             base.SetContentType(response);
         }
+
         public override void Render(object toRender, Stream output)
         {
             CsvResult csv = new CsvResult(toRender);

@@ -10,6 +10,10 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data
 {
+    /// <summary>
+    /// A descriptor providing meta data about a method used to load a service registry.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Data.Repositories.AuditRepoData" />
     [Serializable]
     public class ServiceRegistryLoaderDescriptor: AuditRepoData
     {
@@ -47,10 +51,45 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             Description = string.IsNullOrEmpty(description) ? attr.Description: description;
         }
 
+        /// <summary>
+        /// Gets or sets the name of the registry.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets an optional description.  Corresponds to the description of
+        /// the ServiceRegistryLoaderAttribute if specified.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the loader.
+        /// </summary>
+        /// <value>
+        /// The type of the loader.
+        /// </value>
         public string LoaderType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the loader assembly.
+        /// </summary>
+        /// <value>
+        /// The loader assembly.
+        /// </value>
         public string LoaderAssembly { get; set; }
+
+        /// <summary>
+        /// Gets or sets the loader method.
+        /// </summary>
+        /// <value>
+        /// The loader method.
+        /// </value>
         public string LoaderMethod { get; set; }
     }
 }

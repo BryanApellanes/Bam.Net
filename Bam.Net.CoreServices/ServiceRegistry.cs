@@ -11,6 +11,13 @@ namespace Bam.Net.CoreServices
     public class ServiceRegistry: Incubator
     {
         public string Name { get; set; }
+
+        public ServiceRegistry Include(Incubator incubator)
+        {
+            CombineWith(incubator, true);
+            return this;
+        }
+
         public ServiceRegistry Include(ServiceRegistry registry)
         {
             CombineWith(registry, true);

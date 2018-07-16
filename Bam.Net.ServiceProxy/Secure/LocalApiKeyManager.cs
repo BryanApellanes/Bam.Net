@@ -96,6 +96,7 @@ namespace Bam.Net.ServiceProxy.Secure
             ApiKeyCollection keys = ApiKey.Where(c => c.ClientId == applicationClientId, Order.By<ApiKeyColumns>(c => c.CreatedAt, SortOrder.Descending), Database);
             return keys[index].SharedSecret;
         }
+
         public ApplicationCreateResult CreateApplication(string applicationName)
         {
             return CreateApplication(HttpContext, UserResolver, applicationName, Database);
@@ -123,8 +124,10 @@ namespace Bam.Net.ServiceProxy.Secure
                         }
                     }
 
-                    app = new Application();
-                    app.Name = applicationName;
+                    app = new Application
+                    {
+                        Name = applicationName
+                    };
                     app.Save(database);
                     AddKey(app, userResolver, context);
 

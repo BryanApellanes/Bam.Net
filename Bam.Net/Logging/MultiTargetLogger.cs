@@ -29,17 +29,17 @@ namespace Bam.Net.Logging
         /// <summary>
         /// Adds the specified logger if it hasn't already been added.  If
         /// the specified logger is the current MultiTargetLogger it will not be added.
-        /// If the specified logger is a NullLoger it will not be added.
+        /// If the specified logger is a NullLoger or another MultiTargetLogger it will not be added.
         /// </summary>
         /// <param name="logger"></param>
         public void AddLogger(ILogger logger)
         {
-            if (logger.IsNull)
+            if (logger.IsNull || logger == null)
             {
                 return;
             }
 
-            if (!_loggers.Contains(logger) && logger != this && _loggers.Where(l => l.GetType() == logger.GetType()).FirstOrDefault() == null)
+            if (!_loggers.Contains(logger) && logger != this && logger.GetType() != typeof(MultiTargetLogger))
             {
                 _loggers.Add(logger);
                 SetApplicationNames();
@@ -54,10 +54,19 @@ namespace Bam.Net.Logging
         {
             get
             {
-                return _loggers.ToArray();
+                return _loggers == null ? new ILogger[] { }: _loggers.ToArray();
             }
         }
-        
+
+        public override ILogger StartLoggingThread()
+        {
+            foreach(ILogger logger in Loggers)
+            {
+                logger.StopLoggingThread();
+            }
+            return base.StartLoggingThread();
+        }
+
         /// <summary>
         /// Passes the specified logEvent to the Commit method
         /// of each of the ILoggers in Loggers.

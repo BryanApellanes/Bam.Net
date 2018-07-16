@@ -21,8 +21,8 @@ namespace Bam.Net.Configuration
     /// </summary>
     public static class DefaultConfiguration
     {
-        public const string DefaultApplicationName = "UNKOWN-APPLICATION";
-        public const string DefaultProcessName = "UNKOWN-PROCESS";
+        public const string DefaultApplicationName = "UNKNOWN-APPLICATION";
+        public const string DefaultProcessName = "UNKNOWN-PROCESS";
 
         static NameValueCollection _appSettings = ConfigurationManager.AppSettings;
         static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;
@@ -427,15 +427,28 @@ namespace Bam.Net.Configuration
         /// <param name="value">The value.</param>
         public static void SetAppSetting(string configPath, string key, string value)
         {
-            System.Configuration.Configuration config = GetConfig(configPath);
-            if(config.AppSettings.Settings[key] != null)
-            {
-                config.AppSettings.Settings.Remove(key);
-            }
-            config.AppSettings.Settings.Add(key, value);
-            config.Save();
+            SetAppSettings(configPath, new Dictionary<string, string> { { key, value } });
         }
 
+        public static void SetAppSettings(FileInfo exePath, Dictionary<string, string> values)
+        {
+            SetAppSettings($"{exePath.FullName}.config", values);
+        }
+
+        public static void SetAppSettings(string configPath, Dictionary<string, string> values)
+        {
+            System.Configuration.Configuration config = GetConfig(configPath);
+            foreach(string key in values.Keys)
+            {
+                if(config.AppSettings.Settings[key] != null)
+                {
+                    config.AppSettings.Settings.Remove(key);
+                }
+                config.AppSettings.Settings.Add(key, values[key]);
+            }            
+
+            config.Save();
+        }
         /// <summary>
         /// Gets the configuration.
         /// </summary>
@@ -443,8 +456,8 @@ namespace Bam.Net.Configuration
         /// <returns></returns>
         public static System.Configuration.Configuration GetConfig(string configPath)
         {
-            System.Configuration.ConfigurationFileMap fileMap = new ConfigurationFileMap(configPath);
-            System.Configuration.Configuration config = ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
+            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
+            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             return config;
         }
 

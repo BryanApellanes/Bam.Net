@@ -55,6 +55,7 @@ namespace Bam.Net.Automation.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("JobRunData_JobDataId", new JobRunDataCollection(Database.GetQuery<JobRunDataColumns, JobRunData>((c) => c.JobDataId == GetLongValue("Id")), this, "JobDataId"));				
@@ -171,7 +172,7 @@ namespace Bam.Net.Automation.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -191,8 +192,10 @@ namespace Bam.Net.Automation.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<JobData>();
 			Database db = database ?? Db.For<JobData>();
-			var results = new JobDataCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new JobDataCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

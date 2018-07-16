@@ -179,7 +179,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -199,8 +199,10 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ConfigSetting>();
 			Database db = database ?? Db.For<ConfigSetting>();
-			var results = new ConfigSettingCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ConfigSettingCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -637,6 +639,25 @@ namespace Bam.Net.ServiceProxy.Secure
 			if(orderBy != null)
 			{
 				query.OrderBy<ConfigSettingColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ConfigSettingCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ConfigSettingCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<ConfigSetting>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<ConfigSetting>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

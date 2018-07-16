@@ -55,16 +55,20 @@ namespace Bam.Net.Translation
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
 			}						
@@ -294,7 +298,7 @@ namespace Bam.Net.Translation
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -314,8 +318,10 @@ namespace Bam.Net.Translation
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Language>();
 			Database db = database ?? Db.For<Language>();
-			var results = new LanguageCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LanguageCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -752,6 +758,25 @@ namespace Bam.Net.Translation
 			if(orderBy != null)
 			{
 				query.OrderBy<LanguageColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LanguageCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LanguageCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Language>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Language>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

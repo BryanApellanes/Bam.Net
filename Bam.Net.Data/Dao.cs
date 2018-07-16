@@ -12,6 +12,8 @@ using Bam.Net.Incubation;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data
 {
@@ -83,7 +85,7 @@ namespace Bam.Net.Data
 
         Dictionary<string, ILoadable> _childCollections;
         /// <summary>
-        /// Actions, keyed by type, to take after contruction.
+        /// Actions, keyed by type, to take after construction.
         /// </summary>
         public static Dictionary<Type, Action<Dao>> PostConstructActions { get; set; }
 
@@ -318,25 +320,120 @@ namespace Bam.Net.Data
                 return _columns.ToArray();
             }
         }
-        
-        public T Value<T>(string columnName, object value = null)
+
+        public TypeCode GetTypeCode(DataTypes dataTypes)
+        {
+            switch (dataTypes)
+            {
+                case DataTypes.Default:
+                    return TypeCode.Int64;
+                case DataTypes.Boolean:
+                    return TypeCode.Boolean;
+                case DataTypes.Int:
+                    return TypeCode.Int32;
+                case DataTypes.Long:
+                    return TypeCode.Int64;
+                case DataTypes.Decimal:
+                    return TypeCode.Decimal;
+                case DataTypes.String:
+                    return TypeCode.String;
+                case DataTypes.ByteArray:
+                    return TypeCode.Object;
+                case DataTypes.DateTime:
+                    return TypeCode.DateTime;
+                default:
+                    return TypeCode.Object;
+            }
+        }
+
+        public DataTypes GetDataType(string columnName)
+        {
+            return Database.GetDataTypeTranslator().TranslateDataType(columnName);
+        }
+
+        Dictionary<string, string> _columnDataTypes;
+        public virtual string GetDbDataType(string columnName)
+        {
+            if(_columnDataTypes == null)
+            {
+                _columnDataTypes = new Dictionary<string, string>();
+            }
+            if (!_columnDataTypes.ContainsKey(columnName))
+            {
+                _columnDataTypes.Add(columnName, GetDbDataType(GetType(), columnName));
+            }
+            return _columnDataTypes[columnName];
+        }
+
+        public static string GetDbDataType(Type type, string columnName)
+        {
+            PropertyInfo prop = type.GetProperty(columnName);
+            if (prop == null)
+            {
+                prop = type.GetProperties().FirstOrDefault(pi =>
+                {
+                    if(pi.HasCustomAttributeOfType(out ColumnAttribute column))
+                    {
+                        return column.Name.Equals(columnName);
+                    }
+                    return false;
+                });
+            }
+
+            return prop?.GetCustomAttributeOfType<ColumnAttribute>()?.DbDataType ?? "VARCHAR";
+        }
+
+        /// <summary>
+        /// Gets and/or sets the value of the specified column.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public T Column<T>(string columnName, object value = null)
+        {
+            return Column<T>(columnName, value);
+        }
+
+        /// <summary>
+        /// Get the value of the specified column, setting it if
+        /// value is specified.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public T ColumnValue<T>(string columnName, object value = null)
+        {
+            object val = ColumnValue(columnName, value);
+            return val == null ? default(T) : (T)val;
+        }
+
+        public object ColumnValue(string columnName, object value = null)
         {
             DataTable table = DataRow.Table;
-            if (!table.Columns.Contains(columnName))
+            if (!table.Columns.Contains(columnName) && value != null)
             {
-                table.Columns.Add(columnName);
+                Type columnType = Database.GetDataTypeTranslator().TypeFromDbDataType(GetDbDataType(columnName));
+                table.Columns.Add(columnName, columnType);
             }
             if(value != null)
             {
-                DataRow[columnName] = value;
+                DataRow[columnName] = value;                
             }
-            return (T)GetCurrentValue(columnName);
+            object currentValue = GetCurrentValue(columnName);
+            
+            if(currentValue == null || currentValue == DBNull.Value)
+            {
+                return null;
+            }
+            return currentValue;
         }
 
         /// <summary>
         /// If true, any references to the current
         /// record will be deleted prior to deleting
-        /// the current record when Delete() is called as long as
+        /// the current record when Delete() is called, as long as
         /// those references were hydrated on
         /// the current instance.
         /// </summary>
@@ -697,10 +794,10 @@ namespace Bam.Net.Data
 
         public void PreLoadChildCollections()
         {
-            foreach (ILoadable loadable in ChildCollections.Values)
+            Parallel.ForEach(ChildCollections.Values, (loadable) =>
             {
                 loadable.Load(Database);
-            }
+            });
         }
 
         protected virtual void Delete<C>(Func<C, IQueryFilter<C>> where) where C : IFilterToken, new()
@@ -879,7 +976,6 @@ namespace Bam.Net.Data
         /// Creates an in memory dynamic type representing
         /// the current Dao's Columns only.
         /// </summary>
-        /// <param name="daoObject"></param>
         /// <returns></returns>
         public object ToJsonSafe()
         {
@@ -965,7 +1061,7 @@ namespace Bam.Net.Data
         public abstract IQueryFilter GetUniqueFilter();
 
 
-        public Func<IQueryFilter> UniqueFilterProvider
+        public Func<Dao, IQueryFilter> UniqueFilterProvider
         {
             get;
             set;
@@ -1134,11 +1230,19 @@ namespace Bam.Net.Data
             return GetKeyColumnName(typeof(T));
         }
 
+        /// <summary>
+        /// Gets the name of the key column by reading the 
+        /// Name property of the first KeyColumnAttribute found
+        /// addorning a property on the specified type.  "Id" is
+        /// returned if no property with a KeyColumnAttribute is
+        /// found.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public static string GetKeyColumnName(Type type)
         {
             string name = "Id";
-            KeyColumnAttribute attribute;
-            type.GetFirstProperyWithAttributeOfType<KeyColumnAttribute>(out attribute);
+            type.GetFirstProperyWithAttributeOfType<KeyColumnAttribute>(out KeyColumnAttribute attribute);
             if (attribute != null)
             {
                 name = attribute.Name;
@@ -1152,19 +1256,18 @@ namespace Bam.Net.Data
         {
             get
             {
-                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
+                object value = PrimaryKey;
+                if (value != null && value != DBNull.Value && value.IsNumber())
                 {
-                    object value = DataRow[KeyColumnName];
-                    if (value != null && value != DBNull.Value)
+                    try
                     {
-                        try
-                        {
-                            _idValue = new long?(Convert.ToInt64(value));
-                        }
-                        catch
-                        {
-                            _idValue = null;
-                        }
+                        _idValue = new long?(Convert.ToInt64(value));
+                    }
+                    catch (Exception ex)
+                    {
+                        Type type = GetType();
+                        Assembly assembly = type.Assembly;
+                        Log.AddEntry("Exception getting IdValue for Dao instance of type ({0}.{1}) in Assembly ({2}) with hash (sha256) ({3})", ex, type.Namespace, type.Name, assembly.FullName, assembly.GetFileInfo().Sha256());
                     }
                 }
                 return _idValue;
@@ -1183,7 +1286,41 @@ namespace Bam.Net.Data
             KeyColumnName = GetKeyColumnName(this.GetType());
         }
 
-        bool _forceInsert;
+        object _primaryKey;
+        /// <summary>
+        /// Gets the primary key.  If the current instance is backed
+        /// by a DataRow because it was hydrated from a database query
+        /// the primary key value is the value in DataRow[KeyColumnName].
+        /// Otherwise, null.
+        /// </summary>
+        /// <value>
+        /// The primary key.
+        /// </value>
+        [Exclude]
+        public object PrimaryKey
+        {
+            get
+            {
+                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
+                {
+                    _primaryKey = DataRow[KeyColumnName];
+                }
+
+                return _primaryKey;
+            }
+            set
+            {
+                _primaryKey = value;
+                if (DataRow != null)
+                {
+                    if (!DataRow.Table.Columns.Contains(KeyColumnName))
+                    {
+                        DataRow.Table.Columns.Add(new DataColumn(KeyColumnName, typeof(object)));
+                    }
+                    DataRow[KeyColumnName] = _primaryKey;
+                }
+            }
+        }
 
         /// <summary>
         /// Overrides default logic as to whether 
@@ -1193,17 +1330,7 @@ namespace Bam.Net.Data
         /// whether it should insert or update
         /// </summary>
         [Exclude]
-        public bool ForceInsert
-        {
-            get
-            {
-                return _forceInsert;
-            }
-            set
-            {
-                _forceInsert = value;
-            }
-        }
+        public bool ForceInsert { get; set; }
 
         /// <summary>
         /// Overrides default logic as to whether 
@@ -1217,11 +1344,11 @@ namespace Bam.Net.Data
         {
             get
             {
-                return !_forceInsert;
+                return !ForceInsert;
             }
             set
             {
-                _forceInsert = !value;
+                ForceInsert = !value;
             }
         }
 
@@ -1276,7 +1403,7 @@ namespace Bam.Net.Data
         /// <summary>
         /// Returns true if properties of the
         /// current Dao instance have been set
-        /// since its instanciation
+        /// since its instanciation.
         /// </summary>
         protected internal bool HasNewValues
         {
@@ -1285,41 +1412,27 @@ namespace Bam.Net.Data
                 return NewValues.Count > 0;
             }
         }
+
         protected internal Dictionary<string, object> NewValues
         {
             get;
             set;
         }
 
-        object _primaryKey;
-        protected object PrimaryKey
-        {
-            get
-            {
-                if (DataRow != null && DataRow.Table.Columns.Contains(KeyColumnName))
-                {
-                    _primaryKey = DataRow[KeyColumnName];
-                }
-
-                return _primaryKey;
-            }
-        }
-
         protected internal DataRow ToDataRow()
         {
-            return ToDataRow(this);
+            return ToDataRow(this, _database?.GetDataTypeTranslator());
         }
 
-        protected internal static DataRow ToDataRow(Dao instance)
+        protected internal static DataRow ToDataRow(Dao instance, IDataTypeTranslator dataTypeTranslator = null)
         {
             if (instance.DataRow != null)
             {
                 return instance.DataRow;
             }
 
-            return ((object)instance).ToDataRow(TableName(instance));
+            return ((object)instance).ToDataRow(TableName(instance), dataTypeTranslator);
         }
-
 
         protected internal object GetOriginalValue(string columnName)
         {
@@ -1329,7 +1442,7 @@ namespace Bam.Net.Data
             }
             else if (columnName.Equals(KeyColumnName))
             {
-                return IdValue;
+                return PrimaryKey;
             }
 
             return null;
@@ -1417,9 +1530,8 @@ namespace Bam.Net.Data
                 {
                     return new bool?((int)val > 0);
                 }
-                else if (val is string)
+                else if (val is string str)
                 {
-                    string str = (string)val;
                     return new bool?(str.ToLowerInvariant().Equals("true") || str.Equals("1"));
                 }
                 else
@@ -1470,6 +1582,9 @@ namespace Bam.Net.Data
 
         protected internal void SetValue(string columnName, object value)
         {
+            // Note To Self: Please don't mess with this logic.  You've faced the consequences of that decision 
+            // too many times now.  Trust that this moronic looking logic is needed for all to function correctly.
+            // - BA (07/14/2018)
             if (columnName.Equals(KeyColumnName))
             {
                 if (value != null && value != DBNull.Value)

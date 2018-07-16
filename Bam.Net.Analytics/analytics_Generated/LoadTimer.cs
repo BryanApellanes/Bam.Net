@@ -165,7 +165,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -185,8 +185,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LoadTimer>();
 			Database db = database ?? Db.For<LoadTimer>();
-			var results = new LoadTimerCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LoadTimerCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -623,6 +625,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<LoadTimerColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LoadTimerCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LoadTimerCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<LoadTimer>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<LoadTimer>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

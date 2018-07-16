@@ -179,7 +179,7 @@ namespace Bam.Net.Automation.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -199,8 +199,10 @@ namespace Bam.Net.Automation.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<JobRunData>();
 			Database db = database ?? Db.For<JobRunData>();
-			var results = new JobRunDataCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new JobRunDataCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

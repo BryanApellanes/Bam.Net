@@ -77,8 +77,7 @@ namespace Bam.Net.Data
 
         public bool TryExecute(Database db)
         {
-            Exception ignore;
-            return TryExecute(db, out ignore);
+            return TryExecute(db, out Exception ignore);
         }
 
         /// <summary>
@@ -371,8 +370,10 @@ namespace Bam.Net.Data
 
         public virtual SqlStringBuilder Where(IQueryFilter filter)
         {
-            WhereFormat where = new WhereFormat(filter);
-            where.StartNumber = NextNumber;
+            WhereFormat where = new WhereFormat(filter)
+            {
+                StartNumber = NextNumber
+            };
             _stringBuilder.Append(where.Parse());
             NextNumber = where.NextNumber;
             this.parameters.AddRange(where.Parameters);

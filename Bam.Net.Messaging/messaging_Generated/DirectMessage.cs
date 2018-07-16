@@ -55,6 +55,7 @@ namespace Bam.Net.Messaging.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("EmailMessage_DirectMessageId", new EmailMessageCollection(Database.GetQuery<EmailMessageColumns, EmailMessage>((c) => c.DirectMessageId == GetLongValue("Id")), this, "DirectMessageId"));				
@@ -206,7 +207,7 @@ namespace Bam.Net.Messaging.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -226,8 +227,10 @@ namespace Bam.Net.Messaging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<DirectMessage>();
 			Database db = database ?? Db.For<DirectMessage>();
-			var results = new DirectMessageCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DirectMessageCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

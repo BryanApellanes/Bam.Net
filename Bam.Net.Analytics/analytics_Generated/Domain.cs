@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Url_DomainId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.DomainId == GetLongValue("Id")), this, "DomainId"));				
@@ -157,7 +158,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -177,8 +178,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Domain>();
 			Database db = database ?? Db.For<Domain>();
-			var results = new DomainCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DomainCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<DomainColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DomainCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DomainCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Domain>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Domain>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -2,18 +2,18 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <title>Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
       <dependency id="System.Data.SQLite.Core" version="1.0.99.0" />

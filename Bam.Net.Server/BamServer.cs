@@ -449,7 +449,7 @@ namespace Bam.Net.Server
             {
                 return _loggerLock.DoubleCheckLock(ref _logger, () =>
                 {
-                    Log.Start();
+                    Log.Restart();
                     return Log.Default;
                 });
             }

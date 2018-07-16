@@ -200,7 +200,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -220,8 +220,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ClickCounter>();
 			Database db = database ?? Db.For<ClickCounter>();
-			var results = new ClickCounterCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ClickCounterCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -658,6 +660,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<ClickCounterColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ClickCounterCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ClickCounterCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<ClickCounter>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<ClickCounter>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

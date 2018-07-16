@@ -16,6 +16,10 @@ namespace Bam.Net.ServiceProxy
     public class HttpContextWrapper: HttpContextBase, IHttpContext
     {
         public HttpContextWrapper() { }
+        public HttpContextWrapper(HttpContext context)
+            : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
+        { }
+
         public HttpContextWrapper(HttpListenerContext context)
             : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
         { }

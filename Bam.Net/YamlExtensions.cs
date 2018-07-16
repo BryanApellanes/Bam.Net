@@ -131,6 +131,11 @@ namespace Bam.Net
             return yaml.ArrayFromYaml<T>().FirstOrDefault();
         }
 
+        public static object FromYaml(this string yaml, Type type)
+        {
+            return yaml.ArrayFromYaml(type).FirstOrDefault();
+        }
+
         public static Stream ToYamlStream(this object value)
         {
             MemoryStream stream = new MemoryStream();
@@ -146,6 +151,18 @@ namespace Bam.Net
             stream.Seek(0, SeekOrigin.Begin);
         }
 
+        public static object FromYamlStream(this Stream stream, Type type)
+        {
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            using (StreamReader sr = new StreamReader(ms))
+            {
+                return sr.ReadToEnd().FromYaml();
+            }
+        }
+
         public static T FromYamlStream<T>(this Stream stream)
         {
             MemoryStream ms = new MemoryStream();
@@ -158,10 +175,14 @@ namespace Bam.Net
             }
         }
 
+        public static object[] ArrayFromYaml(this string yaml, Type type)
+        {
+            return new YamlSerializer().Deserialize(yaml, type);
+        }
+
         public static T[] ArrayFromYaml<T>(this string yaml)
         {
             YamlSerializer ser = new YamlSerializer();
-            YamlConfig c = new YamlConfig();
             object[] des = ser.Deserialize(yaml, typeof(T));
             return des.Each((o) => (T)o);
         }

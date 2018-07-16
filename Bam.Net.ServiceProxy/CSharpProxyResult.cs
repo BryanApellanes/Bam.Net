@@ -37,8 +37,7 @@ namespace Bam.Net.ServiceProxy
 
         public override void ExecuteResult(ControllerContext context)
         {
-            Uri uri = context.HttpContext.Request.Url;
-            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(uri);
+            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(new RequestWrapper(context.HttpContext.Request));
 
             StringBuilder code = GenerateCSharpProxyCode(defaultBaseAddress);
 

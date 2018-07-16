@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Url_FragmentId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.FragmentId == GetLongValue("Id")), this, "FragmentId"));				
@@ -157,7 +158,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -177,8 +178,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Fragment>();
 			Database db = database ?? Db.For<Fragment>();
-			var results = new FragmentCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new FragmentCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<FragmentColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<FragmentCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static FragmentCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Fragment>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Fragment>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

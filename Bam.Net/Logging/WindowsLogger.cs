@@ -66,7 +66,7 @@ namespace Bam.Net.Logging
             }
                         
             EventLog eventLog = GetLog(ApplicationName, ApplicationName);
-            eventLog.WriteEntry(logEvent.Message, entryType, 0);
+            eventLog.WriteEntry($"{logEvent.Message}\r\n\r\n{logEvent.StackTrace}", entryType, 0);
         }        
     }
 }

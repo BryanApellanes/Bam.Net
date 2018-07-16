@@ -8,6 +8,9 @@ using Bam.Net.CoreServices;
 
 namespace Bam.Net.CoreServices.ServiceRegistration
 {
+    /// <summary>
+    /// A class providing meta data about a service registry container type.
+    /// </summary>
     public class ServiceRegistryContainerRegistrationResult
     {
         public ServiceRegistryContainerRegistrationResult(string name, CoreServices.ServiceRegistry registry, Type type, MethodInfo method, ServiceRegistryLoaderAttribute attr)

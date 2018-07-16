@@ -10,6 +10,7 @@ using System.Reflection;
 using Bam.Net;
 using Bam.Net.Configuration;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Bam.Net.Logging
 {
@@ -77,6 +78,7 @@ namespace Bam.Net.Logging
         /// </summary>
         /// <param name="logger"></param>
         [Exclude]
+        [DebuggerStepThrough]
         public virtual void Subscribe(ILogger logger)
         {
             lock (_subscriberLock)
@@ -156,12 +158,27 @@ namespace Bam.Net.Logging
         /// <param name="eventArgs"></param>
 		protected void FireEvent(EventHandler eventHandler, EventArgs eventArgs)
 		{
-            eventHandler?.Invoke(this, eventArgs);
+            try
+            {
+
+                eventHandler?.Invoke(this, eventArgs);
+            }
+            catch (Exception ex)
+            {
+                Trace.Write($"Exception in FireEvent: {ex.Message}");
+            }
         }
 
         protected void FireEvent(EventHandler eventHandler, object sender, EventArgs eventArgs)
         {
-            eventHandler?.Invoke(sender, eventArgs);
+            try
+            {
+                eventHandler?.Invoke(sender, eventArgs);
+            }
+            catch (Exception ex)
+            {
+                Trace.Write($"Exception in FireEvent2: {ex.Message}");
+            }
         }
     }
 }

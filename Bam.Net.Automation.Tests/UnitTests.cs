@@ -158,22 +158,6 @@ namespace Bam.Net.Automation.Tests
             }
         }
 
-        [UnitTest]
-        public void DocInfoFromXmlFileShouldHaveDeclaringTypeName()
-        {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestDoc.xml");
-            infos.Keys.Each(s =>
-            {
-                OutLine(s, ConsoleColor.Cyan);
-
-                infos[s].Each(info =>
-                {
-                    Expect.IsNotNullOrEmpty(info.DeclaringTypeName);
-                    OutputInfo(info);
-                });
-            });
-        }
-
         /// <summary>
         /// This is the xml summary
         /// </summary>

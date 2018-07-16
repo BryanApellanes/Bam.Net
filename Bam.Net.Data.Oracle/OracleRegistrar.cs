@@ -67,6 +67,7 @@ namespace Bam.Net.Data
             incubator.Set<SqlStringBuilder>(() => new OracleSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new OracleSqlStringBuilder());
             incubator.Set<QuerySet>(() => new OracleQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new DataTypeTranslator());
         }
     }
 }

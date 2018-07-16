@@ -68,8 +68,7 @@ namespace Bam.Net.Data
             List<T> attributes = new List<T>();
             foreach (PropertyInfo prop in properties)
             {
-                T attr;
-                if (prop.HasCustomAttributeOfType<T>(out attr))
+                if (prop.HasCustomAttributeOfType<T>(out T attr))
                 {
                     attributes.Add(attr);
                 }

@@ -44,7 +44,7 @@ namespace Bam.Net.Services
 
         public void AddService(Type serviceType)
         {
-            Responder.AddCommoneService(serviceType, () => ServiceRegistry.Get(serviceType));
+            Responder.AddCommonService(serviceType, () => ServiceRegistry.Get(serviceType));
             if(serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
             {
                 ServiceSubdomains.Add(attr);

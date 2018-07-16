@@ -200,7 +200,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -217,9 +217,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// </param>
 		public static ServiceRegistryLockCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ServiceRegistryLock>();
 			Database db = database ?? Db.For<ServiceRegistryLock>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ServiceRegistryLock>();
 			var results = new ServiceRegistryLockCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -233,14 +233,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
 				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLockColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -265,14 +265,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ServiceRegistryLockColumns> where, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
 				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLockColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,13 +297,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ServiceRegistryLockColumns> where, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Bam.Net.Data.OrderBy<ServiceRegistryLockColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

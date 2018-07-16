@@ -38,7 +38,9 @@ namespace Bam.Net.Services.Events
             EnsureSupportedEventOrThrow(eventName);
             base.Subscribe(eventName, listener);
         }
+
         protected ISmtpSettingsProvider SmtpSettingsProvider { get; private set; }
+
         private bool EventSupported(string eventName)
         {
             return SupportedEvents.Contains(eventName);

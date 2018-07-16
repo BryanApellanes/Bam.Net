@@ -7,23 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Encryption
 {
+    /// <summary>
+    /// A descriptor for a vault instance providing name and file path.
+    /// </summary>
     public class VaultInfo
     {
-        public VaultInfo() { }
-
         public VaultInfo(string name)
         {
-            this.Name = name;
-            this.FilePath = new FileInfo(".\\{0}.vault.sqlite"._Format(name)).FullName;
+            Name = name;
+            FilePath = new FileInfo(Path.Combine(RuntimeSettings.AppDataFolder, $"{name}.vault.sqlite")).FullName;
         }
 
-        public VaultInfo(FileInfo file)
+        public VaultInfo(FileInfo siblingFile)
         {
-            this.Name = Path.GetFileNameWithoutExtension(file.Name);
-            this.FilePath = Path.Combine(file.Directory.FullName, string.Format("{0}.vault.sqlite", this.Name));
+            Name = Path.GetFileNameWithoutExtension(siblingFile.Name);
+            FilePath = Path.Combine(siblingFile.Directory.FullName, string.Format("{0}.vault.sqlite", this.Name));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VaultInfo"/> class using the default
+        /// application name form the config file or "UNKOWN".
+        /// </summary>
+        public VaultInfo() : this(DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName())
+        {
         }
 
         public string FilePath { get; set; }

@@ -9,9 +9,9 @@ using System.Text;
 namespace Bam.Net.Configuration
 {
     /// <summary>
-    /// This interface is intended to be implemented by classes
-    /// who wish to use the DefaultConfiguration class and 
-    /// CascadeConfiguration class to set its properties.
+    /// This interface is intended for implementation by classes
+    /// who wish to use the DefaultConfiguration class 
+    /// to set its properties.
     /// </summary>
     public interface IHasRequiredProperties
     {

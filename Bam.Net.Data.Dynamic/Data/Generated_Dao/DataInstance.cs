@@ -55,6 +55,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("DataInstancePropertyValue_DataInstanceId", new DataInstancePropertyValueCollection(Database.GetQuery<DataInstancePropertyValueColumns, DataInstancePropertyValue>((c) => c.DataInstanceId == GetLongValue("Id")), this, "DataInstanceId"));				
@@ -213,7 +214,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -230,11 +231,13 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		/// </param>
 		public static DataInstanceCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DataInstance>();
 			Database db = database ?? Db.For<DataInstance>();
-			var results = new DataInstanceCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DataInstance>();
+			var results = new DataInstanceCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -244,14 +247,14 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DataInstance>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DataInstanceColumns columns = new DataInstanceColumns();
 				var orderBy = Bam.Net.Data.Order.By<DataInstanceColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -276,19 +279,50 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DataInstanceColumns> where, Action<IEnumerable<DataInstance>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DataInstanceColumns columns = new DataInstanceColumns();
 				var orderBy = Bam.Net.Data.Order.By<DataInstanceColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (DataInstanceColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<DataInstance>> batchProcessor, Bam.Net.Data.OrderBy<DataInstanceColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DataInstanceColumns> where, Action<IEnumerable<DataInstance>> batchProcessor, Bam.Net.Data.OrderBy<DataInstanceColumns> orderBy, Database database = null)
+		{
+			await System.Threading.Tasks.Task.Run(async ()=>
+			{
+				DataInstanceColumns columns = new DataInstanceColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await System.Threading.Tasks.Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (DataInstanceColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -640,6 +674,25 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<DataInstanceColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DataInstanceCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DataInstanceCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<DataInstance>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<DataInstance>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

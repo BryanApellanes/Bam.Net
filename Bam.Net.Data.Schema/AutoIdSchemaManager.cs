@@ -17,9 +17,9 @@ namespace Bam.Net.Data.Schema
     /// </summary>
     public class AutoIdSchemaManager: SchemaManager
     {
-        public AutoIdSchemaManager(bool autoSave = true):base(autoSave)
+        public AutoIdSchemaManager(bool autoSave = true, bool caps = false):base(autoSave)
         {
-            PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation());            
+            PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation(caps));            
         }
     }
 }

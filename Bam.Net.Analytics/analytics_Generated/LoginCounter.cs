@@ -186,7 +186,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -206,8 +206,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LoginCounter>();
 			Database db = database ?? Db.For<LoginCounter>();
-			var results = new LoginCounterCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LoginCounterCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -644,6 +646,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<LoginCounterColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LoginCounterCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LoginCounterCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<LoginCounter>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<LoginCounter>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

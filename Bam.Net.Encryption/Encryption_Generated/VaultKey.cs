@@ -179,7 +179,7 @@ namespace Bam.Net.Encryption
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -199,8 +199,10 @@ namespace Bam.Net.Encryption
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<VaultKey>();
 			Database db = database ?? Db.For<VaultKey>();
-			var results = new VaultKeyCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new VaultKeyCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -637,6 +639,25 @@ namespace Bam.Net.Encryption
 			if(orderBy != null)
 			{
 				query.OrderBy<VaultKeyColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<VaultKeyCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static VaultKeyCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<VaultKey>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<VaultKey>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

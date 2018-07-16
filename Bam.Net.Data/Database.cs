@@ -155,8 +155,10 @@ namespace Bam.Net.Data
             foreach (DataRow row in result.DataTable.Rows)
             {
                 EnumType enumVal = (EnumType)Enum.Parse(typeof(EnumType), (string)row[nameColumn]);
-                DaoType inst = new DaoType();
-                inst.DataRow = row;
+                DaoType inst = new DaoType
+                {
+                    DataRow = row
+                };
                 dictionary.AddMissing(enumVal, inst);
             }
 
@@ -201,19 +203,28 @@ namespace Bam.Net.Data
             return GetSqlStringBuilder();
         }
 
-        public SqlStringBuilder GetSqlStringBuilder()
+        public virtual SqlStringBuilder GetSqlStringBuilder()
         {
             SqlStringBuilder sql = ServiceProvider.Get<SqlStringBuilder>();
             sql.SelectStar = SelectStar;
             return sql;
         }
 
-        public QuerySet GetQuerySet()
+        public virtual QuerySet GetQuerySet()
         {
             QuerySet sql = ServiceProvider.Get<QuerySet>();
             sql.Database = this;
             sql.SelectStar = SelectStar;
             return sql;
+        }
+
+        public virtual IDataTypeTranslator GetDataTypeTranslator()
+        {
+            if (!ServiceProvider.TryGet<IDataTypeTranslator>(out IDataTypeTranslator dataTypeTranslator))
+            {
+                return new DataTypeTranslator();
+            }
+            return dataTypeTranslator;
         }
 
         public DbParameter[] GetParameters(SqlStringBuilder sqlStrinbuilder)

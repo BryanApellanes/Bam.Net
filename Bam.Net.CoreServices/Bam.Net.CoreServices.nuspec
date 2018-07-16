@@ -2,31 +2,40 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
+Updates since v1.13.0:
+ -   regen repodata undoing xrefcollection check for 'isPersisted' (86372746)
+ -   account for unsaved parent on dao.xrefdaocollection initialization (b64103c7)
+ -   regenerate wrappers (f4d621fb)
+ -   regen daorepos to fix xref loading bug allowing List&lt;&gt; properties to be initialized in the constructor of AuditData extenders (453847ae)
+ -   added simple webhook service (eb17d480)
+ -   add webhookservice (b9dcb1eb)
+ -   add SystemLogReader (2276949d)
+ -   make ConfigurationService method virtual so it delegates correctly (1c2a845f)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.13.0" />
-      <dependency id="Bam.Net.Data" version="1.13.0" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.13.0" />
+      <dependency id="Bam.Net" version="1.14.0" />
+      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.14.0" />
       <dependency id="Bam.Net.Distributed" version="1.9.1" />
       <dependency id="Bam.Net.Documentation" version="1.9.1" />
-      <dependency id="Bam.Net.Encryption" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
-      <dependency id="Bam.Net.Logging" version="1.13.0" />
-      <dependency id="Bam.Net.Messaging" version="1.13.0" />
-      <dependency id="Bam.Net.Server" version="1.13.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.13.0" />
-      <dependency id="Bam.Net.UserAccounts" version="1.13.0" />
+      <dependency id="Bam.Net.Encryption" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
+      <dependency id="Bam.Net.Logging" version="1.14.0" />
+      <dependency id="Bam.Net.Messaging" version="1.14.0" />
+      <dependency id="Bam.Net.Server" version="1.14.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.0" />
+      <dependency id="Bam.Net.UserAccounts" version="1.14.0" />
       <dependency id="Common.Logging" version="3.3.1" />
       <dependency id="Common.Logging.Core" version="3.3.1" />
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
       <dependency id="NSubstitute" version="2.0.3" />

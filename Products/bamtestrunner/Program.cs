@@ -118,6 +118,11 @@ namespace Bam.Net.Testing
         }
         static int? _failedCount;
         static int? _passedCount;
+        /// <summary>
+        /// Runs the unit tests found in the specified files.
+        /// </summary>
+        /// <param name="startDirectory">The start directory.</param>
+        /// <param name="files">The files.</param>
         protected static void RunUnitTests(string startDirectory, FileInfo[] files)
         {
             bool exceptionOccurred = false;

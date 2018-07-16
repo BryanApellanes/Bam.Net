@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Bam.Net;
+using System.Diagnostics;
 
 namespace Bam.Net.Incubation
 {
@@ -219,6 +220,7 @@ namespace Bam.Net.Incubation
             return this[type];
         }
 
+        [DebuggerStepThrough]
         private static void Throw(Type type, Type[] ctorTypes)
         {
             throw new ConstructFailedException(type, ctorTypes);
@@ -326,7 +328,7 @@ namespace Bam.Net.Incubation
                 {
                     return fn() ?? Get(type, GetCtorParams(type));
                 }
-                else
+                else if(result == null)
                 {
                     result = Get(type, GetCtorParams(type));
                 }
@@ -653,7 +655,12 @@ namespace Bam.Net.Incubation
             {
                 if (_typeInstanceDictionary.ContainsKey(type))
                 {
-                    return _typeInstanceDictionary[type];
+                    object result = _typeInstanceDictionary[type];
+                    if(result is Delegate d)
+                    {
+                        result = d.DynamicInvoke();
+                    }
+                    return result;
                 }
                 else
                 {
@@ -712,6 +719,12 @@ namespace Bam.Net.Incubation
             }
         }
 
+        /// <summary>
+        /// Gets the constructor parameter value.
+        /// </summary>
+        /// <param name="forType">For type.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <returns></returns>
         public object GetCtorParameterValue(Type forType, string parameterName)
         {
             if(_ctorParams.ContainsKey(forType) && _ctorParams[forType].ContainsKey(parameterName))
@@ -730,12 +743,12 @@ namespace Bam.Net.Incubation
             }
         }
 
-        private List<object> GetCtorParams(Type type)
+        public List<object> GetCtorParams(Type type)
         {
-            ConstructorInfo ctor;
-            return GetCtorParams(type, out ctor);
+            return GetCtorParams(type, out ConstructorInfo ctor);
         }
-        private List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
+
+        public List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
         {
             ctorInfo = null;
             ConstructorInfo[] ctors = type.GetConstructors();
@@ -750,6 +763,10 @@ namespace Bam.Net.Incubation
                         object ctorParam = GetCtorParameterValue(type, paramInfo.Name);
                         if(ctorParam != null)
                         {
+                            if(ctorParam is Delegate d)
+                            {
+                                ctorParam = d.DynamicInvoke();
+                            }
                             ctorParams.Add(ctorParam);
                         }
                         else
@@ -757,6 +774,10 @@ namespace Bam.Net.Incubation
                             object existing = this[paramInfo.ParameterType] ?? Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
                             if (existing != null)
                             {
+                                if(existing is Delegate d)
+                                {
+                                    existing = d.DynamicInvoke();
+                                }
                                 ctorParams.Add(existing);
                             }
                             else

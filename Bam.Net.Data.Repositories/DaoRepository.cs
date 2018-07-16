@@ -898,8 +898,9 @@ namespace Bam.Net.Data.Repositories
             long parentId = GetIdValue(poco).Value;
             if (parentId <= 0)
             {
-                Args.Throw<InvalidOperationException>("IdValue not found for specified parent instance: {0}",
-                    poco.PropertiesToString());
+                Type pocoType = poco.GetType();
+                Logger.AddEntry("IdValue not found for specified parent instance: Type={0}.{1}, {2}", pocoType.Namespace, pocoType.Name, poco.ToString());
+                return new List<TChildType>();
             }
             QueryFilter filter = Bam.Net.Data.Query.Where(foreignKeyName) == parentId;
             Type childDaoType = GetDaoType(typeof(TChildType));

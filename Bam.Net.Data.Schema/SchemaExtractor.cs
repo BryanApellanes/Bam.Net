@@ -105,26 +105,30 @@ namespace Bam.Net.Data.Schema
             NameMap.Set(new ColumnNameToPropertyName { ColumnName = columnName, PropertyName = propertyName, TableName = tableName });
             FireEvent(PropertyNameFormatted, new SchemaExtractorEventArgs { Column = columnName });
 
-            Column column = new Column(columnName, GetColumnDataType(tableName, columnName));
-            column.PropertyName = propertyName;
-            column.DataType = GetColumnDataType(tableName, columnName);
-            column.DbDataType = GetColumnDbDataType(tableName, columnName);
-            column.MaxLength = GetColumnMaxLength(tableName, columnName);
-            column.AllowNull = GetColumnNullable(tableName, columnName);
+            Column column = new Column(columnName, GetColumnDataType(tableName, columnName))
+            {
+                PropertyName = propertyName,
+                DataType = GetColumnDataType(tableName, columnName),
+                DbDataType = GetColumnDbDataType(tableName, columnName),
+                MaxLength = GetColumnMaxLength(tableName, columnName),
+                AllowNull = GetColumnNullable(tableName, columnName)
+            };
 
             return column;
         }
 
         public virtual SchemaDefinition Extract()
         {
-            SchemaManager schemaManager = new SchemaManager();
-            schemaManager.AutoSave = false;
-            schemaManager.SchemaTempPathProvider = SchemaTempPathProvider;
+            SchemaManager schemaManager = new SchemaManager
+            {
+                AutoSave = false,
+                SchemaTempPathProvider = SchemaTempPathProvider
+            };
             SchemaDefinition result = Extract(schemaManager);
             return result;
         }
 
-        public SchemaDefinition Extract(SchemaManager schemaManager)
+        public virtual SchemaDefinition Extract(SchemaManager schemaManager)
         {
             SchemaDefinition result = new SchemaDefinition { Name = GetSchemaName() };
             schemaManager.CurrentSchema = result;
@@ -166,10 +170,14 @@ namespace Bam.Net.Data.Schema
                 schemaManager.SetForeignKey(fk.ReferencedTable, fk.TableName, fk.Name, GetKeyColumnName(fk.ReferencedTable), NameFormatter);
                 FireEvent(ProcessingForeignComplete, new SchemaExtractorEventArgs { ForeignKeyColumn = fk });
             });
-
-            NameMap.Save(Path.Combine(RuntimeSettings.AppDataFolder, "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
+            SaveNameMap(schemaManager);
             SetClassNamesOnColumns(schemaManager);
             return result;
+        }
+
+        protected virtual void SaveNameMap(SchemaManager schemaManager)
+        {
+            NameMap.Save(Path.Combine(RuntimeSettings.AppDataFolder, "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
         }
 
         protected HashSet<string> GetKeyWords()

@@ -116,7 +116,9 @@ namespace Bam.Net.Data
 				}
 				Ids = ids.ToArray();
 				IdBook = new Book<long>(Ids, PageSize);
-			}
+
+                _metaLoaded = true;
+            }
 		}
 
 		private SqlStringBuilder GetBaseIdQuery()

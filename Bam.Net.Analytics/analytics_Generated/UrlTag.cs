@@ -172,7 +172,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -192,8 +192,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<UrlTag>();
 			Database db = database ?? Db.For<UrlTag>();
-			var results = new UrlTagCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new UrlTagCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -630,6 +632,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<UrlTagColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<UrlTagCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static UrlTagCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<UrlTag>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<UrlTag>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

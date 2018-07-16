@@ -45,6 +45,7 @@ namespace Bam.Net.UserAccounts.Tests
         public static void SignUp(string userName, string email, out UserManager userProxy, out IHttpContext context, out string passHash)
         {
             userProxy = new UserManager();
+            userProxy.Database = UserAccountsDatabase.Default;
             context = A.Fake<IHttpContext>();
             context.Request = new TestRequest();
             userProxy.HttpContext = context;

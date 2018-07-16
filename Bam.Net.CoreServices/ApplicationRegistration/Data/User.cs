@@ -10,6 +10,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
     [Serializable]
     public class User: AuditRepoData
     {
+        public User()
+        {
+            Organizations = new List<Organization>();
+            Subscriptions = new Subscription[] { };
+        }
         public virtual List<Organization> Organizations { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }

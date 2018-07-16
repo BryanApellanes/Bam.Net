@@ -2,25 +2,31 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.ServiceProxy</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	System for simply and easily exposing pocos as RESTful webservices
 	with automatic generation of both .Net and Javascript clients
 	</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
+Updates since v1.13.0:
+ -   account for X-Forwarded-For in CsClientProxyGenerator.GetProxyCode (8f0461fa)
+ -   account for X-Forwarded-For header in generated csharp proxy code (ac657c8d)
+ -   add newline before securInvoke in generated js proxies (85550df3)
+ -   minor refactoring (fcf55e58)
+ -   set port to 80 when generating jsproxies for request that passed through proxy by checking X-Forwarded-For header (a1fd069a)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net.Data" version="1.13.0" />
-      <dependency id="Bam.Net.Encryption" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
+      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net.Encryption" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
       <dependency id="BouncyCastle" version="1.7.0" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="NCuid" version="1.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />

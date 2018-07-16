@@ -9,7 +9,8 @@ namespace Bam.Net
 {
     /// <summary>
     /// A descriptor for the constituent pieces of an
-    /// in process EventSubscription
+    /// in process EventSubscription.  Helps manage
+    /// events and subscribed handlers. 
     /// </summary>
     public class EventSubscription
     {

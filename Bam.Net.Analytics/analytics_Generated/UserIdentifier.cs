@@ -55,10 +55,12 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
 			}						
@@ -198,7 +200,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -218,8 +220,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<UserIdentifier>();
 			Database db = database ?? Db.For<UserIdentifier>();
-			var results = new UserIdentifierCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new UserIdentifierCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -656,6 +660,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<UserIdentifierColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<UserIdentifierCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static UserIdentifierCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<UserIdentifier>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<UserIdentifier>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

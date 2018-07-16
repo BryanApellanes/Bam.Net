@@ -25,8 +25,8 @@ namespace Bam.Net.Application
         static void Main(string[] args)
         {
             TryWritePid(true);
-            BamDaemonService.SetInfo(BamDaemonService.ServiceInfo);
-            if (!BamDaemonService.ProcessCommandLineArgs(args))
+            DaemonService.SetInfo(DaemonService.ServiceInfo);
+            if (!DaemonService.ProcessCommandLineArgs(args))
             {
                 IsolateMethodCalls = false;
                 Resolver.Register();
@@ -47,7 +47,7 @@ namespace Bam.Net.Application
                 }
                 else
                 {
-                    BamDaemonService.RunService<BamDaemonService>();
+                    DaemonService.RunService<DaemonService>();
                 }
             }
         }

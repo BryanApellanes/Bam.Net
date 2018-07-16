@@ -8,6 +8,7 @@ using System.Reflection;
 using System.IO;
 using Bam.Net.Data.SQLite;
 using Bam.Net.CoreServices.ProtoBuf;
+using Bam.Net.Razor;
 
 namespace Bam.Net.Application
 {

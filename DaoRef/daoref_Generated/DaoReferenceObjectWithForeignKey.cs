@@ -165,7 +165,7 @@ namespace Bam.Net.DaoRef
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -185,8 +185,10 @@ namespace Bam.Net.DaoRef
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<DaoReferenceObjectWithForeignKey>();
 			Database db = database ?? Db.For<DaoReferenceObjectWithForeignKey>();
-			var results = new DaoReferenceObjectWithForeignKeyCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DaoReferenceObjectWithForeignKeyCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -623,6 +625,25 @@ namespace Bam.Net.DaoRef
 			if(orderBy != null)
 			{
 				query.OrderBy<DaoReferenceObjectWithForeignKeyColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DaoReferenceObjectWithForeignKeyCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DaoReferenceObjectWithForeignKeyCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<DaoReferenceObjectWithForeignKey>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<DaoReferenceObjectWithForeignKey>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

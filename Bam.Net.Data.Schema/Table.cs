@@ -231,8 +231,7 @@ namespace Bam.Net.Data.Schema
             lock (_columnLock)
             {
                 column.TableName = this.Name;
-                ForeignKeyColumn fk = column as ForeignKeyColumn;
-                if (fk != null)
+                if (column is ForeignKeyColumn fk)
                 {
                     if (fk.ReferencedTable.Equals(this.Name))
                     {

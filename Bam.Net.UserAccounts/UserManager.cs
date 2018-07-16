@@ -48,15 +48,20 @@ namespace Bam.Net.UserAccounts
         public UserManager()
         {
             SmtpSettingsProvider = new SmtpSettingsProvider();
-            SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
+            SmtpSettingsVaultPath = Path.Combine(Paths.AppData, "SmtpSettings.vault.sqlite");
             PasswordResetTokensExpireInThisManyMinutes = 15;
             LastException = new NullException();
+        }
+
+        public UserManager(UserAccountsDatabase db): this()
+        {
+            Database = db;
         }
 
         [Exclude]
         public object Clone()
         {
-            UserManager result = new UserManager();
+            UserManager result = new UserManager(Database);
             result.CopyProperties(this);
             result.CopyEventHandlers(this);
             result._serviceProvider = _serviceProvider.Clone();
@@ -81,6 +86,8 @@ namespace Bam.Net.UserAccounts
                     serviceProvider.Set<DaoRoleResolver>(roleResolver);
                     serviceProvider.Set<EmailComposer>(new NamedFormatEmailComposer());
                     serviceProvider.Set<IApplicationNameProvider>(DefaultConfigurationApplicationNameProvider.Instance);
+                    serviceProvider.Set<UserAccountsDatabase>(UserAccountsDatabase.Default);
+                    serviceProvider.Set<IAuthenticator>(new DaoAuthenticator(UserAccountsDatabase.Default));
 
                     return serviceProvider;
                 });
@@ -88,6 +95,18 @@ namespace Bam.Net.UserAccounts
             set
             {
                 _serviceProvider = value;
+            }
+        }
+
+        public IAuthenticator Authenticator
+        {
+            get
+            {
+                return ServiceProvider.Get<IAuthenticator>();
+            }
+            set
+            {
+                ServiceProvider.Set<IAuthenticator>(value);
             }
         }
 
@@ -120,7 +139,7 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
-
+        
         [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
@@ -314,11 +333,11 @@ namespace Bam.Net.UserAccounts
             get
             {
                 IHttpContext context = HttpContext;
-                Func<string, string> func = (token) =>
+                string func(string token)
                 {
-                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request.Url);
+                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request);
                     return string.Format("{0}auth/confirmAccount?token={1}&layout=basic", baseAddress, token);
-                };
+                }
 
                 return func;
             }
@@ -342,7 +361,7 @@ namespace Bam.Net.UserAccounts
                 IHttpContext context = HttpContext;
                 Func<string, string> func = (token) =>
                 {
-                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request.Url);
+                    string baseAddress = ServiceProxySystem.GetBaseAddress(context.Request);
                     return string.Format("{0}auth/resetPassword?token={1}&layout=basic", baseAddress, token);
                 };
 
@@ -374,6 +393,7 @@ namespace Bam.Net.UserAccounts
             {
                 _database = value;
                 DaoUserResolver.Database = _database;
+                Authenticator = new DaoAuthenticator(_database);
                 User.UserDatabase = _database;
             }
         }
@@ -434,43 +454,27 @@ namespace Bam.Net.UserAccounts
         public event EventHandler LoginFailed;
         public LoginResponse Login(string userName, string passHash)
         {
-            string failureMessage = "User name and password combination was invalid";
-            EventHandler eventToFire = LoginSucceeded;
-            LoginResponse result = GetFailure<LoginResponse>(new Exception("Unknown exception occurred"));
+            EventHandler eventToFire = LoginFailed;
+            LoginResponse result = GetFailure<LoginResponse>(new Exception("User name and password combination was invalid"));
             try
             {
-                User user = null;
-                if (userName.Contains("@"))
+                bool passwordIsValid = Authenticator.IsPasswordValid(userName, passHash);
+                if (passwordIsValid)
                 {
-                    user = User.GetByEmail(userName, Database);
-                }
-                else
-                {
-                    user = User.GetByUserName(userName, Database);
-                }
-
-                if (user != null)
-                {
-                    bool passwordIsValid = Password.Validate(user, passHash, Database);
-
+                    eventToFire = LoginSucceeded;
                     result = GetSuccess<LoginResponse>(passwordIsValid);
-                    if (!passwordIsValid)
+                    User user = null;
+                    if (userName.Contains("@"))
                     {
-                        result.Message = failureMessage;
-                        result.Success = false;
-                        eventToFire = LoginFailed;
+                        user = User.GetByEmail(userName, Database);
                     }
                     else
                     {
-                        DaoUserResolver.SetUser(HttpContext, user, true, Database);
-                        user.AddLoginRecord(Database);
+                        user = User.GetByUserName(userName, Database);
                     }
-                }
-                else
-                {
-                    eventToFire = LoginFailed;
-                    result = GetFailure<LoginResponse>(new Exception(failureMessage));
-                }                
+                    DaoUserResolver.SetUser(HttpContext, user, true, Database);
+                    user.AddLoginRecord(Database);
+                }              
             }
             catch (Exception ex)
             {

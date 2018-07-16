@@ -18,12 +18,13 @@ namespace Bam.Net.Server
 		public HttpMethodResponder(BamConf conf)
 			: base(conf)
 		{
-			this.BamConf = conf;
+			BamConf = conf;
 		}
+
 		public HttpMethodResponder(BamConf conf, ILogger logger)
 			: this(conf)
 		{
-			this.Logger = logger;
+			Logger = logger;
 		}
 
 		public override bool TryRespond(IHttpContext context)

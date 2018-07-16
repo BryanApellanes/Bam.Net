@@ -31,7 +31,7 @@ namespace Bam.Net.Translation
 
         static TranslationProvider()
         {
-            Action<Dao> setCuid = (dao) => dao.Property("Cuid", Cuid.Generate());
+            void setCuid(Dao dao) => dao.Property("Cuid", Cuid.Generate());
             Dao.PostConstructActions.AddMissing(typeof(Language), setCuid);
             Dao.PostConstructActions.AddMissing(typeof(LanguageDetection), setCuid);
             Dao.PostConstructActions.AddMissing(typeof(Text), setCuid);

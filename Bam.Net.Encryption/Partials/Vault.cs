@@ -29,7 +29,7 @@ namespace Bam.Net.Encryption
     /// <summary>
     /// An encrypted key value store used to prevent
     /// casual access to sensitive data like passwords.  Encrypted data is stored
-    /// in a sqlite file by default or a Database you specify
+    /// in a sqlite file by default or a Database you specify.
     /// </summary>
 	public partial class Vault
 	{
@@ -72,14 +72,13 @@ namespace Bam.Net.Encryption
             ChildCollections.Clear();
         }
 
-
         static Database _systemVaultDatabase;
         static object _systemVaultDatabaseSync = new object();
         public static Database SystemVaultDatabase
         {
             get
             {
-                return _systemVaultDatabaseSync.DoubleCheckLock(ref _systemVaultDatabase, () => InitializeSystemDatabase());
+                return _systemVaultDatabaseSync.DoubleCheckLock(ref _systemVaultDatabase, () => InitializeSystemVaultDatabase());
             }
             set
             {
@@ -93,7 +92,7 @@ namespace Bam.Net.Encryption
         {
             get
             {
-                return _applicationVaultDatabaseSync.DoubleCheckLock(ref _applicationVaultDatabase, () => InitializeApplicationDatabase());
+                return _applicationVaultDatabaseSync.DoubleCheckLock(ref _applicationVaultDatabase, () => InitializeApplicationVaultDatabase());
             }
             set
             {
@@ -101,18 +100,20 @@ namespace Bam.Net.Encryption
             }
         }
 
-        internal static Database InitializeSystemDatabase()
-        {
-            return InitializeDatabase(".\\System.vault.sqlite", Log.Default);
+        internal static Database InitializeSystemVaultDatabase()
+        {            
+            string path = Path.Combine(Paths.Data, $"System.vault.sqlite");
+            return InitializeVaultDatabase(path, Log.Default);
         }
 
-        internal static Database InitializeApplicationDatabase()
+        internal static Database InitializeApplicationVaultDatabase()
         {
             string appName = DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName();
-            return InitializeDatabase($".\\Application_{appName}.vault.sqlite", Log.Default);
+            string path = Path.Combine(Paths.Data, $"Application_{appName}.vault.sqlite");
+            return InitializeVaultDatabase(path, Log.Default);
         }
 
-        public static Database InitializeDatabase(string filePath, ILogger logger = null)
+        public static Database InitializeVaultDatabase(string filePath, ILogger logger = null)
         {
             Database db = null;
 
@@ -157,19 +158,66 @@ namespace Bam.Net.Encryption
             }
         }
 
+        /// <summary>
+        /// Loads the default vault for the current application.  The default path is
+        /// {RuntimeSettings.AppDataFolder}\{ApplicationName}.vault.sqlite.  Paths.AppData
+        /// references RuntimeSettings.AppDataFolder so the former can be used as shorthand
+        /// for the latter.  Setting Paths.AppData will effectively redirect where the vault
+        /// is loaded from.
+        /// </summary>
+        /// <returns></returns>
+        public static Vault Load()
+        {
+            return Load(new VaultInfo());
+        }
+
+        /// <summary>
+        /// Loads the specified vault name.  The default path is
+        /// {RuntimeSettings.AppDataFolder}\{vaultName}.vault.sqlite.  Paths.AppData
+        /// references RuntimeSettings.AppDataFolder so the former can be used as shorthand
+        /// for the latter.  Setting Paths.AppData will effectively redirect where the vault
+        /// is loaded from.
+        /// </summary>
+        /// <param name="vaultName">Name of the vault.</param>
+        /// <returns></returns>
+        public static Vault Load(string vaultName)
+        {
+            return Load(new VaultInfo(vaultName));
+        }
+
+        public static Vault Load(VaultInfo vaultInfo)
+        {
+            return Load(vaultInfo.FilePath, vaultInfo.Name);
+        }
+
         public static Vault Load(string filePath, string vaultName)
         {
-            return Load(new FileInfo(filePath), vaultName);            
+            return Load(new FileInfo(filePath), vaultName, out VaultDatabase ignore);
+        }
+
+        public static Vault Load(string filePath, string vaultName, out VaultDatabase vaultDb)
+        {
+            return Load(new FileInfo(filePath), vaultName, out vaultDb);            
         }
 
         public static Vault Load(FileInfo file, string vaultName)
         {
-            return Load(file, vaultName, "".RandomLetters(16)); // password will only be used if the file doesn't exist
+            return Load(file, vaultName, out VaultDatabase ignore);
+        }
+
+        public static Vault Load(FileInfo file, string vaultName, out VaultDatabase vaultDb)
+        {
+            return Load(file, vaultName, "".RandomLetters(16), out vaultDb); // password will only be used if the file doesn't exist
         }
 
         static Dictionary<string, Vault> _loadedVaults = new Dictionary<string, Vault>();
         static object _loadedVaultsLock = new object();
         public static Vault Load(FileInfo file, string vaultName, string password, ILogger logger = null)
+        {
+            return Load(file, vaultName, password, out VaultDatabase ignore, logger);
+        }
+
+        public static Vault Load(FileInfo file, string vaultName, string password, out VaultDatabase vaultDb, ILogger logger = null)
         {
             string key = $"{file.FullName}.{vaultName}";
             lock (_loadedVaultsLock)
@@ -180,16 +228,24 @@ namespace Bam.Net.Encryption
                     {
                         logger = Log.Default;
                     }
-                    Database db = InitializeDatabase(file.FullName, logger);
+                    Database db = InitializeVaultDatabase(file.FullName, logger);
                     db.SelectStar = true;
                     _loadedVaults.Add(key, Retrieve(db, vaultName, password));
                 }
             }
+            vaultDb = _loadedVaults[key].Database;
             return _loadedVaults[key];
         }
 
+        public Vault Rename(string newName)
+        {
+            Name = newName;
+            Save(Database);
+            return this;
+        }
+
         /// <summary>
-        /// Get the vault with the specified name
+        /// Get the vault with the specified name from the SystemVaultDatabase.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -201,6 +257,7 @@ namespace Bam.Net.Encryption
         /// <summary>
         /// Get the Vault with the specified name using the
         /// specified password to create it if it doesn't exist
+        /// in the SystemVaultDatabase.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="password"></param>
@@ -239,7 +296,7 @@ namespace Bam.Net.Encryption
         /// Create a vault in the specified file by the 
         /// specified name.  If the vault already exists
         /// in the specified file the existing vault
-        /// will be returned
+        /// is returned
         /// </summary>
         /// <param name="file"></param>
         /// <param name="name"></param>
@@ -252,7 +309,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Create(FileInfo file, string name, string password)
         {
-            Database db = InitializeDatabase(file.FullName, Log.Default);
+            Database db = InitializeVaultDatabase(file.FullName, Log.Default);
             return Create(db, name, password);
         }
 
@@ -271,7 +328,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Create(string name, string password)
         {
-            Database db = InitializeSystemDatabase();
+            Database db = InitializeSystemVaultDatabase();
             return Create(db, name, password);
         }
 
@@ -290,8 +347,10 @@ namespace Bam.Net.Encryption
             Vault result = Vault.OneWhere(c => c.Name == name, database);
             if (result == null)
             {
-                result = new Vault();
-                result.Name = name;
+                result = new Vault
+                {
+                    Name = name
+                };
                 result.Save(database);
                 VaultKey key = result.VaultKeysByVaultId.JustOne(database, false);
                 AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(rsaKeyLength);
@@ -359,8 +418,7 @@ namespace Bam.Net.Encryption
 
         public bool HasKey(string key)
         {
-            string ignore;
-            return HasKey(key, out ignore);
+            return HasKey(key, out string ignore);
         }
 
         public bool HasKey(string key, out string value)

@@ -11,10 +11,10 @@ namespace Bam.Net.Data.Schema
 {
     public class AddIdKeyColumnAugmentation: AddColumnAugmentation
     {
-        public AddIdKeyColumnAugmentation()
+        public AddIdKeyColumnAugmentation(bool caps = false)
             : base()
         {
-            this.ColumnName = "Id";
+            this.ColumnName = caps ? "ID": "Id";
             this.DataType = DataTypes.Long;
             this.AllowNull = false;
         }

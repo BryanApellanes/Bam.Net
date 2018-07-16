@@ -25,7 +25,7 @@ namespace Bam.Net.Application
             {
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
-                    ILogger logger = GetLogger();
+                    ILogger logger = GetGlooServiceLogger();
                     try
                     {
                         GlooServer server = new GlooServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
@@ -47,13 +47,30 @@ namespace Bam.Net.Application
 
         protected override void OnStart(string[] args)
         {
-            Server.Start();
+            try
+            {
+                Log.AddLogger(GetGlooServiceLogger());
+                Log.AddEntry("{0} starting", ServiceInfo.ServiceName);
+                Server.Start();                
+            }
+            catch (Exception ex)
+            {
+                Log.AddEntry("Error starting gloo service: {0}", ex, ex.Message);
+            }
         }
 
         protected override void OnStop()
         {
-            Server.Stop();
-            Thread.Sleep(1000);
+            try
+            {
+                Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
+                Server.Stop();
+                Thread.Sleep(1000);
+            }
+            catch (Exception ex)
+            {
+                Log.AddEntry("Error stopping {0}: {1}", LogEventType.Warning, ServiceInfo.ServiceName, ex.Message);
+            }
         }
         
         private static HostPrefix[] GetConfiguredHostPrefixes()
@@ -61,9 +78,11 @@ namespace Bam.Net.Application
             return ServiceConfig.GetConfiguredHostPrefixes();
         }
 
-        private static ILogger GetLogger()
+        static ILogger _glooServiceLogger;
+        static object _glooServiceLoggerLock = new object();
+        private static ILogger GetGlooServiceLogger()
         {
-            return ServiceConfig.GetMultiTargetLogger(GlooService.CreateLog(GlooService.ServiceInfo.ServiceName));
+            return _glooServiceLoggerLock.DoubleCheckLock(ref _glooServiceLogger, () => ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName)));
         }
     }
 }

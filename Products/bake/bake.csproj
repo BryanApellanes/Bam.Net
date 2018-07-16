@@ -90,9 +90,14 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>pie.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -100,12 +105,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BakeBuildConfig.cs" />
-    <Compile Include="BakeBuildInfo.cs" />
-    <Compile Include="BakeComponent.cs" />
-    <Compile Include="BakeDirectory.cs" />
-    <Compile Include="BakeFile.cs" />
+    <Compile Include="DaemonServiceInfo.cs" />
+    <Compile Include="BuildConfig.cs" />
+    <Compile Include="BuildInfo.cs" />
+    <Compile Include="DeployInfo.cs" />
+    <Compile Include="TestInfo.cs" />
+    <Compile Include="TestTypes.cs" />
+    <Compile Include="WindowsServiceInfo.cs" />
+    <Compile Include="WixComponent.cs" />
+    <Compile Include="WixDirectory.cs" />
+    <Compile Include="WixFile.cs" />
     <Compile Include="BakeSettings.cs" />
+    <Compile Include="DaemonInfo.cs" />
     <Compile Include="BuildActions.cs" />
     <Compile Include="NugetSourceKind.cs" />
     <Compile Include="Program.cs" />
@@ -116,8 +127,18 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="build.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="deploy-core-heart.json" />
+    <None Include="deploy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
+    <None Include="unit-tests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
@@ -128,9 +149,17 @@
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.System\Bam.Net.System.csproj">
+      <Project>{4deb35a5-81a9-4f2a-bfb2-52ca5c4ab3bc}</Project>
+      <Name>Bam.Net.System</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
@@ -140,6 +169,13 @@
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\bamd\bamd.csproj">
+      <Project>{86868807-c95b-4cef-ba4d-3a4b5384298a}</Project>
+      <Name>bamd</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="pie.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

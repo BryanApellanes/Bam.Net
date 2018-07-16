@@ -5,6 +5,7 @@ using Bam.Net.Configuration;
 using Bam.Net.ServiceProxy;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +77,7 @@ namespace Bam.Net.Server
                     Ssl = ssl
                 };
                 results.Add(hostPrefix);
+                Trace.Write($"Default Config Hostname: {hostPrefix.ToString()}");
             }
             return results.ToArray();
         }

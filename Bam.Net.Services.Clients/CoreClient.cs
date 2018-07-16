@@ -22,6 +22,13 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
 namespace Bam.Net.Services.Clients
 {
+    /// <summary>
+    /// A client to the core service server.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Logging.Loggable" />
+    /// <seealso cref="Bam.Net.ServiceProxy.Secure.IApiKeyResolver" />
+    /// <seealso cref="Bam.Net.ServiceProxy.Secure.IApiKeyProvider" />
+    /// <seealso cref="Bam.Net.IApplicationNameProvider" />
     public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         internal CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
@@ -75,7 +82,7 @@ namespace Bam.Net.Services.Clients
         /// default configuration file (app.config or web.config).  If no values are specified then bamapps.net:80
         /// is used.
         /// </summary>
-        public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
+        public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "core.bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
         {
         }
 
@@ -100,6 +107,7 @@ namespace Bam.Net.Services.Clients
                 return $"{UserUtil.GetCurrentWindowsUser(true)}:{ProcessDescriptor.Current.FilePath}@{ProcessDescriptor.Current.MachineName}";
             }
         }
+
         public ProcessDescriptor ProcessDescriptor { get; private set; }
 
         /// <summary>

@@ -12,6 +12,11 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// Base class for a proxyable service that provides functionality for 
+    /// a specific named distributed application.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.ProxyableService" />
     public abstract class ApplicationProxyableService: ProxyableService
     {
         public ApplicationProxyableService() { }
@@ -26,6 +31,7 @@ namespace Bam.Net.CoreServices
         public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
 
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
+
         public string ServerApplicationName
         {
             get

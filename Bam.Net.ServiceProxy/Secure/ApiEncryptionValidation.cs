@@ -17,7 +17,7 @@ namespace Bam.Net.ServiceProxy.Secure
 {
     /// <summary>
     /// Class used to set and validate encryption validation
-    /// tokens
+    /// tokens.
     /// </summary>
     internal class ApiEncryptionValidation
     {

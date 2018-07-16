@@ -51,6 +51,7 @@ namespace Bam.Net.Services
         public AsyncCallbackRepository AsyncCallbackRepository { get; set; }
 
         public event EventHandler AddPendingFailed;
+
         [Local]
         public void RegisterPendingAsyncExecutionRequest(AsyncExecutionRequest request, Action<AsyncExecutionResponse> handler)
         {
@@ -77,6 +78,7 @@ namespace Bam.Net.Services
         /// dictionary or request handlers
         /// </summary>
         public event EventHandler RemovePendingFailed;
+
         public virtual void RecieveAsyncExecutionResponse(AsyncExecutionResponse response) // called by the server side to send responses
         {
             Args.ThrowIfNull(response, "result");

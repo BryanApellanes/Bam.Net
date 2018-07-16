@@ -55,10 +55,12 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("UrlTag_TagId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.TagId == GetLongValue("Id")), this, "TagId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("ImageTag_TagId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.TagId == GetLongValue("Id")), this, "TagId"));				
 			}						
@@ -236,7 +238,7 @@ namespace Bam.Net.Analytics
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -256,8 +258,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Tag>();
 			Database db = database ?? Db.For<Tag>();
-			var results = new TagCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TagCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -694,6 +698,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<TagColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TagCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TagCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Tag>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Tag>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

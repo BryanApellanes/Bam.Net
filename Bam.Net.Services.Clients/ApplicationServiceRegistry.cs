@@ -22,16 +22,30 @@ namespace Bam.Net.Services.Clients
     [ServiceRegistryContainer]
     public class ApplicationServiceRegistry
     {
-        static object _coreIncubatorLock = new object();
-        static ServiceRegistry _coreIncubator;
+        public const string RegistryName = "ApplicationServiceRegistry";
 
-        [ServiceRegistryLoader]
-        public static ServiceRegistry GetRegistry()
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Dev)]
+        public static ServiceRegistry CreateTestingServicesRegistryForDev()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
+            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
+            return GetServiceRegistry(coreClient);
         }
 
-        private static ServiceRegistry Create()
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Test)]
+        public static ServiceRegistry CreateTestingServicesRegistryForTest()
+        {
+            CoreClient coreClient = new CoreClient("int-heart.bamapps.net", 80);
+            return GetServiceRegistry(coreClient);
+        }
+
+        [ServiceRegistryLoader(RegistryName, ProcessModes.Prod)]
+        public static ServiceRegistry CreateTestingServicesRegistryForProd()
+        {
+            CoreClient coreClient = new CoreClient("heart.bamapps.net", 80);
+            return GetServiceRegistry(coreClient);
+        }
+
+        private static ServiceRegistry GetServiceRegistry(CoreClient coreClient)        
         {
             string contentRoot = DefaultConfiguration.GetAppSetting("ContentRoot", "c:\\bam\\content");
             string organization = DefaultConfiguration.GetAppSetting("Organization", "PUBLIC");
@@ -39,7 +53,6 @@ namespace Bam.Net.Services.Clients
             string databasesPath = Path.Combine(contentRoot, "Databases");
             string workspaceDirectory = Path.Combine(contentRoot, "Workspace");
 
-            CoreClient coreClient = new CoreClient(organization, applicationName, "bamapps.net", 80, workspaceDirectory, Log.Default);
             ApplicationLogDatabase logDb = new ApplicationLogDatabase(workspaceDirectory);
 
             return (ServiceRegistry)(new ServiceRegistry())

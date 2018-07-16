@@ -20,12 +20,12 @@ namespace Bam.Net.Testing.Integration
         /// <summary>
         /// Event that fires when a test fails.
         /// </summary>
-        //public static event EventHandler<TestExceptionEventArgs> IntegrationTestFailed;
+        public static event EventHandler<TestExceptionEventArgs> IntegrationTestFailed;
 
         /// <summary>
         /// Event that fires when a test passes.
         /// </summary>
-        //public static event EventHandler<ConsoleMethod> IntegrationTestPassed;
+        public static event EventHandler<ConsoleMethod> IntegrationTestPassed;
 
         public static void RunIntegrationTests(FileInfo file, EventHandler<Exception> onFailed = null)
 		{
@@ -70,6 +70,14 @@ namespace Bam.Net.Testing.Integration
 					OutLineFormat("Starting: {0}", ConsoleColor.Green, description);
 					testMethod.Invoke(testContainer, null);
 					Pass(description);
+                    try
+                    {
+                        IntegrationTestPassed?.Invoke(null, new ConsoleMethod(testMethod));
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.AddEntry("Exception in IntegrationTestPassed event handler: {0}", LogEventType.Warning, ex.Message);
+                    }
 				}
 				catch (Exception ex)
 				{
@@ -81,11 +89,16 @@ namespace Bam.Net.Testing.Integration
 					string msgFormat = "Integration Test failed: {0}\r\n";
 					Log.AddEntry(msgFormat, ex, ex.Message);
 					OutFormat(msgFormat, ConsoleColor.Red, ex.Message);
-					if (onFailed != null)
-					{
-						onFailed(testContainer, ex);
-					}
-				}
+                    onFailed?.Invoke(testContainer, ex);
+                    try
+                    {
+                        IntegrationTestFailed?.Invoke(null, new TestExceptionEventArgs(new IntegrationTestMethod(testMethod), ex));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.AddEntry("Exception in IntegrationTestFailed event handler: {0}", LogEventType.Warning, e.Message);
+                    }
+                }
 			});
 			// get the IntegrationTestCleanup and run it
 			MethodInfo cleanup = containerType.GetMethods().FirstOrDefault(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestCleanupAttribute>());
@@ -105,8 +118,6 @@ namespace Bam.Net.Testing.Integration
 					OutFormat("Cleanup failed: {0}", ConsoleColor.Red, ex.Message);
 				}
 			}
-		}
-
-        private void OnIntegrationTestPassed() { }     
+		} 
 	}
 }

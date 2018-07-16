@@ -111,7 +111,7 @@ namespace @Namespace
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -128,9 +128,9 @@ namespace @Namespace
 		/// </param>
 		public static @(Model.ClassName)Collection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<@(Model.ClassName)>();
 			Database db = database ?? Db.For<@(Model.ClassName)>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<@(Model.ClassName)>();
 			var results = new @(Model.ClassName)Collection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -144,14 +144,14 @@ namespace @Namespace
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				@(Model.ClassName)Columns columns = new @(Model.ClassName)Columns();
 				var orderBy = Bam.Net.Data.Order.By<@(Model.ClassName)Columns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -176,14 +176,14 @@ namespace @Namespace
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<@(Model.ClassName)Columns> where, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				@(Model.ClassName)Columns columns = new @(Model.ClassName)Columns();
 				var orderBy = Bam.Net.Data.Order.By<@(Model.ClassName)Columns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -208,13 +208,13 @@ namespace @Namespace
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<@(Model.ClassName)Columns> where, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Bam.Net.Data.OrderBy<@(Model.ClassName)Columns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				@(Model.ClassName)Columns columns = new @(Model.ClassName)Columns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

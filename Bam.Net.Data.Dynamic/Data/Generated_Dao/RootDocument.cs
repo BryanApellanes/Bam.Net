@@ -172,7 +172,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -189,11 +189,13 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		/// </param>
 		public static RootDocumentCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<RootDocument>();
 			Database db = database ?? Db.For<RootDocument>();
-			var results = new RootDocumentCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<RootDocument>();
+			var results = new RootDocumentCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -203,14 +205,14 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<RootDocument>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RootDocumentColumns columns = new RootDocumentColumns();
 				var orderBy = Bam.Net.Data.Order.By<RootDocumentColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -235,19 +237,50 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<RootDocumentColumns> where, Action<IEnumerable<RootDocument>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RootDocumentColumns columns = new RootDocumentColumns();
 				var orderBy = Bam.Net.Data.Order.By<RootDocumentColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (RootDocumentColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<RootDocument>> batchProcessor, Bam.Net.Data.OrderBy<RootDocumentColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RootDocumentColumns> where, Action<IEnumerable<RootDocument>> batchProcessor, Bam.Net.Data.OrderBy<RootDocumentColumns> orderBy, Database database = null)
+		{
+			await System.Threading.Tasks.Task.Run(async ()=>
+			{
+				RootDocumentColumns columns = new RootDocumentColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await System.Threading.Tasks.Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (RootDocumentColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -599,6 +632,25 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<RootDocumentColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<RootDocumentCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static RootDocumentCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<RootDocument>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<RootDocument>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

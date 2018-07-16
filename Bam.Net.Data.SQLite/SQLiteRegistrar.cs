@@ -98,6 +98,7 @@ namespace Bam.Net.Data
             incubator.Set<SqlStringBuilder>(() => new SQLiteSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new SQLiteSqlStringBuilder());
             incubator.Set<QuerySet>(() => new SQLiteQuerySet());
+            incubator.Set<IDataTypeTranslator>(() => new DataTypeTranslator());
         }
 
         /// <summary>
