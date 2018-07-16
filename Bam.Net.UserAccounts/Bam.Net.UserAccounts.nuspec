@@ -2,23 +2,30 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.UserAccounts</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Basic user account management system for use with Bam
 	</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
+Updates since v1.13.0:
+ -   mode directoryservices to separate project to isolate ActiDs dependency (03c54f10)
+ -   qd check for group membership (f858ab24)
+ -   rename ActiveDirectory namespace to DirectoryServices (b34ab7de)
+ -   ActiveDirectoryReader.GetGroups (1f15a291)
+ -   add activedirectory authentication support (a340af6f)
+ -   add UserAccountsDatabasee (b06c73ba)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.13.0" />
-      <dependency id="Bam.Net.Data" version="1.13.0" />
-      <dependency id="Bam.Net.Encryption" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
-      <dependency id="Bam.Net.Javascript" version="1.13.0" />
-      <dependency id="Bam.Net.Messaging" version="1.13.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.13.0" />
+      <dependency id="Bam.Net" version="1.14.0" />
+      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net.Encryption" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
+      <dependency id="Bam.Net.Javascript" version="1.14.0" />
+      <dependency id="Bam.Net.Messaging" version="1.14.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.0" />
       <dependency id="BouncyCastle" version="1.7.0" />
       <dependency id="DotNetOpenAuth.AspNet" version="4.3.4.13329" />
       <dependency id="DotNetOpenAuth.Core" version="4.3.4.13329" />
@@ -26,9 +33,9 @@
       <dependency id="DotNetOpenAuth.OAuth.Core" version="4.3.4.13329" />
       <dependency id="DotNetOpenAuth.OpenId.Core" version="4.3.4.13329" />
       <dependency id="DotNetOpenAuth.OpenId.RelyingParty" version="4.3.4.13329" />
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages.Data" version="3.2.3" />
       <dependency id="Microsoft.AspNet.WebPages.OAuth" version="3.2.3" />
       <dependency id="Microsoft.AspNet.WebPages.WebData" version="3.2.3" />

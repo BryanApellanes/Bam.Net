@@ -2,20 +2,31 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
+Updates since v1.13.0:
+ -   check if id is a number (655bf82e)
+ -   check for null parent in XrefDaoCollection ctor (d359e19e)
+ -   fix getdbdatatype implementation to account for null (d13433c2)
+ -   refactor and improvedattype handling (4666229a)
+ -   track primary key as object to allow for it to be a type other than int or long (67c49ccc)
+ -   extract datatype translator interface for reuse in dao.cs (b04e7c23)
+ -   add Dao.Column&lt;T&gt; back as alias to Dao.ColumnValue&lt;T&gt; (be22e029)
+ -   update Dao.UniquFilterProvider to take itself (e8a35b49)
+ -   fix daoref references (3abb4f27)
+ -   minor updates (b3265c04)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
+      <dependency id="Bam.Net" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="System.Data.SQLite.Core" version="1.0.99.0" />
       <dependency id="YUICompressor.NET" version="2.7.0.0" />

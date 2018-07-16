@@ -11,7 +11,7 @@
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>
-      <dependency id="Unofficial.Microsoft.SQLServer.SMO" version="11.0.3000.0" />
+      <dependency id="InterSystemsCache" version="1.0.4" />
     </dependencies>
   </metadata>
 </package>

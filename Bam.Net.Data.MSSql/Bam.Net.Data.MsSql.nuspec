@@ -2,20 +2,20 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.MsSql</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <title>Bam.Net.Data.MsSql</title>
     <authors>Package Authors</authors>
     <owners>Package Owners</owners>
     <description>Bam.Net.Data.MsSql</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
-      <dependency id="Bam.Net.Data" version="1.13.0" />
-      <dependency id="Bam.Net.Data.Schema" version="1.13.0" />
-      <dependency id="Bam.Net.Javascript" version="1.13.0" />
+      <dependency id="Bam.Net" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
+      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net.Data.Schema" version="1.14.0" />
+      <dependency id="Bam.Net.Javascript" version="1.14.0" />
       <dependency id="Unofficial.Microsoft.SQLServer.SMO" version="11.0.3000.0" />
     </dependencies>
   </metadata>

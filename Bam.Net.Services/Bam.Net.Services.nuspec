@@ -2,30 +2,34 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Services</id>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Supplemental Bam.Net services
 	</description>
-    <releaseNotes>Version 1.13.0
+    <releaseNotes>Version 1.14.0
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.13.0" />
-      <dependency id="Bam.Net.Analytics" version="1.13.0" />
-      <dependency id="Bam.Net.CommandLine" version="1.13.0" />
-      <dependency id="Bam.Net.CoreServices" version="1.13.0" />
-      <dependency id="Bam.Net.Data" version="1.13.0" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.13.0" />
-      <dependency id="Bam.Net.Data.Schema" version="1.13.0" />
-      <dependency id="Bam.Net.Encryption" version="1.13.0" />
-      <dependency id="Bam.Net.Incubation" version="1.13.0" />
-      <dependency id="Bam.Net.Messaging" version="1.13.0" />
-      <dependency id="Bam.Net.Server" version="1.13.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.13.0" />
-      <dependency id="Bam.Net.Translation" version="1.13.0" />
-      <dependency id="Bam.Net.UserAccounts" version="1.13.0" />
+      <dependency id="Bam.Net" version="1.14.0" />
+      <dependency id="Bam.Net.Analytics" version="1.14.0" />
+      <dependency id="Bam.Net.CommandLine" version="1.14.0" />
+      <dependency id="Bam.Net.CoreServices" version="1.14.0" />
+      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.14.0" />
+      <dependency id="Bam.Net.Data.Schema" version="1.14.0" />
+      <dependency id="Bam.Net.Encryption" version="1.14.0" />
+      <dependency id="Bam.Net.Incubation" version="1.14.0" />
+      <dependency id="Bam.Net.Messaging" version="1.14.0" />
+      <dependency id="Bam.Net.Server" version="1.14.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.0" />
+      <dependency id="Bam.Net.Translation" version="1.14.0" />
+      <dependency id="Bam.Net.UserAccounts" version="1.14.0" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="NCuid" version="1.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
     </dependencies>

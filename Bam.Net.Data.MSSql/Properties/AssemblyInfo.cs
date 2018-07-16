@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Bam.Net.Data.MsSql")]
 [assembly: AssemblyDescription("Bam.Net.Data.MsSql")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bryan Apellanes")]
+[assembly: AssemblyCompany("Package Owners")]
 [assembly: AssemblyProduct("Bam.Net.Data.MsSql")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Bam.Net.Data.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Tests")]
-[assembly: AssemblyVersion("1.13.0")]
-[assembly: AssemblyFileVersion("1.13.0")]
+[assembly: AssemblyVersion("1.14.0")]
+[assembly: AssemblyFileVersion("1.14.0")]
