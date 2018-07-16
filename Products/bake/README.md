@@ -136,7 +136,7 @@ bake /publish:public
 
 When publish mode is slected, **argument** is the kind of nuget source to publish to.  If _internal_ is specified
 the nuget packages are added to the nuget repository specified by NugetInternalSource in the app.config file.  If _public_
-is specified the nuget packages are pused to the nuget repository specified by NugetPublicSource in the app.config file.
+is specified the nuget packages are pushed to the nuget repository specified by NugetPublicSource in the app.config file.
 Additionally, if _public_ is selcted the version update is committed and tagged.
 
 ## What's next?
