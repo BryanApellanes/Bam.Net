@@ -16,12 +16,15 @@ namespace Bam.Net.UserAccounts.DirectoryServices
     /// </summary>
     public class ResultantGroupMemberResolver
     {
-        public ResultantGroupMemberResolver(DirectoryEntry group)
+        public ResultantGroupMemberResolver(DirectoryEntry group, ActiveDirectoryReader activeDirectoryReader = null)
         {
             Group = group;
             Processed = new HashSet<string>();
             MemberNameResolver = GetMemberName;
+            ActiveDirectoryReader = activeDirectoryReader;
         }
+
+        public ActiveDirectoryReader ActiveDirectoryReader { get; set; }
 
         string[] _members;
         object _memberLock = new object();
@@ -31,6 +34,11 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             {
                 return _memberLock.DoubleCheckLock(ref _members, () => Resolve());
             }
+        }
+
+        public string[] ResolveMembers(string groupName)
+        {
+            return ResolveMembers(ActiveDirectoryReader.GetDirectoryEntry(groupName));
         }
 
         public static string[] ResolveMembers(DirectoryEntry group)
