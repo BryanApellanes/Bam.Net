@@ -185,6 +185,7 @@
     <Compile Include="Testing\CreateStatus.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestingContext.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestingRepository.cs" />
+    <Compile Include="Testing\ReportGenerator.cs" />
     <Compile Include="Testing\SaveTestSuiteExecutionSummaryResponse.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscription.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscriptionCollection.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Testing\SaveTestExecutionResponse.cs" />
     <Compile Include="Testing\SearchTestExecutionResponse.cs" />
     <Compile Include="Testing\SubscriptionStatus.cs" />
+    <Compile Include="Testing\TestConstants.cs" />
     <Compile Include="Testing\TestingServicesRegistryContainer.cs" />
     <Compile Include="Testing\TestReportResponse.cs" />
     <Compile Include="Testing\TestReportService.cs" />

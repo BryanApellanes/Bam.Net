@@ -17,6 +17,7 @@ using Bam.Net.System;
 using System.Management;
 using Bam.Net.Encryption;
 using System.Diagnostics;
+using Bam.Net.Automation.Testing;
 
 namespace Bam.Net.Automation
 {
@@ -347,6 +348,8 @@ namespace Bam.Net.Automation
             OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
 
             string bamtestrunner = Path.Combine(Paths.Tests, testInfo.Tag, "bamtestrunner.exe");
+            DateTime? now = DateTime.Now;
+            string outputDirectory = Path.Combine(Paths.Tests, $"CoverageReport_{now.Value.ToShortDateString()}_{now.Value.ToShortTimeString()}");
             if (testInfo.RunOnHost.Equals("."))
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -360,7 +363,8 @@ namespace Bam.Net.Automation
                     Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
                     WorkingDirectory = Path.Combine(Paths.Tests)
                 };
-                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);
+                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);                
+                ReportGenerator.Run(outputDirectory);
             }
             else
             {
@@ -371,6 +375,7 @@ namespace Bam.Net.Automation
                     (e) => OutLine(e, ConsoleColor.Magenta),
                     600000
                 );
+                ReportGenerator.Run(testInfo.RunOnHost, outputDirectory);
             }
         }
 

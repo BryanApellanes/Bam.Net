@@ -11,11 +11,18 @@ using Bam.Net.Testing.Integration;
 using System.IO;
 using System.Diagnostics;
 using Bam.Net.Data;
+using Bam.Net.Automation.Testing;
 
 namespace Bam.Net.Testing
 {
     public partial class Program
     {
+        /// <summary>
+        /// Gets the path to OpenCover.Console.exe.
+        /// </summary>
+        /// <value>
+        /// The open cover.
+        /// </value>
         protected static string OpenCover
         {
             get
@@ -77,9 +84,9 @@ namespace Bam.Net.Testing
             {
                 OutLineFormat("{0}:Running tests in: {1}", ConsoleColor.Cyan, DateTime.Now.ToLongTimeString(), file.FullName);
                 string testFileName = Path.GetFileNameWithoutExtension(file.Name);
-                string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{testFileName}.xml");
-                string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_output.txt");
-                string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_error.txt");
+                string xmlFile = Path.Combine(Paths.Tests, TestConstants.CoverageXmlFolder, $"{testFileName}_{tag}_coverage.xml");
+                string outputFile = Path.Combine(Paths.Tests, tag, $"{testFileName}_{tag}_output.txt");
+                string errorFile = Path.Combine(Paths.Tests, tag, $"{testFileName}_{tag}_error.txt");
                 string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/type:{testType} /{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*].Testing.* -[*Test*].Tests.*\" -output:{xmlFile}";
                 OutLineFormat("CommandLine: {0}", ConsoleColor.Yellow, commandLine);
                 ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
@@ -88,6 +95,10 @@ namespace Bam.Net.Testing
             }
         }
 
+        /// <summary>
+        /// Runs the unit tests in file.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">UnitTest file not specified</exception>
         [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
         public static void RunUnitTestsInFile()
         {
