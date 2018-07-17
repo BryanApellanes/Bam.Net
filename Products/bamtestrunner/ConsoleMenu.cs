@@ -166,7 +166,7 @@ namespace Bam.Net.Testing
                 OutLineFormat("Directory doesn't exist, creating it: {0}", outputDirectory.FullName);
                 outputDirectory.Create();
             }
-            string coverageDir = Path.Combine(outputDirectory.FullName, "coverage");
+            string coverageDir = Path.Combine(Paths.Tests, TestConstants.CoverageXmlFolder);
             OutLineFormat("Checking for coverage directory: {0}", ConsoleColor.Cyan, coverageDir);
             if (!Directory.Exists(coverageDir))
             {
