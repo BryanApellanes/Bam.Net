@@ -37,6 +37,14 @@ service is set to use the credentials found.
 
 ## Test
 
+Example:
+```
+bake /test:[path_to_test_config_json_file]
+```
+
+When test mode is selected, the bake will invoke [bamtestrunner](../bamtestrunner) with the /TestsWithCoverage switch
+reporting results to the server specified in the test config file.
+
 ## Init
 
 Example:

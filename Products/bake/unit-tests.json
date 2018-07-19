@@ -3,6 +3,6 @@
   "Type": "Unit",
   "TestReportHost": "int.bamapps.net",
   "TestReportPort": 80,
-  "Tag": "tests",
+  "Tag": "bake",
   "Search": ".\\*.Tests.exe"
 }
