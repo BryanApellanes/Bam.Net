@@ -9,6 +9,7 @@ namespace Bam.Net.Automation.Testing
     public static class TestConstants
     {
         public const string CoverageXmlFolder = "CoverageXml";
+        public const string OutputFolder = "TestOutput";
         public const string HistoryFolder = "CoverageHistory";
     }
 }

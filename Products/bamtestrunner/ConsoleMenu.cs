@@ -85,9 +85,9 @@ namespace Bam.Net.Testing
                 OutLineFormat("{0}:Running tests in: {1}", ConsoleColor.Cyan, DateTime.Now.ToLongTimeString(), file.FullName);
                 string testFileName = Path.GetFileNameWithoutExtension(file.Name);
                 string xmlFile = Path.Combine(Paths.Tests, TestConstants.CoverageXmlFolder, $"{testFileName}_{tag}_coverage.xml");
-                string outputFile = Path.Combine(Paths.Tests, tag, $"{testFileName}_{tag}_output.txt");
-                string errorFile = Path.Combine(Paths.Tests, tag, $"{testFileName}_{tag}_error.txt");
-                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/type:{testType} /{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*].Testing.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                string outputFile = Path.Combine(Paths.Tests, TestConstants.OutputFolder, $"{testFileName}_{tag}_output.txt");
+                string errorFile = Path.Combine(Paths.Tests, TestConstants.OutputFolder, $"{testFileName}_{tag}_error.txt");
+                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/type:{testType} /{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*].Testing.* -[*Test*].Tests.*\" -output:{xmlFile}";
                 OutLineFormat("CommandLine: {0}", ConsoleColor.Yellow, commandLine);
                 ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
                 output.StandardError.SafeWriteToFile(errorFile, true);

@@ -349,7 +349,7 @@ namespace Bam.Net.Automation
 
             string bamtestrunner = Path.Combine(Paths.Tests, testInfo.Tag, "bamtestrunner.exe");
             DateTime? now = DateTime.Now;
-            string outputDirectory = Path.Combine(Paths.Tests, $"CoverageReport_{now.Value.ToShortDateString()}_{now.Value.ToShortTimeString()}");
+            string outputDirectory = Path.Combine(Paths.Tests, $"CoverageReport");
             if (testInfo.RunOnHost.Equals("."))
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -361,7 +361,7 @@ namespace Bam.Net.Automation
                     RedirectStandardError = true,
                     FileName = bamtestrunner,
                     Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
-                    WorkingDirectory = Path.Combine(Paths.Tests)
+                    WorkingDirectory = Path.Combine(Paths.Tests, testInfo.Tag)
                 };
                 startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);                
                 ReportGenerator.Run(outputDirectory);
@@ -1365,7 +1365,7 @@ namespace Bam.Net.Automation
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.RunOnHost), "RunOnHost not specified");
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.Tag), "Tag not specified");
             //      copy the latest binaries to \\computer\c$\bam\tests\{Tag}
-            string path = Path.Combine(Paths.Tests, testInfo.Tag);            
+            string path = Path.Combine(Paths.Tests, testInfo.Tag);
 
             DirectoryInfo remoteDirectoryInfo = path.GetAdminShareDirectory(testInfo.RunOnHost);
             OutLineFormat("Copying files for testing to {0} on {1}...", ConsoleColor.Cyan, path, testInfo.RunOnHost);
