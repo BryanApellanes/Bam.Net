@@ -229,9 +229,9 @@ namespace Bam.Net.Automation
 
             CloneRepository(buildConfig, cloneIn, clone);
 
-            CheckoutBranch(buildConfig, clone);
-
             GetLatest(clone);
+
+            CheckoutBranch(buildConfig, clone);
 
             string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
             string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
