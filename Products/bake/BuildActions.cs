@@ -136,7 +136,7 @@ namespace Bam.Net.Automation
             {
                 if (string.IsNullOrEmpty(_defaultVer))
                 {
-                    _defaultVer = DefaultConfiguration.GetAppSetting("FrameworkVersion", "v4.6.2");
+                    _defaultVer = DefaultConfiguration.GetAppSetting("FrameworkVersion", "v4.7.2");
                 }
                 return _defaultVer;
             }
