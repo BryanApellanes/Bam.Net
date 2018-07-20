@@ -234,7 +234,7 @@ namespace Bam.Net.Automation
             CheckoutBranch(buildConfig, clone);
 
             string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
-            string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
+            string arguments = $"restore {Path.Combine(clone, buildConfig.RestoreReference)} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
             NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
 
             FileInfo msbuild = new FileInfo(buildConfig.MsBuildPath);

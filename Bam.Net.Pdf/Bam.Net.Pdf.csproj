@@ -50,7 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SautinSoft.PdfFocus, Version=6.0.12.29, Culture=neutral, PublicKeyToken=0b79b934109b3e9e, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\sautinsoft.pdffocus.6.0.12.29\lib\net45\SautinSoft.PdfFocus.dll</HintPath>
+      <HintPath>C:\bam\nuget\packages\sautinsoft.pdffocus.6.0.12.29\lib\net45\SautinSoft.PdfFocus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
