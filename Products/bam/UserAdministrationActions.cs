@@ -24,20 +24,6 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
-        // TODO: move this method to one of the integration test projects
-        [IntegrationTest]
-        public void NotifyThroughCore()
-        {
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.StartLoggingThread();
-            ProxyFactory proxyFactory = new ProxyFactory();
-            NotificationService svc = proxyFactory.GetProxy<NotificationService>("gloo.localhost", 9100, logger);
-            svc.Login("bryan.apellanes@gmail.com", "password".Sha1());
-            OutLineFormat("logged in as: {0}", svc.WhoAmI());
-
-            svc.Notify("bryan.apellanes@gmail.com", "This is a test", "Test Email");
-        }
-
         [ConsoleAction]
         public void SetDefaultSmtpSettings()
         {

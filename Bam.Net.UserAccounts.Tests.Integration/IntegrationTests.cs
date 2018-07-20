@@ -11,13 +11,27 @@ using Bam.Net.UserAccounts.Tests;
 using Bam.Net.UserAccounts.Data;
 using FakeItEasy;
 using Bam.Net.CommandLine;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.UserAccounts.Tests.Integration
 {
     [Serializable]
     [IntegrationTestContainer]
-    public class IntegrationTests
+    public class IntegrationTests: CommandLineTestInterface
     {
+        [IntegrationTest]
+        public void NotifyThroughCore()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            ProxyFactory proxyFactory = new ProxyFactory();
+            NotificationService svc = proxyFactory.GetProxy<NotificationService>("gloo.localhost", 9100, logger);
+            svc.Login("bryan.apellanes@gmail.com", "password".Sha1());
+            OutLineFormat("logged in as: {0}", svc.WhoAmI());
+
+            svc.Notify("bryan.apellanes@gmail.com", "This is a test", "Test Email");
+        }
+
         [IntegrationTest]
         [ConsoleAction]
         public void ResetPasswordShouldBeLoginnable()
