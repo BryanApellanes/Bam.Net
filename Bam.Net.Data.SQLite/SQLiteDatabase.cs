@@ -22,7 +22,6 @@ namespace Bam.Net.Data.SQLite
 
         static SQLiteDatabase()
         {
-            SQLiteBitMonitor.MonitorBitness();
         }
 
         public SQLiteDatabase() : this(DefaultFolder, "SQLiteDatabase")
@@ -43,7 +42,6 @@ namespace Bam.Net.Data.SQLite
         public SQLiteDatabase(string directoryPath, string connectionName)
             : base()
         {
-            SQLiteBitMonitor.MonitorBitness();
             DirectoryInfo directory = new DirectoryInfo(directoryPath);
             if (!directory.Exists)
             {
