@@ -13,6 +13,8 @@ When build mode is selected, a build is run using the specified build config.  T
 a json serialized BakeBuildConfig object.  The BakeBuildConfig definition has the same properties
 defined as the bambot configs.  Bambot configs will properly deserialize as BakeBuildConfig instances.
 
+You may also override the branch to build by specifying the /branch:**branch_name** switch.
+
 ## Deploy
 
 Example:
@@ -42,7 +44,7 @@ Example:
 bake /test:[path_to_test_config_json_file]
 ```
 
-When test mode is selected, the bake will invoke [bamtestrunner](../bamtestrunner) with the /TestsWithCoverage switch
+When test mode is selected, bake will invoke [bamtestrunner](../bamtestrunner) with the /TestsWithCoverage switch
 reporting results to the server specified in the test config file.
 
 ## Init

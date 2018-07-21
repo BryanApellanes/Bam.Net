@@ -345,6 +345,10 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
+            if (Arguments.Contains("tag"))
+            {
+                testInfo.Tag = Arguments["tag"];
+            }
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
             testInfo.Tag = $"{testInfo.Tag}-{commit.First(6)}";
             DeployTestFiles(latestBinaries, testInfo);
