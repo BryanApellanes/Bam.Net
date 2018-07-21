@@ -128,6 +128,12 @@ namespace Bam.Net.ServiceProxy.Tests
             }
         }
 
+        [AfterEachUnitTest]
+        public void StopServersAfterUnitTests()
+        {
+            ServiceProxyTestHelpers.StopServers();
+        }
+
         [UnitTest]
         public void ApiKeyProviderShouldNotBeNull()
         {
@@ -414,6 +420,7 @@ namespace Bam.Net.ServiceProxy.Tests
                 return new ValidationResult();
             }
         }
+
         [UnitTest]
         public void ExecuteShouldCallValidate()
         {

@@ -58,7 +58,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out BamServer server, out SecureServiceProxyClient<EncryptedEcho> sspc);
 
-            string value = Http.Get("http://localhost:8080/ServiceProxy/CSharpProxies?namespace=My.Test.Namespace&classes=EncryptedEcho");
+            string value = Http.Get($"{sspc.BaseAddress}/ServiceProxy/CSharpProxies?namespace=My.Test.Namespace&classes=EncryptedEcho");
             FileInfo codeFile = new FileInfo(".\\Tmp\\code.cs");
             if (codeFile.Directory.Exists)
             {
