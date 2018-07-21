@@ -218,7 +218,10 @@ namespace Bam.Net.Automation
                 OutLineFormat("BamBotRoot not defined in config file: {0}", ConsoleColor.Magenta, buildConfigPath);
                 Exit(1);
             }
-
+            if (Arguments.Contains("branch"))
+            {
+                buildConfig.Branch = Arguments["branch"];
+            }
             // get latest
             string cloneIn = $"{buildConfig.BamBotRoot}\\src";
             if (!Directory.Exists(cloneIn))

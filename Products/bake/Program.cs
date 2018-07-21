@@ -56,6 +56,7 @@ namespace Bam.Net.Automation
             AddValidArgument("PackagesDirectory", false, addAcronym: false, description: "/release: The directory to restore nuget packages to.");
             AddValidArgument("host", false, addAcronym: false, description: "/deploy: specify the host to process, if ommitted all hosts are processed.");
             AddValidArgument("tag", false, addAcronym: false, description: "/test: specify the tag to associate with the test run.");
+            AddValidArgument("branch", false, addAcronym: false, description: "/build: specify a branch to build overriding what is defined in the specified build config.")
         }
         #region do not modify
         public static void Start()
