@@ -28,79 +28,31 @@ namespace Bam.Net
 {
     public static class Extensions
     {
-        static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
-        static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
-        static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
-        static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
-        static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
-        static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
         static Dictionary<string, SerializationFormat> _serializationFormats;
-        static Extensions()
+        static object _serializationFormatsLock = new object();
+        public static Dictionary<string, SerializationFormat> SerializationFormats
         {
-            SetDictionaries();
+            get
+            {
+                return _serializationFormatsLock.DoubleCheckLock(ref _serializationFormats, () => new Dictionary<string, SerializationFormat>
+                {
+                    { ".yaml", SerializationFormat.Yaml },
+                    { ".yml", SerializationFormat.Yaml },
+                    { ".json", SerializationFormat.Json },
+                    { ".xml", SerializationFormat.Xml },
+                    { ".dat", SerializationFormat.Binary },
+                    { ".bin", SerializationFormat.Binary }
+                });
+            }
         }
 
-        private static void SetDictionaries()
+        static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
+        static object _deserializersLock = new object();
+        public static Dictionary<SerializationFormat, Func<Stream, Type, object>> Deserializers
         {
-            if (_hashAlgorithms == null)
+            get
             {
-                _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
-                {
-                    { HashAlgorithms.MD5, () => MD5.Create() },
-                    { HashAlgorithms.RIPEMD160, () => RIPEMD160.Create() },
-                    { HashAlgorithms.SHA1, () => SHA1.Create() },
-                    { HashAlgorithms.SHA256, () => SHA256.Create() },
-                    { HashAlgorithms.SHA384, () => SHA384.Create() },
-                    { HashAlgorithms.SHA512, () => SHA512.Create() }
-                };
-            }
-
-            if(_hmacs == null)
-            {
-                _hmacs = new Dictionary<HashAlgorithms, Func<byte[], HMAC>>
-                {
-                    {HashAlgorithms.MD5, (key) => new HMACMD5(key) },
-                    {HashAlgorithms.RIPEMD160, (key) => new HMACRIPEMD160(key) },
-                    {HashAlgorithms.SHA1, (key) => new HMACSHA1(key) },
-                    {HashAlgorithms.SHA256, (key) => new HMACSHA256(key) },
-                    {HashAlgorithms.SHA384, (key) => new HMACSHA384(key) },
-                    {HashAlgorithms.SHA512, (key) => new HMACSHA512(key) }
-                };
-            }
-
-            if(_extractActions == null)
-            { 
-                _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>
-                {
-                    { ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest) },
-                    { ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true) },
-                    { ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest) }
-                };
-            }
-
-            if(_writeResourceActions == null)
-            {
-                _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>
-                {
-                    { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
-                    { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
-                    { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
-                };
-            }
-            if(_serializeActions == null)
-            {
-                _serializeActions = new Dictionary<SerializationFormat, Action<Stream, object>>
-                {
-                    { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
-                    { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
-                    { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
-                    { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
-                    { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
-                };
-            }
-            if(_deserializers == null)
-            {
-                _deserializers = new Dictionary<SerializationFormat, Func<Stream, Type, object>>
+                return _deserializersLock.DoubleCheckLock(ref _deserializers, () => new Dictionary<SerializationFormat, Func<Stream, Type, object>>
                 {
                     { SerializationFormat.Invalid, (stream, type) => {
                             Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified");
@@ -111,19 +63,90 @@ namespace Bam.Net
                     { SerializationFormat.Json, (stream, type) => stream.FromJsonStream(type) }, // this might not work; should be tested
                     { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream(type) }, // this might not work; should be tested
                     { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
-                };
+                });
             }
-            if(_serializationFormats == null)
+        }
+
+        static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
+        static object _serializeActionsLock = new object();
+        public static Dictionary<SerializationFormat, Action<Stream, object>> SerializeActions
+        {
+            get
             {
-                _serializationFormats = new Dictionary<string, SerializationFormat>
+                return _serializeActionsLock.DoubleCheckLock(ref _serializeActions, () => new Dictionary<SerializationFormat, Action<Stream, object>>
                 {
-                    { ".yaml", SerializationFormat.Yaml },
-                    { ".yml", SerializationFormat.Yaml },
-                    { ".json", SerializationFormat.Json },
-                    { ".xml", SerializationFormat.Xml },
-                    { ".dat", SerializationFormat.Binary },
-                    { ".bin", SerializationFormat.Binary }
-                };
+                    { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
+                    { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
+                    { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
+                    { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
+                    { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
+                });
+            }
+        }
+
+        static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
+        static object _writeResourceActionsLock = new object();
+        public static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> WriteResourceActions
+        {
+            get
+            {
+                return _writeResourceActionsLock.DoubleCheckLock(ref _writeResourceActions, () => new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>
+                {
+                    { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
+                    { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
+                    { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
+                });
+            }
+        }
+
+        static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
+        static object _extractActionsLock = new object();
+        public static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> ExtractActions
+        {
+            get
+            {
+                return _extractActionsLock.DoubleCheckLock(ref _extractActions, () => new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>
+                {
+                    { ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest) },
+                    { ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true) },
+                    { ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest) }
+                });
+            }
+        }
+
+        static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
+        static object _hmacsLock = new object();
+        public static Dictionary<HashAlgorithms, Func<byte[], HMAC>> Hmacs
+        {
+            get
+            {
+                return _hmacsLock.DoubleCheckLock(ref _hmacs, () => new Dictionary<HashAlgorithms, Func<byte[], HMAC>>
+                {
+                    {Net.HashAlgorithms.MD5, (byte[] key) => new HMACMD5(key) },
+                    {Net.HashAlgorithms.RIPEMD160, (byte[] key) => new HMACRIPEMD160(key) },
+                    {Net.HashAlgorithms.SHA1, (byte[] key) => new HMACSHA1(key) },
+                    {Net.HashAlgorithms.SHA256, (byte[] key) => new HMACSHA256(key) },
+                    {Net.HashAlgorithms.SHA384, (byte[] key) => new HMACSHA384(key) },
+                    {Net.HashAlgorithms.SHA512, (byte[] key) => new HMACSHA512(key) }
+                });
+            }
+        }
+
+        static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
+        static object _hashAlgorithmLock = new object();
+        public static Dictionary<HashAlgorithms, Func<HashAlgorithm>> HashAlgorithms
+        {
+            get
+            {
+                return _hashAlgorithmLock.DoubleCheckLock(ref _hashAlgorithms, () => new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
+                {
+                    { Net.HashAlgorithms.MD5, () => MD5.Create() },
+                    { Net.HashAlgorithms.RIPEMD160, () => RIPEMD160.Create() },
+                    { Net.HashAlgorithms.SHA1, () => SHA1.Create() },
+                    { Net.HashAlgorithms.SHA256, () => SHA256.Create() },
+                    { Net.HashAlgorithms.SHA384, () => SHA384.Create() },
+                    { Net.HashAlgorithms.SHA512, () => SHA512.Create() }
+                });
             }
         }
 
@@ -140,13 +163,13 @@ namespace Bam.Net
         public static object Deserialize(this FileInfo file, Type type)
         {
             string fileExtension = file.Extension;
-            if (!_serializationFormats.ContainsKey(fileExtension))
+            if (!SerializationFormats.ContainsKey(fileExtension))
             {
-                throw new ArgumentException($"File extension ({fileExtension}) not supported for deserialization, use one of ({string.Join(",", _serializationFormats.Keys.ToArray())})");
+                throw new ArgumentException($"File extension ({fileExtension}) not supported for deserialization, use one of ({string.Join(",", SerializationFormats.Keys.ToArray())})");
             }
             using (FileStream fs = file.OpenRead())
             {
-                return _deserializers[_serializationFormats[fileExtension]](fs, type);
+                return Deserializers[SerializationFormats[fileExtension]](fs, type);
             }
         }
 
@@ -667,7 +690,7 @@ namespace Bam.Net
                     {
                         if (File.Exists(writeTo.FullName))
                         {
-                            _writeResourceActions[existingFileAction](resource, writeTo);
+                            WriteResourceActions[existingFileAction](resource, writeTo);
                         }
                         else
                         {
@@ -719,7 +742,7 @@ namespace Bam.Net
                 FileInfo destinationFile = new FileInfo(Path.Combine(extractTo.FullName, zipFile.FullName));
                 if (destinationFile.Exists)
                 {
-                    _extractActions[existingFileAction](zipFile, destinationFile.FullName);
+                    ExtractActions[existingFileAction](zipFile, destinationFile.FullName);
                 }
                 else
                 {
@@ -1611,7 +1634,7 @@ namespace Bam.Net
 
         public static void Serialize(this object obj, SerializationFormat format, Stream output)
         {
-            _serializeActions[format](output, obj);
+            SerializeActions[format](output, obj);
         }
 
         /// <summary>
@@ -1849,7 +1872,7 @@ namespace Bam.Net
                 encoding = Encoding.UTF8;
             }
 
-            HashAlgorithm alg = _hashAlgorithms[algorithm]();
+            HashAlgorithm alg = HashAlgorithms[algorithm]();
             byte[] fileContents = File.ReadAllBytes(file.FullName);
             byte[] hashBytes = alg.ComputeHash(fileContents);
 
@@ -1873,12 +1896,12 @@ namespace Bam.Net
 
         public static string Md5(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.MD5, encoding);
+            return file.ContentHash(Net.HashAlgorithms.MD5, encoding);
         }
 
         public static string Ripmd160(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.RIPEMD160, encoding);
+            return file.ContentHash(Net.HashAlgorithms.RIPEMD160, encoding);
         }
 
         /// <summary>
@@ -1889,7 +1912,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static string Sha1(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.SHA1, encoding);
+            return file.ContentHash(Net.HashAlgorithms.SHA1, encoding);
         }
 
         /// <summary>
@@ -1900,83 +1923,83 @@ namespace Bam.Net
         /// <returns></returns>
         public static string Sha256(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.SHA256, encoding);
+            return file.ContentHash(Net.HashAlgorithms.SHA256, encoding);
         }
         
         public static string Sha384(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.SHA384, encoding);
+            return file.ContentHash(Net.HashAlgorithms.SHA384, encoding);
         }
 
         public static string Sha512(this FileInfo file, Encoding encoding = null)
         {
-            return file.ContentHash(HashAlgorithms.SHA512, encoding);
+            return file.ContentHash(Net.HashAlgorithms.SHA512, encoding);
         }
 
         public static string Sha1(this byte[] bytes)
         {
-            return Hash(bytes, HashAlgorithms.SHA1);
+            return Hash(bytes, Net.HashAlgorithms.SHA1);
         }
 
         public static string Sha256(this byte[] bytes)
         {
-            return Hash(bytes, HashAlgorithms.SHA256);
+            return Hash(bytes, Net.HashAlgorithms.SHA256);
         }
 
         public static string Md5(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.MD5, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.MD5, encoding);
         }
 
         public static string Ripmd160(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.RIPEMD160, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.RIPEMD160, encoding);
         }
 
         public static string Sha384(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.SHA384, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.SHA384, encoding);
         }
 
         public static string Sha1(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.SHA1, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.SHA1, encoding);
         }
 
         public static string Sha256(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.SHA256, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.SHA256, encoding);
         }
 
         public static string Sha512(this string toBeHashed, Encoding encoding = null)
         {
-            return toBeHashed.Hash(HashAlgorithms.SHA512, encoding);
+            return toBeHashed.Hash(Net.HashAlgorithms.SHA512, encoding);
         }
 
         public static string HmacSha1(this string toValidate, string key, Encoding encoding = null)
         {
-            return Hmac(toValidate, key, HashAlgorithms.SHA1, encoding);
+            return Hmac(toValidate, key, Net.HashAlgorithms.SHA1, encoding);
         }
 
         public static string HmacSha256(this string toValidate, string key, Encoding encoding = null)
         {
-            return Hmac(toValidate, key, HashAlgorithms.SHA256, encoding);
+            return Hmac(toValidate, key, Net.HashAlgorithms.SHA256, encoding);
         }
 
         public static string HmacSha384(this string toValidate, string key, Encoding encoding = null)
         {
-            return Hmac(toValidate, key, HashAlgorithms.SHA384, encoding);
+            return Hmac(toValidate, key, Net.HashAlgorithms.SHA384, encoding);
         }
 
         public static string HmacSha512(this string toValidate, string key, Encoding encoding = null)
         {
-            return Hmac(toValidate, key, HashAlgorithms.SHA512, encoding);
+            return Hmac(toValidate, key, Net.HashAlgorithms.SHA512, encoding);
         }
 
         public static string Hmac(this string toValidate, string key, HashAlgorithms algorithm, Encoding encoding = null)
         {
             encoding = encoding ?? Encoding.UTF8;
-            HMAC hmac = _hmacs[algorithm](encoding.GetBytes(key));
+            HMAC hmac = Hmacs[algorithm](encoding.GetBytes(key));
             return hmac.ComputeHash(encoding.GetBytes(toValidate)).ToHexString();
         }
 
@@ -1990,7 +2013,7 @@ namespace Bam.Net
 
         public static string Hash(this byte[] bytes, HashAlgorithms algorithm)
         {
-            HashAlgorithm alg = _hashAlgorithms[algorithm]();
+            HashAlgorithm alg = HashAlgorithms[algorithm]();
             byte[] hashBytes = alg.ComputeHash(bytes);
 
             return hashBytes.ToHexString();
@@ -2029,7 +2052,7 @@ namespace Bam.Net
 
         public static byte[] ToHashBytes(string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
         {
-            HashAlgorithm alg = _hashAlgorithms[algorithm]();
+            HashAlgorithm alg = HashAlgorithms[algorithm]();
             encoding = encoding ?? Encoding.UTF8;
             byte[] bytes = encoding.GetBytes(toBeHashed);
             byte[] hashBytes = alg.ComputeHash(bytes);
@@ -2038,22 +2061,22 @@ namespace Bam.Net
 
         public static int ToSha1Int(this string toBeHashed)
         {
-            return ToHashInt(toBeHashed, HashAlgorithms.SHA1);
+            return ToHashInt(toBeHashed, Net.HashAlgorithms.SHA1);
         }
 
         public static int ToSha256Int(this string toBeHashed)
         {
-            return ToHashInt(toBeHashed, HashAlgorithms.SHA256);
+            return ToHashInt(toBeHashed, Net.HashAlgorithms.SHA256);
         }
 
         public static long ToSha256Long(this string toBeHashed)
         {
-            return ToHashLong(toBeHashed, HashAlgorithms.SHA256);
+            return ToHashLong(toBeHashed, Net.HashAlgorithms.SHA256);
         }
 
         public static long ToSha1Long(this string toBeHashed)
         {
-            return ToHashLong(toBeHashed, HashAlgorithms.SHA1);
+            return ToHashLong(toBeHashed, Net.HashAlgorithms.SHA1);
         }
 
         public static byte[] FromHexString(this string hexString)
@@ -2087,8 +2110,7 @@ namespace Bam.Net
         /// by reading the first 5000 bytes and testing 
         /// each byte to see if it is a valid Unicode 
         /// character.  If a byte is found that doesn't have
-        /// a Unicode representation the return value will
-        /// be false
+        /// a Unicode representation the return value is false.
         /// </summary>
         /// <param name="fileInfo"></param>
         /// <returns></returns>
