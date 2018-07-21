@@ -234,6 +234,9 @@
     <Content Include="Js\AES.js" />
     <Content Include="Js\SHA1.js" />
     <Content Include="Js\SHA256.js" />
+    <Content Include="SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Qi\Dao.js" />
     <EmbeddedResource Include="Qi\Qi.js" />
   </ItemGroup>

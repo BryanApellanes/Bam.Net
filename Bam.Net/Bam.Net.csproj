@@ -222,7 +222,6 @@
     <Compile Include="Resolver.cs" />
     <Compile Include="SerializationFormat.cs" />
     <Compile Include="ServiceProxy\Method.cs" />
-    <Compile Include="SQLiteBitMonitor.cs" />
     <Compile Include="Timed.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Web\CookieEnabledWebClient.cs">
