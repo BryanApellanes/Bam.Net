@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentAdder.cs" />
+    <Compile Include="BuildClient.cs" />
+    <Compile Include="BuildClientInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserAdministrationActions.cs" />
@@ -83,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bam.json" />
     <None Include="copy_content_root_files.cmd" />
     <None Include="default-smtp-settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
