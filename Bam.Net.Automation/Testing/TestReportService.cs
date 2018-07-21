@@ -54,7 +54,7 @@ namespace Bam.Net.Automation.Testing
             };
 
             Logger = logger;
-            Repository = repo;
+            TestingRepository = repo;
         }
 
         [Local]
@@ -65,19 +65,15 @@ namespace Bam.Net.Automation.Testing
             clone.CopyEventHandlers(this);
             return clone;
         }
-
-        protected IDatabaseProvider DatabaseProvider { get; set; }
-        protected ILogger Logger { get; set; }
-        public Database Database { get; set; }
-
+        
         public override void Subscribe(ILogger logger)
         {
-            Repository.Subscribe(logger);
+            TestingRepository.Subscribe(logger);
         }
 
         public override void Subscribe(Loggable loggable)
         {
-            Repository.Subscribe(loggable);
+            TestingRepository.Subscribe(loggable);
         }
 
         #region handlers for client side reporter calls
@@ -111,7 +107,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = TestingRepository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 if (subscription == null)
                 {
                     subscription = new NotificationSubscription()
@@ -121,7 +117,7 @@ namespace Bam.Net.Automation.Testing
                 }
 
                 subscription.IsActive = true;
-                subscription = Repository.Save(subscription);
+                subscription = TestingRepository.Save(subscription);
 
                 return new NotificationSubscriptionResponse { Success = true, Data = subscription, SubscriptionStatus = SubscriptionStatus.Active, Uuid = subscription.Uuid };
             }
@@ -135,13 +131,13 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = TestingRepository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 string uuid = string.Empty;
                 SubscriptionStatus status = SubscriptionStatus.NotFound;
                 if (subscription != null)
                 {
                     subscription.IsActive = false;
-                    subscription = Repository.Save(subscription);
+                    subscription = TestingRepository.Save(subscription);
                     uuid = subscription.Uuid;
                     status = SubscriptionStatus.NotActive;
                 }
@@ -158,7 +154,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription[] subscriptions = Repository.Query<NotificationSubscription>(Query.Where("IsActive") == true).ToArray();
+                NotificationSubscription[] subscriptions = TestingRepository.Query<NotificationSubscription>(Query.Where("IsActive") == true).ToArray();
                 return new RetrieveNotificationSubscriptionsResponse { Success = true, Data = subscriptions };
             }
             catch (Exception ex)
@@ -213,7 +209,7 @@ namespace Bam.Net.Automation.Testing
             {
                 toCreate = toCreate ?? new TestSuiteExecutionSummary();
                 Meta.SetAuditFields(toCreate);
-                TestSuiteExecutionSummary sum = Repository.Save(toCreate).ToDynamicData().CopyAs<TestSuiteExecutionSummary>();
+                TestSuiteExecutionSummary sum = TestingRepository.Save(toCreate).ToDynamicData().CopyAs<TestSuiteExecutionSummary>();
                 return new SaveTestSuiteExecutionSummaryResponse { Success = true, Data = sum, CreateStatus = toCreate.Id > 0 ? CreateStatus.Existing : CreateStatus.Created };
             }
             catch (Exception ex)
@@ -229,7 +225,7 @@ namespace Bam.Net.Automation.Testing
 
         public virtual SaveTestExecutionResponse FinishTest(long executionId)
         {
-            TestExecution execution = Repository.OneTestExecutionWhere(c => c.Id == executionId);
+            TestExecution execution = TestingRepository.OneTestExecutionWhere(c => c.Id == executionId);
             execution.FinishedTime = DateTime.UtcNow;
             return SaveTestExecution(execution);
         }
@@ -239,7 +235,7 @@ namespace Bam.Net.Automation.Testing
             try
             {
                 Meta.SetAuditFields(execution);
-                TestExecution exec = Repository.Save(execution);
+                TestExecution exec = TestingRepository.Save(execution);
                 return new SaveTestExecutionResponse { Success = true, Data = exec };
             }
             catch (Exception ex)
@@ -248,11 +244,13 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
+        
+
         public virtual SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
         {
             try
             {
-                List<TestExecution> results = Repository.Query<TestExecution>(
+                List<TestExecution> results = TestingRepository.Query<TestExecution>(
                     QueryFilter.Where(nameof(TestExecution.StartedTime)) > from &&
                     QueryFilter.Where(nameof(TestExecution.StartedTime)) > to).ToList();
                 return new SearchTestExecutionResponse { Success = true, Data = results };
@@ -267,7 +265,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                List<TestExecution> results = Repository.Query<TestExecution>(
+                List<TestExecution> results = TestingRepository.Query<TestExecution>(
                     QueryFilter.Where(nameof(TestExecution.TestDefinitionId)) == testId).ToList();
                 return new SearchTestExecutionResponse { Success = true, Data = results };
             }
@@ -281,7 +279,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                TestExecution retrieved = Repository.Retrieve<TestExecution>(id);
+                TestExecution retrieved = TestingRepository.Retrieve<TestExecution>(id);
                 return new RetrieveTestExecutionResponse { Success = true, Data = retrieved, CreateStatus = CreateStatus.Existing };
             }
             catch (Exception ex)
@@ -294,12 +292,12 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                TestExecution queried = Repository.Query<TestExecution>(Query.Where("Uuid") == uuid).FirstOrDefault();
+                TestExecution queried = TestingRepository.Query<TestExecution>(Query.Where("Uuid") == uuid).FirstOrDefault();
                 if (queried == null)
                 {
                     Args.Throw<ArgumentException>("TestExecution with the specified Uuid was not found: {0}", uuid);
                 }
-                TestExecution retrieved = Repository.Retrieve<TestExecution>(queried.Id);
+                TestExecution retrieved = TestingRepository.Retrieve<TestExecution>(queried.Id);
                 return new RetrieveTestExecutionResponse { Success = true, Data = retrieved };
             }
             catch (Exception ex)
@@ -308,7 +306,24 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        protected internal TestingRepository Repository { get; set; }
+        public virtual RetrieveTestExecutionResponse RetrieveFailedTestExecutions(string tag)
+        {
+            try
+            {
+                List<TestExecution> failedTestRuns = TestingRepository.Query<TestExecution>(Filter.Where("Passed") == 0 && Filter.Where("Tag") == tag).ToList();
+                return new RetrieveTestExecutionResponse
+                {
+                    Success = true,
+                    Data = failedTestRuns.Select(te => new { te.TestDefinition.AssemblyFullName, te.TestDefinition.MethodName, te.TestDefinition.Description, te.Exception, te.StackTrace }).ToArray()
+                };
+            }
+            catch (Exception ex)
+            {
+                return new RetrieveTestExecutionResponse { Success = false, Message = ex.Message };
+            }
+        }
+
+        protected internal TestingRepository TestingRepository { get; set; }
 
         private TestDefinition GetOrCreateTestDefinition(string suiteTitle, string testTitle)
         {
@@ -317,12 +332,12 @@ namespace Bam.Net.Automation.Testing
 
         private TestDefinition GetTestDefinition(string suiteTitle, string testTitle)
         {
-            TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
+            TestSuiteDefinition suite = TestingRepository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
             if (suite == null)
             {
                 suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
             }
-            TestDefinition result = Repository.Query<TestDefinition>(Query.Where(nameof(TestDefinition.Title)) == testTitle &&
+            TestDefinition result = TestingRepository.Query<TestDefinition>(Query.Where(nameof(TestDefinition.Title)) == testTitle &&
                 Query.Where(nameof(TestDefinition.TestSuiteDefinitionId)) == suite.Id).FirstOrDefault();
             if(result == null)
             {
@@ -342,13 +357,13 @@ namespace Bam.Net.Automation.Testing
             lock (_testLock)
             {
                 createStatus = CreateStatus.Existing;
-                TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
+                TestSuiteDefinition suite = TestingRepository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
                 if (suite == null)
                 {
                     suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
                 }
                 string testTitle = testDefinition.Title;
-                TestDefinition result = Repository.Query<TestDefinition>(
+                TestDefinition result = TestingRepository.Query<TestDefinition>(
                     Query.Where(nameof(TestDefinition.Title)) == testTitle && 
                     Query.Where(nameof(TestDefinition.TestSuiteDefinitionId)) == suite.Id).FirstOrDefault();
                 if (result == null)
@@ -356,7 +371,7 @@ namespace Bam.Net.Automation.Testing
                     result = testDefinition;
                     result.TestSuiteDefinitionId = suite.Id;
                     Meta.SetAuditFields(result);                    
-                    result = Repository.Create(result);
+                    result = TestingRepository.Create(result);
                     createStatus = CreateStatus.Created;
                 }
                 return result;
@@ -377,24 +392,24 @@ namespace Bam.Net.Automation.Testing
                 createStatus = CreateStatus.Existing;
                 if (!string.IsNullOrEmpty(suite.Uuid))
                 {
-                    result = (TestSuiteDefinition)Repository.Retrieve(typeof(TestSuiteDefinition), suite.Uuid);
+                    result = (TestSuiteDefinition)TestingRepository.Retrieve(typeof(TestSuiteDefinition), suite.Uuid);
                 }
                 if (result == null && suite.Id > 0)
                 {
-                    result = Repository.Retrieve<TestSuiteDefinition>(suite.Id);
+                    result = TestingRepository.Retrieve<TestSuiteDefinition>(suite.Id);
                 }
                 if (result == null)
                 {
-                    result = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suite.Title).FirstOrDefault();
+                    result = TestingRepository.Query<TestSuiteDefinition>(Query.Where("Title") == suite.Title).FirstOrDefault();
                     if (result != null)
                     {
-                        result = (TestSuiteDefinition)Repository.Retrieve(typeof(TestSuiteDefinition), result.Uuid);
+                        result = (TestSuiteDefinition)TestingRepository.Retrieve(typeof(TestSuiteDefinition), result.Uuid);
                     }
                 }
                 if (result == null)
                 {
                     Meta.SetAuditFields(suite);
-                    result = Repository.Create(suite);
+                    result = TestingRepository.Create(suite);
                     createStatus = CreateStatus.Created;
                 }
                 return result;
