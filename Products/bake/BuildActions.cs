@@ -495,7 +495,7 @@ namespace Bam.Net.Automation
                     finish = () =>
                     {
                         Commit(version, sourceRoot);
-                        Tag(version, sourceRoot);
+                        TagVersion(version, sourceRoot);
                     };
                     break;
                 case NugetSourceKind.Invalid:
@@ -515,16 +515,6 @@ namespace Bam.Net.Automation
 
             Task.WaitAll(publishTasks.ToArray());
             finish();
-        }
-
-        [ConsoleAction("tag", "Create and commit version tag")]
-        public static void Tag()
-        {
-            DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
-            string version = GetVersionTag();
-            
-            Commit(version, sourceRoot);
-            Tag(version, sourceRoot);
         }
 
         [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
@@ -1144,7 +1134,7 @@ namespace Bam.Net.Automation
             GitPath.ToStartInfo("push origin", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
         }
 
-        private static void Tag(string version, DirectoryInfo sourceRootDir = null)
+        private static void TagVersion(string version, DirectoryInfo sourceRootDir = null)
         {
             sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
             string sourceRoot = sourceRootDir.FullName;
