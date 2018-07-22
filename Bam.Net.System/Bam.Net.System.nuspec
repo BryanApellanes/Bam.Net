@@ -2,15 +2,12 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.System</id>
-    <version>1.14.0</version>
+    <version>1.14.1</version>
     <title>Bam.Net.System</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.System</description>
-    <releaseNotes>Version 1.14.0
-Updates since v1.13.0:
- -   correct path handling in copyTo (ee4220f6)
- -   correct copyto paths (fe038f62)
+    <releaseNotes>Version 1.14.1
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies />

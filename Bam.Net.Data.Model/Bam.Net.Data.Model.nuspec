@@ -2,12 +2,12 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Model</id>
-    <version>1.14.0</version>
+    <version>1.14.1</version>
     <title>Bam.Net.Data.Model</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Data.Model</description>
-    <releaseNotes>Version 1.14.0
+    <releaseNotes>Version 1.14.1
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies />

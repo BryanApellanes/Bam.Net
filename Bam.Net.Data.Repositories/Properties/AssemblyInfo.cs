@@ -39,5 +39,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Data.Dynamic")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Repositories.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Caching")]
-[assembly: AssemblyVersion("1.14.0")]
-[assembly: AssemblyFileVersion("1.14.0")]
+[assembly: AssemblyVersion("1.14.1")]
+[assembly: AssemblyFileVersion("1.14.1")]
