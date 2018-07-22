@@ -1082,14 +1082,14 @@ namespace Bam.Net.Automation
             return output.ExitCode == 0;
         }
 
-        private static BakeSettings GetBuildTargetSettings(string projectOrSolution, string config = "Release", string platform = "x64", string framework = "v4.6.2")
+        private static BakeSettings GetBuildTargetSettings(string projectOrSolution, string config = "Release", string platform = "x64", string framework = "v4.7.2")
         {
             BakeSettings settings = GetSettings(config, platform, framework);
             settings.ProjectFile = projectOrSolution;
             return settings;
         }
 
-        private static BakeSettings GetSettings(string config = "Release", string platform = "x64", string framework = "v4.6.2")
+        private static BakeSettings GetSettings(string config = "Release", string platform = "x64", string framework = "v4.7.2")
         {
             return new BakeSettings
             {
