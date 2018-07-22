@@ -105,7 +105,7 @@ namespace Bam.Net.CoreServices.Tests
                     responder = resp;
                     responseCount++;
                 };
-                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>("localhost", 8080, logger);
+                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>(server.DefaultHostPrefix.HostName, server.DefaultHostPrefix.Port, logger);
                 string value = "A random string: ".RandomLetters(8);
                 string response = echo.Send(value);
                 Expect.IsNotNull(response, "response was null");

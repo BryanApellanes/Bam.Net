@@ -32,7 +32,7 @@ namespace Bam.Net.Server.Tests
         {
             ConsoleLogger logger = new ConsoleLogger { AddDetails = false };
             Encoding encoding = Encoding.UTF8;
-            int port = 8080;
+            int port = RandomNumber.Between(8081, 65535);
             logger.StartLoggingThread();
             TestBinaryServer server = new TestBinaryServer(logger, port);
             server.Start();
