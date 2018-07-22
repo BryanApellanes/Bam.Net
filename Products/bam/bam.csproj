@@ -86,6 +86,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="bam.json" />
+    <None Include="buildclient.json" />
     <None Include="copy_content_root_files.cmd" />
     <None Include="default-smtp-settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
