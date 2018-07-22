@@ -22,7 +22,9 @@ namespace Bam.Net.Testing.Unit
         public UnitTestMethod(MethodInfo method, Attribute actionInfo) : base(method, actionInfo)
         {
         }
+
         public string Description { get { return Information; } }
+
         public static List<UnitTestMethod> FromAssembly(Assembly assembly)
         {
             List<UnitTestMethod> tests = new List<UnitTestMethod>();

@@ -2,17 +2,13 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Incubation</id>
-    <version>1.14.0</version>
+    <version>1.14.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 		Basic dependency injection container used by the Bam framework
     </description>
-    <releaseNotes>Version 1.14.0
-Updates since v1.13.0:
- -   only attempt reget if result is null (308fa5e0)
- -   invoke ctorparam if it is a delegate (d20a7533)
- -   add Mvc support (57b44b10)
+    <releaseNotes>Version 1.14.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies />

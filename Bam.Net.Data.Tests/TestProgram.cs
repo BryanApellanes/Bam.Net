@@ -78,7 +78,6 @@ namespace Bam.Net.Data.Tests
         [UnitTest]
         public static void DaoExpressionFilterTest()
         {
-            SQLiteBitMonitor.MonitorBitness();
             Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
             ConsoleLogger logger = PrepareDatabaseAndGetLogger(database);
 

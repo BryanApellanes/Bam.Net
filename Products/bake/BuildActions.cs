@@ -17,6 +17,7 @@ using Bam.Net.System;
 using System.Management;
 using Bam.Net.Encryption;
 using System.Diagnostics;
+using Bam.Net.Automation.Testing;
 
 namespace Bam.Net.Automation
 {
@@ -135,7 +136,7 @@ namespace Bam.Net.Automation
             {
                 if (string.IsNullOrEmpty(_defaultVer))
                 {
-                    _defaultVer = DefaultConfiguration.GetAppSetting("FrameworkVersion", "v4.6.2");
+                    _defaultVer = DefaultConfiguration.GetAppSetting("FrameworkVersion", "v4.7.2");
                 }
                 return _defaultVer;
             }
@@ -217,7 +218,10 @@ namespace Bam.Net.Automation
                 OutLineFormat("BamBotRoot not defined in config file: {0}", ConsoleColor.Magenta, buildConfigPath);
                 Exit(1);
             }
-
+            if (Arguments.Contains("branch"))
+            {
+                buildConfig.Branch = Arguments["branch"];
+            }
             // get latest
             string cloneIn = $"{buildConfig.BamBotRoot}\\src";
             if (!Directory.Exists(cloneIn))
@@ -228,12 +232,12 @@ namespace Bam.Net.Automation
 
             CloneRepository(buildConfig, cloneIn, clone);
 
-            CheckoutBranch(buildConfig, clone);
-
             GetLatest(clone);
 
+            CheckoutBranch(buildConfig, clone);
+
             string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
-            string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
+            string arguments = $"restore {Path.Combine(clone, buildConfig.RestoreReference)} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
             NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
 
             FileInfo msbuild = new FileInfo(buildConfig.MsBuildPath);
@@ -341,21 +345,33 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             TestInfo testInfo = new FileInfo(testConfigPath).Deserialize<TestInfo>();
+            if (Arguments.Contains("tag"))
+            {
+                testInfo.Tag = Arguments["tag"];
+            }
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
             testInfo.Tag = $"{testInfo.Tag}-{commit.First(6)}";
             DeployTestFiles(latestBinaries, testInfo);
             OutLineFormat("Testing commit {0}", ConsoleColor.DarkGreen, commit);
 
-            string bamtestrunner = Path.Combine(Paths.Tests, "bamtestrunner.exe");
+            string bamtestrunner = Path.Combine(Paths.Tests, testInfo.Tag, "bamtestrunner.exe");
+            DateTime? now = DateTime.Now;
+            string outputDirectory = Path.Combine(Paths.Tests, $"CoverageReport");
             if (testInfo.RunOnHost.Equals("."))
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
+                    UseShellExecute = false,
+                    ErrorDialog = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     FileName = bamtestrunner,
                     Arguments = $"/TestsWithCoverage /type:{testInfo.Type.ToString()} /testReportHost:{testInfo.TestReportHost} /testReportPort:{testInfo.TestReportPort} /tag:{testInfo.Tag} /search:{testInfo.Search}",
-                    WorkingDirectory = Path.Combine(Paths.Tests)
+                    WorkingDirectory = Path.Combine(Paths.Tests, testInfo.Tag)
                 };
-                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);
+                startInfo.Run(new ProcessOutputCollector((s) => OutLine(s, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta)), 600000);                
+                ReportGenerator.Run(outputDirectory);
             }
             else
             {
@@ -366,6 +382,7 @@ namespace Bam.Net.Automation
                     (e) => OutLine(e, ConsoleColor.Magenta),
                     600000
                 );
+                ReportGenerator.Run(testInfo.RunOnHost, outputDirectory);
             }
         }
 
@@ -478,7 +495,7 @@ namespace Bam.Net.Automation
                     finish = () =>
                     {
                         Commit(version, sourceRoot);
-                        Tag(version, sourceRoot);
+                        TagVersion(version, sourceRoot);
                     };
                     break;
                 case NugetSourceKind.Invalid:
@@ -498,16 +515,6 @@ namespace Bam.Net.Automation
 
             Task.WaitAll(publishTasks.ToArray());
             finish();
-        }
-
-        [ConsoleAction("tag", "Create and commit version tag")]
-        public static void Tag()
-        {
-            DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
-            string version = GetVersionTag();
-            
-            Commit(version, sourceRoot);
-            Tag(version, sourceRoot);
         }
 
         [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
@@ -1075,14 +1082,14 @@ namespace Bam.Net.Automation
             return output.ExitCode == 0;
         }
 
-        private static BakeSettings GetBuildTargetSettings(string projectOrSolution, string config = "Release", string platform = "x64", string framework = "v4.6.2")
+        private static BakeSettings GetBuildTargetSettings(string projectOrSolution, string config = "Release", string platform = "x64", string framework = "v4.7.2")
         {
             BakeSettings settings = GetSettings(config, platform, framework);
             settings.ProjectFile = projectOrSolution;
             return settings;
         }
 
-        private static BakeSettings GetSettings(string config = "Release", string platform = "x64", string framework = "v4.6.2")
+        private static BakeSettings GetSettings(string config = "Release", string platform = "x64", string framework = "v4.7.2")
         {
             return new BakeSettings
             {
@@ -1127,7 +1134,7 @@ namespace Bam.Net.Automation
             GitPath.ToStartInfo("push origin", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
         }
 
-        private static void Tag(string version, DirectoryInfo sourceRootDir = null)
+        private static void TagVersion(string version, DirectoryInfo sourceRootDir = null)
         {
             sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
             string sourceRoot = sourceRootDir.FullName;
@@ -1355,7 +1362,7 @@ namespace Bam.Net.Automation
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.RunOnHost), "RunOnHost not specified");
             Args.ThrowIf(string.IsNullOrEmpty(testInfo.Tag), "Tag not specified");
             //      copy the latest binaries to \\computer\c$\bam\tests\{Tag}
-            string path = Path.Combine(Paths.Tests, testInfo.Tag);            
+            string path = Path.Combine(Paths.Tests, testInfo.Tag);
 
             DirectoryInfo remoteDirectoryInfo = path.GetAdminShareDirectory(testInfo.RunOnHost);
             OutLineFormat("Copying files for testing to {0} on {1}...", ConsoleColor.Cyan, path, testInfo.RunOnHost);

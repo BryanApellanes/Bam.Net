@@ -13,6 +13,8 @@ When build mode is selected, a build is run using the specified build config.  T
 a json serialized BakeBuildConfig object.  The BakeBuildConfig definition has the same properties
 defined as the bambot configs.  Bambot configs will properly deserialize as BakeBuildConfig instances.
 
+You may also override the branch defined in the config file by specifying the /branch:**branch_name** switch.
+
 ## Deploy
 
 Example:
@@ -36,6 +38,17 @@ credentials are found for "bamd" using the local credential manager (Bam.Net.Enc
 service is set to use the credentials found.
 
 ## Test
+
+Example:
+```
+bake /test:[path_to_test_config_json_file]
+```
+
+When test mode is selected, bake will invoke [bamtestrunner](../bamtestrunner) with the /TestsWithCoverage switch
+reporting results to the server specified in the test config file.
+
+You may also override the tag defined in the config file by specifying the /tag:**tag_value** switch.  In either case the
+tag used has the first 6 characters of the commit appended.
 
 ## Init
 
@@ -136,7 +149,7 @@ bake /publish:public
 
 When publish mode is slected, **argument** is the kind of nuget source to publish to.  If _internal_ is specified
 the nuget packages are added to the nuget repository specified by NugetInternalSource in the app.config file.  If _public_
-is specified the nuget packages are pused to the nuget repository specified by NugetPublicSource in the app.config file.
+is specified the nuget packages are pushed to the nuget repository specified by NugetPublicSource in the app.config file.
 Additionally, if _public_ is selcted the version update is committed and tagged.
 
 ## What's next?

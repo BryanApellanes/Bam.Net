@@ -6,9 +6,10 @@
   "clean": false,
   "buildName": "next.debug",
   "projectFile": "Bam.Net.Nuget.sln",
+  "restoreReference":  "Bam.Net.Nuget.sln",
   "msbuildPath": "C:\\bam\\bot\\tools\\MSBuild\\MSBuild.exe",
   "config": "Debug",
-  "frameworkVersion": "v4.6.2",
+  "frameworkVersion": "v4.7.2",
   "platform": "x64",
   "bamBotRoot": "C:\\bam\\bot",
   "legacyBuildScriptsPath": "Z:\\Workspace\\Build"

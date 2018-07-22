@@ -18,7 +18,6 @@ namespace Bam.Net.Data
     {
         static SQLiteRegistrar()
         {
-            SQLiteBitMonitor.MonitorBitness();
         }
 
         public static void OutputSQLiteFactoryAssemblyQualifiedName()

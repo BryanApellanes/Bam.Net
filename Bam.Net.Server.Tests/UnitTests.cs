@@ -59,9 +59,7 @@ namespace Bam.Net.Server.Tests
         {
             StopServers();
         }
-
-        //static RestRepositoryResponder _restResponder;
-
+        
         public void CleanUpTempDirectory()
         {
             string tempDir = "C:\\temp";
@@ -189,20 +187,6 @@ namespace Bam.Net.Server.Tests
             CreateTestRootAndSetDefaultConfig(dir);
             BamServer server = CreateServer(dir.FullName);
             Expect.AreEqual(1, server.Responders.Where(r => r.GetType().Equals(typeof(DaoResponder))).Count());
-        }
-
-        [UnitTest]
-        public void GetDiagnosticInfoShouldReturnInfo()
-        {
-            string testAppName = MethodBase.GetCurrentMethod().Name;
-            DirectoryInfo dir = new DirectoryInfo("C:\\temp\\{0}_"._Format(testAppName).RandomLetters(4));
-            CreateTestRootAndSetDefaultConfig(dir);
-            BamServer server = CreateServer(dir.FullName);
-
-            server.Start();
-           
-
-            server.Stop();
         }
 
         [UnitTest]
@@ -495,7 +479,7 @@ namespace Bam.Net.Server.Tests
 
         class TestResponder : Responder
         {
-            public TestResponder() : base(null) { }
+            public TestResponder() : base(BamConf.Load()) { }
             public override bool TryRespond(IHttpContext context)
             {
                 throw new NotImplementedException();
@@ -819,6 +803,7 @@ namespace Bam.Net.Server.Tests
                 rootDir = ".\\Test_".RandomLetters(5);
             }
             server.ContentRoot = rootDir;
+            server.DefaultHostPrefix.Port = RandomNumber.Between(8081, 65535);
             server.SaveConf(true);
             _servers.Add(server);
             return server;
@@ -1168,13 +1153,6 @@ namespace Bam.Net.Server.Tests
             {
                 dir.Delete(true);
             }
-        }
-
-        [UnitTest]
-        public void ConfigRootShouldBeCColonContentRoot()
-        {
-            DefaultConfiguration.SetAppSettings();
-            Expect.AreEqual("C:\\BamTestContentRoot", DefaultConfiguration.GetAppSetting(BamConf.ContentRootConfigKey, "bad"));
         }
 
         [UnitTest]

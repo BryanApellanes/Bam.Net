@@ -706,7 +706,17 @@ namespace Bam.Net.Server
             });
         }
         
-        public void Start(bool usurpedKnownListeners = false)
+        public void Start()
+        {
+            Start(false);
+        }
+
+        public void Start(bool usurpedKnownListeners)
+        {
+            Start(usurpedKnownListeners, new HostPrefix[] { });
+        }
+
+        public void Start(bool usurpedKnownListeners, params HostPrefix[] hostPrefixes)
         {
             if (!IsRunning)
             {
@@ -716,7 +726,7 @@ namespace Bam.Net.Server
                 Initialize();
 
                 OnStarting();
-                _server.Start(usurpedKnownListeners);
+                _server.Start(usurpedKnownListeners, hostPrefixes);
                 IsRunning = true;
                 OnStarted();
             }
