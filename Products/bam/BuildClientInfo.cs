@@ -16,7 +16,7 @@ namespace Bam.Net.Application
             CoreHostName = "core.bamapps.net";
             CorePort = 80;
             BambotHost = "bambot.bamapps.net";
-            BuildKeyFile = "\\\\core\\share\\buildkey.txt";
+            BuildKeyFile = "\\\\core\\share\\keys\\buildkey";
         }
 
         public string BambotHost { get; set; }

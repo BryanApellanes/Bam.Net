@@ -93,6 +93,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="README.MD" />
+    <None Include="test-build.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="bam.ico" />

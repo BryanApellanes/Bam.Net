@@ -29,6 +29,8 @@ namespace Bam.Net.Application
             AddValidArgument("saveTo", false, description: "The zip file to create when packing the toolkit");
             AddValidArgument("appName", false, description: "The name of the app to create when calling /cca (create client app) or /cm (create manifest)");
             AddValidArgument("appDirectory", false, description: "The directory path to create an app manifest for");
+
+            AddValidArgument("configName", false, description: "The name of the config to retrieve");
         }
     }
 }
