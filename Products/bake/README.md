@@ -2,6 +2,17 @@
 
 Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 
+## TL;DR
+To cut a release, execute the following commands:
+
+```
+cd C:\bam\src\Bam.Net
+git checkout next 
+cd C:\bam\tools\bake
+bake /nuspec:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
+bake /release:C:\bam\src\Bam.Net
+```
+
 ## Build
 
 Example

@@ -460,7 +460,6 @@ namespace Bam.Net.Automation
                     else if(Msi())
                     {
                         _nugetArg = settings.OutputPath; // used by Nuget() if set; setting it here
-                        Nuspec();
                         Nuget();
                     }
                     else
