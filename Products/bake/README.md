@@ -75,6 +75,9 @@ When nuget:[target_path] mode is selected and [target_path] references a file, t
 as a nuget package.  If [target_path] references a directory, all nuspec files in the directory
 are packed as nuget packages.
 
+You may also specify the command line argument **/releaseNotesSince** to specify what version to go back to
+when compiling commit messages for nuget release notes.
+
 ## Clean
 
 Example:
@@ -95,7 +98,7 @@ bake /latest
 When latest mode is selected, the binaries are expected to exist in the path 
 {Builds}{Platform}{FrameworkVersion}\Debug\_**{latest}**, where **{latest}** is
 the commit hash read from {Builds}\latest and each remaining variable
-value is specified in the config file.  The resulting nuget packages will have 
+value is specified in the config file.  The resulting nuget packages have 
 the suffix "-Dev-latest".
 
 All binaries are also copied to C:\bam\latest so any projects referencing the binaries
@@ -107,10 +110,10 @@ Example:
 bake /commit:0b815
 ```
 
-When commit mode is selected, **argument** is the commit hash of the build to pack.  The argument specified can
-be the first X number of characters of the commit hash used to uniquely identify a specific commit.  The binaries
+When commit mode is selected, **argument** is the commit hash of the build to pack.  The argument specified is
+the first X number of characters of the commit hash used to uniquely identify a specific commit.  The binaries
 are expected to exist in the path {Builds}{Platform}{FrameworkVersion}\Debug\_**{argument}**, where each variable
-value is specified in the config file.  The resulting nuget packages will have the suffix 
+value is specified in the config file.  The resulting nuget packages have the suffix 
 "-Dev-**first five characters of commit hash**".
 
 ## Dev
@@ -136,6 +139,9 @@ As part of the release build the version is set in all AssemblyInfo.cs files. If
 the patch number is incremented and the result is used as the version.  You may specify any combination 
 of the command line switches, /major, /minor or /patch to increment the associated version part.  Additionally, 
 an msi is created as part of the release by prompting for the location of wix merge module and project files.
+
+You may also specify the command line argument **/releaseNotesSince** to specify what version to go back to
+when compiling commit messages for nuget release notes.
 
 ## Publish
 Example
