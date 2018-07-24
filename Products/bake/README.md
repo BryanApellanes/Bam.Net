@@ -75,7 +75,7 @@ When nuget:[target_path] mode is selected and [target_path] references a file, t
 as a nuget package.  If [target_path] references a directory, all nuspec files in the directory
 are packed as nuget packages.
 
-You may also specify the command line argument **/releaseNotesSince** to specify what version to go back to
+You may also specify the command line argument **/releaseNotesSince:[major].[minor].[patch]** to specify what version to go back to
 when compiling commit messages for nuget release notes.
 
 ## Clean
@@ -140,7 +140,7 @@ the patch number is incremented and the result is used as the version.  You may 
 of the command line switches, /major, /minor or /patch to increment the associated version part.  Additionally, 
 an msi is created as part of the release by prompting for the location of wix merge module and project files.
 
-You may also specify the command line argument **/releaseNotesSince** to specify what version to go back to
+You may also specify the command line argument **/releaseNotesSince:[major].[minor].[patch]** to specify what version to go back to
 when compiling commit messages for nuget release notes.
 
 ## Publish

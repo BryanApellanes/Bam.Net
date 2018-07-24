@@ -757,15 +757,18 @@ namespace Bam.Net.Automation
         {
             if (Arguments.Contains("releaseNotesSince"))
             {
-                int[] versionParts = Arguments["releaseNotesSince"].DelimitSplit(".").Select(n => int.Parse(n)).ToArray();
+                string sinceVersion = Arguments["releaseNotesSince"];
+                int[] versionParts = sinceVersion.DelimitSplit(".").Select(n => int.Parse(n)).ToArray();
                 if(versionParts.Length != 3)
                 {
                     throw new ArgumentException($"releaseNotesSince argument not in a recognized format, should be [major].[minor].[patch].");
                 }
+                OutLineFormat("Updating release notes since version: {0}", ConsoleColor.Cyan, sinceVersion);
                 nuspecFile.UpdateReleaseNotesSince(sourceRoot.FullName, versionParts[0], versionParts[1], versionParts[2]);
             }
             else
             {
+                OutLine("Updating release notes since latest version", ConsoleColor.Cyan);
                 nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
             }
             nuspecFile.Save();
