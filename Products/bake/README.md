@@ -9,8 +9,10 @@ To cut a release, execute the following commands:
 cd C:\bam\src\Bam.Net
 git checkout next 
 cd C:\bam\tools\bake
-bake /nuspec:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
 bake /release:C:\bam\src\Bam.Net
+bake /nuspec:C:\bam\release [/releaseNotesSince:[major].[minor].[patch]]
+bake /nuget:C:\bam\release
+bake /publish:public
 ```
 
 ## Build
@@ -82,12 +84,12 @@ bake /nuget:init | [target_path]
 When nuget:init mode is selected, nuspec files are created or updated for the projects found in 
 all the solutions in the source root.
 
+You may also specify the command line argument **/releaseNotesSince:[major].[minor].[patch]** to specify what version to go back to
+when compiling commit messages for nuget release notes.
+
 When nuget:[target_path] mode is selected and [target_path] references a file, then that file is packed
 as a nuget package.  If [target_path] references a directory, all nuspec files in the directory
 are packed as nuget packages.
-
-You may also specify the command line argument **/releaseNotesSince:[major].[minor].[patch]** to specify what version to go back to
-when compiling commit messages for nuget release notes.
 
 ## Clean
 
