@@ -120,6 +120,21 @@ namespace Bam.Net.Automation.Nuget
             ReleaseNotes = releaseNotes.Value;
         }
 
+        public void UpdateReleaseNotesSince(string gitRepoPath, int major, int minor, int patch)
+        {
+            GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(Id, gitRepoPath, major, minor, patch);
+            if (releaseNotes.CommitCount > 0)
+            {
+                releaseNotes.Summary = $"Version {Version.Value}\r\nUpdates since v{major}.{minor}.{patch}:";
+            }
+            else
+            {
+                releaseNotes.Summary = $"Version {Version.Value}";
+            }
+            ReleaseNotes = releaseNotes.Value;
+        }
+
+
         package _package;
         object _packageLock = new object();
         public package Package

@@ -1,6 +1,6 @@
 ﻿{
   "BambotHost": "bambot.bamapps.net",
-  "BuildKeyFile": "\\\\core\\share\\buildkey.txt",
+  "BuildKeyFile": "\\\\core\\share\\keys\\buildkey",
   "CoreHostName": "core.bamapps.net",
   "CorePort": 80,
   "ContentRoot": "C:\\bam\\content"

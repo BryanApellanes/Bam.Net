@@ -74,21 +74,40 @@ namespace Bam.Net.Automation.SourceControl
                 lock (_logCacheLock)
                 {
                     HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
-                    GitReleaseNotes result = new GitReleaseNotes(latestRelease, packageId);
-                    logsSinceLast.Each(gl =>
-                    {
-                        string prefix = $"{packageId}:";
-                        if (gl.Subject.StartsWith(prefix))
-                        {
-                            result.AddBullet(gl.Subject.TruncateFront(prefix.Length), gl.AbbreviatedCommitHash);
-                        }
-                    });
-
-                    _logCache.AddMissing(packageId, new Dictionary<string, GitReleaseNotes>());
-                    _logCache[packageId].AddMissing(latestRelease, result);
+                    AddGitLogsToCache(packageId, latestRelease, logsSinceLast);
                 }
             }
             return _logCache[packageId][latestRelease];
+        }
+
+        private static void AddGitLogsToCache(string packageId, string latestRelease, HashSet<GitLog> logsSinceLast)
+        {
+            GitReleaseNotes result = new GitReleaseNotes(latestRelease, packageId);
+            logsSinceLast.Each(gl =>
+            {
+                string prefix = $"{packageId}:";
+                if (gl.Subject.StartsWith(prefix))
+                {
+                    result.AddBullet(gl.Subject.TruncateFront(prefix.Length), gl.AbbreviatedCommitHash);
+                }
+            });
+
+            _logCache.AddMissing(packageId, new Dictionary<string, GitReleaseNotes>());
+            _logCache[packageId].AddMissing(latestRelease, result);
+        }
+
+        public static GitReleaseNotes SinceVersion(string packageId, string gitRepoPath, int major, int minor, int patch)
+        {
+            string sinceVersion = $"v{major}.{minor}.{patch}";
+            if(!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(sinceVersion))
+            {
+                lock (_logCacheLock)
+                {
+                    HashSet<GitLog> logsSinceVersion = GitLog.SinceVersion(gitRepoPath, major, minor, patch);
+                    AddGitLogsToCache(packageId, sinceVersion, logsSinceVersion);
+                }
+            }
+            return _logCache[packageId][sinceVersion];
         }
 
         protected internal static bool HasPossibleProjectPrefix(string message)

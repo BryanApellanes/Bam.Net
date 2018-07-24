@@ -460,6 +460,7 @@ namespace Bam.Net.Automation
                     else if(Msi())
                     {
                         _nugetArg = settings.OutputPath;
+                        Nuspec();
                         Nuget();
                     }
                     else
@@ -719,8 +720,10 @@ namespace Bam.Net.Automation
                 {
                     OutLineFormat("Updating nuspec for {0}", ConsoleColor.Cyan, projectFile.FullName);
                     DirectoryInfo currentProjectDirectory = projectFile.Directory;
-                    NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"));
-                    nuspecFile.Version = new PackageVersion(version);
+                    NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"))
+                    {
+                        Version = new PackageVersion(version)
+                    };
                     nuspecFile.Save();
                     if (!File.Exists(nuspecFile.Path))
                     {
@@ -742,13 +745,30 @@ namespace Bam.Net.Automation
                     }
                     nuspecFile.UpdateProjectDependencyVersions(version, predicate);
                     nuspecFile.Save();
-                    nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
-                    nuspecFile.Save();
+                    UpdateReleaseNotes(nuspecFile, sourceRoot);
                     OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);
                 });
             }
 
             return Task.CompletedTask;
+        }
+
+        private static void UpdateReleaseNotes(NuspecFile nuspecFile, DirectoryInfo sourceRoot)
+        {
+            if (Arguments.Contains("releaseNotesSince"))
+            {
+                int[] versionParts = Arguments["releaseNotesSince"].DelimitSplit(".").Select(n => int.Parse(n)).ToArray();
+                if(versionParts.Length != 3)
+                {
+                    throw new ArgumentException($"releaseNotesSince argument not in a recognized format, should be [major].[minor].[patch].");
+                }
+                nuspecFile.UpdateReleaseNotesSince(sourceRoot.FullName, versionParts[0], versionParts[1], versionParts[2]);
+            }
+            else
+            {
+                nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
+            }
+            nuspecFile.Save();
         }
 
         static Func<string, string, bool> _msiVersionUpdater;
