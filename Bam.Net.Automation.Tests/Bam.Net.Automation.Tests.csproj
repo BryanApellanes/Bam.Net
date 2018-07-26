@@ -103,6 +103,7 @@
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="FtpUnitTests.cs" />
     <Compile Include="JobManagerUnitTests.cs" />
+    <Compile Include="NuspecFileTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SftpUnitTests.cs" />
@@ -118,6 +119,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="test_packages.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
