@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.14.1\r\n -  fix tests (fab886fd)\r\n -  add SQLite.Interop.dll to ...ServiceProxy.Tests (f6a73f56)\r\n -  fix syntax/compilation error: oops (e313a1c7)\r\n -  clean up SQLite references (aa6535e9)\r\n -  update framework version in bake (abfc8098)\r\n -  and again (f31f83e1)\r\n -  one mo gehn (7de433c7)\r\n -  fix nuget package paths (a9ecc9da)\r\n -  fix nuget package paths (db3962d5)\r\n -  update all nuget packages (Update-Package fr/ Package Manager Console) (0ff4b764)\r\n -  bump framework version up to 4.7.2 (742ff581)\r\n -  wip (b99d2385)\r\n -  fix coverage path (cdc4835b)\r\n -  fix typo (3dd9b7d1)\r\n -  Merge pull request #90 from BryanApellanes/next (76d2c54e)\r\n -  Merge pull request #89 from BryanApellanes/next (fa9c4e2a)\r\n -  Merge pull request #88 from BryanApellanes/next (e64f4983)\r\n",
+  "ReleaseNotes": "Version 1.14.2\r\n -  update readme (a60b254e)\r\n -  fix version handling, update readme (811c8715)\r\n -  update readme (7121a65b)\r\n -  notes, remove nuspec() call (f02bb60e)\r\n -  output (1a0a5301)\r\n -  docs (b004bd25)\r\n -  debuggerstepthrough (f041277b)\r\n -  bam admin; wip (5e8f86c8)\r\n -  tickle (ddf0ee2e)\r\n -  tickle (c924b4e3)\r\n -  tickle (c8ae1243)\r\n -  Merge pull request #91 from BryanApellanes/migrate-4.7.2 (fb125aa6)\r\n",
   "MajorVersion": 1,
   "MinorVersion": 14,
-  "PatchVersion": 1,
+  "PatchVersion": 2,
   "BuildNumber": "",
-  "VersionString": "1.14.1"
+  "VersionString": "1.14.2"
 }

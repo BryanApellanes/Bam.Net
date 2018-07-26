@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 
 [assembly:InternalsVisibleTo("Bam.Net.Automation.Tests")]
 [assembly: InternalsVisibleTo("bake")]
-[assembly: AssemblyVersion("1.14.1")]
-[assembly: AssemblyFileVersion("1.14.1")]
+[assembly: AssemblyVersion("1.14.2")]
+[assembly: AssemblyFileVersion("1.14.2")]
