@@ -2,39 +2,43 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Server</id>
-    <version>1.14.1</version>
+    <version>1.14.2</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Core Bam server allowing applications to self host outside of
 	IIS.  Simplifies distributed computing
 	</description>
-    <releaseNotes>Version 1.14.0
-Updates since v1.13.0:
- -   better http code handling (3bf5cc8c)
+    <releaseNotes>Version 1.14.2
+Updates since v1.14.0:
+ -   add hostprefix parameters to Start method (d117d709)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.14.0" />
-      <dependency id="Bam.Net.CommandLine" version="1.14.0" />
-      <dependency id="Bam.Net.Data" version="1.14.0" />
+      <dependency id="Bam.Net" version="1.14.2" />
+      <dependency id="Bam.Net.CommandLine" version="1.14.2" />
+      <dependency id="Bam.Net.Data" version="1.14.2" />
       <dependency id="Bam.Net.Drawing" version="1.9.1" />
-      <dependency id="Bam.Net.Encryption" version="1.14.0" />
+      <dependency id="Bam.Net.Encryption" version="1.14.2" />
       <dependency id="Bam.Net.Html" version="1.9.1" />
-      <dependency id="Bam.Net.Incubation" version="1.14.0" />
-      <dependency id="Bam.Net.Javascript" version="1.14.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.14.0" />
-      <dependency id="Bam.Net.UserAccounts" version="1.14.0" />
-      <dependency id="Bam.Net.Yaml" version="1.14.0" />
-      <dependency id="AngleSharp" version="0.9.9.1" />
-      <dependency id="dotless" version="1.5.2" />
+      <dependency id="Bam.Net.Incubation" version="1.14.2" />
+      <dependency id="Bam.Net.Javascript" version="1.14.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.2" />
+      <dependency id="Bam.Net.UserAccounts" version="1.14.2" />
+      <dependency id="Bam.Net.Yaml" version="1.14.2" />
+      <dependency id="AngleSharp" version="0.9.10" />
+      <dependency id="dotless" version="1.6.4" />
+      <dependency id="dotless.AspNetHandler" version="1.6.4" />
+      <dependency id="dotless.Core" version="1.6.4" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
+      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.1.1" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="NCuid" version="1.0.0" />
-      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
       <dependency id="YamlSerializer" version="1.0" />
       <dependency id="YUICompressor.NET" version="2.7.0.0" />
     </dependencies>

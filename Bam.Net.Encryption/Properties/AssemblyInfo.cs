@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: InternalsVisibleTo("Bam.Net.Encryption.Tests")]
-[assembly: AssemblyVersion("1.14.1")]
-[assembly: AssemblyFileVersion("1.14.1")]
+[assembly: AssemblyVersion("1.14.2")]
+[assembly: AssemblyFileVersion("1.14.2")]

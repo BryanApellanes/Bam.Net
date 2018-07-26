@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Bam.Net;
 using Bam.Net.Automation.MSBuild;
 using Bam.Net.Automation.SourceControl;
@@ -119,6 +120,21 @@ namespace Bam.Net.Automation.Nuget
             }
             ReleaseNotes = releaseNotes.Value;
         }
+
+        public void UpdateReleaseNotesSince(string gitRepoPath, int major, int minor, int patch)
+        {
+            GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(Id, gitRepoPath, major, minor, patch);
+            if (releaseNotes.CommitCount > 0)
+            {
+                releaseNotes.Summary = $"Version {Version.Value}\r\nUpdates since v{major}.{minor}.{patch}:";
+            }
+            else
+            {
+                releaseNotes.Summary = $"Version {Version.Value}";
+            }
+            ReleaseNotes = releaseNotes.Value;
+        }
+
 
         package _package;
         object _packageLock = new object();
@@ -353,7 +369,7 @@ namespace Bam.Net.Automation.Nuget
         public void AddPackageDependencies()
         {
             FileInfo nuspecFile = new FileInfo(Path);
-            FileInfo packageConfig = new FileInfo(IO.Path.Combine(nuspecFile.Directory.FullName, "package.config"));
+            FileInfo packageConfig = new FileInfo(IO.Path.Combine(nuspecFile.Directory.FullName, "packages.config"));
             if (packageConfig.Exists)
             {
                 AddPackageDependencies(packageConfig);
@@ -361,7 +377,7 @@ namespace Bam.Net.Automation.Nuget
         }
 
         /// <summary>
-        /// Adds package dependencies from the specified package.config file.
+        /// Adds package dependencies from the specified packages.config file.
         /// </summary>
         /// <param name="packageConfigPath">The package configuration path.</param>
         public void AddPackageDependencies(string packageConfigPath)
@@ -370,18 +386,15 @@ namespace Bam.Net.Automation.Nuget
         }
 
         /// <summary>
-        /// Adds package dependencies from the specified package.config file.
+        /// Adds package dependencies from the specified packages.config file.
         /// </summary>
         /// <param name="packageConfig">The package configuration.</param>
         public void AddPackageDependencies(FileInfo packageConfig)
         {
-            packages package = packageConfig.FromXmlFile<packages>();
-            if (package.Items != null)
+            XDocument packagesConfig = XDocument.Load(packageConfig.FullName);
+            foreach(XElement element in packagesConfig.Descendants("package"))
             {
-                foreach (packagesPackage item in package.Items)
-                {
-                    AddDependency(item.id, item.version);
-                }
+                AddDependency(element.Attribute("id").Value, element.Attribute("version").Value);
             }
         }
 

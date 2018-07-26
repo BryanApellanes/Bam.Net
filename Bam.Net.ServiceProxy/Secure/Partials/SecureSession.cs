@@ -330,13 +330,15 @@ namespace Bam.Net.ServiceProxy.Secure
             }
 
             DateTime now = DateTime.UtcNow;
-            SecureSession result = new SecureSession();
-            result.Identifier = identifier;
-            result.CreationDate = now;
-            result.LastActivity = now;
-            result.TimeOffset = instant.DiffInMilliseconds(now);
-            result.IsActive = true;
-            
+            SecureSession result = new SecureSession
+            {
+                Identifier = identifier,
+                CreationDate = now,
+                LastActivity = now,
+                TimeOffset = instant.DiffInMilliseconds(now),
+                IsActive = true
+            };
+
             AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(DefaultKeySize);
             result.AsymmetricKey = keys.ToPem();
 

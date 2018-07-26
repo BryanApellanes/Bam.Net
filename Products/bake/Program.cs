@@ -46,6 +46,7 @@ namespace Bam.Net.Automation
             AddValidArgument("NugetPath", false, addAcronym: true, description: "/nuget: The path to the nuget.exe file");
             AddValidArgument("OutputDirectory", false, addAcronym: true, description: "/nuget, bam: The directory to write files or packages to.");
             AddValidArgument("prefix", true, addAcronym: false, description: "/nuget:  When initializing nuspec files, the prefix that a project name must start with for it to recieve a nuspec file.  When publishing, the prefix that .nupkg files must start with for them to be published.");
+            AddValidArgument("releaseNotesSince", false, addAcronym: false, description: "/nuget: Optional, if specified update release notes since the specified version instead of since the latest release.  The version is specified in the format [major].[minor].[patch] with no leading or trailing characters.");
             AddValidArgument("major", true, addAcronym: false, description: "/release: Increment the major version number.");
             AddValidArgument("minor", true, addAcronym: false, description: "/release: Increment the minor version number.");
             AddValidArgument("patch", true, addAcronym: false, description: "/release: Increment the patch version number.");

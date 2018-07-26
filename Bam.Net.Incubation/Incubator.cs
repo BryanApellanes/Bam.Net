@@ -187,6 +187,7 @@ namespace Bam.Net.Incubation
         /// <param name="ctorParams">The object values to pass to the constructor of type T.</param>
         /// <exception cref="InvalidOperationException">If the constructor with a signature matching
         /// the types of the specified ctorParams is not found.</exception>
+        [DebuggerStepThrough]
         public T Construct<T>(params object[] ctorParams)
         {
             Type type = typeof(T);
@@ -202,6 +203,7 @@ namespace Bam.Net.Incubation
         /// <param name="type"></param>
         /// <param name="ctorParams"></param>
         /// <returns></returns>
+        [DebuggerStepThrough]
         public object Construct(Type type, params object[] ctorParams)
         {
             Type[] ctorTypes = new Type[ctorParams.Length];

@@ -2,19 +2,22 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices.Tests</id>
-    <version>1.14.1</version>
+    <version>1.14.2</version>
     <title>Bam.Net.CoreServices.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.CoreServices.Tests</description>
-    <releaseNotes>Version 1.14.0
+    <releaseNotes>Version 1.14.2
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>
+      <dependency id="Castle.Core" version="4.3.1" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
-      <dependency id="Google.Protobuf" version="3.1.0" />
-      <dependency id="Newtonsoft.Json" version="11.0.1" />
-      <dependency id="NSubstitute" version="2.0.3" />
+      <dependency id="Google.Protobuf" version="3.6.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="NSubstitute" version="3.1.0" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.1" />
+      <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
       <dependency id="YamlSerializer" version="1.0" />
       <dependency id="YUICompressor.NET" version="2.7.0.0" />
     </dependencies>

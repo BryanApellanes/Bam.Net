@@ -2,25 +2,30 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.ServiceProxy.Tests</id>
-    <version>1.14.1</version>
+    <version>1.14.2</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Tests for System for simply and easily exposing pocos as RESTful webservices
 	with automatic generation of both .Net and Javascript clients
 	</description>
-    <releaseNotes>Version 1.14.0
+    <releaseNotes>Version 1.14.2
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net.ServiceProxy" version="1.14.0" />
-      <dependency id="FakeItEasy" version="1.25.3" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.2" />
+      <dependency id="BouncyCastle" version="1.8.2" />
+      <dependency id="Castle.Core" version="4.3.1" />
+      <dependency id="FakeItEasy" version="4.7.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
-      <dependency id="Newtonsoft.Json" version="11.0.1" />
-      <dependency id="NSubstitute" version="2.0.3" />
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="NSubstitute" version="3.1.0" />
+      <dependency id="System.Data.SQLite.Core" version="1.0.108.0" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.1" />
+      <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
     </dependencies>
   </metadata>
 </package>

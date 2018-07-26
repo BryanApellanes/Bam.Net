@@ -31,18 +31,18 @@ namespace Bam.Net.Application
 
 			Type type = typeof(Program);
 			AddSwitches(typeof(Program));
+            AddSwitches(typeof(BuildClient));
             AddSwitches(typeof(UserAdministrationActions));
             AddSwitches(typeof(UtilityActions));
 			AddConfigurationSwitches();
             ArgumentAdder.AddArguments();
-
-			DefaultMethod = type.GetMethod("Interactive");
-
+            
 			Initialize(args);
 
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
                 ExecuteSwitches(Arguments, type, false, Log.Default);
+                ExecuteSwitches(Arguments, typeof(BuildClient), false, Log.Default);
                 ExecuteSwitches(Arguments, typeof(UserAdministrationActions), false, Log.Default);
                 ExecuteSwitches(Arguments, typeof(UtilityActions), false, Log.Default);
 			}

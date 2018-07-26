@@ -35,9 +35,11 @@ namespace Bam.Net.ServiceProxy.Secure
         
         public static EncryptedValidationToken ReadEncryptedValidationToken(NameValueCollection headers)
         {
-            EncryptedValidationToken result = new EncryptedValidationToken();
-            result.NonceCipher = headers[Headers.Nonce];
-            result.HashCipher = headers[Headers.ValidationToken];
+            EncryptedValidationToken result = new EncryptedValidationToken
+            {
+                NonceCipher = headers[Headers.Nonce],
+                HashCipher = headers[Headers.ValidationToken]
+            };
             Args.ThrowIfNull(result.NonceCipher, Headers.Nonce);
             Args.ThrowIf<EncryptionValidationTokenNotFoundException>(
                 result.HashCipher == null || string.IsNullOrEmpty(result.HashCipher),  

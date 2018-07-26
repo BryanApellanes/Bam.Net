@@ -76,5 +76,14 @@ namespace Bam.Net.Data
                 yield return new AssignValue(prop.Name, prop.GetValue(obj), columnNameFormatter);
             }
         }
+
+        public static IEnumerable<AssignValue> FromDictionary<TKey, TValue>(Dictionary<TKey, TValue> dictionary, Func<string, string> columnNameFormatter = null)
+        {
+            Args.ThrowIfNull(dictionary);
+            foreach(TKey key in dictionary.Keys)
+            {
+                yield return new AssignValue(key.ToString(), dictionary[key].ToString(), columnNameFormatter);
+            }
+        }
     }
 }

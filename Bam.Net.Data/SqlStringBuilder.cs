@@ -195,6 +195,12 @@ namespace Bam.Net.Data
             return Update(tableName, values.ToArray());
         }
 
+        public virtual SqlStringBuilder Update(string tableName, Dictionary<string, object> valueAssignments)
+        {
+            IEnumerable<AssignValue> values = AssignValue.FromDictionary<string, object>(valueAssignments, ColumnNameFormatter);
+            return Update(tableName, values.ToArray());
+        }
+
         public virtual SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             _stringBuilder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));

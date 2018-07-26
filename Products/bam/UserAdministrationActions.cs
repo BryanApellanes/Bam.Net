@@ -19,6 +19,10 @@ using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Application
 {
+    /// <summary>
+    /// User administrative actions
+    /// </summary>
+    /// <seealso cref="Bam.Net.Testing.CommandLineTestInterface" />
     [Serializable]
 	public class UserAdministrationActions : CommandLineTestInterface
 	{
