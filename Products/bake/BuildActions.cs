@@ -442,7 +442,7 @@ namespace Bam.Net.Automation
             OutLineFormat("Setting version to {0}", ConsoleColor.DarkYellow, info.VersionString);
             Thread.Sleep(3000); // in case someone is curious they'll have a short time to see the version
             UpdateAssemblyVersions(srcRoot, info);
-            Task.WaitAll(SetSolutionNuspecInfos(srcRoot, info.VersionString).ToArray());
+            SetSolutionNuspecInfos(srcRoot, info.VersionString);
 
             BakeSettings settings = GetBuildTargetSettings(GetArgument("Solution", "Please enter path to the solution relative to the git repo root."));
             if (NugetRestore(settings))
@@ -623,8 +623,7 @@ namespace Bam.Net.Automation
         [ConsoleAction("nuspec", "Initialize or update project nuspec files.")]
         public static void Nuspec()
         {
-            string argValue = Arguments["nuspec"];
-            List<Task> tasks = new List<Task>();
+            string argValue = Arguments["nuspec"];            
             string owners = GetArgument("Owners", "Please enter the owners for new nuspec files.");
             string authors = GetArgument("Authors", "Please enter the authors for new nuspec files.");
             Predicate<string> predicate = GetPredicate();
@@ -633,13 +632,13 @@ namespace Bam.Net.Automation
             {
                 DirectoryInfo sourceRoot = new DirectoryInfo(GetArgument("root", "Please enter the path to the root of the source tree."));
                 string version = GetVersion(sourceRoot);
-                tasks.AddRange(SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate));
+                SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate);
             }
             else if (Directory.Exists(argValue))
             {
                 DirectoryInfo target = new DirectoryInfo(argValue);
                 string version = GetVersion(target);
-                tasks.AddRange(SetSolutionNuspecInfos(target, version, owners, authors, predicate));
+                SetSolutionNuspecInfos(target, version, owners, authors, predicate);
             }
             else if (File.Exists(argValue))
             {
@@ -647,15 +646,13 @@ namespace Bam.Net.Automation
                 string version = GetVersion(fileArg.Directory);
                 if (fileArg.Extension.Equals(".sln", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    tasks.AddRange(SetSolutionNuspecInfos(fileArg, version, owners, authors, predicate));
+                    SetSolutionNuspecInfos(fileArg, version, owners, authors, predicate);
                 }
                 else if (fileArg.Extension.Equals(".csproj"))
                 {
-                    tasks.Add(SetProjectNuspecInfo(fileArg, version, owners, authors, predicate));
+                    SetProjectNuspecInfo(fileArg, version, owners, authors, predicate);
                 }
             }
-
-            Task.WaitAll(tasks.ToArray());
         }
 
         /// <summary>
@@ -679,31 +676,30 @@ namespace Bam.Net.Automation
             return output.ExitCode == 0;
         }
 
-        protected static List<Task> SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)
+        protected static void SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)
         {
             string owners = GetArgument("Owners", "Please enter the owners for new nuspec files.");
             string authors = GetArgument("Authors", "Please enter the authors for new nuspec files.");
             Predicate<string> predicate = GetPredicate();
-            return SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate);
+            SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate);
         }
 
-        protected static List<Task> SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
+        protected static void SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
         {
             List<Task> tasks = new List<Task>();
             OutLineFormat("Searching for all solution files (*.sln) in ({0})", ConsoleColor.DarkCyan, sourceRoot.FullName);
             foreach (FileInfo solutionFile in sourceRoot.GetFiles("*.sln"))
             {
-                tasks.AddRange(SetSolutionNuspecInfos(solutionFile, version, defaultOwners, defaultAuthors, predicate));
+                SetSolutionNuspecInfos(solutionFile, version, defaultOwners, defaultAuthors, predicate);
             }
-            return tasks;
         }
 
-        private static List<Task> SetSolutionNuspecInfos(FileInfo solutionFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
+        private static void SetSolutionNuspecInfos(FileInfo solutionFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
         {
-            return ForEachProjectFileInSolution(solutionFile, (projectFile) => SetProjectNuspecInfo(projectFile, version, defaultOwners, defaultAuthors, predicate));
+            ForEachProjectFileInSolution(solutionFile, (projectFile) => SetProjectNuspecInfo(projectFile, version, defaultOwners, defaultAuthors, predicate));
         }
 
-        private static Task SetProjectNuspecInfo(FileInfo projectFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
+        private static void SetProjectNuspecInfo(FileInfo projectFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
         {
             if (!projectFile.IsInGitRepo())
             {
@@ -715,41 +711,36 @@ namespace Bam.Net.Automation
             if ((Arguments.Contains("prefix") && projectFile.Name.StartsWith(Arguments["prefix"])) ||
                 !Arguments.Contains("prefix"))
             {
-                return Task.Run(() =>
+                OutLineFormat("Updating nuspec for {0}", ConsoleColor.Cyan, projectFile.FullName);
+                DirectoryInfo currentProjectDirectory = projectFile.Directory;
+                NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"))
                 {
-                    OutLineFormat("Updating nuspec for {0}", ConsoleColor.Cyan, projectFile.FullName);
-                    DirectoryInfo currentProjectDirectory = projectFile.Directory;
-                    NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"))
+                    Version = new PackageVersion(version)
+                };
+                nuspecFile.Save();
+                if (!File.Exists(nuspecFile.Path))
+                {
+                    nuspecFile = new NuspecFile(nuspecFile.Path)
                     {
-                        Version = new PackageVersion(version)
+                        Id = fileName,
+                        Title = fileName,
+                        Description = fileName,
+                        Owners = defaultOwners,
+                        Authors = defaultAuthors
                     };
-                    nuspecFile.Save();
-                    if (!File.Exists(nuspecFile.Path))
-                    {
-                        nuspecFile = new NuspecFile(nuspecFile.Path)
-                        {
-                            Id = fileName,
-                            Title = fileName,
-                            Description = fileName,
-                            Owners = defaultOwners,
-                            Authors = defaultAuthors
-                        };
-                        nuspecFile.AddProjectDependencies(version, predicate);
-                    }
-                    FileInfo packageConfig = new FileInfo(Path.Combine(projectFile.Directory.FullName, "packages.config"));
-                    if (packageConfig.Exists)
-                    {
-                        OutLineFormat("Updating dependencies for {0}", ConsoleColor.DarkCyan, projectFile.FullName);
-                        nuspecFile.AddPackageDependencies(packageConfig);
-                    }
-                    nuspecFile.UpdateProjectDependencyVersions(version, predicate);
-                    nuspecFile.Save();
-                    UpdateReleaseNotes(nuspecFile, sourceRoot);
-                    OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);
-                });
+                    nuspecFile.AddProjectDependencies(version, predicate);
+                }
+                FileInfo packageConfig = new FileInfo(Path.Combine(projectFile.Directory.FullName, "packages.config"));
+                if (packageConfig.Exists)
+                {
+                    OutLineFormat("Updating dependencies for {0}", ConsoleColor.DarkCyan, projectFile.FullName);
+                    nuspecFile.AddPackageDependencies(packageConfig);
+                }
+                nuspecFile.UpdateProjectDependencyVersions(version, predicate);
+                nuspecFile.Save();
+                UpdateReleaseNotes(nuspecFile, sourceRoot);
+                OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);
             }
-
-            return Task.CompletedTask;
         }
 
         private static void UpdateReleaseNotes(NuspecFile nuspecFile, DirectoryInfo sourceRoot)
@@ -1090,20 +1081,19 @@ namespace Bam.Net.Automation
             return string.IsNullOrEmpty(_suffix) ? _suffix : $" -Suffix {_suffix}";
         }
 
-        private static List<Task> ForEachProjectFileInSolution(FileInfo solutionFile, Action<FileInfo> forEach)
+        private static void ForEachProjectFileInSolution(FileInfo solutionFile, Action<FileInfo> forEach)
         {
             HashSet<string> projectFilePaths = new HashSet<string>();
-            List<Task> results = new List<Task>();
+            
             foreach (string projectFilePath in solutionFile.GetProjectFilePaths())
             {
                 if (!projectFilePaths.Contains(projectFilePath))
                 {
                     projectFilePaths.Add(projectFilePath);
                     FileInfo projectFile = new FileInfo(projectFilePath);
-                    results.Add(Task.Run(() => forEach(projectFile)));
+                    forEach(projectFile);
                 }
-            }
-            return results;
+            }            
         }
 
         private static bool NugetRestore(BakeSettings bakeSettings)
