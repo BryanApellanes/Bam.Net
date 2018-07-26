@@ -9,9 +9,7 @@ To cut a release, execute the following commands:
 cd C:\bam\src\Bam.Net
 git checkout next 
 cd C:\bam\tools\bake
-bake /nuspec:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
-bake /release:C:\bam\src\Bam.Net
-bake /nuget:C:\bam\release
+bake /release:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
 bake /publish:public
 ```
 
