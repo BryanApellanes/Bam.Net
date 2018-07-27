@@ -14,7 +14,7 @@ namespace Bam.Net.Messaging
         /// <summary>
         /// When implemented should return
         /// an email whose smtp settings are already 
-        /// set to those of the current IHasSmtpSettings
+        /// set to those of the current ISmtpSettingsProvider
         /// implementation
         /// </summary>
         /// <returns></returns>
