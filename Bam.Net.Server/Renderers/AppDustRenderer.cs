@@ -13,6 +13,7 @@ using Bam.Net.Incubation;
 using Bam.Net.Presentation.Html;
 using System.Reflection;
 using Bam.Net.Logging;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -47,7 +48,7 @@ namespace Bam.Net.Server.Renderers
                     Logger.AddEntry("AppDustRenderer::Appending compiled layout templates");
                     templates.AppendLine(CombinedCompiledLayoutTemplates);
                     Logger.AddEntry("AppDustRenderer::Appending compiled common templates");
-                    templates.AppendLine(ContentResponder.CommonTemplateRenderer.CombinedCompiledTemplates);
+                    templates.AppendLine(ContentResponder.CommonTemplateManager.CombinedCompiledTemplates);
 
                     foreach(string templateDirectoryName in TemplateDirectoryNames)
                     {

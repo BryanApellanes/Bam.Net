@@ -65,7 +65,7 @@ namespace Bam.Net.Automation.Testing
                 .For<IDaoLogger>().Use(logger)
                 .For<AppConf>().Use(conf)
                 .For<SystemLoggerService>().Use(loggerSvc)
-                .For<SystemLogReader>().Use<SystemLogReader>()
+                .For<SystemLogReaderService>().Use<SystemLogReaderService>()
                 .For<TestReportService>().Use<TestReportService>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>();

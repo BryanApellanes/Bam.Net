@@ -38,7 +38,7 @@ namespace Bam.Net.Server
             ServerRoot = commonResponder.ServerRoot;
             AppConf = conf;
             AppRoot = AppConf.AppRoot;
-            AppTemplateRenderer = new AppDustRenderer(this);
+            AppTemplateManager = new AppDustRenderer(this);
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
             ContentHandlers = new Dictionary<string, ContentHandler>();
@@ -196,7 +196,7 @@ namespace Bam.Net.Server
             private set;
         }
 
-        public ITemplateRenderer AppTemplateRenderer
+        public ITemplateManager AppTemplateManager
         {
             get;
             private set;
@@ -483,11 +483,11 @@ namespace Bam.Net.Server
         private byte[] RenderLayout(IResponse response, string path, string queryString = null)
         {
             byte[] content;
-            AppTemplateRenderer.SetContentType(response);
+            AppTemplateManager.SetContentType(response);
             MemoryStream ms = new MemoryStream();
             LayoutModel layoutModel = GetLayoutModelForPath(path);
             layoutModel.QueryString = queryString ?? layoutModel.QueryString;
-            AppTemplateRenderer.RenderLayout(layoutModel, ms);
+            AppTemplateManager.RenderLayout(layoutModel, ms);
             ms.Seek(0, SeekOrigin.Begin);
             content = ms.GetBuffer();
             return content;
@@ -498,11 +498,11 @@ namespace Bam.Net.Server
             if (AppConf.CompileTemplates)
             {
                 // TODO: see DustScript.cs line 91 to make Regex.Unescape calls unecessary
-                AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateRenderer.CombinedCompiledTemplates));
+                AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateManager.CombinedCompiledTemplates));
 
                 Task.Run(() =>
                 {
-                    Parallel.ForEach(AppTemplateRenderer.CompiledTemplates, (template) =>
+                    Parallel.ForEach(AppTemplateManager.CompiledTemplates, (template) =>
                     {
                         FileInfo templateFile = new FileInfo(template.SourceFilePath);
                         FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));

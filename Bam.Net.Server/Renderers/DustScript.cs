@@ -12,6 +12,7 @@ using J = Bam.Net.Javascript;
 using System.Text.RegularExpressions;
 using System.IO;
 using Bam.Net.Logging;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {

@@ -191,8 +191,10 @@
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />
     <Compile Include="Html\Traversal\CsQueryExtensions.cs" />
+    <Compile Include="ICompiledTemplate.cs" />
     <Compile Include="ImageMagick.cs" />
     <Compile Include="IRenderer.cs" />
+    <Compile Include="ITemplateManager.cs" />
     <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="Markdown\IDocumentComponent.cs" />

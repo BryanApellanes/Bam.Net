@@ -566,7 +566,7 @@ namespace Bam.Net.Server
                     TagBuilder form = builder.MethodForm(methodName, defaults);
                     LayoutModel layoutModel = GetLayoutModel(appName);
                     layoutModel.PageContent = form.ToMvcHtml().ToString();
-                    ContentResponder.CommonTemplateRenderer.RenderLayout(layoutModel, context.Response.OutputStream);
+                    ContentResponder.CommonTemplateManager.RenderLayout(layoutModel, context.Response.OutputStream);
                     result = true;
                 }
             }

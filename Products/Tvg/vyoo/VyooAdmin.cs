@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace vyoo
 {
     [Serializable]
-    public class VyooClient: CommandLineTestInterface
+    public class VyooAdmin: CommandLineTestInterface
     {
 
     }

@@ -13,6 +13,7 @@ using Bam.Net.Data.Schema;
 using Bam.Net.Server.Renderers;
 using System.Reflection;
 using System.IO;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {

@@ -15,7 +15,7 @@ namespace Bam.Net.Application
     /// </summary>
     /// <seealso cref="Bam.Net.Testing.CommandLineTestInterface" />
     [Serializable]
-    public class BuildClient : CommandLineTestInterface
+    public class BuildClientActions : CommandLineTestInterface
     {
         [ConsoleAction("setBambotHost", "set the hostname for bambot builds")]
         public static void SetHost()

@@ -17,7 +17,7 @@ namespace Bam.Net.Server.Renderers
     /// The renderer used to render the results of a 
     /// common (server level) dust template provided a given object
     /// </summary>
-    public class CommonDustRenderer: Renderer, ITemplateRenderer
+    public class CommonDustRenderer: Renderer, ITemplateManager
     {
         public CommonDustRenderer(ContentResponder content)
             : base("text/html", ".htm", ".html")

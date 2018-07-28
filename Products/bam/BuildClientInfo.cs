@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Application
 {
     [Serializable]
-    public class BuildClientInfo: BamClientInfo
+    public class BuildClientInfo: CoreClientInfo
     {
         public BuildClientInfo()
         {

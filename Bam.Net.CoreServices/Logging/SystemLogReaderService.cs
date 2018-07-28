@@ -12,11 +12,11 @@ namespace Bam.Net.CoreServices
     [Proxy("sysLogReader")]
     [ApiKeyRequired]
     [ServiceSubdomain("syslogreader")]
-    public class SystemLogReader : ApplicationProxyableService, ILogReader
+    public class SystemLogReaderService : ApplicationProxyableService, ILogReader
     {
-        protected SystemLogReader() { }
+        protected SystemLogReaderService() { }
 
-        public SystemLogReader(SystemLoggerService loggerService)
+        public SystemLogReaderService(SystemLoggerService loggerService)
         {
             SystemLoggerService = loggerService;
             LogReader = new DaoLogger2LogReader(SystemLoggerService.GetLogger());
@@ -28,13 +28,13 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            SystemLogReader clone = new SystemLogReader(SystemLoggerService);
+            SystemLogReaderService clone = new SystemLogReaderService(SystemLoggerService);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
         }
 
-        public List<LogEntry> GetLogEntries(DateTime from, DateTime to)
+        public virtual List<LogEntry> GetLogEntries(DateTime from, DateTime to)
         {
             return LogReader.GetLogEntries(from, to);
         }

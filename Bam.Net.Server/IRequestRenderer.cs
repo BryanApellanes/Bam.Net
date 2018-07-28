@@ -8,6 +8,7 @@ using System.Text;
 using System.IO;
 using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {

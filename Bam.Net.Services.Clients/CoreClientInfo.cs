@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Clients
 {
-    public class BamClientInfo
+    public class CoreClientInfo
     {
-        public BamClientInfo()
+        public CoreClientInfo()
         {
             CoreHostName = "core.bamapps.net";
             CorePort = 80;

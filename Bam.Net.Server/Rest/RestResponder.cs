@@ -17,6 +17,7 @@ using Bam.Net.Yaml;
 using System.Collections;
 using System.IO;
 using System.Collections.Specialized;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Rest
 {

@@ -28,8 +28,11 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
+        /// <summary>
+        /// Sets the local SMTP settings.
+        /// </summary>
         [ConsoleAction]
-        public void SetSmtpSettings()
+        public void SetLocalSmtpSettings()
         {
             string smtpSettingsFile = ".\\import-smtp-settings.json";
             if (!File.Exists(smtpSettingsFile))
@@ -176,7 +179,7 @@ namespace Bam.Net.Application
 		public void SignUp()
 		{
             UserInfo info = GetUserInfo();
-            CoreClient client = new CoreClient(GetLogger());
+            Services.Clients.CoreClient client = new Services.Clients.CoreClient(GetLogger());
             SignUpResponse response = client.SignUp(info.Email, info.Password);
             if (!response.Success)
             {

@@ -36,6 +36,7 @@ namespace Bam.Net.Services.Clients
         {
             get { return CoreClient.UserRegistryService; }
         }
+
         public ISmtpSettingsProvider SmtpSettingsProvider
         {
             get
@@ -43,6 +44,7 @@ namespace Bam.Net.Services.Clients
                 return CoreClient.UserRegistryService;
             }
         }
+
         //public Email CreateEmail(string subject)
     }
 }

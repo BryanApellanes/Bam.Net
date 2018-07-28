@@ -1,19 +1,12 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.IO;
-using Bam.Net.Web;
 using Bam.Net.Presentation;
-using Bam.Net.Presentation.Html;
-using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
-using System.Reflection;
+using Bam.Net.Web;
+using System;
+using System.IO;
+using System.Text;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -54,7 +47,7 @@ namespace Bam.Net.Server.Renderers
                 {
                     Type typeToRender = toRender.GetType();
                     prefix = "{0}_"._Format(typeToRender.Name);
-                    ITemplateRenderer dustRenderer = ContentResponder.AppContentResponders[AppName].AppTemplateRenderer;
+                    ITemplateManager dustRenderer = ContentResponder.AppContentResponders[AppName].AppTemplateManager;
                     dustRenderer.EnsureDefaultTemplate(typeToRender);
                 }
                 AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
@@ -76,9 +69,9 @@ namespace Bam.Net.Server.Renderers
         public override void Render(object toRender, Stream output)
         {
             AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
-            ITemplateRenderer dustRenderer = appContentResponder.AppTemplateRenderer;
+            ITemplateManager templateManager = appContentResponder.AppTemplateManager;
             string templateName = GetTemplateName(toRender);
-            string templates = dustRenderer.CombinedCompiledTemplates;            
+            string templates = templateManager.CombinedCompiledTemplates;            
             string renderedContent = DustScript.Render(templates, templateName, toRender);
 
             byte[] data;
@@ -91,7 +84,7 @@ namespace Bam.Net.Server.Renderers
                 layoutModel.LayoutName = layout;
                 layoutModel.PageContent = renderedContent;
                 MemoryStream ms = new MemoryStream();
-                appContentResponder.CommonTemplateRenderer.RenderLayout(layoutModel, ms);
+                appContentResponder.CommonTemplateManager.RenderLayout(layoutModel, ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 data = ms.GetBuffer();
             }
