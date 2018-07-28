@@ -29,9 +29,9 @@ namespace Bam.Net.Application
         const string BamSysPath = "C:\\bam\\sys\\";
 
         [ConsoleAction]
-        public void SetDefaultSmtpSettings()
+        public void SetSmtpSettings()
         {
-            string smtpSettingsFile = ".\\default-smtp-settings.json";
+            string smtpSettingsFile = ".\\import-smtp-settings.json";
             if (!File.Exists(smtpSettingsFile))
             {
                 smtpSettingsFile = Prompt("Please enter the path to the smtp settings json file");

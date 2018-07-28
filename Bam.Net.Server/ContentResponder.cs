@@ -48,7 +48,7 @@ namespace Bam.Net.Server
             InitializeCaches();
         }
 
-        public ContentResponder(ILogger logger, ITemplateRenderer commonTemplateRenderer = null) : this(null, logger, commonTemplateRenderer)
+        public ContentResponder(ILogger logger, ITemplateRenderer commonTemplateRenderer = null) : this(BamConf.Load(), logger, commonTemplateRenderer)
         { }
 
         public string ContentRoot { get; set; }

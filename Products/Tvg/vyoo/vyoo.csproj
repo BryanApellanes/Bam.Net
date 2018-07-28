@@ -83,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="VyooClient.cs" />
     <Compile Include="VyooResponder.cs" />
     <Compile Include="VyooServer.cs" />
     <Compile Include="VyooService.cs">

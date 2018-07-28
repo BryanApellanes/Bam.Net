@@ -252,6 +252,7 @@
     <Compile Include="AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="Configuration\ICoreConfigurationService.cs" />
+    <Compile Include="Credentials\CredentialManagementService.cs" />
     <Compile Include="DataSettingsSmtpSettingsProvider.cs" />
     <Compile Include="DiagnosableSettings.cs" />
     <Compile Include="Diagnostic\IDiagnosable.cs" />

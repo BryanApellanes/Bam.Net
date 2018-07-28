@@ -8,8 +8,6 @@
     /// <seealso cref="Bam.Net.Encryption.IServiceCredentialProvider" />
     public interface ICredentialManager: ICredentialProvider, INamedCredentialProvider, IServiceCredentialProvider
     {
-        CredentialProvider CredentialProvider { get; }
-
         void SetPassword(string password);
         void SetPasswordFor(string targetIdentifier, string password);
         void SetPasswordFor(string machineName, string serviceName, string password);
