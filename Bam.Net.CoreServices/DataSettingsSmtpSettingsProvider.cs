@@ -78,6 +78,7 @@ namespace Bam.Net.CoreServices
         public static void SetDefaultSmtpSettings(SmtpSettings settings)
         {
             FileInfo smtpSettingsFile = new FileInfo(Path.Combine(Paths.Local, SmtpSettingsFileName));
+            settings.Password = Aes.Encrypt(settings.Password);
             settings.ToJsonFile(smtpSettingsFile);
         }
 
@@ -90,6 +91,7 @@ namespace Bam.Net.CoreServices
                 try
                 {
                     SmtpSettings smtpSettings = smtpSettingsFile.FromJsonFile<SmtpSettings>();
+                    smtpSettings.Password = Aes.Decrypt(smtpSettings.Password);
                     DefaultSender = smtpSettings.From;
                     return new DataSettingsSmtpSettingsProvider(smtpSettings);
                 }

@@ -8,7 +8,7 @@ namespace Bam.Net.CoreServices
 {
     public class ApplicationNameNotSpecifiedException: Exception
     {
-        public ApplicationNameNotSpecifiedException() : base($"ApplicationName was not specified, add the header '{Bam.Net.Web.Headers.ApplicationName}' with your registered application name as the value")
+        public ApplicationNameNotSpecifiedException() : base($"ApplicationName was not specified, add the header '{Bam.Net.Web.CustomHeaders.ApplicationName}' with your registered application name as the value")
         { }
     }
 }

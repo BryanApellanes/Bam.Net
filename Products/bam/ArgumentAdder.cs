@@ -31,6 +31,11 @@ namespace Bam.Net.Application
             AddValidArgument("appDirectory", false, description: "The directory path to create an app manifest for");
 
             AddValidArgument("configName", false, description: "The name of the config to retrieve");
+
+            AddValidArgument("ProcessMode", false, description: "Set an alternate ProcessMode instead of the one specified in the config");
+
+            AddValidArgument("subject", false, description: "/sendEmail: The subject of the email to send");
+            AddValidArgument("message", false, description: "/sendEmail: The body of the email message");
         }
     }
 }

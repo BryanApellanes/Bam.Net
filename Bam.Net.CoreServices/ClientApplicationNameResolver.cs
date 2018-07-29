@@ -46,7 +46,7 @@ namespace Bam.Net.CoreServices
 
         public string ResolveApplicationName(IHttpContext context)
         {
-            string fromHeader = context?.Request?.Headers[Headers.ApplicationName];
+            string fromHeader = context?.Request?.Headers[CustomHeaders.ApplicationName];
             if (string.IsNullOrEmpty(fromHeader))
             {
                 string domainName = context?.Request?.Url?.Host;

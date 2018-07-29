@@ -166,7 +166,7 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
+                string fromHeader = HttpContext?.Request?.Headers[CustomHeaders.ApplicationName];
                 return fromHeader.Or(ApplicationRegistration.Data.Application.Unknown.Name);
             }
         }

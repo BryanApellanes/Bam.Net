@@ -1,9 +1,12 @@
 ﻿using Bam.Net.CommandLine;
+using Bam.Net.CoreServices;
 using Bam.Net.Logging;
+using Bam.Net.Messaging;
 using Bam.Net.Services.Clients;
 using Bam.Net.Testing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +14,19 @@ using System.Threading.Tasks;
 namespace Bam.Net.Application
 {
     [Serializable]
-    public class CoreClientActions: CommandLineTestInterface
+    public class CoreClientActions : CommandLineTestInterface
     {
-        static Services.Clients.CoreClient _client;
+        static CoreClient _client;
         static CoreClientActions()
         {
-            _client = new Services.Clients.CoreClient();
+            _client = new CoreClient();
+        }
+
+        [ConsoleAction("setRemoteSmtpSettings")]
+        public void SetRemoteSmtpCredentials()
+        {
+            CredentialManagementService svc = _client.GetProxy<CredentialManagementService>();
+            svc.SetSmtpSettings(DataSettingsSmtpSettingsProvider.Default.SmtpSettings);
         }
 
         [ConsoleAction]
@@ -31,7 +41,7 @@ namespace Bam.Net.Application
             List<LogEntry> logEntries = _client.GetLogEntries(fromDate, toDate);
             foreach(LogEntry entry in logEntries)
             {
-                OutLine($"{entry.Source}, {entry.Message}, {entry.Severity}, {entry.Computer}, {entry.User}, {entry.Time.ToShortDateString()} {entry.Time.ToShortTimeString()}");
+                OutLine($"{entry.Severity}:: {entry.Computer}:: Message = {entry.Message}, {entry.User}, {entry.Time.ToShortDateString()} {entry.Time.ToShortTimeString()}");
             }
         }
     }

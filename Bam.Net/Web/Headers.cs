@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Web
 {
-    public static class Headers
+    public static class CustomHeaders
     {
+        public static string ProcessMode { get { return "X-Bam-Process-Mode"; } }
+
         public static string ApplicationName { get { return "X-Bam-AppName"; } }
         public static string SecureSession { get { return "X-Bam-Sps-Session"; } }
         public static string ValidationToken { get { return "X-Bam-Validation-Token"; } }

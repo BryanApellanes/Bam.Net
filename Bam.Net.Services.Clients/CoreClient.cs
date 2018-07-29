@@ -149,7 +149,7 @@ namespace Bam.Net.Services.Clients
         {
             Args.ThrowIfNull(request, "request");
             string stringToHash = ApiParameters.GetStringToHash(request);
-            string token = request.Context.Request.Headers[Headers.KeyToken];
+            string token = request.Context.Request.Headers[CustomHeaders.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
@@ -177,7 +177,7 @@ namespace Bam.Net.Services.Clients
         /// <param name="stringToHash"></param>
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
+            headers[CustomHeaders.KeyToken] = CreateKeyToken(stringToHash);
         }
         #endregion
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]

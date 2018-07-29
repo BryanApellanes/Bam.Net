@@ -713,7 +713,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
             resolver.SetKeyToken(er.Request.Headers, data);
 
-            er.Request.Headers[Headers.KeyToken] = "bad token value";
+            er.Request.Headers[CustomHeaders.KeyToken] = "bad token value";
 
             ValidationResult result = er.Validate();
             

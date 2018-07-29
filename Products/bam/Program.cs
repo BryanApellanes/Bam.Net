@@ -38,6 +38,14 @@ namespace Bam.Net.Application
             
 			Initialize(args);
 
+            if (Arguments.Contains("ProcessMode"))
+            {
+                if(Arguments["ProcessMode"].TryToEnum<ProcessModes>(out ProcessModes processMode))
+                {
+                    ProcessMode.Current = ProcessMode.FromEnum(processMode);
+                }
+            }
+
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
                 ExecuteSwitches(Arguments, type, false, Log.Default);

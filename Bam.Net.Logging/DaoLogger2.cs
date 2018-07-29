@@ -36,6 +36,15 @@ namespace Bam.Net.Logging
 			set;
 		}
 
+        public Action<LogEvent> LogEventCreatedHandler { get; set; }
+
+        protected internal override LogEvent CreateLogEvent(string messageSignature, string user, string category, LogEventType type, Exception ex, params string[] messageVariableValues)
+        {
+            LogEvent logEvent = base.CreateLogEvent(messageSignature, user, category, type, ex, messageVariableValues);
+            LogEventCreatedHandler?.Invoke(logEvent);
+            return logEvent;
+        }
+
         public override void CommitLogEvent(LogEvent logEvent)
         {
 			SourceName source = GetSource(logEvent, Database);

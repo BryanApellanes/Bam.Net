@@ -9,6 +9,7 @@ using Bam.Net.Logging.Data;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
@@ -36,8 +37,11 @@ namespace Bam.Net.CoreServices
         public void SetLogger(Database db)
         {
             db.TryEnsureSchema<Event>();
-            _logger = new DaoLogger2(db);
-            if(Logger != null)
+            _logger = new DaoLogger2(db)
+            {
+                LogEventCreatedHandler = SetLogEntryProperties
+            };
+            if (Logger != null)
             {
                 Logger = Log.AddLogger(Logger);
             }
@@ -49,26 +53,32 @@ namespace Bam.Net.CoreServices
         {
             return _logger;
         }
-
+        
         public virtual void CommitLogEvent(Net.Logging.LogEvent logEvent)
         {
-            Logger.CommitLogEvent(logEvent);
+            Task.Run(() => Logger.CommitLogEvent(logEvent));
         }
 
         public virtual void Info(string messageSignature, params object[] formatArguments)
         {
-            Logger.AddEntry(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
+            Net.Logging.LogEvent entry = _logger.CreateInfoEvent(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
+            SetLogEntryProperties(entry);
+            CommitLogEvent(entry);
         }
-
+        
         public virtual void Warning(string messageSignature, params object[] formatArguments)
         {
-            Logger.AddEntry(messageSignature, LogEventType.Warning, formatArguments.Select(a => a.ToString()).ToArray());
+            Net.Logging.LogEvent entry = _logger.CreateWarningEvent(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
+            SetLogEntryProperties(entry);
+            CommitLogEvent(entry);
         }
 
         public virtual void Error(string messageSignature, params object[] formatArguments)
         {
-            Logger.AddEntry(messageSignature, LogEventType.Error, formatArguments.Select(a => a.ToString()).ToArray());
-        }
+            Net.Logging.LogEvent entry = _logger.CreateErrorEvent(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
+            SetLogEntryProperties(entry);
+            CommitLogEvent(entry);
+        }        
 
         public override object Clone()
         {
@@ -76,6 +86,14 @@ namespace Bam.Net.CoreServices
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
+        }
+
+        private void SetLogEntryProperties(Net.Logging.LogEvent entry)
+        {
+            entry.User = CurrentUser.UserName;
+            entry.Computer = ClientIpAddress;
+            entry.Source = ClientApplicationName;
+            entry.Category = ProcessMode.ToString();
         }
     }
 }

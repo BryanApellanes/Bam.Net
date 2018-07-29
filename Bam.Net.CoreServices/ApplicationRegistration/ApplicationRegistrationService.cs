@@ -304,7 +304,7 @@ namespace Bam.Net.CoreServices
             string methodName = request.MethodName;
             string stringToHash = ApiParameters.GetStringToHash(className, methodName, request.JsonParams);
 
-            string token = request.Context.Request.Headers[Headers.KeyToken];
+            string token = request.Context.Request.Headers[CustomHeaders.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {

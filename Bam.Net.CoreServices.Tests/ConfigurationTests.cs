@@ -211,7 +211,7 @@ namespace Bam.Net.CoreServices.Tests
             ctx.Request = Substitute.For<IRequest>();
             NameValueCollection headers = new NameValueCollection
             {
-                [Headers.ApplicationName] = testName
+                [CustomHeaders.ApplicationName] = testName
             };
             ctx.Request.Headers.Returns(headers);
             ctx.Request.Cookies.Returns(new System.Net.CookieCollection());
