@@ -46,7 +46,8 @@ namespace Bam.Net.ServiceProxy
         /// <returns></returns>
         public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
-            //TODO: refactor this method to analyze httpContext.Request.ContentType
+            // TODO: refactor this method to analyze httpContext.Request.ContentType
+            // See ExecutionRequest.GetArguments
             ExecutionRequest execRequest = new ExecutionRequest(httpContext, serviceProvider, aliases)
             {
                 Logger = Logger ?? Log.Default
