@@ -485,6 +485,7 @@ namespace Bam.Net.ServiceProxy
             // This will need to be refactored IF
             // changes continue to be necessary
             // 07/29/2018 - +1 added notes -BA
+            // see commit 2526558ea460852c033d1151dc190308a9feaefd
 
             object[] result = new object[] { }; ;
             if (HttpArgs.Has("jsonParams", out string jsonParams))
