@@ -2,23 +2,23 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Schema</id>
-    <version>1.14.2</version>
+    <version>1.14.3</version>
     <title>Bam.Net.Data.Schema</title>
     <authors>Package Authors</authors>
     <owners>Package Owners</owners>
     <description>Bam.Net.Data.Schema</description>
-    <releaseNotes>Version 1.14.2
+    <releaseNotes>Version 1.14.3
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.14.2" />
-      <dependency id="Bam.Net.Data.SQLite" version="1.14.2" />
-      <dependency id="Bam.Net.Data" version="1.14.2" />
+      <dependency id="Bam.Net" version="1.14.3" />
+      <dependency id="Bam.Net.Data.SQLite" version="1.14.3" />
+      <dependency id="Bam.Net.Data" version="1.14.3" />
       <dependency id="Bam.Net.Data.Schema" version="1.9.1" />
-      <dependency id="Bam.Net.Documentation" version="1.14.2" />
-      <dependency id="Bam.Net.Javascript" version="1.14.2" />
-      <dependency id="Bam.Net.Presentation" version="1.14.2" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.14.2" />
+      <dependency id="Bam.Net.Documentation" version="1.14.3" />
+      <dependency id="Bam.Net.Javascript" version="1.14.3" />
+      <dependency id="Bam.Net.Presentation" version="1.14.3" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.3" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />

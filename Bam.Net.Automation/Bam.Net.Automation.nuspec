@@ -2,35 +2,29 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Automation</id>
-    <version>1.14.2</version>
+    <version>1.14.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Automation tools</description>
-    <releaseNotes>Version 1.14.2
-Updates since v1.14.0:
- -   remove inappropriate use of async Tasks (0c4c500d)
- -   correct NuspecFile.AddDependencies implementation (b7f261f1)
- -   update git release note handling (7b607827)
- -   delete old generatied files (2a90bd25)
- -   add method to retrieve failed tests by tag (12805616)
+    <releaseNotes>Version 1.14.3
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.14.2" />
-      <dependency id="Bam.Net.Analytics" version="1.14.2" />
-      <dependency id="Bam.Net.Data" version="1.14.2" />
+      <dependency id="Bam.Net" version="1.14.3" />
+      <dependency id="Bam.Net.Analytics" version="1.14.3" />
+      <dependency id="Bam.Net.Data" version="1.14.3" />
       <dependency id="Bam.Net.Html" version="1.9.1" />
-      <dependency id="Bam.Net.Incubation" version="1.14.2" />
-      <dependency id="Bam.Net.Javascript" version="1.14.2" />
-      <dependency id="Bam.Net.Logging" version="1.14.2" />
+      <dependency id="Bam.Net.Incubation" version="1.14.3" />
+      <dependency id="Bam.Net.Javascript" version="1.14.3" />
+      <dependency id="Bam.Net.Logging" version="1.14.3" />
       <dependency id="Bam.Net.Management" version="1.9.1" />
       <dependency id="Bam.Net.Net" version="1.9.1" />
-      <dependency id="Bam.Net.Profiguration" version="1.14.2" />
-      <dependency id="Bam.Net.Schema.Org" version="1.14.2" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.14.2" />
+      <dependency id="Bam.Net.Profiguration" version="1.14.3" />
+      <dependency id="Bam.Net.Schema.Org" version="1.14.3" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.14.3" />
       <dependency id="Bam.Net.SourceControl" version="1.9.1" />
-      <dependency id="Bam.Net.Testing" version="1.14.2" />
-      <dependency id="Bam.Net.Yaml" version="1.14.2" />
+      <dependency id="Bam.Net.Testing" version="1.14.3" />
+      <dependency id="Bam.Net.Yaml" version="1.14.3" />
       <dependency id="Common.Logging" version="3.4.1" />
       <dependency id="Common.Logging.Core" version="3.4.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
