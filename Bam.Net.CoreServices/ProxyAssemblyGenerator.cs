@@ -86,7 +86,7 @@ namespace Bam.Net.CoreServices
 
         private ProxyModel GetProxyModel()
         {
-            HashSet<Assembly> referenceAssemblies = new HashSet<Assembly>(AdditionalReferenceAssemblies)
+            HashSet<Assembly> referenceAssemblies = new HashSet<Assembly>(AdditionalReferenceAssemblies ?? new HashSet<Assembly>())
             {
                 ServiceType.Assembly
             };
