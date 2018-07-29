@@ -73,7 +73,7 @@
     <Compile Include="ConfigurationServiceCredentialProvider.cs" />
     <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
-    <Compile Include="BamClientInfo.cs" />
+    <Compile Include="CoreClientInfo.cs" />
     <Compile Include="CoreProxyableService.cs" />
     <Compile Include="CoreSystemClient.cs" />
     <Compile Include="CoreLoggerClient.cs" />

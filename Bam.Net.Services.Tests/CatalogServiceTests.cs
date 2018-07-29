@@ -23,6 +23,7 @@ namespace Bam.Net.Services.Tests
             DaoRepository repo = new DaoRepository();
             repo.AddNamespace(typeof(CatalogDefinition));
             _serviceRegistry = new ServiceRegistry()
+                .For<IRepository>().Use(repo)
                 .For<DaoRepository>().Use(repo)
                 .For<ICatalogService>().Use<CatalogService>();
         }

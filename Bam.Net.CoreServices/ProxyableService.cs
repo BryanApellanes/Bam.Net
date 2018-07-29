@@ -16,6 +16,7 @@ using Bam.Net.UserAccounts;
 using Bam.Net.Web;
 using U = Bam.Net.UserAccounts.Data;
 using Bam.Net.CoreServices.Diagnostic;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.CoreServices
 {
@@ -165,7 +166,7 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
+                string fromHeader = HttpContext?.Request?.Headers[CustomHeaders.ApplicationName];
                 return fromHeader.Or(ApplicationRegistration.Data.Application.Unknown.Name);
             }
         }
@@ -280,7 +281,7 @@ namespace Bam.Net.CoreServices
             Args.ThrowIfNull(AppConf.BamConf, "AppConf.BamConf");
             Args.ThrowIfNull(AppConf.BamConf.Server, "AppConf.BamConf.Server");
             BamServer server = AppConf.BamConf.Server;
-            ITemplateRenderer renderer = server.GetAppTemplateRenderer(AppConf.Name);
+            ITemplateManager renderer = server.GetAppTemplateRenderer(AppConf.Name);
             renderer.Render(templateName, toRender, output);
         }
         

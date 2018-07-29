@@ -149,7 +149,7 @@ namespace Bam.Net.Services.Clients
         {
             Args.ThrowIfNull(request, "request");
             string stringToHash = ApiParameters.GetStringToHash(request);
-            string token = request.Context.Request.Headers[Headers.KeyToken];
+            string token = request.Context.Request.Headers[CustomHeaders.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
@@ -177,7 +177,7 @@ namespace Bam.Net.Services.Clients
         /// <param name="stringToHash"></param>
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
+            headers[CustomHeaders.KeyToken] = CreateKeyToken(stringToHash);
         }
         #endregion
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]
@@ -362,6 +362,12 @@ namespace Bam.Net.Services.Clients
                 ProxyFactory.MungeHostNames = value;
             }
         }
+
+        public List<LogEntry> GetLogEntries(DateTime from, DateTime to)
+        {
+            return SystemLogReaderService.GetLogEntries(from, to);
+        }
+
         protected ProxyFactory ProxyFactory { get; set; }
         protected bool IsInitialized { get; set; }
 
@@ -384,6 +390,7 @@ namespace Bam.Net.Services.Clients
         protected internal SystemLoggerService LoggerService { get; set; }
         protected internal DiagnosticService DiagnosticService { get; set; }
         protected internal ServiceRegistryService ServiceRegistryService { get; set; }
+        protected internal SystemLogReaderService SystemLogReaderService { get; set; }
 
         /// <summary>
         /// Each of the Core service proxies
@@ -399,6 +406,7 @@ namespace Bam.Net.Services.Clients
                 yield return RoleService;
                 yield return DiagnosticService;
                 yield return ServiceRegistryService;
+                yield return SystemLogReaderService;
             }
         }
 
@@ -434,6 +442,7 @@ namespace Bam.Net.Services.Clients
             RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port, Logger);
             OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port, Logger);
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port, Logger);
+            SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>(HostName, Port, Logger);
         }
 
         private void SetLocalServiceProxies()
@@ -446,6 +455,7 @@ namespace Bam.Net.Services.Clients
             RoleService = ProxyFactory.GetProxy<RoleService>();
             OAuthService = ProxyFactory.GetProxy<OAuthService>();
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>();
+            SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>();
         }
 
         private void WireInvocationEventHandlers()
@@ -496,6 +506,7 @@ namespace Bam.Net.Services.Clients
             LoggerService.Property(propertyName, this);
             UserRegistryService.Property(propertyName, this);
             RoleService.Property(propertyName, this);
+            SystemLogReaderService.Property(propertyName, this);
         }
     }
 }

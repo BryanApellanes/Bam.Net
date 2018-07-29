@@ -41,7 +41,23 @@ namespace Bam.Net.CommandLine
         public string SwitchValue { get; set; }
         public MethodInfo Method { get; set; }
         public object[] Parameters { get; set; }
-        public object Provider { get; set; }
+
+        object _provider;
+        public object Provider
+        {
+            get
+            {
+                if(_provider == null && !Method.IsStatic)
+                {
+                    _provider= Method.DeclaringType.Construct();
+                }
+                return _provider;
+            }
+            set
+            {
+                _provider = value;
+            }
+        }
 
         public string Information
         {

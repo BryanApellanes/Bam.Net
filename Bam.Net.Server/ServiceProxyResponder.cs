@@ -502,7 +502,7 @@ namespace Bam.Net.Server
                         responded = execRequest.Execute();
                         if (responded)
                         {
-                            // TODO: make this configuratable
+                            // TODO: make this configurable
                             response.AddHeader("Access-Control-Allow-Origin", "*");
                             response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
                             response.AddHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
@@ -566,7 +566,7 @@ namespace Bam.Net.Server
                     TagBuilder form = builder.MethodForm(methodName, defaults);
                     LayoutModel layoutModel = GetLayoutModel(appName);
                     layoutModel.PageContent = form.ToMvcHtml().ToString();
-                    ContentResponder.CommonTemplateRenderer.RenderLayout(layoutModel, context.Response.OutputStream);
+                    ContentResponder.CommonTemplateManager.RenderLayout(layoutModel, context.Response.OutputStream);
                     result = true;
                 }
             }

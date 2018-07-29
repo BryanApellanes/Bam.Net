@@ -9,6 +9,7 @@
         "Ssl": false,
         "Port": 9101,
         "ApplicationName": "int-heart.bamapps.net",
+        "ProcessMode": "Test",
         "LogType": "Windows"
       }
     },
@@ -21,6 +22,7 @@
         "Ssl": false,
         "Port": 9101,
         "ApplicationName": "heart.bamapps.net",
+        "ProcessMode":  "Prod",
         "LogType": "Windows"
       }
     }

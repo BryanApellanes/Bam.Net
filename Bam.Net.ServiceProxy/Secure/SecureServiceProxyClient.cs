@@ -327,11 +327,11 @@ namespace Bam.Net.ServiceProxy.Secure
             }
             else
             {
-                request.Headers.Add(Web.Headers.SecureSession, SessionCookie.Value);
+                request.Headers.Add(Web.CustomHeaders.SecureSession, SessionCookie.Value);
             }
             if (ClientApplicationNameProvider != null)
             {
-                request.Headers[Web.Headers.ApplicationName] = ClientApplicationNameProvider.GetApplicationName();
+                request.Headers[Web.CustomHeaders.ApplicationName] = ClientApplicationNameProvider.GetApplicationName();
             }
             return request;
         }

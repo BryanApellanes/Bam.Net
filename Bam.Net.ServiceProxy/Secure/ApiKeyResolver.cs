@@ -109,7 +109,7 @@ namespace Bam.Net.ServiceProxy.Secure
        
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
+            headers[CustomHeaders.KeyToken] = CreateKeyToken(stringToHash);
         }
 
         public string CreateKeyToken(string stringToHash)
@@ -126,7 +126,7 @@ namespace Bam.Net.ServiceProxy.Secure
             string methodName = request.MethodName;
             string stringToHash = ApiParameters.GetStringToHash(className, methodName, request.JsonParams);
 
-            string token = request.Context.Request.Headers[Headers.KeyToken];
+            string token = request.Context.Request.Headers[CustomHeaders.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {

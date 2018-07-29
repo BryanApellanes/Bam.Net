@@ -337,41 +337,42 @@ namespace Bam.Net.Logging
             OnEntryAdded(ev);
         }
 
-        protected LogEvent CreateInfoEvent(string message)
+        protected internal LogEvent CreateInfoEvent(string message)
         {
             return CreateInfoEvent(message, new string[] { });
         }
 
-        protected LogEvent CreateInfoEvent(string messageSignature, params string[] messageVariableValues)
+        protected internal LogEvent CreateInfoEvent(string messageSignature, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Information, null, messageVariableValues);
         }
 
-        protected LogEvent CreateWarningEvent(string message)
+        protected internal LogEvent CreateWarningEvent(string message)
         {
             return CreateWarningEvent(message, new string[] { });
         }
 
-        protected LogEvent CreateWarningEvent(string messageSignature, params string[] messageVariableValues)
+        protected internal LogEvent CreateWarningEvent(string messageSignature, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Warning, null, messageVariableValues);
         }
 
-        protected LogEvent CreateErrorEvent(string message)
+        protected internal LogEvent CreateErrorEvent(string message)
         {
             return CreateErrorEvent(message, new string[] { });
         }
-        protected LogEvent CreateErrorEvent(string messageSignature, params string[] messageVariableValues)
+
+        protected internal LogEvent CreateErrorEvent(string messageSignature, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Error, null, messageVariableValues);
         }
 
-        protected LogEvent CreateErrorEvent(string messageSignature, Exception ex, params string[] messageVariableValues)
+        protected internal LogEvent CreateErrorEvent(string messageSignature, Exception ex, params string[] messageVariableValues)
         {
             return CreateLogEvent(messageSignature, UserUtil.GetCurrentUser(true), "Application", LogEventType.Error, ex, messageVariableValues);
         }
 
-        protected internal LogEvent CreateLogEvent(string messageSignature, string user, string category, LogEventType type, Exception ex, params string[] messageVariableValues)
+        protected internal virtual LogEvent CreateLogEvent(string messageSignature, string user, string category, LogEventType type, Exception ex, params string[] messageVariableValues)
         {
             LogEvent ev = new LogEvent
             {

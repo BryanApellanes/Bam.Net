@@ -13,6 +13,7 @@ using Bam.Net;
 using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {

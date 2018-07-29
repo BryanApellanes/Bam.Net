@@ -23,7 +23,7 @@ namespace Bam.Net.Application
             }
         }
 
-        public VyooResponder(AppConf[] appConfigs, ILogger logger, bool verbose = false) : base(null, logger)
+        public VyooResponder(AppConf[] appConfigs, ILogger logger, bool verbose = false) : base(BamConf.Load(), logger)
         {
             ContentResponder = new ContentResponder(logger) { AppConfigs = appConfigs };
             if (verbose)
@@ -42,7 +42,7 @@ namespace Bam.Net.Application
         {
             if (!ContentResponder.TryRespond(context))
             {
-                SendResponse(context, "Vyoo Server");
+                SendResponse(context, 404, new { BamServer = "Vyoo Server" });
             }
             context.Response.Close();
             return true;

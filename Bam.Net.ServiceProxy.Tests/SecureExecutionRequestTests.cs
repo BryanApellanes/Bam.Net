@@ -119,7 +119,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = A.Fake<IHttpContext>();
             IResponse response = A.Fake<IResponse>();
             response.Headers = new WebHeaderCollection();
-            response.Headers[Headers.SecureSession] = sessionName;
+            response.Headers[CustomHeaders.SecureSession] = sessionName;
             context.Request = A.Fake<IRequest>();
             context.Response = A.Fake<IResponse>();
             string fileName = MethodInfo.GetCurrentMethod().Name.RandomLetters(6);

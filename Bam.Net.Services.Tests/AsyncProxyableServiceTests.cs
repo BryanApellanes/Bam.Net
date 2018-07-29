@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.CoreServices;
 using Bam.Net.Server;
+using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy.Tests;
 using Bam.Net.Testing;
@@ -41,6 +42,18 @@ namespace Bam.Net.Services.Tests
 
             StopServers();
             Expect.IsTrue(ran.Value);
+        }
+
+        [UnitTest]
+        public void ShouldBeAbleToInstanciateExecutionRequest()
+        {
+            string className = "AsyncProxyableEcho";
+            string methodName = "Send";
+            string ext = "json";
+            ExecutionRequest request = new ExecutionRequest(className, methodName, ext);
+            Expect.AreEqual(className, request.ClassName);
+            Expect.AreEqual(methodName, request.MethodName);
+            Expect.AreEqual(ext, request.Ext);
         }
 
         [UnitTest]
@@ -97,7 +110,7 @@ namespace Bam.Net.Services.Tests
             ConsoleLogger logger = GetTestConsoleLogger();
             ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             AsyncCallbackService callbackService = new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), new AppConf());
-            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 9101, logger); // the "server"
+            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>(server.DefaultHostPrefix.HostName, server.DefaultHostPrefix.Port, logger); // the "server"
             testObj.CallbackService = callbackService;
             return testObj;
         }

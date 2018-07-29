@@ -252,6 +252,7 @@
     <Compile Include="AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="Configuration\ICoreConfigurationService.cs" />
+    <Compile Include="Credentials\CredentialManagementService.cs" />
     <Compile Include="DataSettingsSmtpSettingsProvider.cs" />
     <Compile Include="DiagnosableSettings.cs" />
     <Compile Include="Diagnostic\IDiagnosable.cs" />
@@ -276,7 +277,8 @@
     <Compile Include="ApplicationRegistration\Data\HostAddress.cs" />
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
-    <Compile Include="Logging\SystemLogReader.cs" />
+    <Compile Include="Logging\LogEntrySource.cs" />
+    <Compile Include="Logging\SystemLogReaderService.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="Notification\INotificationService.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />

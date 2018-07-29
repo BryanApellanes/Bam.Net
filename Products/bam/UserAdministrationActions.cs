@@ -28,24 +28,40 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
-        [ConsoleAction]
-        public void SetDefaultSmtpSettings()
+        /// <summary>
+        /// Sets the local SMTP settings.
+        /// </summary>
+        [ConsoleAction("setLocalSmtpSettings", "set local smtp settings")]
+        public void SetLocalSmtpSettings()
         {
-            string smtpSettingsFile = ".\\default-smtp-settings.json";
-            if (!File.Exists(smtpSettingsFile))
-            {
-                smtpSettingsFile = Prompt("Please enter the path to the smtp settings json file");
-            }
+            string smtpSettingsFile = GetArgument("setLocalSmtpSettings", "Please enter the path to the smtp settings json file");            
             if (!File.Exists(smtpSettingsFile))
             {
                 OutLineFormat("Specified smtp settings file doesn't exist: {0}", ConsoleColor.Magenta, smtpSettingsFile);
                 return;
             }
             SmtpSettings settings = smtpSettingsFile.FromJsonFile<SmtpSettings>();
-
-            settings.Password = PasswordPrompt("Please enter the smtp password", ConsoleColor.Yellow);
+            if (string.IsNullOrEmpty(settings.Password))
+            {
+                settings.Password = PasswordPrompt("Please enter the smtp password", ConsoleColor.Yellow);
+            }
 
             NotificationService.SetDefaultSmtpSettings(settings);
+        }
+
+        /// <summary>
+        /// Sends the message.
+        /// </summary>
+        [ConsoleAction("sendEmail", "send an email")]
+        public void SendMessage()
+        {
+            string email = GetArgument("sendEmail", "Please enter the email address to send to");
+            string subject = GetArgument("subject", "Please enter the message subject");
+            string message = GetArgument("message", "Please enter the message body");
+            string from = GetArgument("from", "Please enter the from display name");
+
+            NotificationService svc = GetService<NotificationService>();
+            svc.NotifyRecipientEmail(email, message, subject, null, from);
         }
 
         /// <summary>
@@ -176,7 +192,7 @@ namespace Bam.Net.Application
 		public void SignUp()
 		{
             UserInfo info = GetUserInfo();
-            CoreClient client = new CoreClient(GetLogger());
+            Services.Clients.CoreClient client = new Services.Clients.CoreClient(GetLogger());
             SignUpResponse response = client.SignUp(info.Email, info.Password);
             if (!response.Success)
             {
@@ -252,11 +268,30 @@ namespace Bam.Net.Application
             return _logger;
         }
 
-        private static Database GetUserDatabase()
+        private static T GetService<T>()
         {
             ServiceRegistry svcRegistry = ApplicationServiceRegistryContainer.GetServiceRegistry();
-            UserManager mgr = svcRegistry.Get<UserManager>();
+            return svcRegistry.Get<T>();
+        }
+
+        private static Database GetUserDatabase()
+        {
+            UserManager mgr = GetService<UserManager>();
             Database userDatabase = mgr.Database;
+            ConsoleColor color = ConsoleColor.DarkYellow;
+            switch (ProcessMode.Current.Mode)
+            {
+                case ProcessModes.Dev:
+                    color = ConsoleColor.Green;
+                    break;
+                case ProcessModes.Test:
+                    color = ConsoleColor.Yellow;
+                    break;
+                case ProcessModes.Prod:
+                    color = ConsoleColor.Red;
+                    break;
+            }
+            OutLineFormat(userDatabase.ConnectionString, color);
             return userDatabase;
         }
     }

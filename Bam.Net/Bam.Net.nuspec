@@ -2,13 +2,13 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.14.2</version>
+    <version>1.14.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.14.2
-Updates since v1.14.0:
- -   correct race condition in function dictionary initialization (c799985b)
+    <releaseNotes>Version 1.14.3
+Updates since v1.14.2:
+ -   rename headers to customheaders; better mode handling, updated systemlogservice (23e5f8dc)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

@@ -21,6 +21,7 @@ using System.Reflection;
 using Bam.Net.Server.Meta;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Configuration;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
@@ -35,20 +36,20 @@ namespace Bam.Net.Server
         public const string LayoutFileExtension = ".layout";
         public const string HostAppMapFile = "hostAppMaps.json";
 
-        public ContentResponder(BamConf conf, ILogger logger, ITemplateRenderer commonTemplateRenderer = null)
+        public ContentResponder(BamConf conf, ILogger logger, ITemplateManager commonTemplateManager = null)
             : base(conf, logger)
         {
             ContentRoot = conf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(contentRootConfigKey, defaultRoot);
             ServerRoot = new Fs(ContentRoot);
             TemplateDirectoryNames = new List<string>(new string[] { "views", "templates" });
-            CommonTemplateRenderer = commonTemplateRenderer ?? new CommonDustRenderer(this);
+            CommonTemplateManager = commonTemplateManager ?? new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMap>();            
             InitializeFileExtensions();
             InitializeCaches();
         }
 
-        public ContentResponder(ILogger logger, ITemplateRenderer commonTemplateRenderer = null) : this(null, logger, commonTemplateRenderer)
+        public ContentResponder(ILogger logger, ITemplateManager templateManager = null) : this(BamConf.Load(), logger, templateManager)
         { }
 
         public string ContentRoot { get; set; }
@@ -181,7 +182,7 @@ namespace Bam.Net.Server
             CommonTemplateRendererInitialized?.Invoke(this);
         }
 
-        public ITemplateRenderer CommonTemplateRenderer // TODO: inject this
+        public ITemplateManager CommonTemplateManager // TODO: inject this
         {
             get;
             set;
@@ -249,7 +250,7 @@ namespace Bam.Net.Server
         {
             OnCommonTemplateRendererInitializing();
 
-            CommonTemplateRenderer = new CommonDustRenderer(this);
+            CommonTemplateManager = new CommonDustRenderer(this);
 
             OnCommonTemplateRendererInitialized();
         }

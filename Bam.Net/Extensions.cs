@@ -779,10 +779,9 @@ namespace Bam.Net
             return (T)Enum.Parse(typeof(T), value);
         }
 
-        public static T TryToEnum<T>(this string value) where T : struct
+        public static bool TryToEnum<T>(this string value, out T result) where T : struct
         {
-            Enum.TryParse<T>(value, out T result);
-            return result;
+            return Enum.TryParse<T>(value, out result);
         }
 
         public static T Cast<T>(this object instance)

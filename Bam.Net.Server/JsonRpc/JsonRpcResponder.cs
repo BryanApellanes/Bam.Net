@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using Bam.Net.Incubation;
 using Bam.Net.Server.Renderers;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.JsonRpc
 {
@@ -45,7 +46,7 @@ namespace Bam.Net.Server.JsonRpc
 
 		protected override bool Get(IHttpContext context)
 		{
-			throw new NotImplementedException();
+			throw new InvalidOperationException("Get not supported by JsonRpc");
 		}
 
 		protected override bool Put(IHttpContext context)

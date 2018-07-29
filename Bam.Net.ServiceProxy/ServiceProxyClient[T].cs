@@ -20,6 +20,7 @@ using Org.BouncyCastle.Security;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy
 {
@@ -326,10 +327,11 @@ namespace Bam.Net.ServiceProxy
         protected virtual internal HttpWebRequest GetServiceProxyRequest(ServiceProxyVerbs verb, string className, string methodName, string queryStringParameters = "")
         {
             string namedOrNumbered = this.Numbered ? "&numbered=1" : "&named=1";
-            string methodUrl = MethodUrlFormat.NamedFormat(new { BaseAddress = BaseAddress, Verb = verb, ClassName = className, MethodName = methodName, Format = Format, Parameters = queryStringParameters, NamedOrNumberd = namedOrNumbered });
+            string methodUrl = MethodUrlFormat.NamedFormat(new { BaseAddress, Verb = verb, ClassName = className, MethodName = methodName, Format, Parameters = queryStringParameters, NamedOrNumberd = namedOrNumbered });
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(methodUrl);
             request.CookieContainer = Cookies ?? new CookieContainer();
             request.UserAgent = UserAgent;
+            request.Headers.Add(CustomHeaders.ProcessMode, ProcessMode.Current.Mode.ToString());
             Headers.AllKeys.Where(k=> !k.Equals("User-Agent")).Each(key =>
             {                
                 request.Headers.Add(key, Headers[key]);

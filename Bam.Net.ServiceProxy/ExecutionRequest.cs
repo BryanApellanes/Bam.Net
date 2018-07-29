@@ -281,6 +281,8 @@ namespace Bam.Net.ServiceProxy
         /// </summary>
         protected internal virtual ExecutionTargetInfo ResolveExecutionTargetInfo()
         {
+            // TODO: to help debloat efforts stated in GetArguments(), these operations should be extracted into an IExecutionRequestTargetResolver interface.
+
             // parse the request url to set the className, methodName and ext
             ExecutionTargetInfo executionTargetInfo = ResolveExecutionTarget(RequestUrl.AbsolutePath, ServiceProvider, ProxyAliases);
             _className = executionTargetInfo.ClassName;
@@ -469,13 +471,21 @@ namespace Bam.Net.ServiceProxy
 
         protected virtual object[] GetArguments() 
         {
-            // TODO: consider breaking this class up into specific ExecutionRequest implementations that encapsulate the style of parameters
-            //  JsonParamsExecutionRequest, OrderedHttpArgsExecutionRequest, FormEncodedPostExecutionRequest, QueryStringParametersExecutionRequest
+            // TODO: consider extracting this functionality into an ExecutionResponse class that takes the request and resolves the 
+            // relevant bits using an IExecutionRequestTargetResolver stated in ResolveExecutionTargetInfo.
+            //           AND/OR
+            // TODO: consider breaking this class up into specific ExecutionRequest implementations that encapsulate the style of intput parameters/arguments
+            //  JsonParamsExecutionRequest, OrderedHttpArgsExecutionRequest, FormEncodedPostExecutionRequest, QueryStringParametersExecutionRequest.
+            //  The type of the request should be resolved by examining the ContentType
+
+            // see ExecutionRequestResolver.ResolveExecutionRequest
 
             // This method is becoming a little bloated
             // due to accomodating too many input paths.
             // This will need to be refactored IF
             // changes continue to be necessary
+            // 07/29/2018 - +1 added notes -BA
+            // see commit 2526558ea460852c033d1151dc190308a9feaefd
 
             object[] result = new object[] { }; ;
             if (HttpArgs.Has("jsonParams", out string jsonParams))
@@ -483,14 +493,6 @@ namespace Bam.Net.ServiceProxy
                 string[] jsonStrings = jsonParams.FromJson<string[]>();
                 result = GetJsonArguments(jsonStrings);
             }
-            //else if (HttpArgs.Ordered.Length > 0)
-            //{
-            //    result = new object[HttpArgs.Ordered.Length];
-            //    HttpArgs.Ordered.Each((val, i) =>
-            //    {
-            //        result[i] = val;
-            //    });
-            //}
             else if (!string.IsNullOrEmpty(JsonParams))
             {
                 // POST: bam.invoke

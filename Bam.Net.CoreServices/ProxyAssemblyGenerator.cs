@@ -86,7 +86,11 @@ namespace Bam.Net.CoreServices
 
         private ProxyModel GetProxyModel()
         {
-            return new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port, AdditionalReferenceAssemblies);
+            HashSet<Assembly> referenceAssemblies = new HashSet<Assembly>(AdditionalReferenceAssemblies ?? new HashSet<Assembly>())
+            {
+                ServiceType.Assembly
+            };
+            return new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port, referenceAssemblies);
         }
 
         private void WarnNonVirtualMethods(ProxyModel model)

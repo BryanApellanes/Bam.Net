@@ -83,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="VyooAdmin.cs" />
     <Compile Include="VyooResponder.cs" />
     <Compile Include="VyooServer.cs" />
     <Compile Include="VyooService.cs">
@@ -90,7 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
@@ -126,6 +129,10 @@
     <ProjectReference Include="..\..\..\Bam.Net.Logging\Bam.Net.Logging.csproj">
       <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
       <Name>Bam.Net.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
+      <Project>{B9E03FF5-0750-4162-BAFD-3F0778D44A8C}</Project>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>

@@ -161,11 +161,15 @@ namespace Bam.Net.Services
             Task.Run(() =>
             {
                 AsyncCallbackService asyncCallback = _proxyFactory.GetProxy<AsyncCallbackService>(request.RespondToHostName, request.RespondToPort, Logger);
+                // This executes server side after the SecureChannel has decrypted and validated, need to set IsInitialized to true to 
+                // ensure the request doesn't reinitialize to a state where it believes it is an execution request
+                // targeting SecureChannel since that is what is in the HttpContext.Request.Url
                 ExecutionRequest execRequest = new ExecutionRequest(request.ClassName, request.MethodName, "json")
                 {
                     ServiceProvider = ServiceProvider,
-                    Context = HttpContext,
-                    JsonParams = request.JsonParams
+                    JsonParams = request.JsonParams,
+                    IsInitialized = true,
+                    Context = HttpContext
                 };
                 bool success = execRequest.Execute();
                 AsyncExecutionResponse response = new AsyncExecutionResponse

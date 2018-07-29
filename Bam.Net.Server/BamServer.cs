@@ -25,6 +25,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
 using System.Reflection;
 using Bam.Net.Server.Renderers;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
@@ -997,12 +998,12 @@ namespace Bam.Net.Server
             }
         }
 
-        public ITemplateRenderer GetAppTemplateRenderer(string appName)
+        public ITemplateManager GetAppTemplateRenderer(string appName)
         {
             Dictionary<string, AppContentResponder> container = ContentResponder.AppContentResponders;
             if (container.ContainsKey(appName))
             {
-                return container[appName].AppTemplateRenderer;
+                return container[appName].AppTemplateManager;
             }
             else
             {

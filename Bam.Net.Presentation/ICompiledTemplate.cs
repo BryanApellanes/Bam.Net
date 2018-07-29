@@ -1,4 +1,4 @@
-﻿namespace Bam.Net.Server.Renderers
+﻿namespace Bam.Net.Presentation
 {
     public interface ICompiledTemplate
     {

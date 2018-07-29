@@ -46,7 +46,7 @@ namespace Bam.Net.Server
         /// The name of the HttpHeader to check the value for, to determine
         /// if the request is intended for the current responder
         /// </summary>
-        public static string RespondToHeaderName { get { return Headers.Responder; } }
+        public static string RespondToHeaderName { get { return CustomHeaders.Responder; } }
 
         /// <summary>
         /// The value of the HttpHeader if the request is intended for the

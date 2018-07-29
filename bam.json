@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.14.2\r\n -  update readme (a60b254e)\r\n -  fix version handling, update readme (811c8715)\r\n -  update readme (7121a65b)\r\n -  notes, remove nuspec() call (f02bb60e)\r\n -  output (1a0a5301)\r\n -  docs (b004bd25)\r\n -  debuggerstepthrough (f041277b)\r\n -  bam admin; wip (5e8f86c8)\r\n -  tickle (ddf0ee2e)\r\n -  tickle (c924b4e3)\r\n -  tickle (c8ae1243)\r\n -  Merge pull request #91 from BryanApellanes/migrate-4.7.2 (fb125aa6)\r\n",
+  "ReleaseNotes": "Version 1.14.3\r\n -  add not to reference commit for more information (57bd976a)\r\n -  account for null (c946ee0f)\r\n -  Merge pull request #92 from BryanApellanes/next (ac2b7ed4)\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (d59db370)\r\n -  update readme (6406a96c)\r\n",
   "MajorVersion": 1,
   "MinorVersion": 14,
-  "PatchVersion": 2,
+  "PatchVersion": 3,
   "BuildNumber": "",
-  "VersionString": "1.14.2"
+  "VersionString": "1.14.3"
 }

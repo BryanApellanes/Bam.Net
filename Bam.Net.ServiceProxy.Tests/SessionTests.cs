@@ -109,9 +109,9 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureSession session = SecureSession.Get(request);
             ApiEncryptionValidation.SetEncryptedValidationToken(request.Headers, "Some random data", session.PublicKey);
 
-            Expect.IsNotNull(request.Headers[Headers.ValidationToken]);
+            Expect.IsNotNull(request.Headers[CustomHeaders.ValidationToken]);
 
-            OutLine(request.Headers[Headers.ValidationToken]);
+            OutLine(request.Headers[CustomHeaders.ValidationToken]);
         }
 
         private static IRequest CreateFakeRequest()

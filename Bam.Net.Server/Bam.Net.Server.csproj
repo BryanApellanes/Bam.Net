@@ -149,7 +149,6 @@
     <Compile Include="PostServerInitializationHandler.cs" />
     <Compile Include="Etags.cs" />
     <Compile Include="IPostServerInitializationHandler.cs" />
-    <Compile Include="Renderers\ICompiledTemplate.cs" />
     <Compile Include="Streaming\StreamingClient.cs" />
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />
@@ -185,7 +184,6 @@
     <Compile Include="PageResult.cs" />
     <Compile Include="ReflectionLoader.cs" />
     <Compile Include="Renderers\CompiledDustTemplate.cs" />
-    <Compile Include="Renderers\ITemplateRenderer.cs" />
     <Compile Include="Rest\RestRequest.cs" />
     <Compile Include="Rest\RestResponder.cs" />
     <Compile Include="Rest\RestResponse.cs" />

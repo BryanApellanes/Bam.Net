@@ -39,6 +39,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Logging")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Schema")]
+[assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
 
-[assembly: AssemblyVersion("1.14.2")]
-[assembly: AssemblyFileVersion("1.14.2")]
+[assembly: AssemblyVersion("1.14.3")]
+[assembly: AssemblyFileVersion("1.14.3")]

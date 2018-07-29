@@ -15,7 +15,7 @@ namespace Bam.Net.Application
     /// </summary>
     /// <seealso cref="Bam.Net.Testing.CommandLineTestInterface" />
     [Serializable]
-    public class BuildClient : CommandLineTestInterface
+    public class BuildClientActions : CommandLineTestInterface
     {
         [ConsoleAction("setBambotHost", "set the hostname for bambot builds")]
         public static void SetHost()
@@ -36,7 +36,7 @@ namespace Bam.Net.Application
             string hmacify = $"/bambot/config/{configName}";
             string json = Http.Get($"http://{info.BambotHost}{hmacify}", new Dictionary<string, string>
             {
-                { Headers.ValidationToken, $"sha1={hmacify.HmacSha1(info.BuildKey)}" }
+                { CustomHeaders.ValidationToken, $"sha1={hmacify.HmacSha1(info.BuildKey)}" }
             });
             OutLine(json, ConsoleColor.Cyan);
         }
@@ -55,7 +55,7 @@ namespace Bam.Net.Application
             string hmacify = $"/bambot/config/{configName}{body}";
             string response = Http.Post($"http://{info.BambotHost}/bambot/config/{configName}", body, new Dictionary<string, string>
             {
-                { Headers.ValidationToken, $"sha1={hmacify.HmacSha1(info.BuildKey)}" }
+                { CustomHeaders.ValidationToken, $"sha1={hmacify.HmacSha1(info.BuildKey)}" }
             });
             OutLine(response, ConsoleColor.Cyan);
         }

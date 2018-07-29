@@ -27,7 +27,7 @@ namespace Bam.Net.Data.Schema
         public SchemaDefinition(string name): this()
         {
             Name = name;
-            File = $".\\{name}";
+            File = $"{RuntimeSettings.AppDataFolder}\\{name}_schema_definition.json";
         }
         /// <summary>
         /// Gets or sets the type of the database that this SchemaDefinition was

@@ -9,6 +9,7 @@ using Bam.Net.CoreServices.OAuth;
 using Bam.Net.CoreServices.ApplicationRegistration.Data;
 using Bam.Net.ServiceProxy;
 using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
+using Bam.Net.Web;
 
 namespace Bam.Net.CoreServices
 {
@@ -49,6 +50,19 @@ namespace Bam.Net.CoreServices
             get
             {
                 return base.ApplicationName;
+            }
+        }
+
+        public ProcessModes ProcessMode
+        {
+            get
+            {
+                string modeString = HttpContext?.Request?.Headers[CustomHeaders.ProcessMode];
+                if (!string.IsNullOrEmpty(modeString))
+                {
+                    return modeString.ToEnum<ProcessModes>();
+                }
+                return ProcessModes.Prod;
             }
         }
 

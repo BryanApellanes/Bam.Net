@@ -14,7 +14,6 @@ using Bam.Net;
 using Bam.Net.Javascript;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Server;
-//using Bam.Net.Presentation.Dust;
 using Bam.Net.Web;
 using Bam.Net.Data;
 using Bam.Net.Logging;
@@ -31,7 +30,7 @@ namespace Bam.Net.Application
 
 			Type type = typeof(Program);
 			AddSwitches(typeof(Program));
-            AddSwitches(typeof(BuildClient));
+            AddSwitches(typeof(BuildClientActions));
             AddSwitches(typeof(UserAdministrationActions));
             AddSwitches(typeof(UtilityActions));
 			AddConfigurationSwitches();
@@ -39,10 +38,18 @@ namespace Bam.Net.Application
             
 			Initialize(args);
 
+            if (Arguments.Contains("ProcessMode"))
+            {
+                if(Arguments["ProcessMode"].TryToEnum<ProcessModes>(out ProcessModes processMode))
+                {
+                    ProcessMode.Current = ProcessMode.FromEnum(processMode);
+                }
+            }
+
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
                 ExecuteSwitches(Arguments, type, false, Log.Default);
-                ExecuteSwitches(Arguments, typeof(BuildClient), false, Log.Default);
+                ExecuteSwitches(Arguments, typeof(BuildClientActions), false, Log.Default);
                 ExecuteSwitches(Arguments, typeof(UserAdministrationActions), false, Log.Default);
                 ExecuteSwitches(Arguments, typeof(UtilityActions), false, Log.Default);
 			}
