@@ -136,6 +136,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationModel.cs" />
     <Compile Include="Drawing\ColorPalette.cs" />
     <Compile Include="Drawing\Dimensions.cs" />
     <Compile Include="Drawing\Extensions.cs" />
@@ -193,13 +194,16 @@
     <Compile Include="Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="ICompiledTemplate.cs" />
     <Compile Include="ImageMagick.cs" />
+    <Compile Include="IPersistenceModelProvider.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="ITemplateManager.cs" />
+    <Compile Include="IViewModelProvider.cs" />
     <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="Markdown\IDocumentComponent.cs" />
     <Compile Include="Markdown\DocumentComponent.cs" />
     <Compile Include="Markdown\PipeTableDocumentComponent.cs" />
+    <Compile Include="PageModel.cs" />
     <Compile Include="Pdf\Pdf.cs" />
     <Compile Include="Pdf\PdfOrientation.cs" />
     <Compile Include="Pdf\PdfOutput.cs" />
@@ -210,6 +214,7 @@
     <Compile Include="Html\ParameterLayouts.cs" />
     <Compile Include="Html\InputFormBuilder.cs" />
     <Compile Include="Html\ServiceProxyWebViewPageExtensions.cs" />
+    <Compile Include="PersistenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Html\RadioList.cs" />
     <Compile Include="Html\Select.cs" />
@@ -218,6 +223,7 @@
     <Compile Include="Html\TagBuilderExtensions.cs" />
     <Compile Include="Html\UrlHelperExtensions.cs" />
     <Compile Include="Inkscape.cs" />
+    <Compile Include="ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Html\Js\DataSet.js" />
@@ -241,6 +247,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
