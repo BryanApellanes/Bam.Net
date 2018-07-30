@@ -1,0 +1,37 @@
+﻿{
+  "WindowsServices": [
+    {
+      "Host": "www",
+      "Name": "Heart",
+      "FileName": "heart.exe",
+      "AppSettings": {
+        "HostNames": "heart.bamapps.net,heart.threeheadz.io,core.bamapps.net,core.threeheadz.io",
+        "Ssl": false,
+        "Port": 9101,
+        "ApplicationName": "heart.bamapps.net",
+        "ProcessMode": "Prod",
+        "LogType": "Windows"
+      }
+    }
+  ],
+  "DaemonServices": [
+    {
+      "Host": "core",
+      "Port": 8477,
+      "HostNames": "bamd-core",
+      "Ssl": false,
+      "ApplicationName": "bamd-core",
+      "LogType": "Windows"
+    }
+  ],
+  "Daemons": [
+    {
+      "Copy": false,
+      "Host": "core",
+      "Name": "bambotjs",
+      "FileName": "C:\\bam\\tools\\node.exe",
+      "Arguments": "bambot.js",
+      "WorkingDirectory": "C:\\bam\\sys\\bamjs\\bambotjs"
+    }
+  ]
+}

@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// An IChunkStorage implementation that stores chunks in the file system.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.Files.IChunkStorage" />
     public class FileSystemChunkStorage: IChunkStorage
     {
         public FileSystemChunkStorage()

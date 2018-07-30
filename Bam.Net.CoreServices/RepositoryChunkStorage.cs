@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// An IChunkStorage implementation that stores chunk data in an IRepository.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.Files.IChunkStorage" />
     public class RepositoryChunkStorage: IChunkStorage
     {
         public RepositoryChunkStorage()
