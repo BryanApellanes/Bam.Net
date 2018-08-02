@@ -17,13 +17,13 @@ namespace Bam.Net.Services
     public class ClientServiceRegistryContainer
     {
         public const string RegistryName = "ClientServiceRegistry";
-        static ServiceRegistry _coreServiceRegistry;
-        static object _coreIncubatorLock = new object();
+        static ServiceRegistry _clientServiceRegistry;
+        static object _clientRegistryLock = new object();
 
         [ServiceRegistryLoader(RegistryName)]
         public static ServiceRegistry GetServiceRegistry()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
+            return _clientRegistryLock.DoubleCheckLock(ref _clientServiceRegistry, Create);
         }
 
         public static ServiceRegistry Create()
@@ -41,7 +41,6 @@ namespace Bam.Net.Services
                 .For<DaoRepository>().Use(repo)
                 .For<ICatalogService>().Use<CatalogService>()
                 .For<CatalogService>().Use<CatalogService>();
-
 
             reg.CombineWith(coreReg);
 

@@ -88,6 +88,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\AdministrationService.cs" />
+    <Compile Include="Administration\AdministrationServiceRegistryContainer.cs" />
     <Compile Include="AsyncCallback\AsyncCallbackService.cs" />
     <Compile Include="AsyncCallback\Data\AsyncExecutionData.cs" />
     <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncCallbackContext.cs" />

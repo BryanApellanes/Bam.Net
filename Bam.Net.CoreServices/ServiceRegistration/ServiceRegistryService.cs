@@ -401,6 +401,10 @@ namespace Bam.Net.CoreServices
 
                 if ((existing != null && overwrite) || existing == null)
                 {
+                    if(existing != null)
+                    {
+                        ServiceRegistryRepository.Delete(existing);
+                    }
                     existing = ServiceRegistryRepository.Save(loader);
                 }
 
