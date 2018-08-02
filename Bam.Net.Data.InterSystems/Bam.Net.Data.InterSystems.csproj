@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrencyStrategy.cs" />
     <Compile Include="InterSystemsConnectionStringResolver.cs" />
     <Compile Include="InterSystemsCredentials.cs" />
     <Compile Include="InterSystemsDatabase.cs" />

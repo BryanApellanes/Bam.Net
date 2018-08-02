@@ -222,7 +222,6 @@ namespace Bam.Net.Incubation
             return this[type];
         }
 
-        [DebuggerStepThrough]
         private static void Throw(Type type, Type[] ctorTypes)
         {
             throw new ConstructFailedException(type, ctorTypes);
