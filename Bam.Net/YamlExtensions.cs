@@ -121,6 +121,11 @@ namespace Bam.Net
 			return File.ReadAllText(file.FullName).FromYaml(expectedTypes);
 		}
 
+        public static T FromYamlFile<T>(this string filePath)
+        {
+            return new FileInfo(filePath).FromYamlFile<T>();
+        }
+
         public static T FromYamlFile<T>(this FileInfo file, params Type[] expectedTypes)
         {
             return FromYaml<T>(File.ReadAllText(file.FullName));
