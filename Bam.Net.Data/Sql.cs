@@ -10,9 +10,14 @@ namespace Bam.Net.Data
 {
     public static class Sql
     { 
+        public static void Execute(string path, Database db, object parameters)
+        {
+            Execute(new FileInfo(path), db, parameters);
+        }
+
         public static void Execute(FileInfo file, Database db, object parameters)
         {
-            Execute(file, db, parameters.ToDbParameters(db));
+            Execute(file, db, parameters.ToDbParameters(db).ToArray());
         }
 
         public static void Execute(FileInfo file, Database db, params DbParameter[] parameters)
@@ -42,12 +47,12 @@ namespace Bam.Net.Data
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this FileInfo file, Database db, params DbParameter[] parameters) where T: class, new()
         {
-            return ExecuteSql<T>(file.ReadAllText(), db);
+            return ExecuteSql<T>(file.ReadAllText(), db, parameters);
         }
 
         public static IEnumerable<T> ExecuteSql<T>(this string sql, Database db, params DbParameter[] parameters) where T : class, new()
         {
-            return db.ExecuteReader<T>(sql);
+            return db.ExecuteReader<T>(sql, parameters);
         }
     }
 }
