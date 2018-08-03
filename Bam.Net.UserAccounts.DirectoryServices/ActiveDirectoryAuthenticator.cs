@@ -21,6 +21,12 @@ namespace Bam.Net.UserAccounts.DirectoryServices
         public ActiveDirectoryAuthenticator(string server, ILogger logger = null) : this(new ActiveDirectoryReader(server, logger), logger)
         { }
 
+        public ActiveDirectoryAuthenticator(string server, string defaultNamingContext, ILogger logger = null) : this(new ActiveDirectoryReader(server, defaultNamingContext, logger), logger)
+        { }
+
+        public ActiveDirectoryAuthenticator(DomainControllerInfo domainController, ILogger logger) : this(new ActiveDirectoryReader(domainController.ServerName, domainController.DefaultNamingContext), logger)
+        { }
+
         ILogger _logger;
         public ILogger Logger
         {
@@ -79,15 +85,17 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                 using (DirectorySearcher searcher = new DirectorySearcher(entry))
                 {
                     searcher.Filter = $"(sAMAccountName={userName})";
+                    string server = ActiveDirectoryReader.ToString();
                     try
                     {
-                        SearchResult result = searcher.FindOne();
-                        FireEvent(PasswordValidated, new ActiveDirectoryEventArgs { UserName = userName, Server = ActiveDirectoryReader.Server });
+                        SearchResult result = searcher.FindOne();                        
+                        FireEvent(PasswordValidated, new ActiveDirectoryEventArgs { UserName = userName, Server = server});
+                        Logger.AddEntry("PasswordValidated: {0}, {1}, {2}", domain, userName, server);
                         return true;
                     }
                     catch (Exception ex)
                     {
-                        Logger.AddEntry("Failed to validate password: {0}", ex, $"{domain}\\{userName}");
+                        Logger.AddEntry("Failed to validate password: {0}, {1}", ex, $"{domain}\\{userName}", server);
                         FireEvent(PasswordValidationFailed, new ActiveDirectoryEventArgs { UserName = userName, Server = ActiveDirectoryReader.Server });
                         return false;
                     }

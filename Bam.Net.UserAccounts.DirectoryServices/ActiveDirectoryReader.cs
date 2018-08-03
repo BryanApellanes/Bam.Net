@@ -10,8 +10,8 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 {
     public class ActiveDirectoryReader: Loggable
     {
-        const string DistinguishedName = "distinguishedname";
-        const string DefaultNamingContext = "defaultNamingContext";
+        const string DistinguishedNameKey = "distinguishedname";
+        const string DefaultNamingContextKey = "defaultNamingContext";
 
         static ActiveDirectoryReader()
         {
@@ -26,6 +26,13 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             Server = server;
             Logger = logger ?? Log.Default;
         }
+
+        public ActiveDirectoryReader(string server, string defaultNamingContext, ILogger logger = null) : this(server, logger)
+        {
+            DefaultNamingContext = defaultNamingContext;
+        }
+
+        public string DefaultNamingContext { get; set; }
 
         /// <summary>
         /// Gets or sets the search results, keyed by username (samaccountname) then by properties.
@@ -104,6 +111,11 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                 results.Add(ReadProperty(directoryEntry, "sAMAccountName")?.ToString());
             }
             return results.ToArray();
+        }
+        
+        public string GetDirectoryRootPath()
+        {
+            return $"LDAP://{Server}/{GetDefaultNamingContext()}";
         }
 
         private static object ReadProperty(DirectoryEntry directoryEntry, string propertyName)
@@ -194,7 +206,7 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                 DirectoryEntries.Add(samAccountName, null);
             }
 
-            if (!SearchResults[samAccountName].ContainsKey(DistinguishedName) || reload)
+            if (!SearchResults[samAccountName].ContainsKey(DistinguishedNameKey) || reload)
             {
                 using (DirectorySearcher searcher = GetDirectoryRootSearcher())
                 {
@@ -233,9 +245,9 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                     }
                 }
             }
-            if(SearchResults.ContainsKey(samAccountName) && SearchResults[samAccountName].ContainsKey(DistinguishedName))
+            if(SearchResults.ContainsKey(samAccountName) && SearchResults[samAccountName].ContainsKey(DistinguishedNameKey))
             {
-                return SearchResults[samAccountName][DistinguishedName];
+                return SearchResults[samAccountName][DistinguishedNameKey];
             }
             return string.Empty;
         }
@@ -260,15 +272,23 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             return $"LDAP://{Server}/{GetDistinguishedName(userName)}";
         }
 
-        public string GetDirectoryRootPath()
+        public override string ToString()
         {
-            return $"LDAP://{Server}/{GetDefaultNamingContext()}";
+            return GetDirectoryRootPath();
         }
 
         protected string GetDefaultNamingContext()
         {
-            DirectoryEntry entry = new DirectoryEntry("LDAP://rootDSE");
-            return entry.Properties[DefaultNamingContext].Value.ToString();
+            if (!string.IsNullOrEmpty(DefaultNamingContext))
+            {
+                return DefaultNamingContext;
+            }
+            else
+            {
+                DirectoryEntry entry = new DirectoryEntry("LDAP://rootDSE");
+                DefaultNamingContext = entry.Properties[DefaultNamingContextKey].Value.ToString();
+                return DefaultNamingContext;
+            }
         }
 
         private DirectorySearcher GetDirectoryRootSearcher()
