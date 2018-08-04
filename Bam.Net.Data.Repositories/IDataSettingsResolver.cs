@@ -9,6 +9,6 @@ namespace Bam.Net.Data.Repositories
 {
     public interface IDataSettingsResolver
     {
-        DefaultDatabaseProvider Resolve(IHttpContext context);
+        DefaultDataSettingsProvider Resolve(IHttpContext context);
     }
 }

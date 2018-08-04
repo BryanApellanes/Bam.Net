@@ -9,9 +9,9 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class DefaultDatabaseProvider: DatabaseProvider<SQLiteDatabase>
+    public class DefaultDataSettingsProvider : DatabaseProvider<SQLiteDatabase>, IDataDirectoryProvider
     {
-        public DefaultDatabaseProvider()
+        public DefaultDataSettingsProvider()
         {
             DataRootDirectory = "C:\\bam\\data";
             AppDataDirectory = "AppData";
@@ -27,29 +27,62 @@ namespace Bam.Net.Data.Repositories
             Logger = Log.Default;            
         }
 
-        public DefaultDatabaseProvider(ProcessMode processMode, ILogger logger = null):this()
+        public DefaultDataSettingsProvider(ProcessMode processMode, ILogger logger = null):this()
         {
             ProcessMode = processMode;
             Logger = logger ?? Log.Default;
         }
 
-        static DefaultDatabaseProvider _default;
+        public static BamPaths GetPaths()
+        {
+            return BamPaths.Get(Instance);
+        }
+
+        public static DataPaths GetDataPaths()
+        {
+            return GetDataPaths(ProcessMode.Current);
+        }
+
+        public static DataPaths GetDataPaths(ProcessModes mode)
+        {
+            return GetDataPaths(ProcessMode.FromEnum(mode));
+        }
+
+        public static DataPaths GetDataPaths(ProcessMode mode)
+        {
+            return DataPaths.Get(new DefaultDataSettingsProvider(mode));
+        }
+
+        public ProcessMode ProcessMode { get; set; }
+
+        public string DataRootDirectory { get; set; }
+        public string AppDataDirectory { get; set; }
+        public string SysDataDirectory { get; set; }
+        public string DatabaseDirectory { get; set; }
+        public string RepositoryDirectory { get; set; }
+        public string FilesDirectory { get; set; }
+        public string ChunksDirectory { get; set; }
+        public string WorkspacesDirectory { get; set; }
+        public string EmailTemplatesDirectory { get; set; }
+        public string AssemblyDirectory { get; set; }
+
+        static DefaultDataSettingsProvider _default;
         static object _defaultLock = new object();
-        public static DefaultDatabaseProvider Instance
+        public static DefaultDataSettingsProvider Instance
         {
             get
             {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new DefaultDatabaseProvider());
+                return _defaultLock.DoubleCheckLock(ref _default, () => new DefaultDataSettingsProvider());
             }
         }
 
-        static DefaultDatabaseProvider _fromConfig;
+        static DefaultDataSettingsProvider _fromConfig;
         static object _fromConfigLock = new object();
-        public static DefaultDatabaseProvider Current
+        public static DefaultDataSettingsProvider Current
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DefaultDatabaseProvider(ProcessMode.Current));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DefaultDataSettingsProvider(ProcessMode.Current));
             }
         }
 
@@ -75,18 +108,6 @@ namespace Bam.Net.Data.Repositories
         {
             RuntimeSettings.AppDataFolder = GetAppDataDirectory(appNameProvider).FullName;
         }
-
-        public ProcessMode ProcessMode { get; set; }
-        public string DataRootDirectory { get; set; }
-        public string AppDataDirectory { get; set; }
-        public string SysDataDirectory { get; set; }
-        public string DatabaseDirectory { get; set; }
-        public string RepositoryDirectory { get; set; }
-        public string FilesDirectory { get; set; }
-        public string ChunksDirectory { get; set; }
-        public string WorkspacesDirectory { get; set; }
-        public string EmailTemplatesDirectory { get; set; }
-        public string AssemblyDirectory { get; set; }
 
         public DirectoryInfo GetRootDataDirectory()
         {

@@ -50,7 +50,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-                return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(Path.Combine(DefaultDatabaseProvider.Current.AppDataDirectory, "ObjectRepositoryData")));
+                return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(Path.Combine(DefaultDataSettingsProvider.Current.AppDataDirectory, "ObjectRepositoryData")));
 			}
 			set
 			{

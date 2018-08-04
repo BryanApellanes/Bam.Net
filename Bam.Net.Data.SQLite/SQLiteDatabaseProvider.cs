@@ -24,6 +24,36 @@ namespace Bam.Net.Data
         public ILogger Logger { get; set; }
         public string Root { get; set; }
 
+        public Database GetAppDatabase(IApplicationNameProvider appNameProvider, string databaseName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Database GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Database GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Database GetSysDatabase(string databaseName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Database GetSysDatabaseFor(object instance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Database GetSysDatabaseFor(Type objectType, string info = null)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Sets all properties on the specified instances, where the property type 
         /// is Database, to a SQLiteDatabase with it's root folder set to {Root}
