@@ -12,8 +12,8 @@ namespace Bam.Net
     { 
         static Paths()
         {
-            Root = "C:\\bam";
             PubRoot = @"\\bam\public";
+            Root = "C:\\bam";
 
             BamDrive = "/b/drive"; // should be mapped to PubRoot (net use b: \\bam\public)
             WindowsBamDrive = "B:\\drive";
