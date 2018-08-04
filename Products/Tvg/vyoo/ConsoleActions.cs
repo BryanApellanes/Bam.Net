@@ -63,9 +63,9 @@ namespace Bam.Net.Application
 
         public static void StartVyooServer(ConsoleLogger logger)
         {
-            DefaultDatabaseProvider.Current.SetDefaultDatabaseFor<Session>(out Database userDb);
+            DefaultDataSettingsProvider.Current.SetDefaultDatabaseFor<Session>(out Database userDb);
             userDb.TryEnsureSchema<Session>();
-            DefaultDatabaseProvider.Current.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
+            DefaultDataSettingsProvider.Current.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
             sessionDb.TryEnsureSchema<SecureSession>();
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
             AppConf[] appConfigs = conf.AppConfigs;

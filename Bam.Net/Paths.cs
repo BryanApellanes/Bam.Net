@@ -13,7 +13,10 @@ namespace Bam.Net
         static Paths()
         {
             Root = "C:\\bam";
-            PubRoot = @"\\core\share";
+            PubRoot = @"\\bam\public";
+
+            BamDrive = "/b/drive"; // should be mapped to PubRoot (net use b: \\bam\public)
+            WindowsBamDrive = "B:\\drive";
         }
 
         static string _root;
@@ -26,24 +29,25 @@ namespace Bam.Net
                 SetPaths();
             }
         }
-
-        public static 
-
+        
         public static string PubRoot { get; set; }
+
+        public static string BamDrive { get; set; }
+        public static string WindowsBamDrive { get; set; }
 
         public static string Apps { get; private set; }
         public static string Local { get; private set; }
         public static string Content { get; private set; }
         public static string Conf { get; private set; }
         public static string Sys { get; private set; }
-        public static string Tests { get; private set; }
+        
         public static string Logs { get; private set; }
         public static string Data { get; private set; }
         public static string Tools { get; private set; }
-        public static string NugetPackages { get; private set; }
-
-        public static string Builds { get; set; }
         
+        public static string Tests { get; private set; }
+        public static string Builds { get; set; }
+        public static string NugetPackages { get; private set; }
 
         public static string AppData
         {
@@ -58,14 +62,13 @@ namespace Bam.Net
             Content = Path.Combine(Root, "content");
             Conf = Path.Combine(Root, "conf");
             Sys = Path.Combine(Root, "sys");
-            Tests = Path.Combine(Root, "tests");
             Logs = Path.Combine(Root, "logs");
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");
             NugetPackages = Path.Combine(Root, "nuget", "packages");
 
-
             Builds = Path.Combine(PubRoot, "Builds");
+            Tests = Path.Combine(PubRoot, "tests");            
         }
     }
 }

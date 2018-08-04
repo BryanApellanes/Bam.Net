@@ -21,12 +21,12 @@ namespace Bam.Net.CoreServices
 
         public DataSettingsSmtpSettingsProvider()
         {
-            DataSettings = DefaultDatabaseProvider.Current;
+            DataSettings = DefaultDataSettingsProvider.Current;
         }
 
-        public DataSettingsSmtpSettingsProvider(SmtpSettings smtpSettings, DefaultDatabaseProvider dataSettings = null)
+        public DataSettingsSmtpSettingsProvider(SmtpSettings smtpSettings, DefaultDataSettingsProvider dataSettings = null)
         {
-            DataSettings = dataSettings ?? DefaultDatabaseProvider.Current;
+            DataSettings = dataSettings ?? DefaultDataSettingsProvider.Current;
             SmtpSettings = smtpSettings;
             SmtpSettings.Save(SmtpSettingsVault);            
         }
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices
 
         public static string DefaultSender { get; set; }
 
-        public DefaultDatabaseProvider DataSettings { get; set; }
+        public DefaultDataSettingsProvider DataSettings { get; set; }
 
         SmtpSettings _smtpSettings;
         public SmtpSettings SmtpSettings

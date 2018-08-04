@@ -138,10 +138,13 @@
   <ItemGroup>
     <Compile Include="AdHocCSharpCompiler.cs" />
     <Compile Include="ApplicationNameProvider.cs" />
+    <Compile Include="ApplicationSettings.cs" />
     <Compile Include="Args.cs" />
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="Data\DataPaths.cs" />
+    <Compile Include="Data\IDataDirectoryProvider.cs" />
     <Compile Include="Encryption\CredentialInfo.cs" />
     <Compile Include="Encryption\CredentialProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationCredentialProvider.cs" />
@@ -151,6 +154,9 @@
     <Compile Include="Encryption\INamedCredentialProvider.cs" />
     <Compile Include="Encryption\ISaltProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
+    <Compile Include="BamPaths.cs" />
+    <Compile Include="Logging\DefaultConfigurationLoggerProvider.cs" />
+    <Compile Include="Logging\ILoggerProvider.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="CompilationException.cs" />

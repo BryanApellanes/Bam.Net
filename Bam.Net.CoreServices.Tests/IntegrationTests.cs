@@ -117,7 +117,7 @@ namespace Bam.Net.CoreServices.Tests
             const string server = "localhost";// "int-heart.bamapps.net";
             const int port = 80;
             logger.StartLoggingThread();
-            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();            
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger)
             {
                 UseServiceSubdomains = false,

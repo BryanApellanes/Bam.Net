@@ -22,6 +22,16 @@ namespace Bam.Net.Configuration
             return result;
         }
 
+        static object _serviceLock = new object();
+        static DefaultConfigurationService _service;
+        public static DefaultConfigurationService Instance
+        {
+            get
+            {
+                return _serviceLock.DoubleCheckLock(ref _service, () => new DefaultConfigurationService());
+            }
+        }
+
         public void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName)
         {
             LogWarnings(applicationName, configurationName);

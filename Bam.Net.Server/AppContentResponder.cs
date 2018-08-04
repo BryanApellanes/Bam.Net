@@ -26,14 +26,14 @@ namespace Bam.Net.Server
     {
         public const string CommonFolder = "common";
 
-        public AppContentResponder(ContentResponder commonResponder, AppConf conf, DefaultDatabaseProvider dataSettings = null, ILogger logger = null)
+        public AppContentResponder(ContentResponder commonResponder, AppConf conf, DefaultDataSettingsProvider dataSettings = null, ILogger logger = null)
             : base(commonResponder.BamConf, logger)
         {
             if (conf.BamConf == null)
             {
                 conf.BamConf = commonResponder.BamConf;
             }
-            DataSettings = dataSettings ?? DefaultDatabaseProvider.Current;
+            DataSettings = dataSettings ?? DefaultDataSettingsProvider.Current;
             ContentResponder = commonResponder;
             ServerRoot = commonResponder.ServerRoot;
             AppConf = conf;
@@ -127,7 +127,7 @@ namespace Bam.Net.Server
             }
         }
 
-        public DefaultDatabaseProvider DataSettings { get; }
+        public DefaultDataSettingsProvider DataSettings { get; }
 
         public ContentLocator AppContentLocator
         {
