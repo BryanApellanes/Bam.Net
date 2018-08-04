@@ -5,28 +5,71 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 
 namespace Bam.Net.Services.Clients
 {
     public class ApplicationManager
     {
-        public ApplicationManager(string organizationName, string applicationName, string coreHostName, int corePort = 80, string workingDirectory = null, ILogger logger = null)
+        public ApplicationManager(CoreClient coreClient, IOrganizationNameProvider organizationNameProvider, IApplicationNameProvider applicationNameProvider, IConfigurationService configurationService, IDatabaseProvider databaseProvider, IDataDirectoryProvider dataDirectoryProvider, ILoggerProvider loggerProvider)
         {
-            _coreClientInitializer = Task.Run(() => new CoreClient(organizationName, applicationName, coreHostName, corePort, workingDirectory, logger));
+            CoreClient = coreClient;
+            OrganizationNameProvider = organizationNameProvider;
+            ConfigurationService = configurationService;
+            DataDirectoryProvider = dataDirectoryProvider;
+            DatabaseProvider = databaseProvider;
+            ApplicationNameProvider = applicationNameProvider;
+            LoggerProvider = loggerProvider;
+            CoreClient = coreClient;
         }
 
-        public ApplicationManager(string coreHostName, int corePort = 80, string workingDirectory = null, ILogger logger = null): this(DefaultConfigurationOrganizationNameProvider.Instance.GetOrganizationName(), DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName(), coreHostName, corePort, workingDirectory, logger)
-        {        
+        protected ApplicationManager(string coreHostName, int corePort = 80)
+            : this(new CoreClient(DefaultConfigurationOrganizationNameProvider.Instance.GetOrganizationName(), DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName(), coreHostName, corePort, DefaultConfigurationLoggerProvider.Instance.GetLogger()),
+                  DefaultConfigurationOrganizationNameProvider.Instance, DefaultConfigurationApplicationNameProvider.Instance, DefaultConfigurationService.Instance, DefaultDataSettingsProvider.Instance, DefaultDataSettingsProvider.Instance, DefaultConfigurationLoggerProvider.Instance)
+        {               
         }
 
-        Task<CoreClient> _coreClientInitializer;
+        public static ApplicationManager Get(ServiceRegistry serviceRegistry, string coreHostName = "core.bamapps.net", int corePort = 80)
+        {
+            IOrganizationNameProvider organizationNameProvider = serviceRegistry.Get<IOrganizationNameProvider>();
+            IApplicationNameProvider applicationNameProvider = serviceRegistry.Get<IApplicationNameProvider>();
+            IConfigurationService configurationService = serviceRegistry.Get<IConfigurationService>();
+            IDatabaseProvider databaseProvider = serviceRegistry.Get<IDatabaseProvider>();
+            IDataDirectoryProvider dataDirectoryProvider = serviceRegistry.Get<IDataDirectoryProvider>();
+            ILoggerProvider loggerProvider = serviceRegistry.Get<ILoggerProvider>();
+            CoreClient client = new CoreClient(
+                organizationNameProvider.GetOrganizationName(),
+                applicationNameProvider.GetApplicationName(),
+                coreHostName,
+                corePort,
+                loggerProvider.GetLogger());
+            return new ApplicationManager(client, organizationNameProvider, applicationNameProvider, configurationService, databaseProvider, dataDirectoryProvider, loggerProvider);
+        }
+
         public CoreClient CoreClient
         {
-            get
+            get;set;
+        }
+
+        public IOrganizationNameProvider OrganizationNameProvider { get; set; }
+        public IApplicationNameProvider ApplicationNameProvider { get; set; }
+        public IConfigurationService ConfigurationService { get; set; }
+        public IDataDirectoryProvider DataDirectoryProvider { get; set; }
+        public IDatabaseProvider DatabaseProvider { get; set; }
+        public ILoggerProvider LoggerProvider { get; set; }
+
+        public ApplicationSettings GetSettings()
+        {
+            return new ApplicationSettings
             {
-                return _coreClientInitializer.Result;
-            }
+                OrganizationName = OrganizationNameProvider.GetOrganizationName(),
+                ApplicationName = ApplicationNameProvider.GetApplicationName(),
+                Paths = BamPaths.Get(DataDirectoryProvider),
+                Configuration = ConfigurationService.GetApplicationConfiguration(ApplicationNameProvider.GetApplicationName())
+            };
         }
     }
 }
