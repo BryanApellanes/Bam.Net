@@ -14,7 +14,7 @@ namespace Bam.Net.Services.Clients
         public CoreAsyncProxyableService() 
             : base(
                   new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), Server.AppConf.FromDefaultConfig()), 
-                  DataSettings.Current.GetSysDaoRepository(), Server.AppConf.FromDefaultConfig())
+                  DefaultDatabaseProvider.Current.GetSysDaoRepository(), Server.AppConf.FromDefaultConfig())
         {
             CoreClient = new CoreClient();
             _userManager = CoreClient.UserRegistryService;

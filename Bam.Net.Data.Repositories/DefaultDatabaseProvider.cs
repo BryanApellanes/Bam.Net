@@ -9,9 +9,9 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class DataSettings: DatabaseProvider<SQLiteDatabase>
+    public class DefaultDatabaseProvider: DatabaseProvider<SQLiteDatabase>
     {
-        public DataSettings()
+        public DefaultDatabaseProvider()
         {
             DataRootDirectory = "C:\\bam\\data";
             AppDataDirectory = "AppData";
@@ -27,29 +27,29 @@ namespace Bam.Net.Data.Repositories
             Logger = Log.Default;            
         }
 
-        public DataSettings(ProcessMode processMode, ILogger logger = null):this()
+        public DefaultDatabaseProvider(ProcessMode processMode, ILogger logger = null):this()
         {
             ProcessMode = processMode;
             Logger = logger ?? Log.Default;
         }
 
-        static DataSettings _default;
+        static DefaultDatabaseProvider _default;
         static object _defaultLock = new object();
-        public static DataSettings Default
+        public static DefaultDatabaseProvider Instance
         {
             get
             {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new DataSettings());
+                return _defaultLock.DoubleCheckLock(ref _default, () => new DefaultDatabaseProvider());
             }
         }
 
-        static DataSettings _fromConfig;
+        static DefaultDatabaseProvider _fromConfig;
         static object _fromConfigLock = new object();
-        public static DataSettings Current
+        public static DefaultDatabaseProvider Current
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DefaultDatabaseProvider(ProcessMode.Current));
             }
         }
 

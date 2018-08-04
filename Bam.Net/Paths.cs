@@ -13,8 +13,9 @@ namespace Bam.Net
         static Paths()
         {
             Root = "C:\\bam";
-            Builds = @"\\core\share\builds";
+            PubRoot = @"\\core\share";
         }
+
         static string _root;
         public static string Root
         {
@@ -26,6 +27,10 @@ namespace Bam.Net
             }
         }
 
+        public static 
+
+        public static string PubRoot { get; set; }
+
         public static string Apps { get; private set; }
         public static string Local { get; private set; }
         public static string Content { get; private set; }
@@ -36,7 +41,9 @@ namespace Bam.Net
         public static string Data { get; private set; }
         public static string Tools { get; private set; }
         public static string NugetPackages { get; private set; }
+
         public static string Builds { get; set; }
+        
 
         public static string AppData
         {
@@ -56,6 +63,9 @@ namespace Bam.Net
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");
             NugetPackages = Path.Combine(Root, "nuget", "packages");
+
+
+            Builds = Path.Combine(PubRoot, "Builds");
         }
     }
 }

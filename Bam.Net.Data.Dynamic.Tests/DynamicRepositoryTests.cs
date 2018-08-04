@@ -55,7 +55,7 @@ namespace Bam.Net.Data.Dynamic.Tests
 
         public class TestDynamicTypeManager: DynamicTypeManager
         {
-            public TestDynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DataSettings settings) : base(descriptorRepository, settings)
+            public TestDynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDatabaseProvider settings) : base(descriptorRepository, settings)
             {
             }
 
@@ -87,7 +87,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanGetClrTypeNameFromArrayOf()
         {
-            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             testRepo.TestGetClrTypeName();
         }
 
@@ -96,7 +96,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanGetClrPropertyName()
         {
-            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             testRepo.TestGetClrPropertyName();
         }
 
@@ -105,7 +105,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void SaveDescriptorDoesntDuplicte()
         {
-            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);            
+            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);            
             JObject jobj = (JObject)JsonConvert.DeserializeObject(new { Name = "some name", Arr = new object[] { new { Fromage = "gooey" } } }.ToJson());
             Dictionary<object, object> data = jobj.ToObject<Dictionary<object, object>>();
             string testTypeName = "test_typeName";
@@ -157,7 +157,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         {
             AutoResetEvent wait = new AutoResetEvent(false);
             string json = "\\\\core\\data\\events\\github\\04feeb057e9eba4a6ace6413af475f819b54ad0c.json".SafeReadFile();
-            DynamicTypeManager typeManager = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager typeManager = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             typeManager.SaveJson("GitHubEvent", json);
             typeManager.JsonFileProcessor.QueueEmptied += (s, a) => wait.Set();
             OutLine(typeManager.DynamicTypeDataRepository.Database.ConnectionString);            
@@ -168,7 +168,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void AssociationsAreMade()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             DynamicNamespaceDescriptor ns = new DynamicNamespaceDescriptor { Namespace = $"Test.Name.Space.{nameof(AssociationsAreMade)}" };
             ns = mgr.DynamicTypeDataRepository.Save(ns);
 
@@ -184,7 +184,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanAddType()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             string testType = "CanAddTypeTest";
             DynamicTypeDescriptor typeDescriptor = mgr.GetTypeDescriptor(testType);
             Expect.IsNull(typeDescriptor, "typeDescriptor should have been null");
@@ -199,7 +199,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanAddPropertyToType()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             mgr.DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             mgr.DynamicTypeDataRepository.Query<DynamicTypePropertyDescriptor>(p => p.Id > 0).Each(p => mgr.DynamicTypeDataRepository.Delete(p));
             string testType = nameof(CanAddPropertyToType);
@@ -218,7 +218,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanSpecifyNamespace()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             mgr.DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             mgr.DynamicTypeDataRepository.Query<DynamicTypePropertyDescriptor>(p => p.Id > 0).Each(p => mgr.DynamicTypeDataRepository.Delete(p));
             string testType = nameof(CanSpecifyNamespace);
@@ -235,7 +235,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void CanGetAssembly()
         {
-            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             mgr.DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
             mgr.DynamicTypeDataRepository.Query<DynamicTypePropertyDescriptor>(p => p.Id > 0).Each(p => mgr.DynamicTypeDataRepository.Delete(p));
             string testType = nameof(CanAddPropertyToType);
@@ -277,7 +277,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         {
             TestDynamicTypeManager repo;
             // clear existing entries if any
-            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
+            TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DefaultDatabaseProvider.Instance);
             testRepo.DynamicTypeDataRepository.DynamicTypeDescriptorsWhere(d => d.Id > 0).Each(d => testRepo.DynamicTypeDataRepository.Delete(d));
             testRepo.DynamicTypeDataRepository.DataInstancesWhere(d => d.Id > 0).Each(d => testRepo.DynamicTypeDataRepository.Delete(d));
 

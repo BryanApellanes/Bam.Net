@@ -121,14 +121,14 @@ namespace Bam.Net.Services.Tests
                 GetServiceRegistryRepository(db),
                 GetDaoRepository(db),
                 new Server.AppConf(),
-                DataSettings.Default);
+                DefaultDatabaseProvider.Instance);
         }
 
         private AssemblyService GetAssemblyService(Database db)
         {
             FileService fmSvc = GetFileService(db);
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
-            return new AssemblyService(DataSettings.Default, fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            return new AssemblyService(DefaultDatabaseProvider.Instance, fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
         }
 
         private Database GetDatabase(string databaseName)

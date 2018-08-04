@@ -29,7 +29,7 @@ namespace Bam.Net.Services
         public static ServiceRegistry Create()
         {
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
-            DaoRepository repo = new DaoRepository(DataSettings.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
+            DaoRepository repo = new DaoRepository(DefaultDatabaseProvider.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
             repo.AddNamespace(typeof(CatalogItem));
             CatalogRepository catalogRepo = new CatalogRepository(repo, Log.Default);
             ServiceRegistry coreReg = ApplicationServiceRegistryContainer.Create();

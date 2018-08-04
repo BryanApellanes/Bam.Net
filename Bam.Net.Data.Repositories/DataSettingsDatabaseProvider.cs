@@ -9,7 +9,7 @@ namespace Bam.Net.Data.Repositories
 {
     public class DataSettingsDatabaseProvider : SQLiteDatabaseProvider
     {
-        public DataSettingsDatabaseProvider(DataSettings settings, ILogger logger) : base(settings.GetSysDatabaseDirectory().FullName, logger)
+        public DataSettingsDatabaseProvider(DefaultDatabaseProvider settings, ILogger logger) : base(settings.GetSysDatabaseDirectory().FullName, logger)
         { }
 
     }

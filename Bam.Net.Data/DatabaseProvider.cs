@@ -78,5 +78,35 @@ namespace Bam.Net.Data
                 daoContext.Database.TryEnsureSchema(dao, daoContext.Logger);
             });
         }
+
+        Database IDatabaseProvider.GetAppDatabase(IApplicationNameProvider appNameProvider, string databaseName)
+        {
+            return GetAppDatabase(appNameProvider, databaseName);
+        }
+
+        Database IDatabaseProvider.GetSysDatabase(string databaseName)
+        {
+            return GetSysDatabase(databaseName);
+        }
+
+        Database IDatabaseProvider.GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance)
+        {
+            return GetAppDatabaseFor(appNameProvider, instance);
+        }
+
+        Database IDatabaseProvider.GetSysDatabaseFor(object instance)
+        {
+            return GetSysDatabaseFor(instance);
+        }
+
+        Database IDatabaseProvider.GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info)
+        {
+            return GetAppDatabaseFor(appNameProvider, objectType, info);
+        }
+
+        Database IDatabaseProvider.GetSysDatabaseFor(Type objectType, string info)
+        {
+            return GetSysDatabaseFor(objectType, info);
+        }
     }
 }

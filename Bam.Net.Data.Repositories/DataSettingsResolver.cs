@@ -11,13 +11,13 @@ namespace Bam.Net.Data.Repositories
     {
         public override IRepository GetRepository(IHttpContext context)
         {
-            DataSettings dataSettings = Resolve(context);
+            DefaultDatabaseProvider dataSettings = Resolve(context);
             return dataSettings.GetSysRepository();
         }
 
-        public DataSettings Resolve(IHttpContext context)
+        public DefaultDatabaseProvider Resolve(IHttpContext context)
         {
-            return new DataSettings(ProcessModeResolver.Resolve(context.Request.Url));
+            return new DefaultDatabaseProvider(ProcessModeResolver.Resolve(context.Request.Url));
         }
     }
 }
