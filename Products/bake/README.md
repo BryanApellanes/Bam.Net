@@ -16,8 +16,6 @@ bake /publish:public
 To run a build, deploy, test cycle execute the following commands:
 
 ```
-cd C:\bam\serc\Bam.Net
-git checkout next
 cd C:\bam\tools\bake
 bake /build:.\build.json
 bake /deploy:.\deploy-test.json
