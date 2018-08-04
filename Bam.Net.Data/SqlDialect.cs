@@ -37,6 +37,8 @@ namespace Bam.Net.Data
         /// <summary>
         /// Postgres sql; same as Postgres
         /// </summary>
-        Npgsql
+        Npgsql,
+
+        InterSystems
 	}
 }

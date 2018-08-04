@@ -215,6 +215,7 @@
     <Compile Include="QuerySetResults.cs" />
     <Compile Include="SelectResult.cs" />
     <Compile Include="SetFormat.cs" />
+    <Compile Include="Sql.cs" />
     <Compile Include="SqlDialect.cs" />
     <Compile Include="SqlExecuteDelegate.cs" />
     <Compile Include="SqlInfo.cs" />

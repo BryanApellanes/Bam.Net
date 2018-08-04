@@ -331,6 +331,11 @@ namespace Bam.Net.Data
             return ExecuteReader<T>(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection, onReaderExecuted);
         }
         
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, params DbParameter[] dbParameters) where T : class, new()
+        {
+            return ExecuteReader<T>(sqlStatement, CommandType.Text, dbParameters, GetOpenDbConnection());
+        }
+
         public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action<DbDataReader> onReaderExecuted = null) where T: class, new()
         {
             DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
@@ -341,10 +346,10 @@ namespace Bam.Net.Data
                 while (reader.Read())
                 {
                     T next = new T();
-                    columnNames.Each(new { Value = next, Reader = reader }, (ctx, cn) =>
+                    foreach(string columnName in columnNames)
                     {
-                        ReaderPropertySetter(ctx.Value, cn, ctx.Reader[cn]);
-                    });
+                        ReaderPropertySetter(next, columnName, reader[columnName]);
+                    }
                     yield return next;
                 }
             }
