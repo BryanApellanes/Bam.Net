@@ -135,7 +135,7 @@
     <None Include="deploy-prod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="deploy.json">
+    <None Include="deploy-test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="generate_bam_dot_exe.cmd" />
