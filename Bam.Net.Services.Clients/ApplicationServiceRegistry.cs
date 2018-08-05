@@ -27,7 +27,7 @@ namespace Bam.Net.Services.Clients
         [ServiceRegistryLoader(RegistryName, ProcessModes.Dev)]
         public static ServiceRegistry CreateTestingServicesRegistryForDev()
         {
-            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
+            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "int-heart.bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt());
             return GetServiceRegistry(coreClient);
         }
 
