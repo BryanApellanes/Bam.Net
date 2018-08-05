@@ -65,10 +65,10 @@ namespace Bam.Net
             Logs = Path.Combine(Root, "logs");
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");
+            Tests = Path.Combine(Root, "tests");
             NugetPackages = Path.Combine(Root, "nuget", "packages");
 
-            Builds = Path.Combine(PubRoot, "Builds");
-            Tests = Path.Combine(PubRoot, "tests");            
+            Builds = Path.Combine(PubRoot, "Builds");            
         }
     }
 }

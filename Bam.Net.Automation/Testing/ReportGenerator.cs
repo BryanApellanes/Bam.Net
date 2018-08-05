@@ -20,6 +20,10 @@ namespace Bam.Net.Automation.Testing
         public static ProcessOutput Run(string outputDirectoryPath)
         {
             DirectoryInfo coverageFolder = new DirectoryInfo(System.IO.Path.Combine(Paths.Tests, TestConstants.CoverageXmlFolder));
+            if (!coverageFolder.Exists)
+            {
+                coverageFolder.Create();
+            }
             string[] reportXmlFilePaths = coverageFolder.GetFiles("*_coverage.xml").Select(fi => fi.FullName).ToArray(); //bamtestrunner.exe will output xml files to this folder 
             return Run(outputDirectoryPath, reportXmlFilePaths, System.IO.Path.Combine(Paths.Tests, TestConstants.HistoryFolder));
         }
