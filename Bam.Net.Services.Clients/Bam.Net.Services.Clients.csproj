@@ -62,9 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationCore.cs" />
     <Compile Include="ApplicationDataDescriptor.cs" />
-    <Compile Include="ApplicationManager.cs" />
+    <Compile Include="ApplicationContext.cs" />
     <Compile Include="ApplicationDataManager.cs" />
     <Compile Include="ApplicationConfigurationProvider.cs" />
     <Compile Include="ApplicationLogDatabase.cs" />
