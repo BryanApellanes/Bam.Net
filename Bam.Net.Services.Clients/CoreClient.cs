@@ -43,7 +43,7 @@ namespace Bam.Net.Services.Clients
             WireInvocationEventHandlers();
         }
 
-        public CoreClient(ILogger logger = null) : this(Organization.Public.Name, DefaultApplicationName, "bamapps.net", 80, null, logger ?? Log.Default)
+        public CoreClient(ILogger logger = null) : this(Organization.Public.Name, DefaultApplicationName, "heart.bamapps.net", 80, null, logger ?? Log.Default)
         { }
 
         /// <summary>

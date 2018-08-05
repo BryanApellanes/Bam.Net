@@ -32,7 +32,6 @@ namespace Bam.Net.Testing
 
         protected static MethodInfo DefaultMethod { get; set; }
 
-        [DebuggerStepThrough]
         public static void Initialize(string[] args, ConsoleArgsParsedDelegate parseErrorHandler = null)
 		{
             AssemblyResolve.Monitor(()=>

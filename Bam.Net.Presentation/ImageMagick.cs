@@ -25,10 +25,16 @@ namespace Bam.Net.Presentation
 
         public static Bitmap SetDpi(string inputImagePath, int dpi, string outputFolder)
         {
+            return SetDpi(inputImagePath, dpi, outputFolder, out FileInfo ignore);
+        }
+
+        public static Bitmap SetDpi(string inputImagePath, int dpi, string outputFolder, out FileInfo imageFile)
+        {
             string fileName = Path.GetFileName(inputImagePath);
             string resultImage = Path.Combine(outputFolder, $"{dpi}dpi_{fileName}");
             Bitmap result = null;
             ImageMagickExePath.Run($"convert -units PixelsPerInch {inputImagePath} -density {dpi} {resultImage}", (o, a) => result = new Bitmap(resultImage), 60000);
+            imageFile = new FileInfo(resultImage);
             return result;
         }
     }

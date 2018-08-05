@@ -36,8 +36,7 @@ namespace Bam.Net.Presentation
         }
 
         /// <summary>
-        /// Exports the specified svg file at the specified dimensions and
-        /// sets the resolution to 300 x 300.
+        /// Exports the specified svg file at the specified dimensions.
         /// </summary>
         /// <param name="svgFilePath"></param>
         /// <param name="width"></param>

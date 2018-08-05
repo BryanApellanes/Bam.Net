@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\bam\tools\bami\</OutputPath>
+    <OutputPath>B:\tools\bami\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\BUILD\BamToolkit\bami.XML</DocumentationFile>
     <DebugType>full</DebugType>

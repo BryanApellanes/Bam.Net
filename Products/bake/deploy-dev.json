@@ -1,0 +1,16 @@
+﻿{
+  "WindowsServices": [
+    {
+      "Host": "core",
+      "Name": "Heart",
+      "FileName": "heart.exe",
+      "AppSettings": {
+        "HostNames": "dev-heart.bamapps.net,dev-heart.threeheadz.io",
+        "Ssl": false,
+        "Port": 9101,
+        "ApplicationName": "dev-heart.bamapps.net",
+        "LogType": "Windows"
+      }
+    }
+  ]
+}
