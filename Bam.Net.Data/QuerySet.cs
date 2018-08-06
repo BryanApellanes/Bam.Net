@@ -17,6 +17,8 @@ namespace Bam.Net.Data
     /// </summary>
     public class QuerySet: SqlStringBuilder
     {
+        public event SqlExecuteDelegate Executed;
+
         List<IHasDataTable> _results;
         public QuerySet()
         {
