@@ -23,6 +23,7 @@ namespace Bam.Net.Server.Meta
         private AppMetaManager()
         {
         }
+
         public AppMetaManager(BamConf conf)
         {
             this.BamConf = conf;
