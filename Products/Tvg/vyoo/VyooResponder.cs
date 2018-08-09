@@ -54,7 +54,7 @@ namespace Bam.Net.Application
 
         public override bool Respond(IHttpContext context)
         {
-            if (!ContentResponder.TryRespond(context))
+            if (!TryRespond(context))
             {
                 SendResponse(context, 404, new { BamServer = "Vyoo Server" });
             }

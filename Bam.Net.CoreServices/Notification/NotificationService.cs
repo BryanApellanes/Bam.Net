@@ -93,7 +93,7 @@ namespace Bam.Net.CoreServices
             return TemplateNotify(user.Email, templateName, data, subject);
         }
 
-        [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
+        [RoleRequired("/NotificationService/AccessDenied", "Admin")]
         public virtual bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
         {
             object data = string.IsNullOrEmpty(jsonData) ? new { } : JsonConvert.DeserializeObject(jsonData);
@@ -119,7 +119,7 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
+        [RoleRequired("/NotificationService/AccessDenied", "Admin")]
         public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null, bool bypassRecipientValidation = false)
         {
             try

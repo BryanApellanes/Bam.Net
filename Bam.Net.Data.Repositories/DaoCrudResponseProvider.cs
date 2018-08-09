@@ -18,14 +18,16 @@ namespace Bam.Net.Data.Repositories
             DaoProxyRegistration = daoProxyRegistration;
             HttpContext = httpContext;
             DaoInfo = DaoInfo.FromContext(httpContext);
-            Methods = new Dictionary<CrudMethods, Func<CrudResponse>>();
-            Methods.Add(CrudMethods.Invalid, () => new CrudResponse { Success = false, Message = "Invalid CrudMethod specified" });
-            Methods.Add(CrudMethods.Create, () => Try(Create).Result);
-            Methods.Add(CrudMethods.Retrieve, () => Try(Retrieve).Result);
-            Methods.Add(CrudMethods.Update, () => Try(Update).Result);
-            Methods.Add(CrudMethods.Delete, () => Try(Delete).Result);
-            Methods.Add(CrudMethods.Query, () => Try(Query).Result);
-            Methods.Add(CrudMethods.SaveCollection, () => Try(SaveCollection).Result);
+            Methods = new Dictionary<CrudMethods, Func<CrudResponse>>
+            {
+                { CrudMethods.Invalid, () => new CrudResponse { Success = false, Message = "Invalid CrudMethod specified" } },
+                { CrudMethods.Create, () => Try(Create).Result },
+                { CrudMethods.Retrieve, () => Try(Retrieve).Result },
+                { CrudMethods.Update, () => Try(Update).Result },
+                { CrudMethods.Delete, () => Try(Delete).Result },
+                { CrudMethods.Query, () => Try(Query).Result },
+                { CrudMethods.SaveCollection, () => Try(SaveCollection).Result }
+            };
         }
 
         public CrudResponse Create()

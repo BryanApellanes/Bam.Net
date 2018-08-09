@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace Bam.Net.Services.DataReplication
 {
+    /// <summary>
+    /// A class used to resolve 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Services.DataReplication.IRepositoryTypeResolver" />
     public class RepositoryTypeResolver : IRepositoryTypeResolver
     {
         public static string DefaultNamespace = $"Bam.Net.Services.DataReplication.Data";

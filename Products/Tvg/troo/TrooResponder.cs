@@ -33,7 +33,7 @@ namespace Bam.Net.Application
         {
             if (!TryRespond(context))
             {
-                SendResponse(context, "Troo Server");
+                SendResponse(context, 404, new { BamServer = "Troo Server" });
             }
             context.Response.Close();
             return true;
@@ -54,6 +54,7 @@ namespace Bam.Net.Application
         public event Action<TrooResponder> Initializing;
 
         public event Action<TrooResponder> Initialized;
+
         public override void Initialize()
         {
             OnInitializing();
@@ -62,10 +63,12 @@ namespace Bam.Net.Application
             base.Initialize();
             OnInitialized();
         }
+
         protected void OnInitializing()
         {
             Initializing?.Invoke(this);
         }
+
         protected void OnInitialized()
         {
             Initialized?.Invoke(this);

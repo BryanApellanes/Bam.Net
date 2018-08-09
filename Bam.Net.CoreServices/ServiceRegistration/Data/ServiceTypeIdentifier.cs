@@ -34,7 +34,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public int DurableHash { get; set; }
 
         /// <summary>
-        /// The Sha1In() of "{Namespace}.{TypeName}::{AssemblyFullName}({AssemblyFileHash})";
+        /// The Sha1Int() of "{Namespace}.{TypeName}::{AssemblyFullName}({AssemblyFileHash})";
         /// </summary>
         public int DurableSecondaryHash { get; set; }
 
