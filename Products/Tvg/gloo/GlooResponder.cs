@@ -10,7 +10,7 @@ namespace Bam.Net.Application
 {
     public class GlooResponder : HttpHeaderResponder, IInitialize<GlooResponder>
     {
-        Dictionary<string, IResponder> _responders;
+        readonly Dictionary<string, IResponder> _responders;
         public GlooResponder(BamConf conf, ILogger logger, bool verbose = false)
             : base(conf, logger)
         {
@@ -63,9 +63,18 @@ namespace Bam.Net.Application
 
         public bool TryRespond(IHttpContext context, out IResponder responder)
         {
-            string requestedResponder = GetRequestedResponderName(context).Or(ServiceProxyResponder.Name);
-            responder = _responders[requestedResponder];
-            return responder.TryRespond(context);
+            try
+            {
+                string requestedResponder = GetRequestedResponderName(context).Or(ServiceProxyResponder.Name);
+                responder = _responders[requestedResponder];
+                return responder.TryRespond(context);
+            }
+            catch (Exception ex)
+            {
+                responder = null;
+                Logger.AddEntry("Gloo: exception occurred trying to respond, {0}", ex, ex.Message);
+                return false;
+            }
         }
 
         public event Action<GlooResponder> Initializing;

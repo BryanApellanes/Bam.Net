@@ -27,10 +27,19 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             Logger = logger ?? Log.Default;
         }
 
-        public ActiveDirectoryReader(string server, string defaultNamingContext, ILogger logger = null) : this(server, logger)
+        public ActiveDirectoryReader(string server, string defaultNamingContext, ILogger logger = null) 
+            : this(server, logger)
         {
             DefaultNamingContext = defaultNamingContext;
         }
+
+        public ActiveDirectoryReader(ActiveDirectoryCredentials credentials, ILogger logger = null) 
+            : this(credentials.DomainControllerInfo.ServerName, credentials.DomainControllerInfo.DefaultNamingContext, logger)
+        {
+            ActiveDirectoryCredentials = credentials;
+        }
+
+        public ActiveDirectoryCredentials ActiveDirectoryCredentials { get; set; }
 
         public string DefaultNamingContext { get; set; }
 
@@ -257,7 +266,9 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             directoryPath = string.Empty;
             try
             {
+                Logger.AddEntry("Trying to get user from active directory: DefaultNamingContext={0}, userName={1}", GetDefaultNamingContext(), userName);
                 directoryPath = GetDirectoryPath(userName);
+                Logger.AddEntry("Got user {0}, directory path {1}", userName, directoryPath);
                 return true;
             }
             catch (Exception ex)
@@ -293,7 +304,14 @@ namespace Bam.Net.UserAccounts.DirectoryServices
 
         private DirectorySearcher GetDirectoryRootSearcher()
         {
-            return new DirectorySearcher(new DirectoryEntry(GetDirectoryRootPath()));
+            if(ActiveDirectoryCredentials != null)
+            {
+                return new DirectorySearcher(new DirectoryEntry(GetDirectoryRootPath(), ActiveDirectoryCredentials.UserName, ActiveDirectoryCredentials.Password));
+            }
+            else
+            {
+                return new DirectorySearcher(new DirectoryEntry(GetDirectoryRootPath()));
+            }
         }
 
         private string BuildOctetString(byte[] bytes)

@@ -32,17 +32,22 @@ namespace Bam.Net.Data
 
         public static IEnumerable<T> Execute<T>(FileInfo file, Database db, params DbParameter[] parameters) where T: class, new()
         {
-            return ExecuteSqlFile<T>(file, db);
+            return ExecuteSqlFile<T>(file, db, parameters);
         }
 
         public static IEnumerable<T> Execute<T>(string sql, Database db, params DbParameter[] parameters) where T: class, new()
         {
-            return ExecuteSql<T>(sql, db);
+            return ExecuteSql<T>(sql, db, parameters);
+        }
+
+        public static IEnumerable<T> ExecuteSqlFile<T>(this string filePath, Database db, object parameters) where T : class, new()
+        {
+            return ExecuteSqlFile<T>(filePath, db, parameters.ToDbParameters(db).ToArray());
         }
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this string filePath, Database db, params DbParameter[] parameters) where T: class, new()
         {
-            return ExecuteSqlFile<T>(new FileInfo(filePath), db);
+            return ExecuteSqlFile<T>(new FileInfo(filePath), db, parameters);
         }
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this FileInfo file, Database db, params DbParameter[] parameters) where T: class, new()

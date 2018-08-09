@@ -1036,7 +1036,7 @@ namespace Bam.Net
             string[] kvp = element.DelimitSplit(keyValueSeparator);
             Args.ThrowIf<ArgumentException>(kvp.Length < 1 || kvp.Length > 2, "Unrecognized Key Value pair format: ({0})", element);
 
-            key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
+            key = (pascalCasify ? kvp[0].PascalCase() : kvp[0]).Trim();
             value = string.Empty;
             if (kvp.Length == 2)
             {

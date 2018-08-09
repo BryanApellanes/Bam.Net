@@ -18,13 +18,20 @@ namespace Bam.Net.UserAccounts.DirectoryServices
             Logger = logger ?? Log.Default;
         }
 
-        public ActiveDirectoryAuthenticator(string server, ILogger logger = null) : this(new ActiveDirectoryReader(server, logger), logger)
+        public ActiveDirectoryAuthenticator(string server, ILogger logger = null) 
+            : this(new ActiveDirectoryReader(server, logger), logger)
         { }
 
-        public ActiveDirectoryAuthenticator(string server, string defaultNamingContext, ILogger logger = null) : this(new ActiveDirectoryReader(server, defaultNamingContext, logger), logger)
+        public ActiveDirectoryAuthenticator(string server, string defaultNamingContext, ILogger logger = null) 
+            : this(new ActiveDirectoryReader(server, defaultNamingContext, logger), logger)
         { }
 
-        public ActiveDirectoryAuthenticator(DomainControllerInfo domainController, ILogger logger) : this(new ActiveDirectoryReader(domainController.ServerName, domainController.DefaultNamingContext), logger)
+        public ActiveDirectoryAuthenticator(DomainControllerInfo domainController, ILogger logger) 
+            : this(new ActiveDirectoryReader(domainController.ServerName, domainController.DefaultNamingContext), logger)
+        { }
+
+        public ActiveDirectoryAuthenticator(ActiveDirectoryCredentials domainCredentials, ILogger logger)
+            : this(new ActiveDirectoryReader(domainCredentials, logger))
         { }
 
         ILogger _logger;
@@ -70,7 +77,7 @@ namespace Bam.Net.UserAccounts.DirectoryServices
                 return false;
             }
             string domain = split[0];
-            string userName = split[1];
+            string userName = split[1];            
             return IsPasswordValid(domain, userName, password);
         }
 
