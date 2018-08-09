@@ -70,6 +70,7 @@
     <Compile Include="ApplicationLogger.cs" />
     <Compile Include="ApplicationServiceRegistry.cs" />
     <Compile Include="ConfigurationServiceCredentialProvider.cs" />
+    <Compile Include="ViewServicesRegistryContainer.cs" />
     <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
     <Compile Include="CoreClientInfo.cs" />
