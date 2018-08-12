@@ -246,7 +246,6 @@
     <Compile Include="DataReplication\Data\Operation.cs" />
     <Compile Include="DataReplication\FileSequenceProvider.cs" />
     <Compile Include="DataReplication\ISequenceProvider.cs" />
-    <Compile Include="DataReplication\ISessionProvider.cs" />
     <Compile Include="DataReplication\ObjectIdentifier.cs" />
     <Compile Include="DataReplication\OperationIntent.cs" />
     <Compile Include="DataReplication\OpertionEventArgs.cs" />
