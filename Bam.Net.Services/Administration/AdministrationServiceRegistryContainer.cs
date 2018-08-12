@@ -25,7 +25,7 @@ namespace Bam.Net.Services.Administration
 
         public static ServiceRegistry Create()
         {
-            ServiceRegistry registry = ApplicationServiceRegistryContainer.Create();
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
 
             ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
                 .For<ILogger>().Use(Log.Default)

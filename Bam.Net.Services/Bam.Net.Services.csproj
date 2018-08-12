@@ -52,6 +52,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.2.0, Culture=neutral, PublicKeyToken=0e99375e54769942" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
@@ -140,6 +141,14 @@
     <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="DataReplication\Arc.cs" />
+    <Compile Include="DataReplication\DataReplicationJournal.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalEntry.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalEntryWrittenEventArgs.cs" />
+    <Compile Include="DataReplication\DataReplicationRequest.cs" />
+    <Compile Include="DataReplication\DataReplicationResponse.cs" />
+    <Compile Include="DataReplication\DataReplicationServer.cs" />
+    <Compile Include="DataReplication\DataReplicationServiceContainer.cs" />
+    <Compile Include="DataReplication\DataReplicationTypeMap.cs" />
     <Compile Include="DataReplication\Data\CreateOperation.cs" />
     <Compile Include="DataReplication\Data\DataPoint.cs" />
     <Compile Include="DataReplication\Data\DataProperty.cs" />
@@ -235,6 +244,9 @@
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventQuery.cs" />
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventWrapper.cs" />
     <Compile Include="DataReplication\Data\Operation.cs" />
+    <Compile Include="DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="DataReplication\ISequenceProvider.cs" />
+    <Compile Include="DataReplication\ISessionProvider.cs" />
     <Compile Include="DataReplication\ObjectIdentifier.cs" />
     <Compile Include="DataReplication\OperationIntent.cs" />
     <Compile Include="DataReplication\OpertionEventArgs.cs" />
@@ -245,6 +257,7 @@
     <Compile Include="DataReplication\Data\UpdateOperation.cs" />
     <Compile Include="DataReplication\Data\WriteEvent.cs" />
     <Compile Include="DataReplication\Data\WriteOperation.cs" />
+    <Compile Include="DataReplication\SequenceFile.cs" />
     <Compile Include="Events\EventMessage.cs" />
     <Compile Include="Events\EventSourceService.cs" />
     <Compile Include="Events\EventSourceServiceArgs.cs" />

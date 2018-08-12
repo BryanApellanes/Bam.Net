@@ -10,7 +10,7 @@ namespace Bam.Net.Services.AsyncCallback.Data
 {
     public class AsyncExecutionResponseData: RepoData
     {
-        public long RequestId { get; set; }
+        public ulong RequestId { get; set; }
         /// <summary>
         /// The request that this AysncExecutionResponse
         /// is in response to

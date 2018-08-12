@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
+using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
@@ -32,7 +33,7 @@ namespace Bam.Net.Services
             DaoRepository repo = new DaoRepository(DefaultDataSettingsProvider.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
             repo.AddNamespace(typeof(CatalogItem));
             CatalogRepository catalogRepo = new CatalogRepository(repo, Log.Default);
-            ServiceRegistry coreReg = ApplicationServiceRegistryContainer.Create();
+            ServiceRegistry coreReg = CoreServiceRegistryContainer.Create();
 
             ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
                 .For<ILogger>().Use(Log.Default)
@@ -40,8 +41,11 @@ namespace Bam.Net.Services
                 .For<IRepository>().Use(catalogRepo)
                 .For<DaoRepository>().Use(repo)
                 .For<ICatalogService>().Use<CatalogService>()
-                .For<CatalogService>().Use<CatalogService>();
+                .For<CatalogService>().Use<CatalogService>()
+                .For<SystemPaths>().Use(DefaultDataSettingsProvider.GetPaths())
+                .For<IDataDirectoryProvider>().Use(DefaultDataSettingsProvider.Current);
 
+            
             reg.CombineWith(coreReg);
 
             return reg;
