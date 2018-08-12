@@ -87,14 +87,14 @@ namespace Bam.Net.Automation.Testing
             return GetSuiteDefinition(suite.Title);
         }
 
-        public virtual SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
+        public virtual SaveTestExecutionResponse Pass(uint summaryId, string suiteTitle, string testTitle)
         {
             TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
             TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
             return SaveTestExecution(execution);
         }
 
-        public virtual SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
+        public virtual SaveTestExecutionResponse Fail(uint summaryId, string suiteTitle, string testTitle, string error)
         {
             TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
             TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
@@ -218,12 +218,12 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId, string tag = null)
+        public virtual SaveTestExecutionResponse StartTest(ulong executionSummaryId, ulong testDefinitionId, string tag = null)
         {
             return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId, Tag = tag });
         }
 
-        public virtual SaveTestExecutionResponse FinishTest(long executionId)
+        public virtual SaveTestExecutionResponse FinishTest(ulong executionId)
         {
             TestExecution execution = TestingRepository.OneTestExecutionWhere(c => c.Id == executionId);
             execution.FinishedTime = DateTime.UtcNow;
@@ -261,7 +261,7 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
+        public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(ulong testId)
         {
             try
             {
@@ -275,7 +275,7 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
+        public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(ulong id)
         {
             try
             {

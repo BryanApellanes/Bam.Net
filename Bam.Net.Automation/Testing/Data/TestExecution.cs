@@ -17,7 +17,7 @@ namespace Bam.Net.Automation.Testing.Data
 	[Serializable]
 	public class TestExecution: AuditRepoData
 	{
-		public long TestDefinitionId { get; set; }
+		public ulong TestDefinitionId { get; set; }
 		public virtual TestDefinition TestDefinition { get; set; }
         public DateTime? StartedTime { get; set; }
         public DateTime? FinishedTime { get; set; }
@@ -40,7 +40,7 @@ namespace Bam.Net.Automation.Testing.Data
         /// or null
         /// </summary>
         public string Tag { get; set; }
-        public long TestSuiteExecutionSummaryId { get; set; }
+        public ulong TestSuiteExecutionSummaryId { get; set; }
 		public virtual TestSuiteExecutionSummary TestSuiteExecutionSummary { get; set; }
     }
 }
