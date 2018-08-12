@@ -12,8 +12,14 @@ namespace Bam.Net.Services.DataReplication.Data
     [Serializable]
     public class DeleteOperation : WriteOperation
     {
+        public DeleteOperation()
+        {
+            Intent = OperationIntent.Delete;
+        }
+
         public UniversalIdentifier UniversalIdentifier { get; set; }
         public string Identifier { get; set; }
+
         public override object Execute(IDistributedRepository repository)
         {
             repository.Delete(this);
