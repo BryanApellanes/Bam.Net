@@ -14,7 +14,7 @@ namespace Bam.Net
         {
             Root = "C:\\bam";
 
-            BamDrive = "/b/drive"; // should be mapped to PubRoot (net use b: \\bam\public)
+            SystemDrive = "/b/drive"; // should be mapped to PubRoot (net use b: \\bam\public)
             WindowsBamDrive = "B:\\drive";
         }
 
@@ -42,7 +42,7 @@ namespace Bam.Net
             }
         }
 
-        public static string BamDrive { get; set; }
+        public static string SystemDrive { get; set; }
         public static string WindowsBamDrive { get; set; }
 
         public static string Apps { get; private set; }

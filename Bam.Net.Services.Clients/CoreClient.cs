@@ -416,7 +416,7 @@ namespace Bam.Net.Services.Clients
             {
                 Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient))
             };
-            ApplicationServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+            CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
 

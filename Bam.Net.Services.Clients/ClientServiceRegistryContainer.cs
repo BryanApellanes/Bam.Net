@@ -20,7 +20,7 @@ namespace Bam.Net.Services.Clients
     /// running application process
     /// </summary>
     [ServiceRegistryContainer]
-    public class ApplicationServiceRegistry
+    public class ClientServiceRegistryContainer
     {
         public const string RegistryName = "ApplicationServiceRegistry";
 

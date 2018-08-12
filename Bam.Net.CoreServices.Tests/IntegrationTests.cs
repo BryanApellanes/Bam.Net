@@ -96,7 +96,7 @@ namespace Bam.Net.CoreServices.Tests
                 AddDetails = false
             };
             logger.StartLoggingThread();
-            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = CoreClient.Local;//new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
             client.WorkspaceDirectory = $".\\{nameof(RegisterCreatesMachineEntry)}";
             client.LocalCoreRegistryRepository = repo;
@@ -117,7 +117,7 @@ namespace Bam.Net.CoreServices.Tests
             const string server = "localhost";// "int-heart.bamapps.net";
             const int port = 80;
             logger.StartLoggingThread();
-            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();            
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();            
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger)
             {
                 UseServiceSubdomains = false,
@@ -153,7 +153,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CanSaveMachineInCoreRegistryRepo()
         {
-            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             Client test = Client.Of(repo, "test", "test", 80);//Machine.ClientOf(repo, "test", 80);
             test = repo.Save(test);
             Expect.IsTrue(test.Id > 0);
@@ -167,7 +167,7 @@ namespace Bam.Net.CoreServices.Tests
         public void CoreClientCanRegisterAndConnectClient()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);

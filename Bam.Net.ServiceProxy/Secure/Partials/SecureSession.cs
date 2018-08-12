@@ -278,7 +278,7 @@ namespace Bam.Net.ServiceProxy.Secure
         /// </summary>
         /// <param name="cipher"></param>
         /// <returns></returns>
-        protected internal string DecryptWithPrivateKey(string cipher, IAsymmetricBlockCipher engine = null)
+        public string DecryptWithPrivateKey(string cipher, IAsymmetricBlockCipher engine = null)
         {
             return cipher.DecryptWithPrivateKey(AsymmetricKey.ToKeyPair().Private, null, engine);
         }
@@ -288,7 +288,7 @@ namespace Bam.Net.ServiceProxy.Secure
         /// </summary>
         /// <param name="plainText"></param>
         /// <returns></returns>
-        protected internal string EncryptWithPublicKey(string plainText, IAsymmetricBlockCipher engine = null)
+        public string EncryptWithPublicKey(string plainText, IAsymmetricBlockCipher engine = null)
         {
             AsymmetricKeyParameter key = AsymmetricKey.ToKeyPair().Public;// GetPublicKey();
 

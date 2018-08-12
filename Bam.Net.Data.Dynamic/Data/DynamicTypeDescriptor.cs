@@ -12,7 +12,7 @@ namespace Bam.Net.Data.Dynamic.Data
     {
         public DynamicTypeDescriptor()
         { }
-        public long DynamicNamespaceDescriptorId { get; set; }
+        public ulong DynamicNamespaceDescriptorId { get; set; }
         public virtual DynamicNamespaceDescriptor DynamicNamespaceDescriptor { get; set; }
         public string TypeName { get; set; }
         public virtual List<DynamicTypePropertyDescriptor> Properties { get; set; }

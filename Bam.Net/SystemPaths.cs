@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace Bam.Net
 {
-    public class BamPaths
+    /// <summary>
+    /// A class referencing all file system paths of importance to the bam system.
+    /// </summary>
+    public class SystemPaths
     {
-        public BamPaths()
+        public SystemPaths()
         {
             Root = Paths.Root;
             PubRoot = Paths.PubRoot;
-            BamDrive = Paths.BamDrive;
+            SystemDrive = Paths.SystemDrive;
             WindowsBamDrive = Paths.WindowsBamDrive;
             Apps = Paths.Apps;
             Local = Paths.Local;
@@ -24,9 +27,9 @@ namespace Bam.Net
             Tools = Paths.Tools;
         }
 
-        public static BamPaths Get(IDataDirectoryProvider dataProvider)
+        public static SystemPaths Get(IDataDirectoryProvider dataProvider)
         {
-            return new BamPaths()
+            return new SystemPaths()
             {
                 Data = DataPaths.Get(dataProvider)
             };
@@ -36,7 +39,7 @@ namespace Bam.Net
 
         public string Root { get; set; }
         public string PubRoot { get; set; }
-        public string BamDrive { get; set; }
+        public string SystemDrive { get; set; }
         public string WindowsBamDrive { get; set; }
 
         public string Apps { get; set; }

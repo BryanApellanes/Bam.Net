@@ -19,7 +19,7 @@ namespace Bam.Net.Services.Tests
         public void CanCallCommand()
         {
             UserTestTools.SignUpAndLogin("CanCallCommand", out ServiceProxy.IHttpContext context, out UserAccounts.LoginResponse result);
-            ServiceRegistry reg = ApplicationServiceRegistryContainer.Create();
+            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
             ConsoleLogger logger = new ConsoleLogger()
             {
                 AddDetails = false

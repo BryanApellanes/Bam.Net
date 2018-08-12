@@ -270,7 +270,7 @@ namespace Bam.Net.Application
 
         private static T GetService<T>()
         {
-            ServiceRegistry svcRegistry = ApplicationServiceRegistryContainer.GetServiceRegistry();
+            ServiceRegistry svcRegistry = CoreServiceRegistryContainer.GetServiceRegistry();
             return svcRegistry.Get<T>();
         }
 

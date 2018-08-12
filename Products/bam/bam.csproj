@@ -80,6 +80,8 @@
     <Compile Include="CoreClientActions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistryInfo.cs" />
+    <Compile Include="ServiceRegistryActions.cs" />
     <Compile Include="UserAdministrationActions.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="UtilityActions.cs" />
@@ -104,6 +106,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Notes.txt" />
+    <Content Include="ServiceRegistryTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="test-result-sql.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

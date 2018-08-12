@@ -154,7 +154,7 @@
     <Compile Include="Encryption\INamedCredentialProvider.cs" />
     <Compile Include="Encryption\ISaltProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
-    <Compile Include="BamPaths.cs" />
+    <Compile Include="SystemPaths.cs" />
     <Compile Include="Logging\DefaultConfigurationLoggerProvider.cs" />
     <Compile Include="Logging\ILoggerProvider.cs" />
     <Compile Include="Paths.cs" />

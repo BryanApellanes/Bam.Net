@@ -50,7 +50,7 @@ namespace Bam.Net.Application
             HostPrefix[] prefixes = GetConfiguredHostPrefixes();
             ILogger logger = GetLogger();
             Log.Default = logger;
-            ServiceRegistry serviceRegistry = ApplicationServiceRegistryContainer.Create();
+            ServiceRegistry serviceRegistry = CoreServiceRegistryContainer.Create();
             server = serviceRegistry.Serve(prefixes, logger);
             return serviceRegistry;
         }

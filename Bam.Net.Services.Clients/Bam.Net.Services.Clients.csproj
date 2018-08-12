@@ -68,7 +68,7 @@
     <Compile Include="ApplicationConfigurationProvider.cs" />
     <Compile Include="ApplicationLogDatabase.cs" />
     <Compile Include="ApplicationLogger.cs" />
-    <Compile Include="ApplicationServiceRegistry.cs" />
+    <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="ConfigurationServiceCredentialProvider.cs" />
     <Compile Include="ViewServicesRegistryContainer.cs" />
     <Compile Include="CoreAsyncProxyableService.cs" />

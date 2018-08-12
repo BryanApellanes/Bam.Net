@@ -191,7 +191,7 @@ namespace Bam.Net
                 return sr.ReadToEnd();
             }
         }
-
+        
         public static T Try<T>(this Func<T> toTry)
         {
             return Try<T>(toTry, out Exception ignore);
@@ -316,6 +316,11 @@ namespace Bam.Net
             return GetNextFileName(path, out int num);
         }
 
+        public static string GetNextFileName(this string path, out int num)
+        {
+            return GetNextFileName(path, null, out num);
+        }
+
         /// <summary>
         /// If the specified file exists, a new path with 
         /// an underscore and a number appended will be 
@@ -323,8 +328,9 @@ namespace Bam.Net
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string GetNextFileName(this string path, out int num)
+        public static string GetNextFileName(this string path, Func<int, string, string, string> namer, out int num)
         {
+            namer = namer ?? ((_i, f, e) => $"{f}_{_i}{e}");
             FileInfo file = new FileInfo(path);
             DirectoryInfo dir = file.Directory;
             string extension = Path.GetExtension(path);
@@ -335,7 +341,7 @@ namespace Bam.Net
             while (File.Exists(currentPath))
             {
                 i++;
-                string nextFile = $"{fileName}_{i}{extension}";
+                string nextFile = namer(i, fileName, extension);
                 currentPath = Path.Combine(dir.FullName, nextFile);
                 num = i;
             }
@@ -2049,6 +2055,13 @@ namespace Bam.Net
             return BitConverter.ToInt64(hashBytes, 0);
         }
 
+        public static ulong ToHashULong(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            byte[] hashBytes = ToHashBytes(toBeHashed, algorithm, encoding);
+
+            return BitConverter.ToUInt64(hashBytes, 0);
+        }
+
         public static byte[] ToHashBytes(string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
         {
             HashAlgorithm alg = HashAlgorithms[algorithm]();
@@ -2071,6 +2084,11 @@ namespace Bam.Net
         public static long ToSha256Long(this string toBeHashed)
         {
             return ToHashLong(toBeHashed, Net.HashAlgorithms.SHA256);
+        }
+
+        public static ulong ToSha256ULong(this string toBeHashed)
+        {
+            return ToHashULong(toBeHashed, Net.HashAlgorithms.SHA256);
         }
 
         public static long ToSha1Long(this string toBeHashed)
@@ -3702,6 +3720,17 @@ namespace Bam.Net
             object instance = ctor.Invoke(null);
             instance.CopyValues(row);
             return instance;
+        }
+
+        public static dynamic ToDynamic(this object instance, Func<PropertyInfo, bool> propertyPredicate, out Type dynamicType)
+        {
+            Type instanceType = instance.GetType();
+            string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
+            dynamicType = instance.ToDynamicType(newTypeName, propertyPredicate, out AssemblyBuilder ignore);
+            ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
+            object filteredProperties = ctor.Invoke(null);
+            DefaultConfiguration.CopyProperties(instance, filteredProperties);
+            return filteredProperties;
         }
 
         /// <summary>
