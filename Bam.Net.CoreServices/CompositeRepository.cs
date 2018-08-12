@@ -168,8 +168,18 @@ namespace Bam.Net.CoreServices
         {
             return ReadRepository.Retrieve(objectType, id);
         }
+        
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            return ReadRepository.Retrieve(objectType, id);
+        }
 
         public override T Retrieve<T>(long id)
+        {
+            return ReadRepository.Retrieve<T>(id);
+        }
+
+        public override T Retrieve<T>(ulong id)
         {
             return ReadRepository.Retrieve<T>(id);
         }

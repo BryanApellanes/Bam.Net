@@ -19,7 +19,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
         {
             Secret = ServiceProxySystem.GenerateId();
         }
-        public long MachineId { get; set; }
+        public ulong MachineId { get; set; }
         Machine _machine;
         public virtual Machine Machine
         {
@@ -33,7 +33,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
                 MachineName = _machine?.Name;                
             }
         }
-        public long ApplicationId { get; set; }
+        public ulong ApplicationId { get; set; }
         public virtual Application Application { get; set; }
         public string ApplicationName { get; set; }
         public string MachineName { get; set; }        

@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public long OrganizationId { get; set; }
+        public ulong OrganizationId { get; set; }
         public virtual Organization Organization { get; set; }        
         public virtual List<HostDomain> HostDomains { get; set; }
         public virtual List<Machine> Machines { get; set; }

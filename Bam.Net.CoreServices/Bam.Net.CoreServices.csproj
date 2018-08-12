@@ -428,7 +428,7 @@
     <Compile Include="OrganizationFactory.cs" />
     <Compile Include="Configuration\SourcedConfigurationSetting.cs" />
     <Compile Include="SubscriptionLevel.cs" />
-    <Compile Include="ApplicationServiceRegistryContainer.cs" />
+    <Compile Include="CoreServiceRegistryContainer.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />
