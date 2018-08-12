@@ -45,7 +45,7 @@ namespace Bam.Net.Data.Repositories
         {
             Type parentType = parent.GetType();
             Type childType = child.GetType();
-            long parentId = Meta.GetId(parent).Value;
+            ulong parentId = Meta.GetId(parent).Value;
             foreach (TypeFk typeFk in TypeSchema.ForeignKeys.Where(fk => fk.ForeignKeyType == childType && fk.PrimaryKeyType == parentType))
             {
                 typeFk.ForeignKeyProperty.SetValue(child, parentId);

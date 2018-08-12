@@ -33,9 +33,9 @@ namespace Bam.Net.Data.Repositories
             Logger = logger ?? Log.Default;
         }
 
-        public static BamPaths GetPaths()
+        public static SystemPaths GetPaths()
         {
-            return BamPaths.Get(Instance);
+            return SystemPaths.Get(Instance);
         }
 
         public static DataPaths GetDataPaths()

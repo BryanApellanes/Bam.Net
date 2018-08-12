@@ -198,7 +198,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public long Id
+		public ulong Id
 		{
 			get
 			{
@@ -361,11 +361,16 @@ namespace Bam.Net.Data.Repositories
         public static string GetIdHash(object value, Type type = null)
         {
             type = type ?? value.GetType();
-            long id = Meta.GetId(value).Value;
+            ulong id = Meta.GetId(value).Value;
             return GetIdHash(id, type);
         }
 
         public static string GetIdHash(long id, Type type)
+        {
+            return "{0}::{1}"._Format(id, type.FullName).Md5();
+        }
+
+        public static string GetIdHash(ulong id, Type type)
         {
             return "{0}::{1}"._Format(id, type.FullName).Md5();
         }
@@ -449,15 +454,15 @@ namespace Bam.Net.Data.Repositories
 			}
 			return keyProp;
 		}
-		protected virtual long? GetId(bool throwIfNoIdProperty = true)
+		protected virtual ulong? GetId(bool throwIfNoIdProperty = true)
         {
             return GetId(Data, throwIfNoIdProperty);
         }
-        protected internal static long? GetId(object value, bool throwIfNoIdProperty = true)
+        protected internal static ulong? GetId(object value, bool throwIfNoIdProperty = true)
         {
             PropertyInfo pocoProp = GetKeyProperty(value.GetType(), throwIfNoIdProperty);
             object idValue = pocoProp.GetValue(value);
-            return (long?)idValue;
+            return (ulong?)idValue;
         }
 		
 		/// <summary>

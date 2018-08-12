@@ -115,7 +115,12 @@ namespace Bam.Net.Data.Repositories
 			return (T)Retrieve(typeof(T), id);
 		}
 
-		public override object Retrieve(Type objectType, long id)
+        public override T Retrieve<T>(ulong id)
+        {
+            return (T)Retrieve(typeof(T), id);
+        }
+
+        public override object Retrieve(Type objectType, long id)
 		{
 			try
 			{
@@ -131,6 +136,23 @@ namespace Bam.Net.Data.Repositories
 				return null;
 			}
 		}
+
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            try
+            {
+                PropertyInfo keyProp = GetKeyProperty(objectType);
+                MongoCollection collection = GetCollection(objectType.FullName);
+                QueryDocument query = new QueryDocument(keyProp.Name, BsonValue.Create(id));
+                return collection.FindOneAs(objectType, query);
+            }
+            catch (Exception ex)
+            {
+                LastException = ex;
+                OnRetrieveFailed(new RepositoryEventArgs(id));
+                return null;
+            }
+        }
 
         public override T Retrieve<T>(string uuid)
         {
@@ -152,7 +174,6 @@ namespace Bam.Net.Data.Repositories
 				return null;
 			}
 		}
-
 
 		public override IEnumerable<T> RetrieveAll<T>()
 		{
@@ -200,6 +221,7 @@ namespace Bam.Net.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
         public override IEnumerable<T> Query<T>(QueryFilter query)
         {
             throw new NotImplementedException();
@@ -209,6 +231,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Update((object)toUpdate);
 		}
+
         public override object Update(object toUpdate)
         {
             return Update(toUpdate.GetType(), toUpdate);
@@ -234,10 +257,12 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Delete((object)toDelete);
 		}
+
         public override bool Delete(object toDelete)
         {
             return Delete(toDelete.GetType(), toDelete);
         }
+
         public override bool Delete(Type type, object toDelete)
 		{
 			try
@@ -268,7 +293,6 @@ namespace Bam.Net.Data.Repositories
 		{
 			throw new NotImplementedException();
 		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

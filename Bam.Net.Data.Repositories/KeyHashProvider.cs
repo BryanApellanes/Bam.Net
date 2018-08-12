@@ -29,6 +29,13 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIf(compositeKeyProperties.Length == 0, $"No CompositeKeyProperties defined on type ({instance.GetType().Name})");
             return string.Join(propertyDelimiter, compositeKeyProperties.Select(prop => instance.Property(prop))).ToSha256Long();
         }
+
+        internal static ulong GetULongKeyHash(object instance, string propertyDelimiter, string[] compositeKeyProperties)
+        {
+            Args.ThrowIfNull(instance);
+            Args.ThrowIf(compositeKeyProperties.Length == 0, $"No CompositeKeyProperties defined on type ({instance.GetType().Name})");
+            return string.Join(propertyDelimiter, compositeKeyProperties.Select(prop => instance.Property(prop))).ToSha256ULong();
+        }
     }
 
 }

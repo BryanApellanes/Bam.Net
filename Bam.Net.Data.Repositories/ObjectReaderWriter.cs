@@ -86,6 +86,19 @@ namespace Bam.Net.Data.Repositories
 			return ReadByHash<T>(idHash);
 		}
 
+
+        /// <summary>
+        /// Reads the specified identifier.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public T Read<T>(ulong id)
+        {
+            string idHash = GetIdHash(id, typeof(T));
+            return ReadByHash<T>(idHash);
+        }
+
         /// <summary>
         /// Reads the specified type.
         /// </summary>
@@ -97,6 +110,18 @@ namespace Bam.Net.Data.Repositories
 			string idHash = GetIdHash(id, type);
 			return ReadByHash(type, idHash);
 		}
+
+        /// <summary>
+        /// Reads the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public object Read(Type type, ulong id)
+        {
+            string idHash = GetIdHash(id, type);
+            return ReadByHash(type, idHash);
+        }
 
         /// <summary>
         /// Reads the specified UUID.
@@ -630,13 +655,24 @@ namespace Bam.Net.Data.Repositories
 			return (T)ReadProperty(prop, id);
 		}
 
-		protected object ReadProperty(PropertyInfo prop, long id)
+        public T ReadProperty<T>(PropertyInfo prop, ulong id)
+        {
+            return (T)ReadProperty(prop, id);
+        }
+
+        protected object ReadProperty(PropertyInfo prop, long id)
 		{
 			string hash = GetIdHash(id, prop.DeclaringType);
 			return ReadProperty(prop, hash);
 		}
 
-		public T ReadProperty<T>(PropertyInfo prop, string uuid)
+        protected object ReadProperty(PropertyInfo prop, ulong id)
+        {
+            string hash = GetIdHash(id, prop.DeclaringType);
+            return ReadProperty(prop, hash);
+        }
+
+        public T ReadProperty<T>(PropertyInfo prop, string uuid)
 		{
 			string hash = GetUuidHash(uuid, typeof(T));
 			return ReadPropertyByHash<T>(prop, hash);
@@ -756,18 +792,17 @@ namespace Bam.Net.Data.Repositories
             return Meta.GetIdHash(value, type);
 		}
 
-		protected virtual string GetIdHash(long id, Type type)
+        protected virtual string GetIdHash(ulong id, Type type)
+        {
+            return Meta.GetIdHash(id, type);
+        }
+
+        protected virtual string GetIdHash(long id, Type type)
 		{
             return Meta.GetIdHash(id, type);
 		}
 
-		//protected internal List<FileInfo> GetPropertyFiles(PropertyInfo prop, string hash)
-		//{
-		//	DirectoryInfo propRoot = GetPropertyDirectory(prop);
-		//	return GetPropertyFiles(propRoot, prop, hash);
-		//}
-
-		protected internal int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
+        protected internal int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
 		{
 			return Meta.GetNextVersionNumber(propRoot, prop, hash);
 		}

@@ -63,12 +63,14 @@ namespace Bam.Net.Data.Repositories
 			SaveCollections(toCreate);
 			return toCreate;
 		}
+
         public override object Create(Type type, object toCreate)
         {
             ObjectReaderWriter.Write(type, toCreate);
             SaveCollections(toCreate);
             return toCreate;
         }
+
         public override object Create(object toCreate)
 		{
 			ObjectReaderWriter.Write(toCreate.GetType(), toCreate);
@@ -121,6 +123,26 @@ namespace Bam.Net.Data.Repositories
             }
 			return obj;
 		}
+        
+        public override T Retrieve<T>(ulong id)
+        {
+            T value = ObjectReaderWriter.Read<T>(id);
+            if (value != null)
+            {
+                LoadXrefCollectionValues(value);
+            }
+            return value;
+        }
+
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            object obj = ObjectReaderWriter.Read(objectType, id);
+            if (obj != null)
+            {
+                LoadXrefCollectionValues(obj);
+            }
+            return obj;
+        }
 
         public override T Retrieve<T>(string uuid)
         {

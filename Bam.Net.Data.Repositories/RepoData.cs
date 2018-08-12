@@ -15,7 +15,7 @@ namespace Bam.Net.Data.Repositories
     [Serializable]
 	public abstract class RepoData
 	{
-		public long Id { get; set; }
+		public ulong Id { get; set; }
         private DateTime? _created;
 
         /// <summary>

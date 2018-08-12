@@ -382,8 +382,33 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Retrieve(typeof(T), id);
 		}
+        
+        public override T Retrieve<T>(ulong id)
+        {
+            return (T)Retrieve(typeof(T), id);
+        }
 
-		public override object Retrieve(Type objectType, long id)
+        public override object Retrieve(Type objectType, long id)
+        {
+            try
+            {
+                Initialize();
+                Dao daoInstance = GetDaoInstanceById(objectType, id);
+                if (daoInstance != null)
+                {
+                    return GetWrapperInstance(objectType, daoInstance);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex;
+                OnRetrieveFailed(new RepositoryEventArgs(ex));
+                return null;
+            }
+        }
+
+        public override object Retrieve(Type objectType, ulong id)
 		{
 			try
 			{
@@ -534,7 +559,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-                long id = GetIdValue(toDelete).Value;
+                ulong id = GetIdValue(toDelete).Value;
                 object daoInstance = GetDaoInstanceById(type, id);
 				if (daoInstance != null)
 				{
@@ -797,7 +822,7 @@ namespace Bam.Net.Data.Repositories
 
 		public Dao GetDaoInstance(object baseInstance) // required by generated code
 		{
-			long id = GetIdValue(baseInstance).Value;
+			ulong id = GetIdValue(baseInstance).Value;
 			Dao dao = GetDaoInstanceById(baseInstance.GetType(), id);
 			return dao;
 		}
@@ -895,7 +920,7 @@ namespace Bam.Net.Data.Repositories
         {
             List<TChildType> results = new List<TChildType>();
             string foreignKeyName = fkDescriptor.ForeignKeyProperty.Name;
-            long parentId = GetIdValue(poco).Value;
+            ulong parentId = GetIdValue(poco).Value;
             if (parentId <= 0)
             {
                 Type pocoType = poco.GetType();
@@ -952,7 +977,7 @@ namespace Bam.Net.Data.Repositories
 				PropertyInfo primaryIdProperty = dtoType.GetProperty(primaryIdPropertyName);
 				if (primaryIdProperty != null)
 				{
-					long idValue = (long)primaryIdProperty.GetValue(dtoChild);
+					ulong idValue = (ulong)primaryIdProperty.GetValue(dtoChild);
 					object parentDaoInstance = GetDaoInstanceById(parentType, idValue);
 					if (parentDaoInstance != null)
 					{
@@ -1009,7 +1034,12 @@ namespace Bam.Net.Data.Repositories
             return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
         }
 
-		private Dao GetDaoInstanceById<T>(long id) where T : new()
+        protected Dao GetDaoInstanceById(Type baseOrWrapperType, ulong id)
+        {
+            return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
+        }
+
+		private Dao GetDaoInstanceById<T>(ulong id) where T : new()
 		{
 			return GetDaoInstanceById(typeof(T), id);
 		}
