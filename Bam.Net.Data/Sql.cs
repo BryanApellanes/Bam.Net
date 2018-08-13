@@ -59,5 +59,30 @@ namespace Bam.Net.Data
         {
             return db.ExecuteReader<T>(sql, parameters);
         }
+
+        public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this FileInfo file, Database db, object parameters = null)
+        {
+            return ExecuteDynamicReader(file.ReadAllText(), db, parameters.ToDbParameters(db).ToArray());
+        }
+
+        public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this FileInfo file, Database db, params DbParameter[] parameters)
+        {
+            return ExecuteDynamicReader(file.ReadAllText(), db, parameters);
+        }
+
+        public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this string filePath, Database db, params DbParameter[] parameters)
+        {
+            return ExecuteDynamicReader(File.ReadAllText(filePath), db, parameters);
+        }
+
+        public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, object dbParameters = null)
+        {
+            return ExecuteDynamicReader(sql, db, dbParameters.ToDbParameters(db).ToArray());
+        }
+
+        public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, params DbParameter[] parameters)
+        {
+            return db.ExecuteDynamicReader(sql, parameters, out DbConnection ignore);
+        }
     }
 }
