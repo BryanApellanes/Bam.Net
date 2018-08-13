@@ -24,8 +24,9 @@ namespace Bam.Net.Logging
 
 		public DaoLogger(Database logTo)
 		{
-			this.Database = logTo;
-		}
+			Database = logTo;
+            Database.TryEnsureSchema<Data.LogEvent>();
+        }
 
 		public Database Database
 		{
