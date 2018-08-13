@@ -10,14 +10,14 @@ namespace Bam.Net.Data
 {
     public static class Sql
     { 
-        public static void Execute(string path, Database db, object parameters)
+        public static void Execute(string path, Database db, object parameters = null)
         {
             Execute(new FileInfo(path), db, parameters);
         }
 
-        public static void Execute(FileInfo file, Database db, object parameters)
+        public static void Execute(FileInfo file, Database db, object parameters = null)
         {
-            Execute(file, db, parameters.ToDbParameters(db).ToArray());
+            Execute(file, db, parameters?.ToDbParameters(db).ToArray() ?? new DbParameter[] { });
         }
 
         public static void Execute(FileInfo file, Database db, params DbParameter[] parameters)
@@ -42,7 +42,7 @@ namespace Bam.Net.Data
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this string filePath, Database db, object parameters) where T : class, new()
         {
-            return ExecuteSqlFile<T>(filePath, db, parameters.ToDbParameters(db).ToArray());
+            return ExecuteSqlFile<T>(filePath, db, parameters?.ToDbParameters(db).ToArray() ?? new DbParameter[] { });
         }
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this string filePath, Database db, params DbParameter[] parameters) where T: class, new()
@@ -52,32 +52,32 @@ namespace Bam.Net.Data
 
         public static IEnumerable<T> ExecuteSqlFile<T>(this FileInfo file, Database db, params DbParameter[] parameters) where T: class, new()
         {
-            return ExecuteSql<T>(file.ReadAllText(), db, parameters);
+            return ExecuteSql<T>(file.ReadAllText(), db, parameters ?? new DbParameter[] { });
         }
 
         public static IEnumerable<T> ExecuteSql<T>(this string sql, Database db, params DbParameter[] parameters) where T : class, new()
         {
-            return db.ExecuteReader<T>(sql, parameters);
+            return db.ExecuteReader<T>(sql, parameters ?? new DbParameter[] { });
         }
 
         public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this FileInfo file, Database db, object parameters = null)
         {
-            return ExecuteDynamicReader(file.ReadAllText(), db, parameters.ToDbParameters(db).ToArray());
+            return ExecuteDynamicReader(file.ReadAllText(), db, parameters?.ToDbParameters(db).ToArray() ?? new DbParameter[] { });
         }
 
         public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this FileInfo file, Database db, params DbParameter[] parameters)
         {
-            return ExecuteDynamicReader(file.ReadAllText(), db, parameters);
+            return ExecuteDynamicReader(file.ReadAllText(), db, parameters ?? new DbParameter[] { });
         }
 
         public static IEnumerable<dynamic> ExecuteDynamicReaderSqlFile(this string filePath, Database db, params DbParameter[] parameters)
         {
-            return ExecuteDynamicReader(File.ReadAllText(filePath), db, parameters);
+            return ExecuteDynamicReader(File.ReadAllText(filePath), db, parameters ?? new DbParameter[] { });
         }
 
         public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, object dbParameters = null)
         {
-            return ExecuteDynamicReader(sql, db, dbParameters.ToDbParameters(db).ToArray());
+            return ExecuteDynamicReader(sql, db, dbParameters?.ToDbParameters(db).ToArray() ?? new DbParameter[] { });
         }
 
         public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, params DbParameter[] parameters)
