@@ -63,7 +63,7 @@ namespace Bam.Net.Data
             }
         }
 
-        protected Dictionary<long, X> XrefsByListId
+        protected Dictionary<ulong, X> XrefsByListId
         {
             get;
             set;
@@ -117,7 +117,7 @@ namespace Bam.Net.Data
                 {
                     if (!_loaded)
                     {
-                        XrefsByListId = new Dictionary<long, X>();
+                        XrefsByListId = new Dictionary<ulong, X>();
 
                         QuerySet q = Dao.GetQuerySet(db);
                         q.Select<X>().Where(new AssignValue(ParentColumnName, Parent.IdValue, q.ColumnNameFormatter));
@@ -126,11 +126,11 @@ namespace Bam.Net.Data
                         // should have all the ids of L that should be retrieved
                         if (q.Results[0].DataTable.Rows.Count > 0)
                         {
-                            List<long> ids = new List<long>();
+                            List<ulong> ids = new List<ulong>();
 
                             foreach (DataRow row in q.Results[0].DataTable.Rows)
                             {
-                                long id = Convert.ToInt64(row[ListColumnName]);
+                                ulong id = Convert.ToUInt64(row[ListColumnName]);
                                 ids.Add(id);
                                 X xref = new X();
                                 xref.DataRow = row;
@@ -139,7 +139,7 @@ namespace Bam.Net.Data
 
                             QuerySet q2 = Dao.GetQuerySet(db);
                             QueryFilter filter = new QueryFilter(Dao.GetKeyColumnName<L>());
-                            filter.In(ids.ToArray(), db.ParameterPrefix);
+                            filter.In(ids.Select(i => (object)i).ToArray(), db.ParameterPrefix);
                             q2.Select<L>().Where(filter);
                             q2.Execute(db);
 

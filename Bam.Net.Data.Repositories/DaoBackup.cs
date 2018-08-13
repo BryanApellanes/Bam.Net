@@ -125,9 +125,8 @@ namespace Bam.Net.Data.Repositories
 				// get the old Dao instances that represents the referenced table					
 				Type referencedDaoType = DaoTypes.First(t=>
 				{
-					TableAttribute table;
-					t.HasCustomAttributeOfType<TableAttribute>(out table);
-					return table.TableName.Equals(fk.ReferencedTable);
+                    t.HasCustomAttributeOfType(out TableAttribute table);
+                    return table.TableName.Equals(fk.ReferencedTable);
 				});
 
 				SqlStringBuilder oldSelector = source.GetService<SqlStringBuilder>();
@@ -141,9 +140,8 @@ namespace Bam.Net.Data.Repositories
 					// get the old Dao instances that represent the referencing table where the referencing column value = the old table id
 					Type referencingDaoType = DaoTypes.First(t =>
 					{
-						TableAttribute table;
-						t.HasCustomAttributeOfType<TableAttribute>(out table);
-						return table.TableName.Equals(fk.Table);
+                        t.HasCustomAttributeOfType(out TableAttribute table);
+                        return table.TableName.Equals(fk.Table);
 					});
 					SqlStringBuilder oldReferencerSelector = source.GetService<SqlStringBuilder>();
 					oldReferencerSelector.Select(fk.Table).Where(new AssignValue(fk.Name, oldReferencedDao.IdValue));
@@ -153,9 +151,9 @@ namespace Bam.Net.Data.Repositories
 					{
 						List<string> oldReferencingDaoInstanceUuids = oldReferencingDaoInstances.Select(o => o.Property<string>("Uuid")).ToList();
 
-						long oldReferencedId = oldReferencedDao.IdValue.Value;
+						ulong oldReferencedId = oldReferencedDao.IdValue.Value;
 						// get the new referenced id
-						long whatItShouldBeNow = byUuid[oldReferencedDao.Property<string>("Uuid")].NewId;
+						ulong whatItShouldBeNow = byUuid[oldReferencedDao.Property<string>("Uuid")].NewId;
 
 						// update the new referencing column to match the newId in the destination where the uuids in oldDaoInstances		
 						committer.Update(fk.Table, new AssignValue(fk.Name, whatItShouldBeNow)).Where(Query.Where("Uuid").In(oldReferencingDaoInstanceUuids.ToArray()));
@@ -169,7 +167,7 @@ namespace Bam.Net.Data.Repositories
 		
 		protected internal Dictionary<string, Dao> InsertTempForeignKeyTargets()
 		{
-			dynamic topContext = new { DaoTypes = DaoTypes, Results = new Dictionary<string, Dao>() };
+			dynamic topContext = new { DaoTypes, Results = new Dictionary<string, Dao>() };
 			foreach (Type dao in DaoTypes)
 			{
 				dao.GetProperties().Where(prop => prop.HasCustomAttributeOfType<ForeignKeyAttribute>()).Each(prop =>
@@ -284,8 +282,8 @@ namespace Bam.Net.Data.Repositories
 					{
 						PocoType = pocoType,
 						DaoType = daoType,
-						OldId = (long)poco.Property("Id"),
-						NewId = (long)dao.IdValue,
+						OldId = (ulong)poco.Property("Id"),
+						NewId = (ulong)dao.IdValue,
 						Uuid = uuid
 					};
 
