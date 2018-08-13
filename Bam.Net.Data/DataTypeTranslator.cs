@@ -24,7 +24,7 @@ namespace Bam.Net.Data
                 case DataTypes.Int:
                     return typeof(int);
                 case DataTypes.Long:
-                    return typeof(long);
+                    return typeof(ulong);
                 case DataTypes.Decimal:
                     return typeof(decimal);
                 case DataTypes.String:

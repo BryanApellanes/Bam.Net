@@ -310,9 +310,7 @@ namespace Bam.Net.Data.Repositories
                     Type enumerableType = property.GetEnumerableType();
                     if (enumerableType != null)
                     {
-                        PropertyInfo leftEnumerable;
-                        PropertyInfo rightEnumerable;
-                        if (AreXrefs(type, enumerableType, out leftEnumerable, out rightEnumerable))
+                        if (AreXrefs(type, enumerableType, out PropertyInfo leftEnumerable, out PropertyInfo rightEnumerable))
                         {
                             xrefTypes.Add(new TypeXref { Left = type, Right = enumerableType, LeftCollectionProperty = leftEnumerable, RightCollectionProperty = rightEnumerable });
                         }
@@ -324,9 +322,7 @@ namespace Bam.Net.Data.Repositories
         }
         protected internal static bool AreXrefs(Type left, Type right)
         {
-            PropertyInfo ignoreLeft;
-            PropertyInfo ignoreRight;
-            return AreXrefs(left, right, out ignoreLeft, out ignoreRight);
+            return AreXrefs(left, right, out PropertyInfo ignoreLeft, out PropertyInfo ignoreRight);
         }
 
         protected internal static bool AreXrefs(Type left, Type right, out PropertyInfo leftEnumerable, out PropertyInfo rightEnumerable)
@@ -461,7 +457,7 @@ namespace Bam.Net.Data.Repositories
             return tableNameProvider.GetTableName(type);
         }
 
-        static readonly List<Type> _daoPrimitives = new List<Type> { typeof(bool), typeof(int), typeof(long), typeof(decimal), typeof(byte[]), typeof(DateTime), typeof(string) };
+        static readonly List<Type> _daoPrimitives = new List<Type> { typeof(bool), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(decimal), typeof(byte[]), typeof(DateTime), typeof(string) };
 
         protected internal static DataTypes GetColumnDataType(PropertyInfo property)
         {
@@ -478,7 +474,9 @@ namespace Bam.Net.Data.Repositories
                 dataType = DataTypes.Int;
             }
             else if (propertyType == typeof(long) ||
-                propertyType == typeof(long?))
+                propertyType == typeof(long?) ||
+                propertyType == typeof(ulong) ||
+                propertyType == typeof(ulong?))
             {
                 dataType = DataTypes.Long;
             }
