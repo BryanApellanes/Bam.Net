@@ -175,9 +175,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static CategoryNameCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<CategoryName>();
 			Database db = database ?? Db.For<CategoryName>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<CategoryName>();
 			var results = new CategoryNameCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -191,14 +191,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<CategoryName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CategoryNameColumns columns = new CategoryNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<CategoryNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -223,14 +223,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<CategoryNameColumns> where, Action<IEnumerable<CategoryName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CategoryNameColumns columns = new CategoryNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<CategoryNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -255,13 +255,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<CategoryNameColumns> where, Action<IEnumerable<CategoryName>> batchProcessor, Bam.Net.Data.OrderBy<CategoryNameColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CategoryNameColumns columns = new CategoryNameColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

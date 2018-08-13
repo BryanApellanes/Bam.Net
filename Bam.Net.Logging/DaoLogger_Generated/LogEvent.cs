@@ -273,9 +273,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static LogEventCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<LogEvent>();
 			Database db = database ?? Db.For<LogEvent>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<LogEvent>();
 			var results = new LogEventCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -289,14 +289,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<LogEvent>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LogEventColumns columns = new LogEventColumns();
 				var orderBy = Bam.Net.Data.Order.By<LogEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -321,14 +321,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LogEventColumns> where, Action<IEnumerable<LogEvent>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LogEventColumns columns = new LogEventColumns();
 				var orderBy = Bam.Net.Data.Order.By<LogEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -353,13 +353,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LogEventColumns> where, Action<IEnumerable<LogEvent>> batchProcessor, Bam.Net.Data.OrderBy<LogEventColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LogEventColumns columns = new LogEventColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

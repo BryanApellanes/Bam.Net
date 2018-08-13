@@ -56,6 +56,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
                 return new DeleteEventColumns("Type");
             }
         }
+        public DeleteEventColumns InstanceCuid
+        {
+            get
+            {
+                return new DeleteEventColumns("InstanceCuid");
+            }
+        }
         public DeleteEventColumns Created
         {
             get

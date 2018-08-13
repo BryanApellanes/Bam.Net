@@ -280,9 +280,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static SessionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Session>();
 			Database db = database ?? Db.For<Session>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Session>();
 			var results = new SessionCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -296,14 +296,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Session>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -328,14 +328,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SessionColumns> where, Action<IEnumerable<Session>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -360,13 +360,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SessionColumns> where, Action<IEnumerable<Session>> batchProcessor, Bam.Net.Data.OrderBy<SessionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

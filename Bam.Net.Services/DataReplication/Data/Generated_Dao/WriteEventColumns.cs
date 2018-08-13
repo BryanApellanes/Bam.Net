@@ -56,6 +56,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
                 return new WriteEventColumns("Type");
             }
         }
+        public WriteEventColumns InstanceCuid
+        {
+            get
+            {
+                return new WriteEventColumns("InstanceCuid");
+            }
+        }
         public WriteEventColumns Created
         {
             get

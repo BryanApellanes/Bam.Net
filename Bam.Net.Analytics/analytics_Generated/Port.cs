@@ -175,9 +175,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static PortCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Port>();
 			Database db = database ?? Db.For<Port>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Port>();
 			var results = new PortCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -191,14 +191,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Port>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PortColumns columns = new PortColumns();
 				var orderBy = Bam.Net.Data.Order.By<PortColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -223,14 +223,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PortColumns> where, Action<IEnumerable<Port>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PortColumns columns = new PortColumns();
 				var orderBy = Bam.Net.Data.Order.By<PortColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -255,13 +255,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PortColumns> where, Action<IEnumerable<Port>> batchProcessor, Bam.Net.Data.OrderBy<PortColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PortColumns columns = new PortColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

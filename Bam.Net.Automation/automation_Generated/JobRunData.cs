@@ -196,9 +196,9 @@ namespace Bam.Net.Automation.Data
 		/// </param>
 		public static JobRunDataCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<JobRunData>();
 			Database db = database ?? Db.For<JobRunData>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<JobRunData>();
 			var results = new JobRunDataCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<JobRunData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobRunDataColumns columns = new JobRunDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<JobRunDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<JobRunDataColumns> where, Action<IEnumerable<JobRunData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobRunDataColumns columns = new JobRunDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<JobRunDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<JobRunDataColumns> where, Action<IEnumerable<JobRunData>> batchProcessor, Bam.Net.Data.OrderBy<JobRunDataColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobRunDataColumns columns = new JobRunDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

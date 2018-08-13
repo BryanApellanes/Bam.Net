@@ -196,9 +196,9 @@ namespace Bam.Net.Encryption
 		/// </param>
 		public static VaultItemCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<VaultItem>();
 			Database db = database ?? Db.For<VaultItem>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<VaultItem>();
 			var results = new VaultItemCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<VaultItem>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultItemColumns columns = new VaultItemColumns();
 				var orderBy = Bam.Net.Data.Order.By<VaultItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<VaultItemColumns> where, Action<IEnumerable<VaultItem>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultItemColumns columns = new VaultItemColumns();
 				var orderBy = Bam.Net.Data.Order.By<VaultItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<VaultItemColumns> where, Action<IEnumerable<VaultItem>> batchProcessor, Bam.Net.Data.OrderBy<VaultItemColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultItemColumns columns = new VaultItemColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

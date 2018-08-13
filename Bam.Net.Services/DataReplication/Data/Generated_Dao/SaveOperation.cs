@@ -55,6 +55,7 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("DataProperty_SaveOperationId", new DataPropertyCollection(Database.GetQuery<DataPropertyColumns, DataProperty>((c) => c.SaveOperationId == GetLongValue("Id")), this, "SaveOperationId"));				
@@ -258,11 +259,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		/// </param>
 		public static SaveOperationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SaveOperation>();
 			Database db = database ?? Db.For<SaveOperation>();
-			var results = new SaveOperationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<SaveOperation>();
+			var results = new SaveOperationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -272,14 +275,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SaveOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SaveOperationColumns columns = new SaveOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<SaveOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -304,14 +307,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SaveOperationColumns> where, Action<IEnumerable<SaveOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SaveOperationColumns columns = new SaveOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<SaveOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -336,13 +339,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SaveOperationColumns> where, Action<IEnumerable<SaveOperation>> batchProcessor, Bam.Net.Data.OrderBy<SaveOperationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SaveOperationColumns columns = new SaveOperationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -699,6 +702,25 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<SaveOperationColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<SaveOperationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static SaveOperationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<SaveOperation>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<SaveOperation>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -189,9 +189,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static UserGroupCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UserGroup>();
 			Database db = database ?? Db.For<UserGroup>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<UserGroup>();
 			var results = new UserGroupCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserGroup>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserGroupColumns columns = new UserGroupColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserGroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserGroupColumns> where, Action<IEnumerable<UserGroup>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserGroupColumns columns = new UserGroupColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserGroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserGroupColumns> where, Action<IEnumerable<UserGroup>> batchProcessor, Bam.Net.Data.OrderBy<UserGroupColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserGroupColumns columns = new UserGroupColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

@@ -231,9 +231,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static LanguageDetectionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<LanguageDetection>();
 			Database db = database ?? Db.For<LanguageDetection>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<LanguageDetection>();
 			var results = new LanguageDetectionCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -247,14 +247,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<LanguageDetection>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageDetectionColumns columns = new LanguageDetectionColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageDetectionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -279,14 +279,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LanguageDetectionColumns> where, Action<IEnumerable<LanguageDetection>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageDetectionColumns columns = new LanguageDetectionColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageDetectionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -311,13 +311,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LanguageDetectionColumns> where, Action<IEnumerable<LanguageDetection>> batchProcessor, Bam.Net.Data.OrderBy<LanguageDetectionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageDetectionColumns columns = new LanguageDetectionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

@@ -189,9 +189,9 @@ namespace Bam.Net.Automation.Data
 		/// </param>
 		public static DeferredJobDataCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DeferredJobData>();
 			Database db = database ?? Db.For<DeferredJobData>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DeferredJobData>();
 			var results = new DeferredJobDataCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DeferredJobData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeferredJobDataColumns columns = new DeferredJobDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<DeferredJobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DeferredJobDataColumns> where, Action<IEnumerable<DeferredJobData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeferredJobDataColumns columns = new DeferredJobDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<DeferredJobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DeferredJobDataColumns> where, Action<IEnumerable<DeferredJobData>> batchProcessor, Bam.Net.Data.OrderBy<DeferredJobDataColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeferredJobDataColumns columns = new DeferredJobDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

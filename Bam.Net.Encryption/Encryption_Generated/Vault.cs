@@ -203,9 +203,9 @@ namespace Bam.Net.Encryption
 		/// </param>
 		public static VaultCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Vault>();
 			Database db = database ?? Db.For<Vault>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Vault>();
 			var results = new VaultCollection(db, sql.GetDataTable(db))
 			{
 				Database = db

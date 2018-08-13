@@ -55,6 +55,7 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("DataProperty_WriteEventId", new DataPropertyCollection(Database.GetQuery<DataPropertyColumns, DataProperty>((c) => c.WriteEventId == GetLongValue("Id")), this, "WriteEventId"));				
@@ -132,6 +133,20 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		}
 	}
 
+	// property:InstanceCuid, columnName:InstanceCuid	
+	[Bam.Net.Data.Column(Name="InstanceCuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string InstanceCuid
+	{
+		get
+		{
+			return GetStringValue("InstanceCuid");
+		}
+		set
+		{
+			SetValue("InstanceCuid", value);
+		}
+	}
+
 	// property:Created, columnName:Created	
 	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? Created
@@ -202,11 +217,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		/// </param>
 		public static WriteEventCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<WriteEvent>();
 			Database db = database ?? Db.For<WriteEvent>();
-			var results = new WriteEventCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<WriteEvent>();
+			var results = new WriteEventCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -216,14 +233,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<WriteEvent>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WriteEventColumns columns = new WriteEventColumns();
 				var orderBy = Bam.Net.Data.Order.By<WriteEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -248,14 +265,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<WriteEventColumns> where, Action<IEnumerable<WriteEvent>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WriteEventColumns columns = new WriteEventColumns();
 				var orderBy = Bam.Net.Data.Order.By<WriteEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -280,13 +297,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<WriteEventColumns> where, Action<IEnumerable<WriteEvent>> batchProcessor, Bam.Net.Data.OrderBy<WriteEventColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WriteEventColumns columns = new WriteEventColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -643,6 +660,25 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<WriteEventColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<WriteEventCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static WriteEventCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<WriteEvent>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<WriteEvent>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

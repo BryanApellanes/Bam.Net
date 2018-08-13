@@ -182,9 +182,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static PasswordCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Password>();
 			Database db = database ?? Db.For<Password>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Password>();
 			var results = new PasswordCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -198,14 +198,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Password>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordColumns columns = new PasswordColumns();
 				var orderBy = Bam.Net.Data.Order.By<PasswordColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -230,14 +230,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PasswordColumns> where, Action<IEnumerable<Password>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordColumns columns = new PasswordColumns();
 				var orderBy = Bam.Net.Data.Order.By<PasswordColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -262,13 +262,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PasswordColumns> where, Action<IEnumerable<Password>> batchProcessor, Bam.Net.Data.OrderBy<PasswordColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordColumns columns = new PasswordColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

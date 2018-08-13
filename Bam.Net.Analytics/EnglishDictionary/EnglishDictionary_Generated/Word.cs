@@ -175,9 +175,9 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		/// </param>
 		public static WordCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Word>();
 			Database db = database ?? Db.For<Word>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Word>();
 			var results = new WordCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -191,14 +191,14 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Word>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WordColumns columns = new WordColumns();
 				var orderBy = Bam.Net.Data.Order.By<WordColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -223,14 +223,14 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<WordColumns> where, Action<IEnumerable<Word>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WordColumns columns = new WordColumns();
 				var orderBy = Bam.Net.Data.Order.By<WordColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -255,13 +255,13 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<WordColumns> where, Action<IEnumerable<Word>> batchProcessor, Bam.Net.Data.OrderBy<WordColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				WordColumns columns = new WordColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

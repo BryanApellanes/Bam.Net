@@ -229,9 +229,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static RoleCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Role>();
 			Database db = database ?? Db.For<Role>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Role>();
 			var results = new RoleCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -245,14 +245,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Role>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<RoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -277,14 +277,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<RoleColumns> where, Action<IEnumerable<Role>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<RoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -309,13 +309,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RoleColumns> where, Action<IEnumerable<Role>> batchProcessor, Bam.Net.Data.OrderBy<RoleColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

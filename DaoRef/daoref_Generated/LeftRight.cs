@@ -189,9 +189,9 @@ namespace Bam.Net.DaoRef
 		/// </param>
 		public static LeftRightCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<LeftRight>();
 			Database db = database ?? Db.For<LeftRight>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<LeftRight>();
 			var results = new LeftRightCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<LeftRight>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LeftRightColumns columns = new LeftRightColumns();
 				var orderBy = Bam.Net.Data.Order.By<LeftRightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LeftRightColumns> where, Action<IEnumerable<LeftRight>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LeftRightColumns columns = new LeftRightColumns();
 				var orderBy = Bam.Net.Data.Order.By<LeftRightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LeftRightColumns> where, Action<IEnumerable<LeftRight>> batchProcessor, Bam.Net.Data.OrderBy<LeftRightColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LeftRightColumns columns = new LeftRightColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

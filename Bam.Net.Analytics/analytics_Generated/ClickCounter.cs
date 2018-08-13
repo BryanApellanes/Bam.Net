@@ -217,9 +217,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static ClickCounterCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ClickCounter>();
 			Database db = database ?? Db.For<ClickCounter>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ClickCounter>();
 			var results = new ClickCounterCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -233,14 +233,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ClickCounter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ClickCounterColumns columns = new ClickCounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<ClickCounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -265,14 +265,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ClickCounterColumns> where, Action<IEnumerable<ClickCounter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ClickCounterColumns columns = new ClickCounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<ClickCounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,13 +297,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ClickCounterColumns> where, Action<IEnumerable<ClickCounter>> batchProcessor, Bam.Net.Data.OrderBy<ClickCounterColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ClickCounterColumns columns = new ClickCounterColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

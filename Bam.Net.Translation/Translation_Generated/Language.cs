@@ -315,9 +315,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static LanguageCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Language>();
 			Database db = database ?? Db.For<Language>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Language>();
 			var results = new LanguageCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -331,14 +331,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -363,14 +363,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LanguageColumns> where, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -395,13 +395,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LanguageColumns> where, Action<IEnumerable<Language>> batchProcessor, Bam.Net.Data.OrderBy<LanguageColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

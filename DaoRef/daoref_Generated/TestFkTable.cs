@@ -182,9 +182,9 @@ namespace Bam.Net.DaoRef
 		/// </param>
 		public static TestFkTableCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestFkTable>();
 			Database db = database ?? Db.For<TestFkTable>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TestFkTable>();
 			var results = new TestFkTableCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -198,14 +198,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestFkTable>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestFkTableColumns columns = new TestFkTableColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestFkTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -230,14 +230,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TestFkTableColumns> where, Action<IEnumerable<TestFkTable>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestFkTableColumns columns = new TestFkTableColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestFkTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -262,13 +262,13 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestFkTableColumns> where, Action<IEnumerable<TestFkTable>> batchProcessor, Bam.Net.Data.OrderBy<TestFkTableColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestFkTableColumns columns = new TestFkTableColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

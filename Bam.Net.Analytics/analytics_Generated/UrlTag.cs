@@ -189,9 +189,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static UrlTagCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UrlTag>();
 			Database db = database ?? Db.For<UrlTag>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<UrlTag>();
 			var results = new UrlTagCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UrlTag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlTagColumns columns = new UrlTagColumns();
 				var orderBy = Bam.Net.Data.Order.By<UrlTagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UrlTagColumns> where, Action<IEnumerable<UrlTag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlTagColumns columns = new UrlTagColumns();
 				var orderBy = Bam.Net.Data.Order.By<UrlTagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UrlTagColumns> where, Action<IEnumerable<UrlTag>> batchProcessor, Bam.Net.Data.OrderBy<UrlTagColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlTagColumns columns = new UrlTagColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

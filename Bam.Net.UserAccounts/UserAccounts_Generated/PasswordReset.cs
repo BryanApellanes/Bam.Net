@@ -224,9 +224,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static PasswordResetCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<PasswordReset>();
 			Database db = database ?? Db.For<PasswordReset>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<PasswordReset>();
 			var results = new PasswordResetCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -240,14 +240,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<PasswordReset>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordResetColumns columns = new PasswordResetColumns();
 				var orderBy = Bam.Net.Data.Order.By<PasswordResetColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -272,14 +272,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PasswordResetColumns> where, Action<IEnumerable<PasswordReset>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordResetColumns columns = new PasswordResetColumns();
 				var orderBy = Bam.Net.Data.Order.By<PasswordResetColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -304,13 +304,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PasswordResetColumns> where, Action<IEnumerable<PasswordReset>> batchProcessor, Bam.Net.Data.OrderBy<PasswordResetColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PasswordResetColumns columns = new PasswordResetColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

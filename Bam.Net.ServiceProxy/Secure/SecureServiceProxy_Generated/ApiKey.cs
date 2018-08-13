@@ -266,9 +266,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// </param>
 		public static ApiKeyCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ApiKey>();
 			Database db = database ?? Db.For<ApiKey>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ApiKey>();
 			var results = new ApiKeyCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -282,14 +282,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ApiKey>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ApiKeyColumns columns = new ApiKeyColumns();
 				var orderBy = Bam.Net.Data.Order.By<ApiKeyColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -314,14 +314,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ApiKeyColumns> where, Action<IEnumerable<ApiKey>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ApiKeyColumns columns = new ApiKeyColumns();
 				var orderBy = Bam.Net.Data.Order.By<ApiKeyColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -346,13 +346,13 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ApiKeyColumns> where, Action<IEnumerable<ApiKey>> batchProcessor, Bam.Net.Data.OrderBy<ApiKeyColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ApiKeyColumns columns = new ApiKeyColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

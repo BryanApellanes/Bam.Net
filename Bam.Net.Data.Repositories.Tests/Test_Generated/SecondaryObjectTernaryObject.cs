@@ -189,9 +189,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </param>
 		public static SecondaryObjectTernaryObjectCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SecondaryObjectTernaryObject>();
 			Database db = database ?? Db.For<SecondaryObjectTernaryObject>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<SecondaryObjectTernaryObject>();
 			var results = new SecondaryObjectTernaryObjectCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SecondaryObjectTernaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectTernaryObjectColumns columns = new SecondaryObjectTernaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectTernaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Action<IEnumerable<SecondaryObjectTernaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectTernaryObjectColumns columns = new SecondaryObjectTernaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectTernaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Action<IEnumerable<SecondaryObjectTernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<SecondaryObjectTernaryObjectColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectTernaryObjectColumns columns = new SecondaryObjectTernaryObjectColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

@@ -238,9 +238,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static UserBehaviorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UserBehavior>();
 			Database db = database ?? Db.For<UserBehavior>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<UserBehavior>();
 			var results = new UserBehaviorCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -254,14 +254,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserBehavior>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserBehaviorColumns columns = new UserBehaviorColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserBehaviorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -286,14 +286,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserBehaviorColumns> where, Action<IEnumerable<UserBehavior>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserBehaviorColumns columns = new UserBehaviorColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserBehaviorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -318,13 +318,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserBehaviorColumns> where, Action<IEnumerable<UserBehavior>> batchProcessor, Bam.Net.Data.OrderBy<UserBehaviorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserBehaviorColumns columns = new UserBehaviorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});

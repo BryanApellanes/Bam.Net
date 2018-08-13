@@ -245,11 +245,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		/// </param>
 		public static RetrieveOperationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<RetrieveOperation>();
 			Database db = database ?? Db.For<RetrieveOperation>();
-			var results = new RetrieveOperationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<RetrieveOperation>();
+			var results = new RetrieveOperationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -259,14 +261,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<RetrieveOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RetrieveOperationColumns columns = new RetrieveOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<RetrieveOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -291,14 +293,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<RetrieveOperationColumns> where, Action<IEnumerable<RetrieveOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RetrieveOperationColumns columns = new RetrieveOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<RetrieveOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -323,13 +325,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RetrieveOperationColumns> where, Action<IEnumerable<RetrieveOperation>> batchProcessor, Bam.Net.Data.OrderBy<RetrieveOperationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RetrieveOperationColumns columns = new RetrieveOperationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -686,6 +688,25 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<RetrieveOperationColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<RetrieveOperationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static RetrieveOperationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<RetrieveOperation>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<RetrieveOperation>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

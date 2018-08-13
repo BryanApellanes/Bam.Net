@@ -224,9 +224,9 @@ namespace Bam.Net.Messaging.Data
 		/// </param>
 		public static DirectMessageCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DirectMessage>();
 			Database db = database ?? Db.For<DirectMessage>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DirectMessage>();
 			var results = new DirectMessageCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -240,14 +240,14 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DirectMessage>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var orderBy = Bam.Net.Data.Order.By<DirectMessageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -272,14 +272,14 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DirectMessageColumns> where, Action<IEnumerable<DirectMessage>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var orderBy = Bam.Net.Data.Order.By<DirectMessageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -304,13 +304,13 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DirectMessageColumns> where, Action<IEnumerable<DirectMessage>> batchProcessor, Bam.Net.Data.OrderBy<DirectMessageColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
