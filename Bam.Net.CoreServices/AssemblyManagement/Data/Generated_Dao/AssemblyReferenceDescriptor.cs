@@ -325,12 +325,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			});			
 		}
 
+		public static AssemblyReferenceDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static AssemblyReferenceDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static AssemblyReferenceDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static AssemblyReferenceDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

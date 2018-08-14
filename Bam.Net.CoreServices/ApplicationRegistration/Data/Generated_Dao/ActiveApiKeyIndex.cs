@@ -327,12 +327,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ActiveApiKeyIndex GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ActiveApiKeyIndex GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ActiveApiKeyIndex GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ActiveApiKeyIndex GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

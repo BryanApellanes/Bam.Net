@@ -341,12 +341,22 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			});			
 		}
 
+		public static MachineRegistries GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static MachineRegistries GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static MachineRegistries GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static MachineRegistries GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

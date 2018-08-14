@@ -381,12 +381,22 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 			});			
 		}
 
+		public static WebHookSubscriber GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static WebHookSubscriber GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static WebHookSubscriber GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static WebHookSubscriber GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

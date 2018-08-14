@@ -390,12 +390,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static Subscription GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Subscription GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Subscription GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Subscription GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

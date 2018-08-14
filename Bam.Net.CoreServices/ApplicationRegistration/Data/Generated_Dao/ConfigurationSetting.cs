@@ -362,12 +362,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ConfigurationSetting GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ConfigurationSetting GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ConfigurationSetting GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ConfigurationSetting GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

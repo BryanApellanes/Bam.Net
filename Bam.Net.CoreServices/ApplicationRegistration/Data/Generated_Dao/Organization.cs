@@ -395,12 +395,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static Organization GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Organization GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Organization GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Organization GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

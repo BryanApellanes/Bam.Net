@@ -523,12 +523,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ProcessDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ProcessDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ProcessDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ProcessDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

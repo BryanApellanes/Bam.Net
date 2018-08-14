@@ -453,12 +453,22 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			});			
 		}
 
+		public static OAuthSettingsData GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static OAuthSettingsData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static OAuthSettingsData GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static OAuthSettingsData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
