@@ -278,12 +278,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Login GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Login GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Login GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Login GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

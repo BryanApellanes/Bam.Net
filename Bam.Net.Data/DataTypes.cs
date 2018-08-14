@@ -13,6 +13,8 @@ namespace Bam.Net.Data
         Default,
         Boolean,
         Int,
+        UInt,
+        ULong,
         Long,
         Decimal,
         String,

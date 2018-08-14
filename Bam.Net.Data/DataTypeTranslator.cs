@@ -23,7 +23,11 @@ namespace Bam.Net.Data
                     return typeof(bool);
                 case DataTypes.Int:
                     return typeof(int);
+                case DataTypes.UInt:
+                    return typeof(uint);
                 case DataTypes.Long:
+                    return typeof(long);
+                case DataTypes.ULong:
                     return typeof(ulong);
                 case DataTypes.Decimal:
                     return typeof(decimal);

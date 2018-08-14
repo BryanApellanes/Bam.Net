@@ -297,12 +297,22 @@ namespace Bam.Net.DaoRef
 			});			
 		}
 
+		public static Left GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Left GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Left GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Left GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -271,12 +271,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Fragment GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Fragment GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Fragment GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Fragment GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

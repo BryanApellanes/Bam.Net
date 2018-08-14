@@ -312,7 +312,8 @@ namespace Bam.Net.Data.Schema
                 Table table = CurrentSchema.GetTable(referencingTable);
                 Table target = CurrentSchema.GetTable(targetTable);
                 Column col = table[referencingColumn];
-                if (col.DataType == DataTypes.Int || col.DataType == DataTypes.Long)
+                if (col.DataType == DataTypes.Int || col.DataType == DataTypes.UInt ||
+                    col.DataType == DataTypes.Long || col.DataType == DataTypes.ULong)
                 {
                     ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable)
                     {

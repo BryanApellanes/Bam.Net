@@ -285,12 +285,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static MainObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static MainObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static MainObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static MainObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

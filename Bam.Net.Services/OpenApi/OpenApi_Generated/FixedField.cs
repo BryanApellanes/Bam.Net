@@ -320,12 +320,22 @@ namespace Bam.Net.Services.OpenApi
 			});			
 		}
 
+		public static FixedField GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static FixedField GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static FixedField GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static FixedField GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

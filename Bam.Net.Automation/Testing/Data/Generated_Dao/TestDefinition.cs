@@ -64,12 +64,12 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
-	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="VarChar", MaxLength="4000")]
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -432,12 +432,22 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			});			
 		}
 
+		public static TestDefinition GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TestDefinition GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TestDefinition GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TestDefinition GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

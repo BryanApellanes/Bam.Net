@@ -376,12 +376,22 @@ namespace Bam.Net.ServiceProxy.Secure
 			});			
 		}
 
+		public static SecureSession GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static SecureSession GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static SecureSession GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static SecureSession GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

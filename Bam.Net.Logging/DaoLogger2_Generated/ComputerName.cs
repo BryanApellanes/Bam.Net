@@ -271,12 +271,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static ComputerName GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ComputerName GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ComputerName GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ComputerName GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

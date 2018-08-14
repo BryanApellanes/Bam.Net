@@ -346,12 +346,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static SecondaryObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static SecondaryObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static SecondaryObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static SecondaryObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

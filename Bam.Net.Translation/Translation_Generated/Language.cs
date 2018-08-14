@@ -411,12 +411,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static Language GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Language GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Language GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Language GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

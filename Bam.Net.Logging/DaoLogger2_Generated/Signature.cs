@@ -271,12 +271,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static Signature GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Signature GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Signature GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Signature GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

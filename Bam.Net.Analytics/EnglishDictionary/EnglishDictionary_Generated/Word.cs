@@ -271,12 +271,22 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			});			
 		}
 
+		public static Word GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Word GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Word GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Word GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

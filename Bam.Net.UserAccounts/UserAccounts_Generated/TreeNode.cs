@@ -348,12 +348,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static TreeNode GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TreeNode GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TreeNode GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TreeNode GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

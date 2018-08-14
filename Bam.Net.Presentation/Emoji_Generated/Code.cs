@@ -278,12 +278,22 @@ namespace Bam.Net.Presentation.Unicode
 			});			
 		}
 
+		public static Code GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Code GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Code GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Code GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

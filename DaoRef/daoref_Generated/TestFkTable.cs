@@ -278,12 +278,22 @@ namespace Bam.Net.DaoRef
 			});			
 		}
 
+		public static TestFkTable GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TestFkTable GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TestFkTable GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TestFkTable GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -139,20 +139,21 @@ namespace Bam.Net.Data.Repositories
 			}
 			return new KeyColumn 
 			{
-				TableName = tableNameProvider.GetTableName(DeclaringType),//TypeSchemaGenerator.GetTableNameForType(DeclaringType),
+				TableName = tableNameProvider.GetTableName(DeclaringType),
 				Name = name,
-				DataType = DataTypes.Long
+				DataType = DataTypes.ULong
 			};
 		}
 
 		Type _foreignKeyTableType;
 		public ForeignKeyColumn ToForeignKeyColumn(ITypeTableNameProvider tableNameProvider = null) {
-			ForeignKeyColumn result = new ForeignKeyColumn(Name, TypeSchemaGenerator.GetTableNameForType(_foreignKeyTableType),
-				TypeSchemaGenerator.GetTableNameForType(DeclaringType, tableNameProvider));
+            ForeignKeyColumn result = new ForeignKeyColumn(Name, TypeSchemaGenerator.GetTableNameForType(_foreignKeyTableType),
+                TypeSchemaGenerator.GetTableNameForType(DeclaringType, tableNameProvider))
+            {
+                DataType = DataTypes.ULong
+            };
 
-			result.DataType = DataTypes.Long;
-
-			return result;
+            return result;
 		}
 	}
 }

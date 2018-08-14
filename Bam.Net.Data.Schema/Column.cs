@@ -128,8 +128,12 @@ namespace Bam.Net.Data.Schema
                         return "bool?";
                     case DataTypes.Int:
                         return "int?";
+                    case DataTypes.UInt:
+                        return "uint?";
                     case DataTypes.Long:
                         return "long?";
+                    case DataTypes.ULong:
+                        return "ulong?";
                     case DataTypes.Decimal:
                         return "decimal?";
                     case DataTypes.String:

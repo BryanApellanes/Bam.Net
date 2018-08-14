@@ -1506,6 +1506,17 @@ namespace Bam.Net.Data
             return new long?();
         }
 
+        protected ulong? GetULongValue(string columnName)
+        {
+            object val = GetCurrentValue(columnName);
+            if (val != null && val != DBNull.Value)
+            {
+                return new ulong?(Convert.ToUInt64(val));
+            }
+
+            return new ulong?();
+        }
+
         protected decimal? GetDecimalValue(string columnName)
         {
             object val = GetCurrentValue(columnName);

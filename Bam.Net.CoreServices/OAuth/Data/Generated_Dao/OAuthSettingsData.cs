@@ -60,12 +60,12 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
-	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="VarChar", MaxLength="4000")]
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{

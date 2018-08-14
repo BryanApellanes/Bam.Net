@@ -292,12 +292,22 @@ namespace Bam.Net.Encryption
 			});			
 		}
 
+		public static VaultItem GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static VaultItem GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static VaultItem GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static VaultItem GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

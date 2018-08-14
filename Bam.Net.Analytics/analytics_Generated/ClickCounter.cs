@@ -313,12 +313,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static ClickCounter GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ClickCounter GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ClickCounter GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ClickCounter GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

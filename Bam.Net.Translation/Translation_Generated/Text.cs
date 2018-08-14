@@ -334,12 +334,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static Text GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Text GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Text GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Text GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

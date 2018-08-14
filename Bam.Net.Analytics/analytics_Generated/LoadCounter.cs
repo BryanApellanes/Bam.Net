@@ -278,12 +278,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static LoadCounter GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static LoadCounter GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static LoadCounter GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static LoadCounter GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

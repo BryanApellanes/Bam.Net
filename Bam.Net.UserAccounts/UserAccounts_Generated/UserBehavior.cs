@@ -334,12 +334,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static UserBehavior GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static UserBehavior GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static UserBehavior GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static UserBehavior GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

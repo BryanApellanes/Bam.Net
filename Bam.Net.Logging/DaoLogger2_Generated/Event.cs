@@ -500,12 +500,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static Event GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Event GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Event GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Event GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

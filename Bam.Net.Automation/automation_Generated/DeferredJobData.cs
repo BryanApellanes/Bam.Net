@@ -285,12 +285,22 @@ namespace Bam.Net.Automation.Data
 			});			
 		}
 
+		public static DeferredJobData GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DeferredJobData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DeferredJobData GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DeferredJobData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -285,12 +285,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static UrlTag GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static UrlTag GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static UrlTag GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static UrlTag GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

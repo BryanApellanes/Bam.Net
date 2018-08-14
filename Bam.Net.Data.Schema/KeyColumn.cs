@@ -54,7 +54,7 @@ namespace Bam.Net.Data.Schema
                 // setter for deserialization only, key is always true
             }
         }
-        public static KeyColumn Default { get; } = new KeyColumn("Id", DataTypes.Long);
+        public static KeyColumn Default { get; } = new KeyColumn("Id", DataTypes.ULong);
 
         protected internal override string RenderClassProperty()
         {

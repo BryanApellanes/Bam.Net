@@ -400,12 +400,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Permission GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Permission GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Permission GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Permission GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

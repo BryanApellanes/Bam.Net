@@ -369,12 +369,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static LogEvent GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static LogEvent GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static LogEvent GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static LogEvent GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

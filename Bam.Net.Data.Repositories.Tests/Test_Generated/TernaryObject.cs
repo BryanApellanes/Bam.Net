@@ -311,12 +311,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static TernaryObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TernaryObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TernaryObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TernaryObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
