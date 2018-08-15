@@ -132,8 +132,10 @@ namespace Bam.Net.Data
                             {
                                 ulong id = Convert.ToUInt64(row[ListColumnName]);
                                 ids.Add(id);
-                                X xref = new X();
-                                xref.DataRow = row;
+                                X xref = new X
+                                {
+                                    DataRow = row
+                                };
                                 XrefsByListId.Add(id, xref);
                             }
 

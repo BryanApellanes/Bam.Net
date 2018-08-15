@@ -732,11 +732,11 @@ namespace Bam.Net.Data.Schema
             manager.AddXref(leftTableName, rightTableName);
 
             manager.AddTable(xrefTableName);
-            manager.AddColumn(xrefTableName, new Column("Id", DataTypes.Long, false));
+            manager.AddColumn(xrefTableName, new Column("Id", DataTypes.ULong, false));
             manager.SetKeyColumn(xrefTableName, "Id");
             manager.AddColumn(xrefTableName, new Column("Uuid", DataTypes.String, false));
-            manager.AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.Long, false));
-            manager.AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.Long, false));
+            manager.AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.ULong, false));
+            manager.AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.ULong, false));
 
             AddForeignKey(foreignKeys, leftTableName, xrefTableName, leftColumnName);
             AddForeignKey(foreignKeys, rightTableName, xrefTableName, rightColumnName);

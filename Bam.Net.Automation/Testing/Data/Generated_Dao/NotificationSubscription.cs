@@ -60,7 +60,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
-	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="VarChar", MaxLength="4000")]
+	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public ulong? Id
 	{
 		get
