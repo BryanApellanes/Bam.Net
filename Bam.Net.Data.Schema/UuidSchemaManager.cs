@@ -13,7 +13,7 @@ namespace Bam.Net.Data.Schema
     /// A schema manager that will automatically add an Id
     /// and Uuid column to every table when generating a 
     /// schema and related Data Access Objects from a *.db.js
-    /// file
+    /// file.
     /// </summary>
     public class UuidSchemaManager: AutoIdSchemaManager
     {

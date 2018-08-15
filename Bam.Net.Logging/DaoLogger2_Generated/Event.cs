@@ -67,11 +67,11 @@ namespace Bam.Net.Logging.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -161,11 +161,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Signature",
 		Suffix="1")]
-	public long? SignatureId
+	public ulong? SignatureId
 	{
 		get
 		{
-			return GetLongValue("SignatureId");
+			return GetULongValue("SignatureId");
 		}
 		set
 		{
@@ -196,11 +196,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="ComputerName",
 		Suffix="2")]
-	public long? ComputerNameId
+	public ulong? ComputerNameId
 	{
 		get
 		{
-			return GetLongValue("ComputerNameId");
+			return GetULongValue("ComputerNameId");
 		}
 		set
 		{
@@ -231,11 +231,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="CategoryName",
 		Suffix="3")]
-	public long? CategoryNameId
+	public ulong? CategoryNameId
 	{
 		get
 		{
-			return GetLongValue("CategoryNameId");
+			return GetULongValue("CategoryNameId");
 		}
 		set
 		{
@@ -266,11 +266,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="SourceName",
 		Suffix="4")]
-	public long? SourceNameId
+	public ulong? SourceNameId
 	{
 		get
 		{
-			return GetLongValue("SourceNameId");
+			return GetULongValue("SourceNameId");
 		}
 		set
 		{
@@ -301,11 +301,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="UserName",
 		Suffix="5")]
-	public long? UserNameId
+	public ulong? UserNameId
 	{
 		get
 		{
-			return GetLongValue("UserNameId");
+			return GetULongValue("UserNameId");
 		}
 		set
 		{

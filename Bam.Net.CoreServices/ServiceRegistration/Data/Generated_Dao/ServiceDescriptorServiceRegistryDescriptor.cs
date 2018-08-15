@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="ServiceDescriptor",
 		Suffix="1")]
-	public long? ServiceDescriptorId
+	public ulong? ServiceDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ServiceDescriptorId");
+			return GetULongValue("ServiceDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="ServiceRegistryDescriptor",
 		Suffix="2")]
-	public long? ServiceRegistryDescriptorId
+	public ulong? ServiceRegistryDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ServiceRegistryDescriptorId");
+			return GetULongValue("ServiceRegistryDescriptorId");
 		}
 		set
 		{

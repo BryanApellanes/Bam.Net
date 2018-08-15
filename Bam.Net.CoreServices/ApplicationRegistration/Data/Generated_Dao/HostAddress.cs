@@ -60,7 +60,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
-	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="VarChar", MaxLength="4000")]
+	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public ulong? Id
 	{
 		get
@@ -169,11 +169,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Machine",
 		Suffix="1")]
-	public long? MachineId
+	public ulong? MachineId
 	{
 		get
 		{
-			return GetLongValue("MachineId");
+			return GetULongValue("MachineId");
 		}
 		set
 		{

@@ -61,11 +61,11 @@ namespace Bam.Net.ServiceProxy.Secure
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -225,11 +225,11 @@ namespace Bam.Net.ServiceProxy.Secure
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="1")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{

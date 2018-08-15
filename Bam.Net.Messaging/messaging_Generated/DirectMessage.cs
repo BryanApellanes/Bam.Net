@@ -65,11 +65,11 @@ namespace Bam.Net.Messaging.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -145,11 +145,11 @@ namespace Bam.Net.Messaging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Message",
 		Suffix="1")]
-	public long? MessageId
+	public ulong? MessageId
 	{
 		get
 		{
-			return GetLongValue("MessageId");
+			return GetULongValue("MessageId");
 		}
 		set
 		{

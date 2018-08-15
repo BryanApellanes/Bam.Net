@@ -99,11 +99,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Image",
 		Suffix="1")]
-	public long? ImageId
+	public ulong? ImageId
 	{
 		get
 		{
-			return GetLongValue("ImageId");
+			return GetULongValue("ImageId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Tag",
 		Suffix="2")]
-	public long? TagId
+	public ulong? TagId
 	{
 		get
 		{
-			return GetLongValue("TagId");
+			return GetULongValue("TagId");
 		}
 		set
 		{

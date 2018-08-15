@@ -99,11 +99,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Event",
 		Suffix="1")]
-	public long? EventId
+	public ulong? EventId
 	{
 		get
 		{
-			return GetLongValue("EventId");
+			return GetULongValue("EventId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Param",
 		Suffix="2")]
-	public long? ParamId
+	public ulong? ParamId
 	{
 		get
 		{
-			return GetLongValue("ParamId");
+			return GetULongValue("ParamId");
 		}
 		set
 		{

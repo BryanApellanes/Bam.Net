@@ -67,11 +67,11 @@ namespace Bam.Net.Data.Repositories.Tests
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -147,11 +147,11 @@ namespace Bam.Net.Data.Repositories.Tests
 		ReferencedKey="Id",
 		ReferencedTable="MainObject",
 		Suffix="1")]
-	public long? MainId
+	public ulong? MainId
 	{
 		get
 		{
-			return GetLongValue("MainId");
+			return GetULongValue("MainId");
 		}
 		set
 		{

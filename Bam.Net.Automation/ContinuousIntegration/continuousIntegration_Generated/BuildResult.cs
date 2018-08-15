@@ -61,11 +61,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		ReferencedKey="Id",
 		ReferencedTable="BuildJob",
 		Suffix="1")]
-	public long? BuildJobId
+	public ulong? BuildJobId
 	{
 		get
 		{
-			return GetLongValue("BuildJobId");
+			return GetULongValue("BuildJobId");
 		}
 		set
 		{

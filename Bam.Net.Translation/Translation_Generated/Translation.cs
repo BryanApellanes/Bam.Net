@@ -61,11 +61,11 @@ namespace Bam.Net.Translation
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Text",
 		Suffix="1")]
-	public long? TextId
+	public ulong? TextId
 	{
 		get
 		{
-			return GetLongValue("TextId");
+			return GetULongValue("TextId");
 		}
 		set
 		{
@@ -176,11 +176,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Language",
 		Suffix="2")]
-	public long? LanguageId
+	public ulong? LanguageId
 	{
 		get
 		{
-			return GetLongValue("LanguageId");
+			return GetULongValue("LanguageId");
 		}
 		set
 		{

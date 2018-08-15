@@ -61,11 +61,11 @@ namespace Bam.Net.Presentation.Unicode
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -127,11 +127,11 @@ namespace Bam.Net.Presentation.Unicode
 		ReferencedKey="Id",
 		ReferencedTable="Emoji",
 		Suffix="1")]
-	public long? EmojiId
+	public ulong? EmojiId
 	{
 		get
 		{
-			return GetLongValue("EmojiId");
+			return GetULongValue("EmojiId");
 		}
 		set
 		{

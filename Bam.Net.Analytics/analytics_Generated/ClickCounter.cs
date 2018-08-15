@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -127,11 +127,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Counter",
 		Suffix="1")]
-	public long? CounterId
+	public ulong? CounterId
 	{
 		get
 		{
-			return GetLongValue("CounterId");
+			return GetULongValue("CounterId");
 		}
 		set
 		{
@@ -162,11 +162,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="UserIdentifier",
 		Suffix="2")]
-	public long? UserIdentifierId
+	public ulong? UserIdentifierId
 	{
 		get
 		{
-			return GetLongValue("UserIdentifierId");
+			return GetULongValue("UserIdentifierId");
 		}
 		set
 		{

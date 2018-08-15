@@ -54,24 +54,17 @@ namespace Bam.Net.Data.Schema
         {
         }
 
-		DataTypes _type;
-		public override DataTypes DataType
-		{
-			get
-			{
-				if(_type != DataTypes.Int &&
-					_type != DataTypes.Long)
-				{
-					_type = DataTypes.Long;
-				}
-
-				return _type;
-			}
-			set
-			{
-				_type = value;
-			}
-		}
+        public override DataTypes DataType
+        {
+            get
+            {
+                return DataTypes.ULong;
+            }
+            set
+            {
+                // always ULong
+            }
+        }
 
         string referenceName;
         public string ReferenceName

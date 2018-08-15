@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="WebHookDescriptor",
 		Suffix="1")]
-	public long? WebHookDescriptorId
+	public ulong? WebHookDescriptorId
 	{
 		get
 		{
-			return GetLongValue("WebHookDescriptorId");
+			return GetULongValue("WebHookDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="WebHookSubscriber",
 		Suffix="2")]
-	public long? WebHookSubscriberId
+	public ulong? WebHookSubscriberId
 	{
 		get
 		{
-			return GetLongValue("WebHookSubscriberId");
+			return GetULongValue("WebHookSubscriberId");
 		}
 		set
 		{

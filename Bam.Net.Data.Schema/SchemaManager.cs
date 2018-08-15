@@ -317,6 +317,7 @@ namespace Bam.Net.Data.Schema
                 {
                     ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable)
                     {
+                        // TODO: this should probably check the validity of the target 
                         ReferencedKey = referencedKey ?? (target.Key != null ? target.Key.Name : "Id"),
                         ReferencedTable = target.Name
                     };

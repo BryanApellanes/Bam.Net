@@ -61,11 +61,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -155,11 +155,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="Session",
 		Suffix="1")]
-	public long? SessionId
+	public ulong? SessionId
 	{
 		get
 		{
-			return GetLongValue("SessionId");
+			return GetULongValue("SessionId");
 		}
 		set
 		{

@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="1")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Machine",
 		Suffix="2")]
-	public long? MachineId
+	public ulong? MachineId
 	{
 		get
 		{
-			return GetLongValue("MachineId");
+			return GetULongValue("MachineId");
 		}
 		set
 		{

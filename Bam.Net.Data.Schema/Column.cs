@@ -169,7 +169,13 @@ namespace Bam.Net.Data.Schema
                         case DataTypes.Int:
                             SetDbDataype("Int", "10");
                             break;
+                        case DataTypes.UInt:
+                            SetDbDataype("Int", "10");
+                            break;
                         case DataTypes.Long:
+                            SetDbDataype("BigInt", "19");
+                            break;
+                        case DataTypes.ULong:
                             SetDbDataype("BigInt", "19");
                             break;
                         case DataTypes.Decimal:

@@ -99,11 +99,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="User",
 		Suffix="1")]
-	public long? UserId
+	public ulong? UserId
 	{
 		get
 		{
-			return GetLongValue("UserId");
+			return GetULongValue("UserId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="Group",
 		Suffix="2")]
-	public long? GroupId
+	public ulong? GroupId
 	{
 		get
 		{
-			return GetLongValue("GroupId");
+			return GetULongValue("GroupId");
 		}
 		set
 		{

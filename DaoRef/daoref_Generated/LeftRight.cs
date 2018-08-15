@@ -99,11 +99,11 @@ namespace Bam.Net.DaoRef
 		ReferencedKey="Id",
 		ReferencedTable="Left",
 		Suffix="1")]
-	public long? LeftId
+	public ulong? LeftId
 	{
 		get
 		{
-			return GetLongValue("LeftId");
+			return GetULongValue("LeftId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.DaoRef
 		ReferencedKey="Id",
 		ReferencedTable="Right",
 		Suffix="2")]
-	public long? RightId
+	public ulong? RightId
 	{
 		get
 		{
-			return GetLongValue("RightId");
+			return GetULongValue("RightId");
 		}
 		set
 		{

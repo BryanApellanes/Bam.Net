@@ -69,11 +69,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -149,11 +149,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="TreeNode",
 		Suffix="1")]
-	public long? ParentTreeNodeId
+	public ulong? ParentTreeNodeId
 	{
 		get
 		{
-			return GetLongValue("ParentTreeNodeId");
+			return GetULongValue("ParentTreeNodeId");
 		}
 		set
 		{

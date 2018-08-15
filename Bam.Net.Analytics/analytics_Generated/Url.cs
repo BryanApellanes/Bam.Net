@@ -71,11 +71,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -123,11 +123,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Protocol",
 		Suffix="1")]
-	public long? ProtocolId
+	public ulong? ProtocolId
 	{
 		get
 		{
-			return GetLongValue("ProtocolId");
+			return GetULongValue("ProtocolId");
 		}
 		set
 		{
@@ -158,11 +158,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Domain",
 		Suffix="2")]
-	public long? DomainId
+	public ulong? DomainId
 	{
 		get
 		{
-			return GetLongValue("DomainId");
+			return GetULongValue("DomainId");
 		}
 		set
 		{
@@ -193,11 +193,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Port",
 		Suffix="3")]
-	public long? PortId
+	public ulong? PortId
 	{
 		get
 		{
-			return GetLongValue("PortId");
+			return GetULongValue("PortId");
 		}
 		set
 		{
@@ -228,11 +228,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Path",
 		Suffix="4")]
-	public long? PathId
+	public ulong? PathId
 	{
 		get
 		{
-			return GetLongValue("PathId");
+			return GetULongValue("PathId");
 		}
 		set
 		{
@@ -263,11 +263,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="QueryString",
 		Suffix="5")]
-	public long? QueryStringId
+	public ulong? QueryStringId
 	{
 		get
 		{
-			return GetLongValue("QueryStringId");
+			return GetULongValue("QueryStringId");
 		}
 		set
 		{
@@ -298,11 +298,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Fragment",
 		Suffix="6")]
-	public long? FragmentId
+	public ulong? FragmentId
 	{
 		get
 		{
-			return GetLongValue("FragmentId");
+			return GetULongValue("FragmentId");
 		}
 		set
 		{

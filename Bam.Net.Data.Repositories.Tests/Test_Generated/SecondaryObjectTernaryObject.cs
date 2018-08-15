@@ -99,11 +99,11 @@ namespace Bam.Net.Data.Repositories.Tests
 		ReferencedKey="Id",
 		ReferencedTable="SecondaryObject",
 		Suffix="1")]
-	public long? SecondaryObjectId
+	public ulong? SecondaryObjectId
 	{
 		get
 		{
-			return GetLongValue("SecondaryObjectId");
+			return GetULongValue("SecondaryObjectId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Data.Repositories.Tests
 		ReferencedKey="Id",
 		ReferencedTable="TernaryObject",
 		Suffix="2")]
-	public long? TernaryObjectId
+	public ulong? TernaryObjectId
 	{
 		get
 		{
-			return GetLongValue("TernaryObjectId");
+			return GetULongValue("TernaryObjectId");
 		}
 		set
 		{

@@ -54,7 +54,7 @@ namespace Bam.Net.Data.Tests.Integration
 				});
 
 				Expect.AreEqual(8, tables.Count);
-				List<long> ids = new List<long>(tables.Select(t => t.Id.Value).ToArray());
+				List<ulong> ids = new List<ulong>(tables.Select(t => t.Id.Value).ToArray());
 				TestTableCollection retrieved = TestTable.Where(c => c.Id.In(ids.ToArray()), db);
 				Expect.AreEqual(tables.Count, retrieved.Count);
 			});

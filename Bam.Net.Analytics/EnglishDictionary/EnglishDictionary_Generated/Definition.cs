@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics.EnglishDictionary
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		ReferencedKey="Id",
 		ReferencedTable="Word",
 		Suffix="1")]
-	public long? WordId
+	public ulong? WordId
 	{
 		get
 		{
-			return GetLongValue("WordId");
+			return GetULongValue("WordId");
 		}
 		set
 		{

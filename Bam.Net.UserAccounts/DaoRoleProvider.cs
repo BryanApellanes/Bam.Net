@@ -251,8 +251,8 @@ namespace Bam.Net.UserAccounts
             RoleCollection roles = Role.Where(c => c.Name.In(roleNames), Database);
             UserCollection users = User.Where(c => c.UserName.In(usernames), Database);
 
-            long[] roleIds = roles.Select(r => r.Id.Value).ToArray();
-            long[] userIds = users.Select(u => u.Id.Value).ToArray();
+            ulong[] roleIds = roles.Select(r => r.Id.Value).ToArray();
+            ulong[] userIds = users.Select(u => u.Id.Value).ToArray();
             UserRoleCollection xrefs = UserRole.Where(c => c.RoleId.In(roleIds) && c.UserId.In(userIds), Database);
             xrefs.Delete(Database);            
         }

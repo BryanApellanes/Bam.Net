@@ -99,11 +99,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Url",
 		Suffix="1")]
-	public long? UrlId
+	public ulong? UrlId
 	{
 		get
 		{
-			return GetLongValue("UrlId");
+			return GetULongValue("UrlId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Tag",
 		Suffix="2")]
-	public long? TagId
+	public ulong? TagId
 	{
 		get
 		{
-			return GetLongValue("TagId");
+			return GetULongValue("TagId");
 		}
 		set
 		{

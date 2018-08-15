@@ -61,11 +61,11 @@ namespace Bam.Net.DaoRef
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -127,11 +127,11 @@ namespace Bam.Net.DaoRef
 		ReferencedKey="Id",
 		ReferencedTable="TestTable",
 		Suffix="1")]
-	public long? TestTableId
+	public ulong? TestTableId
 	{
 		get
 		{
-			return GetLongValue("TestTableId");
+			return GetULongValue("TestTableId");
 		}
 		set
 		{

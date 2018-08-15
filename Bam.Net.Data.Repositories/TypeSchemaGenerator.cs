@@ -474,11 +474,14 @@ namespace Bam.Net.Data.Repositories
                 dataType = DataTypes.Int;
             }
             else if (propertyType == typeof(long) ||
-                propertyType == typeof(long?) ||
-                propertyType == typeof(ulong) ||
-                propertyType == typeof(ulong?))
+                propertyType == typeof(long?))
             {
                 dataType = DataTypes.Long;
+            }
+            else if (propertyType == typeof(ulong) ||
+               propertyType == typeof(ulong?))
+            {
+                dataType = DataTypes.ULong;
             }
             else if (propertyType == typeof(decimal) ||
                 propertyType == typeof(decimal?))

@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="AssemblyDescriptor",
 		Suffix="1")]
-	public long? AssemblyDescriptorId
+	public ulong? AssemblyDescriptorId
 	{
 		get
 		{
-			return GetLongValue("AssemblyDescriptorId");
+			return GetULongValue("AssemblyDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="ProcessRuntimeDescriptor",
 		Suffix="2")]
-	public long? ProcessRuntimeDescriptorId
+	public ulong? ProcessRuntimeDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ProcessRuntimeDescriptorId");
+			return GetULongValue("ProcessRuntimeDescriptorId");
 		}
 		set
 		{
