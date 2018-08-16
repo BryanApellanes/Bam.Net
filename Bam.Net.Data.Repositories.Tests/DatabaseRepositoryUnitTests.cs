@@ -79,10 +79,10 @@ namespace Bam.Net.Data.Repositories.Tests
         {
             SchemaManager mgr = new SchemaManager();
             mgr.AddTable("Person");
-            mgr.AddColumn("Person", "Id", DataTypes.Long);
+            mgr.AddColumn("Person", "Id", DataTypes.ULong);
             mgr.AddColumn("Person", "Name", DataTypes.String);
             mgr.AddTable("Employee");
-            mgr.AddColumn("Employee", "Id", DataTypes.Long);
+            mgr.AddColumn("Employee", "Id", DataTypes.ULong);
             mgr.AddColumn("Employee", "Salary", DataTypes.Decimal);
             SchemaResult result = mgr.SetForeignKey("Person", "Employee", "Id", "Id");
             Expect.IsTrue(result.Success, $"Message: {result.Message}\r\nException: {result.ExceptionMessage}");

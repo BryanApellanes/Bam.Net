@@ -40,7 +40,7 @@ namespace Bam.Net.Data.Repositories
                         AddPropertyColumn(schemaManager, typeSchema.DefaultDataTypeBehavior, tableName, pc.PropertyInfo);
                     });
                     schemaManager.ExecutePostColumnAugmentations(tableName);
-                    schemaManager.AddColumn(tableName, "Id", DataTypes.Long);
+                    schemaManager.AddColumn(tableName, "Id", DataTypes.ULong);
                     if (inheritFrom != null)
                     {
                         schemaManager.SetForeignKey(tableNameProvider.GetTableName(inheritFrom), tableName, "Id", "Id");

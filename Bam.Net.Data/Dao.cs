@@ -331,8 +331,12 @@ namespace Bam.Net.Data
                     return TypeCode.Boolean;
                 case DataTypes.Int:
                     return TypeCode.Int32;
+                case DataTypes.UInt:
+                    return TypeCode.UInt32;
                 case DataTypes.Long:
                     return TypeCode.Int64;
+                case DataTypes.ULong:
+                    return TypeCode.UInt64;
                 case DataTypes.Decimal:
                     return TypeCode.Decimal;
                 case DataTypes.String:

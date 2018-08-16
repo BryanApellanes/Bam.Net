@@ -317,7 +317,6 @@ namespace Bam.Net.Data.Schema
                 {
                     ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable)
                     {
-                        // TODO: this should probably check the validity of the target 
                         ReferencedKey = referencedKey ?? (target.Key != null ? target.Key.Name : "Id"),
                         ReferencedTable = target.Name
                     };
@@ -486,7 +485,7 @@ namespace Bam.Net.Data.Schema
 
                     foreach (dynamic fk in foreignKeys)
                     {
-                        AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.Long));
+                        AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.ULong));
                         SetForeignKey(fk.PrimaryTable, fk.ForeignKeyTable, fk.ReferencingColumn);
                     }
 
@@ -573,11 +572,11 @@ namespace Bam.Net.Data.Schema
             string rightColumnName = string.Format("{0}Id", rightTableName);
             AddXref(leftTableName, rightTableName);
             AddTable(xrefTableName);
-            AddColumn(xrefTableName, new Column("Id", DataTypes.Long, false));
+            AddColumn(xrefTableName, new Column("Id", DataTypes.ULong, false));
             SetKeyColumn(xrefTableName, "Id");
             AddColumn(xrefTableName, new Column("Uuid", DataTypes.String, false));
-            AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.Long, false));
-            AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.Long, false));
+            AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.ULong, false));
+            AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.ULong, false));
             SetForeignKey(leftTableName, xrefTableName, leftColumnName);
             SetForeignKey(rightTableName, xrefTableName, rightColumnName);
         }

@@ -10,7 +10,7 @@ namespace Bam.Net.Data.Repositories.Tests.TestDtos
     [Serializable]
     public class Daughter
     {
-        public long Id { get; set; }
+        public ulong Id { get; set; }
         public string Uuid { get; set; }
         public string Name { get; set; }
         public long ParentId { get; set; }

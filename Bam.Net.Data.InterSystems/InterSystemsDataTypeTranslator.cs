@@ -13,7 +13,7 @@ namespace Bam.Net.Data
             switch (sqlDataType)
             {
                 case "bigint":
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case "binary":
                     return DataTypes.ByteArray;
                 case "bit":
@@ -45,7 +45,7 @@ namespace Bam.Net.Data
                 case "none":
                     return DataTypes.String;
                 case "numeric":
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case "real":
                     return DataTypes.Decimal;
                 case "smalldatetime":

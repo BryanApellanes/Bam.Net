@@ -22,7 +22,7 @@ namespace Bam.Net.Data.Schema
         }
 
         /// <summary>
-        /// Instantiate a column where Type = Long, AllowNull = false, Key = true
+        /// Instantiate a column where Type = ULong, AllowNull = false, Key = true
         /// </summary>
         /// <param name="columnName"></param>
         /// <param name="tableName"></param>
@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Schema
         {
             this.Name = columnName;
             this.TableName = tableName;
-            this.DataType = DataTypes.Long;
+            this.DataType = DataTypes.ULong;
             this.AllowNull = false;
             this.Key = true;
         }

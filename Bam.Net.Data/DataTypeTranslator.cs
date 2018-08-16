@@ -48,7 +48,7 @@ namespace Bam.Net.Data
             switch (dataType)
             {
                 case "bigint":
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case "binary":
                     return DataTypes.ByteArray;
                 case "bit":

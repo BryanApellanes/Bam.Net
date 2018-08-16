@@ -134,6 +134,7 @@
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
     <Compile Include="IDataSettingsResolver.cs" />
+    <Compile Include="InvalidIdPropertyTypeException.cs" />
     <Compile Include="IReflectionCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />

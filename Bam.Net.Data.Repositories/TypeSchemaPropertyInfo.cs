@@ -11,7 +11,11 @@ using Bam.Net.Data.Schema;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class TypeSchemaPropertyInfo: PropertyInfo
+    /// <summary>
+    /// Represents information about a missing primary key/id column or missing foreign key.
+    /// </summary>
+    /// <seealso cref="System.Reflection.PropertyInfo" />
+    public class TypeSchemaPropertyInfo: PropertyInfo
 	{
 		public TypeSchemaPropertyInfo(string name, Type decrlaringType, ITypeTableNameProvider tableNameProvier)
 		{

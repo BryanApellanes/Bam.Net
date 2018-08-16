@@ -132,6 +132,10 @@
     <Reference Include="YamlSerializer">
       <HintPath>C:\bam\nuget\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
     </Reference>
+    <Reference Include="_Bam.Net.Data.Repositories.Tests_c1cb38538e8680982193afca29e9cbc5f988db37_, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\x64\Debug\_Bam.Net.Data.Repositories.Tests_c1cb38538e8680982193afca29e9cbc5f988db37_.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupDatabaseTests.cs" />
