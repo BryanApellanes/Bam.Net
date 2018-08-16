@@ -455,7 +455,7 @@ namespace Bam.Net.Data.Repositories
 
             if(keyProp != null && keyProp.PropertyType != typeof(ulong) && keyProp.PropertyType != typeof(ulong?))
             {
-                throw new InvalidIdPropertyTypeException(keyProp.PropertyType);
+                throw new InvalidIdPropertyTypeException(keyProp);
             }
 			return keyProp;
 		}
