@@ -38,31 +38,34 @@ namespace Bam.Net.Logging
 
         public override void CommitLogEvent(LogEvent logEvent)
         {
-			SourceName source = GetSource(logEvent, Database);
-			CategoryName category = GetCategory(logEvent, Database);
-			UserName user = GetUser(logEvent, Database);
-			ComputerName computer = GetComputer(logEvent, Database);
-			Signature signature = GetSignature(logEvent, Database);
+            Task.Run(() =>
+            {
+                SourceName source = GetSource(logEvent, Database);
+                CategoryName category = GetCategory(logEvent, Database);
+                UserName user = GetUser(logEvent, Database);
+                ComputerName computer = GetComputer(logEvent, Database);
+                Signature signature = GetSignature(logEvent, Database);
 
-            Event instance = new Event()
-            {
-                SignatureId = signature.Id,
-                ComputerNameId = computer.Id,
-                CategoryNameId = category.Id,
-                SourceNameId = source.Id,
-                UserNameId = user.Id,
-                EventId = logEvent.EventID,
-                Time = logEvent.Time,
-                Severity = (int)logEvent.Severity
-            };
-            instance.Save(Database);
-            logEvent.MessageVariableValues.Each((val, pos)=>
-            {
-                Param p = instance.Params.AddNew();
-                p.Position = pos;
-                p.Value = val;
+                Event instance = new Event()
+                {
+                    SignatureId = signature.Id,
+                    ComputerNameId = computer.Id,
+                    CategoryNameId = category.Id,
+                    SourceNameId = source.Id,
+                    UserNameId = user.Id,
+                    EventId = logEvent.EventID,
+                    Time = logEvent.Time,
+                    Severity = (int)logEvent.Severity
+                };
+                instance.Save(Database);
+                logEvent.MessageVariableValues.Each((val, pos) =>
+                {
+                    Param p = instance.Params.AddNew();
+                    p.Position = pos;
+                    p.Value = val;
+                });
+                instance.Save(Database);
             });
-			instance.Save(Database);
         }
 
         private static Signature GetSignature(LogEvent logEvent, Database db)
