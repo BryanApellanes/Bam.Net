@@ -4027,6 +4027,8 @@ namespace Bam.Net
                         prop.PropertyType == typeof(bool) ||
                         prop.PropertyType == typeof(long) ||
                         prop.PropertyType == typeof(long?) ||
+                        prop.PropertyType == typeof(ulong) ||
+                        prop.PropertyType == typeof(ulong?) ||
                         prop.PropertyType == typeof(int) ||
                         prop.PropertyType == typeof(int?) ||
                         prop.PropertyType == typeof(bool?) ||
@@ -4091,8 +4093,10 @@ namespace Bam.Net
             lock (_buildDynamicTypeLock)
             {
                 GetAssemblyAndTypeBuilder(typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder);
-                List<object> all = new List<object>();
-                all.Add(instance);
+                List<object> all = new List<object>
+                {
+                    instance
+                };
                 all.AddRange(toMerge);
                 all.Each(obj =>
                 {
