@@ -58,7 +58,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetLongValue("Id")), this, "MainId"));				
+				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetULongValue("Id")), this, "MainId"));				
 			}						
 		}
 

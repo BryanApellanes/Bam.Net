@@ -58,7 +58,7 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TestFkTable_TestTableId", new TestFkTableCollection(Database.GetQuery<TestFkTableColumns, TestFkTable>((c) => c.TestTableId == GetLongValue("Id")), this, "TestTableId"));				
+				this.ChildCollections.Add("TestFkTable_TestTableId", new TestFkTableCollection(Database.GetQuery<TestFkTableColumns, TestFkTable>((c) => c.TestTableId == GetULongValue("Id")), this, "TestTableId"));				
 			}						
 		}
 

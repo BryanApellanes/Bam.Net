@@ -58,11 +58,11 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetULongValue("Id")), this, "UserIdentifierId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetULongValue("Id")), this, "UserIdentifierId"));				
 			}						
 		}
 

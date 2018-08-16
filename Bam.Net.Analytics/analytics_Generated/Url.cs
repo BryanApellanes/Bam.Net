@@ -58,11 +58,11 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+				this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetULongValue("Id")), this, "UrlId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+				this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetULongValue("Id")), this, "UrlId"));				
 			}			
             this.ChildCollections.Add("Url_UrlTag_Tag",  new XrefDaoCollection<UrlTag, Tag>(this, false));
 							

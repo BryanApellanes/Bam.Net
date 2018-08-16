@@ -58,7 +58,7 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Event_SignatureId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.SignatureId == GetLongValue("Id")), this, "SignatureId"));				
+				this.ChildCollections.Add("Event_SignatureId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.SignatureId == GetULongValue("Id")), this, "SignatureId"));				
 			}						
 		}
 

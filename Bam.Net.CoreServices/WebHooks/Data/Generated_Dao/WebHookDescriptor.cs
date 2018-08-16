@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookCall_WebHookDescriptorId", new WebHookCallCollection(Database.GetQuery<WebHookCallColumns, WebHookCall>((c) => c.WebHookDescriptorId == GetLongValue("Id")), this, "WebHookDescriptorId"));				
+				this.ChildCollections.Add("WebHookCall_WebHookDescriptorId", new WebHookCallCollection(Database.GetQuery<WebHookCallColumns, WebHookCall>((c) => c.WebHookDescriptorId == GetULongValue("Id")), this, "WebHookDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookDescriptorId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookDescriptorId == GetLongValue("Id")), this, "WebHookDescriptorId"));				
+				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookDescriptorId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookDescriptorId == GetULongValue("Id")), this, "WebHookDescriptorId"));				
 			}			
             this.ChildCollections.Add("WebHookDescriptor_WebHookDescriptorWebHookSubscriber_WebHookSubscriber",  new XrefDaoCollection<WebHookDescriptorWebHookSubscriber, WebHookSubscriber>(this, false));
 							

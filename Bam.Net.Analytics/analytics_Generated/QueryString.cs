@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Url_QueryStringId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.QueryStringId == GetLongValue("Id")), this, "QueryStringId"));				
+				this.ChildCollections.Add("Url_QueryStringId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.QueryStringId == GetULongValue("Id")), this, "QueryStringId"));				
 			}						
 		}
 

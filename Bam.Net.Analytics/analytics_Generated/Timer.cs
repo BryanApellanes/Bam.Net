@@ -58,15 +58,15 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+				this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetULongValue("Id")), this, "TimerId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+				this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetULongValue("Id")), this, "TimerId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+				this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetULongValue("Id")), this, "TimerId"));				
 			}						
 		}
 

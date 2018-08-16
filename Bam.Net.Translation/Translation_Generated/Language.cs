@@ -58,19 +58,19 @@ namespace Bam.Net.Translation
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}						
 		}
 

@@ -58,7 +58,7 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("DaoReferenceObjectWithForeignKey_DaoReferenceObjectId", new DaoReferenceObjectWithForeignKeyCollection(Database.GetQuery<DaoReferenceObjectWithForeignKeyColumns, DaoReferenceObjectWithForeignKey>((c) => c.DaoReferenceObjectId == GetLongValue("Id")), this, "DaoReferenceObjectId"));				
+				this.ChildCollections.Add("DaoReferenceObjectWithForeignKey_DaoReferenceObjectId", new DaoReferenceObjectWithForeignKeyCollection(Database.GetQuery<DaoReferenceObjectWithForeignKeyColumns, DaoReferenceObjectWithForeignKey>((c) => c.DaoReferenceObjectId == GetULongValue("Id")), this, "DaoReferenceObjectId"));				
 			}						
 		}
 

@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetLongValue("Id")), this, "ParentTreeNodeId"));				
+				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetULongValue("Id")), this, "ParentTreeNodeId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetLongValue("Id")), this, "TreeNodeId"));				
+				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetULongValue("Id")), this, "TreeNodeId"));				
 			}						
 		}
 

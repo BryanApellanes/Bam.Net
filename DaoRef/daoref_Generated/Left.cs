@@ -58,7 +58,7 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LeftRight_LeftId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.LeftId == GetLongValue("Id")), this, "LeftId"));				
+				this.ChildCollections.Add("LeftRight_LeftId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.LeftId == GetULongValue("Id")), this, "LeftId"));				
 			}			
             this.ChildCollections.Add("Left_LeftRight_Right",  new XrefDaoCollection<LeftRight, Right>(this, false));
 							

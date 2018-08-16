@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetLongValue("Id")), this, "CrawlerId"));				
+				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetULongValue("Id")), this, "CrawlerId"));				
 			}						
 		}
 

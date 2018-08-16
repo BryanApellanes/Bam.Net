@@ -58,7 +58,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ConfigSetting_ConfigurationId", new ConfigSettingCollection(Database.GetQuery<ConfigSettingColumns, ConfigSetting>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));				
+				this.ChildCollections.Add("ConfigSetting_ConfigurationId", new ConfigSettingCollection(Database.GetQuery<ConfigSettingColumns, ConfigSetting>((c) => c.ConfigurationId == GetULongValue("Id")), this, "ConfigurationId"));				
 			}						
 		}
 

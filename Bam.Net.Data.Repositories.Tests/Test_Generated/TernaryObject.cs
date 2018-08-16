@@ -58,7 +58,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetLongValue("Id")), this, "TernaryObjectId"));				
+				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetULongValue("Id")), this, "TernaryObjectId"));				
 			}						
             this.ChildCollections.Add("TernaryObject_SecondaryObjectTernaryObject_SecondaryObject",  new XrefDaoCollection<SecondaryObjectTernaryObject, SecondaryObject>(this, false));
 				

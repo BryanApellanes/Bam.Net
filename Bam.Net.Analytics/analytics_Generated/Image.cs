@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetLongValue("Id")), this, "ImageId"));				
+				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetULongValue("Id")), this, "ImageId"));				
 			}			
             this.ChildCollections.Add("Image_ImageTag_Tag",  new XrefDaoCollection<ImageTag, Tag>(this, false));
 							

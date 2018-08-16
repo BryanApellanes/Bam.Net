@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.ProcessRuntimeDescriptorId == GetLongValue("Id")), this, "ProcessRuntimeDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.ProcessRuntimeDescriptorId == GetULongValue("Id")), this, "ProcessRuntimeDescriptorId"));				
 			}						
             this.ChildCollections.Add("ProcessRuntimeDescriptor_AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptor",  new XrefDaoCollection<AssemblyDescriptorProcessRuntimeDescriptor, AssemblyDescriptor>(this, false));
 				

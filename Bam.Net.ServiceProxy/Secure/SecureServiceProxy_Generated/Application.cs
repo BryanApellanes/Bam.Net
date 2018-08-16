@@ -58,15 +58,15 @@ namespace Bam.Net.ServiceProxy.Secure
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecureSession_ApplicationId", new SecureSessionCollection(Database.GetQuery<SecureSessionColumns, SecureSession>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("SecureSession_ApplicationId", new SecureSessionCollection(Database.GetQuery<SecureSessionColumns, SecureSession>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}						
 		}
 

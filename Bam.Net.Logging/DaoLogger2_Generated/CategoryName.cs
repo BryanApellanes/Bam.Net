@@ -58,7 +58,7 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Event_CategoryNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.CategoryNameId == GetLongValue("Id")), this, "CategoryNameId"));				
+				this.ChildCollections.Add("Event_CategoryNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.CategoryNameId == GetULongValue("Id")), this, "CategoryNameId"));				
 			}						
 		}
 

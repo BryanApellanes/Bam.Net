@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ConfigurationSetting_ConfigurationId", new ConfigurationSettingCollection(Database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));				
+				this.ChildCollections.Add("ConfigurationSetting_ConfigurationId", new ConfigurationSettingCollection(Database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>((c) => c.ConfigurationId == GetULongValue("Id")), this, "ConfigurationId"));				
 			}						
 		}
 

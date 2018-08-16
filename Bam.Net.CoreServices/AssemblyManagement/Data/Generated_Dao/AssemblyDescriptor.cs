@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.AssemblyDescriptorId == GetULongValue("Id")), this, "AssemblyDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyDescriptorId == GetULongValue("Id")), this, "AssemblyDescriptorId"));				
 			}			
             this.ChildCollections.Add("AssemblyDescriptor_AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptor",  new XrefDaoCollection<AssemblyDescriptorProcessRuntimeDescriptor, ProcessRuntimeDescriptor>(this, false));
 				

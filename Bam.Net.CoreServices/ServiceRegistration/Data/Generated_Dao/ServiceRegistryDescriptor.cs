@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ServiceDescriptorServiceRegistryDescriptor_ServiceRegistryDescriptorId", new ServiceDescriptorServiceRegistryDescriptorCollection(Database.GetQuery<ServiceDescriptorServiceRegistryDescriptorColumns, ServiceDescriptorServiceRegistryDescriptor>((c) => c.ServiceRegistryDescriptorId == GetLongValue("Id")), this, "ServiceRegistryDescriptorId"));				
+				this.ChildCollections.Add("ServiceDescriptorServiceRegistryDescriptor_ServiceRegistryDescriptorId", new ServiceDescriptorServiceRegistryDescriptorCollection(Database.GetQuery<ServiceDescriptorServiceRegistryDescriptorColumns, ServiceDescriptorServiceRegistryDescriptor>((c) => c.ServiceRegistryDescriptorId == GetULongValue("Id")), this, "ServiceRegistryDescriptorId"));				
 			}						
             this.ChildCollections.Add("ServiceRegistryDescriptor_ServiceDescriptorServiceRegistryDescriptor_ServiceDescriptor",  new XrefDaoCollection<ServiceDescriptorServiceRegistryDescriptor, ServiceDescriptor>(this, false));
 				

@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics.EnglishDictionary
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Definition_WordId", new DefinitionCollection(Database.GetQuery<DefinitionColumns, Definition>((c) => c.WordId == GetLongValue("Id")), this, "WordId"));				
+				this.ChildCollections.Add("Definition_WordId", new DefinitionCollection(Database.GetQuery<DefinitionColumns, Definition>((c) => c.WordId == GetULongValue("Id")), this, "WordId"));				
 			}						
 		}
 

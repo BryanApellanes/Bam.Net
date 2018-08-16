@@ -58,27 +58,27 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ProcessDescriptor_ApplicationId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ProcessDescriptor_ApplicationId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Client_ApplicationId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("Client_ApplicationId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("HostDomainApplication_ApplicationId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("HostDomainApplication_ApplicationId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}			
             this.ChildCollections.Add("Application_ApplicationMachine_Machine",  new XrefDaoCollection<ApplicationMachine, Machine>(this, false));
 							

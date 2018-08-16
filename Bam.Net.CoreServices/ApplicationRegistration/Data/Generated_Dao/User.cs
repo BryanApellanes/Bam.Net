@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Subscription_UserId", new SubscriptionCollection(Database.GetQuery<SubscriptionColumns, Subscription>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Subscription_UserId", new SubscriptionCollection(Database.GetQuery<SubscriptionColumns, Subscription>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("OrganizationUser_UserId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("OrganizationUser_UserId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}						
             this.ChildCollections.Add("User_OrganizationUser_Organization",  new XrefDaoCollection<OrganizationUser, Organization>(this, false));
 				

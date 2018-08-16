@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Feature_CategoryId", new FeatureCollection(Database.GetQuery<FeatureColumns, Feature>((c) => c.CategoryId == GetLongValue("Id")), this, "CategoryId"));				
+				this.ChildCollections.Add("Feature_CategoryId", new FeatureCollection(Database.GetQuery<FeatureColumns, Feature>((c) => c.CategoryId == GetULongValue("Id")), this, "CategoryId"));				
 			}						
 		}
 

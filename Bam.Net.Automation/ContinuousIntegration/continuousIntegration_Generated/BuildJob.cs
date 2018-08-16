@@ -58,7 +58,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetLongValue("Id")), this, "BuildJobId"));				
+				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetULongValue("Id")), this, "BuildJobId"));				
 			}						
 		}
 

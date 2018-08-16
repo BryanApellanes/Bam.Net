@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("HostDomainApplication_HostDomainId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.HostDomainId == GetLongValue("Id")), this, "HostDomainId"));				
+				this.ChildCollections.Add("HostDomainApplication_HostDomainId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.HostDomainId == GetULongValue("Id")), this, "HostDomainId"));				
 			}			
             this.ChildCollections.Add("HostDomain_HostDomainApplication_Application",  new XrefDaoCollection<HostDomainApplication, Application>(this, false));
 							

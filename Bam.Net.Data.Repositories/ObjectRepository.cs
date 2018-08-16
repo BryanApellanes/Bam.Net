@@ -161,7 +161,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> RetrieveAll<T>() 
 		{
-			return this.Query<T>(t => ((object)t).Property<long>("Id") > 0);
+			return this.Query<T>(t => ((object)t).Property<ulong>("Id") > 0);
 		}
 
         public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
@@ -180,7 +180,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<object> RetrieveAll(Type type)
 		{
-			return Query(type, t => ((object)t).Property<long>("Id") > 0);
+			return Query(type, t => ((object)t).Property<ulong>("Id") > 0);
 		}
 
 		public override IEnumerable<object> Query(string propertyName, object value)

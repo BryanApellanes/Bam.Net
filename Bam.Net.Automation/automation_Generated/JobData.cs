@@ -58,7 +58,7 @@ namespace Bam.Net.Automation.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("JobRunData_JobDataId", new JobRunDataCollection(Database.GetQuery<JobRunDataColumns, JobRunData>((c) => c.JobDataId == GetLongValue("Id")), this, "JobDataId"));				
+				this.ChildCollections.Add("JobRunData_JobDataId", new JobRunDataCollection(Database.GetQuery<JobRunDataColumns, JobRunData>((c) => c.JobDataId == GetULongValue("Id")), this, "JobDataId"));				
 			}						
 		}
 

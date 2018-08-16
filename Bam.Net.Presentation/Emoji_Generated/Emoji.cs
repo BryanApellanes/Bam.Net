@@ -58,7 +58,7 @@ namespace Bam.Net.Presentation.Unicode
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Code_EmojiId", new CodeCollection(Database.GetQuery<CodeColumns, Code>((c) => c.EmojiId == GetLongValue("Id")), this, "EmojiId"));				
+				this.ChildCollections.Add("Code_EmojiId", new CodeCollection(Database.GetQuery<CodeColumns, Code>((c) => c.EmojiId == GetULongValue("Id")), this, "EmojiId"));				
 			}						
 		}
 

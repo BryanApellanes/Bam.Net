@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookSubscriberId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookSubscriberId == GetLongValue("Id")), this, "WebHookSubscriberId"));				
+				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookSubscriberId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookSubscriberId == GetULongValue("Id")), this, "WebHookSubscriberId"));				
 			}						
             this.ChildCollections.Add("WebHookSubscriber_WebHookDescriptorWebHookSubscriber_WebHookDescriptor",  new XrefDaoCollection<WebHookDescriptorWebHookSubscriber, WebHookDescriptor>(this, false));
 				

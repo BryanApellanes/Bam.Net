@@ -58,11 +58,11 @@ namespace Bam.Net.Services.OpenApi
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("FixedField_ObjectDescriptorId", new FixedFieldCollection(Database.GetQuery<FixedFieldColumns, FixedField>((c) => c.ObjectDescriptorId == GetLongValue("Id")), this, "ObjectDescriptorId"));				
+				this.ChildCollections.Add("FixedField_ObjectDescriptorId", new FixedFieldCollection(Database.GetQuery<FixedFieldColumns, FixedField>((c) => c.ObjectDescriptorId == GetULongValue("Id")), this, "ObjectDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("PatternedField_ObjectDescriptorId", new PatternedFieldCollection(Database.GetQuery<PatternedFieldColumns, PatternedField>((c) => c.ObjectDescriptorId == GetLongValue("Id")), this, "ObjectDescriptorId"));				
+				this.ChildCollections.Add("PatternedField_ObjectDescriptorId", new PatternedFieldCollection(Database.GetQuery<PatternedFieldColumns, PatternedField>((c) => c.ObjectDescriptorId == GetULongValue("Id")), this, "ObjectDescriptorId"));				
 			}						
 		}
 

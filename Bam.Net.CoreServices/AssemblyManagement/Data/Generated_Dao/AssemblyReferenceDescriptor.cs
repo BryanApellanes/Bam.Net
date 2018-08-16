@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyReferenceDescriptorId == GetLongValue("Id")), this, "AssemblyReferenceDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyReferenceDescriptorId == GetULongValue("Id")), this, "AssemblyReferenceDescriptorId"));				
 			}						
             this.ChildCollections.Add("AssemblyReferenceDescriptor_AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptor",  new XrefDaoCollection<AssemblyDescriptorAssemblyReferenceDescriptor, AssemblyDescriptor>(this, false));
 				

@@ -58,11 +58,11 @@ namespace Bam.Net.Translation
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetULongValue("Id")), this, "TextId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetULongValue("Id")), this, "TextId"));				
 			}						
 		}
 

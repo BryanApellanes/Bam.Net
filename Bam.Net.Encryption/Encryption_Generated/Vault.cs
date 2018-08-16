@@ -58,11 +58,11 @@ namespace Bam.Net.Encryption
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("VaultItem_VaultId", new VaultItemCollection(Database.GetQuery<VaultItemColumns, VaultItem>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
+				this.ChildCollections.Add("VaultItem_VaultId", new VaultItemCollection(Database.GetQuery<VaultItemColumns, VaultItem>((c) => c.VaultId == GetULongValue("Id")), this, "VaultId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("VaultKey_VaultId", new VaultKeyCollection(Database.GetQuery<VaultKeyColumns, VaultKey>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
+				this.ChildCollections.Add("VaultKey_VaultId", new VaultKeyCollection(Database.GetQuery<VaultKeyColumns, VaultKey>((c) => c.VaultId == GetULongValue("Id")), this, "VaultId"));				
 			}						
 		}
 

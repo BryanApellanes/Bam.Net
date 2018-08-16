@@ -288,7 +288,6 @@ namespace Bam.Net.Data.Tests
             mgr.AddTable(targetTable);
             mgr.AddColumn(targetTable, new Column("PutColumnName", DataTypes.ULong));
 
-
             mgr.AddTable(referencingTable);
             mgr.AddColumn(referencingTable, new Column("PutColumnName", DataTypes.ULong));
 

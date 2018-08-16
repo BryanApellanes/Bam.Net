@@ -58,19 +58,19 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("MethodCounter_CounterId", new MethodCounterCollection(Database.GetQuery<MethodCounterColumns, MethodCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("MethodCounter_CounterId", new MethodCounterCollection(Database.GetQuery<MethodCounterColumns, MethodCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoadCounter_CounterId", new LoadCounterCollection(Database.GetQuery<LoadCounterColumns, LoadCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("LoadCounter_CounterId", new LoadCounterCollection(Database.GetQuery<LoadCounterColumns, LoadCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ClickCounter_CounterId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("ClickCounter_CounterId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoginCounter_CounterId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("LoginCounter_CounterId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}						
 		}
 

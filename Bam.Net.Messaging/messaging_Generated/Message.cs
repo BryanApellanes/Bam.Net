@@ -58,7 +58,7 @@ namespace Bam.Net.Messaging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("DirectMessage_MessageId", new DirectMessageCollection(Database.GetQuery<DirectMessageColumns, DirectMessage>((c) => c.MessageId == GetLongValue("Id")), this, "MessageId"));				
+				this.ChildCollections.Add("DirectMessage_MessageId", new DirectMessageCollection(Database.GetQuery<DirectMessageColumns, DirectMessage>((c) => c.MessageId == GetULongValue("Id")), this, "MessageId"));				
 			}						
 		}
 

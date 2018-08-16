@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Group_RoleId", new GroupCollection(Database.GetQuery<GroupColumns, Group>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
+				this.ChildCollections.Add("Group_RoleId", new GroupCollection(Database.GetQuery<GroupColumns, Group>((c) => c.RoleId == GetULongValue("Id")), this, "RoleId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserRole_RoleId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
+				this.ChildCollections.Add("UserRole_RoleId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.RoleId == GetULongValue("Id")), this, "RoleId"));				
 			}						
             this.ChildCollections.Add("Role_UserRole_User",  new XrefDaoCollection<UserRole, User>(this, false));
 				

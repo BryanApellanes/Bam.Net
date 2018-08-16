@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("GroupPermission_PermissionId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
+				this.ChildCollections.Add("GroupPermission_PermissionId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.PermissionId == GetULongValue("Id")), this, "PermissionId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserPermission_PermissionId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
+				this.ChildCollections.Add("UserPermission_PermissionId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.PermissionId == GetULongValue("Id")), this, "PermissionId"));				
 			}						
             this.ChildCollections.Add("Permission_GroupPermission_Group",  new XrefDaoCollection<GroupPermission, Group>(this, false));
 				

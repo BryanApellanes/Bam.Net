@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetULongValue("Id")), this, "SessionId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetULongValue("Id")), this, "SessionId"));				
 			}						
 		}
 

@@ -58,7 +58,7 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("EventParam_EventId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.EventId == GetLongValue("Id")), this, "EventId"));				
+				this.ChildCollections.Add("EventParam_EventId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.EventId == GetULongValue("Id")), this, "EventId"));				
 			}			
             this.ChildCollections.Add("Event_EventParam_Param",  new XrefDaoCollection<EventParam, Param>(this, false));
 							
