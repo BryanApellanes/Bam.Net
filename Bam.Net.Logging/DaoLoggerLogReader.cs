@@ -16,7 +16,7 @@ namespace Bam.Net.Logging
 		public DaoLoggerLogReader(IDaoLogger logger)
 		{
 			Args.ThrowIfNull(logger, "logger");
-			Args.ThrowIf<InvalidOperationException>(logger.GetType() != typeof(DaoLogger), "Specified logger type is invalid, must be {0}", typeof(DaoLogger).Name);
+			Args.ThrowIf<InvalidOperationException>(!(logger is DaoLogger), "Specified logger type is invalid, must extend {0}", typeof(DaoLogger).Name);
 
 			this.Logger = logger;
 		}

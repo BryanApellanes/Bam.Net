@@ -365,23 +365,28 @@ namespace Bam.Net.Data
         {
             instance.Property(propertyName, propertyValue);
         }
+
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(SqlStringBuilder sqlStatement, Action<DbDataReader> onExecuted = null)
         {
             return ExecuteDynamicReader(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onExecuted);
         }
+
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, object dbParameters, Action<DbDataReader> onExecuted = null)
         {
             return ExecuteDynamicReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onExecuted);
         }
+
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action<DbDataReader> onExecuted = null)
         {
             conn = GetOpenDbConnection();
             return ExecuteDynamicReader(sqlStatement, dbParameters, conn, false, onExecuted);
         }
+
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action<DbDataReader> onDataReaderExecuted = null)
         {
             return ExecuteDynamicReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection, onDataReaderExecuted);
         }
+
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action<DbDataReader> onDataReaderExecuted = null)
         {
             DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
@@ -415,8 +420,7 @@ namespace Bam.Net.Data
 
         public virtual DbDataReader ExecuteReader(string sqlStatement, object dbParameters)
         {
-            DbConnection ignore;
-            return ExecuteReader(sqlStatement, dbParameters, out ignore);
+            return ExecuteReader(sqlStatement, dbParameters, out DbConnection ignore);
         }
 
         public virtual DbDataReader ExecuteReader(string sqlStatement, object dbParameters, out DbConnection conn)

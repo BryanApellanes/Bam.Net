@@ -997,6 +997,23 @@ namespace Bam.Net
             return result;
         }
 
+        public static bool TryParseKeyValuePairs(this string input, out Dictionary<string, object> parsed, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";")
+        {
+            try
+            {
+                parsed = ParseKeyValuePairs(input, pascalCasify, keyValueSeparator, elementSeparator);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                parsed = new Dictionary<string, object>
+                {
+                    {input, input }
+                };
+                return false;
+            }
+        }
+
         /// <summary>
         /// Parses key value pairs from the string.
         /// </summary>

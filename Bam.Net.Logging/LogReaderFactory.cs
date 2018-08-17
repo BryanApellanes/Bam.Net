@@ -25,7 +25,12 @@ namespace Bam.Net.Logging
 
 		Dictionary<Type, Func<ILogReader>> _readers = new Dictionary<Type, Func<ILogReader>>();
 
-		public void Register<T>(Func<ILogReader> resolver) where T: ILogger
+        /// <summary>
+        /// Registers the specified resolver for the spcified generic ILogger T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="resolver">The resolver.</param>
+        public void Register<T>(Func<ILogReader> resolver) where T: ILogger
 		{
 			if (_readers.ContainsKey(typeof(T)))
 			{
