@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Repositories
 			this.RightHash = rightHash;
 		}
 
-		public long Id { get; set; }
+		public ulong Id { get; set; }
 		public string Uuid { get; set; }
 
 		string _leftTypeName;

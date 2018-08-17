@@ -572,11 +572,17 @@ namespace Bam.Net
                 {
                     value = null;
                 }
-                if((value is int || value is decimal) && 
-                    (property.PropertyType == typeof(long) ||
-                    Nullable.GetUnderlyingType(property.PropertyType) == typeof(long)))
+                else if ((value is int || value is decimal) &&
+                   (property.PropertyType == typeof(long) ||
+                   Nullable.GetUnderlyingType(property.PropertyType) == typeof(long)))
                 {
                     value = Convert.ToInt64(value);
+                }
+                else if ((value is long || value is int || value is decimal) &&
+                   (property.PropertyType == typeof(ulong) ||
+                   property.PropertyType == typeof(ulong?)))
+                {
+                    value = Convert.ToUInt64(value);
                 }
                 property.SetValue(instance, value, null);
             }
