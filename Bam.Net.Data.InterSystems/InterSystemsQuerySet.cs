@@ -42,5 +42,11 @@ namespace Bam.Net.Data
             parameters.AddRange(set.Parameters);
             return this;
         }
+
+        public override SqlStringBuilder Id(string idAs)
+        {
+            Builder.AppendFormat("{0}SELECT LAST_IDENTITY() AS {1}", GoText, idAs);
+            return this;
+        }
     }
 }
