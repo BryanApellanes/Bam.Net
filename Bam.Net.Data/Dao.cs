@@ -1207,8 +1207,12 @@ namespace Bam.Net.Data
 
         public static string TableName(object instance)
         {
-            Type type = instance.GetType();
-            return TableName(type);
+            if(instance != null)
+            {
+                Type type = instance.GetType();
+                return TableName(type);
+            }
+            return string.Empty;
         }
 
         /// <summary>

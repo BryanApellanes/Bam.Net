@@ -29,7 +29,7 @@ namespace Bam.Net.Data
             Parent = parent;
             _values = new List<L>();
             _book = new Book<L>();
-            if (!parent.IsNew)
+            if (parent != null && !parent.IsNew)
             {
                 Database = parent?.Database;
 
@@ -111,7 +111,7 @@ namespace Bam.Net.Data
         object _loadLock = new object();
         public void Load(Database db)
         {
-            if (!_loaded)
+            if (!_loaded && Parent != null)
             {
                 lock (_loadLock)
                 {
