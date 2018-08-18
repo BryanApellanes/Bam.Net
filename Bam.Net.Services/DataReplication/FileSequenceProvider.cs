@@ -19,26 +19,17 @@ namespace Bam.Net.Services.DataReplication
         public FileSequenceProvider(SequenceFile sequenceFile, ILogger logger = null)
         {
             Logger = logger ?? Log.Default;
-            File = sequenceFile.File;
-            if (sequenceFile.File.Exists)
-            {
-                string content = sequenceFile.File.ReadAllText();
-                if (ulong.TryParse(content, out ulong result))
-                {
-                    _current = result;
-                    Logger.AddEntry("Sequence value found in file: {0}", result.ToString());
-                }
-            }
-            AppDomain.CurrentDomain.DomainUnload += (o, a) => _current.ToString().SafeWriteToFile(File.FullName, true);
+            IpcMessage = sequenceFile.IpcMessage;
+            _current = IpcMessage.Read<ulong>();
         }
 
         public ILogger Logger { get; set; }
-        public FileInfo File { get; set; }
+        public IpcMessage IpcMessage { get; set; }
 
         public ulong Next()
         {
             ++_current;
-            Task.Run(() => _current.ToString().SafeWriteToFile(File.FullName, true, (o) => o.ClearFileAccessLocks()));
+            Task.Run(() => IpcMessage.Write(_current));
             return _current;
         }
     }

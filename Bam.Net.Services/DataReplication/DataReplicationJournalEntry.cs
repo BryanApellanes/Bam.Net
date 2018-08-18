@@ -1,5 +1,6 @@
 ﻿using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
+using Bam.Net.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +11,13 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
+    /// <summary>
+    /// Represents a the write of a single property value on a single persisted instance.
+    /// </summary>
     public class DataReplicationJournalEntry
     {
         /// <summary>
-        /// Gets or sets the type int determined by DataReplicationtypeMap.
+        /// Gets or sets the type id determined by DataReplicationtypeMap.
         /// </summary>
         /// <value>
         /// The type.
@@ -52,14 +56,31 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public string Value { get; set; }
         
-        public string LoadValue(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public DataReplicationJournalEntryInfo ToInfo()
+        {
+            return this.CopyAs<DataReplicationJournalEntryInfo>();
+        }
+        
+        public T LoadInstance<T>(DataReplicationJournal journal) where T: KeyHashAuditRepoData, new()
+        {
+            return journal.LoadInstance<T>(this);
+        }
+
+        public DataReplicationJournalEntry LoadLatestValue(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
         {
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
             List<string> fileNames = propertyDirectory.GetFiles().Select(f => f.Name).ToList();
-            fileNames.Sort((x, y) => x.CompareTo(y));
-            string fileName = fileNames[0];
-            Value = File.ReadAllText(Path.Combine(propertyDirectory.FullName, fileName));
-            return Value;
+            fileNames.Sort((x, y) => y.CompareTo(x));
+            string fileName = fileNames[0];            
+            DataReplicationJournalEntry entry = this.CopyAs<DataReplicationJournalEntry>();
+            if(!ulong.TryParse(fileName, out ulong seq))
+            {
+                Log.Default.AddEntry("Failed to parse filename as sequence number ({0})", Path.Combine(propertyDirectory.FullName, fileName));
+            }
+            
+            entry.Seq = seq;
+            entry.Value = Value = File.ReadAllText(Path.Combine(propertyDirectory.FullName, fileName));
+            return entry;
         }
 
         /// <summary>
@@ -106,14 +127,13 @@ namespace Bam.Net.Services.DataReplication
             }
         }
 
-        public static IEnumerable<DataReplicationJournalEntry> LoadInstance<T>(ulong id, DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap) where T: KeyHashAuditRepoData, new()
+        public static IEnumerable<DataReplicationJournalEntry> LoadInstanceEntries<T>(ulong id, DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap) where T: KeyHashAuditRepoData, new()
         {
             long typeId = DataReplicationTypeMap.GetTypeId(new T(), out object dynamicInstance, out Type dynamicType);
             foreach(PropertyInfo prop in dynamicType.GetProperties())
             {
                 DataReplicationJournalEntry entry = new DataReplicationJournalEntry { TypeId = typeId, InstanceId = id, PropertyId = DataReplicationTypeMap.GetPropertyId(prop, out string ignore) };
-                entry.LoadValue(journalDirectory, typeMap);
-                yield return entry;
+                yield return entry.LoadLatestValue(journalDirectory, typeMap);                
             }
         }        
     }

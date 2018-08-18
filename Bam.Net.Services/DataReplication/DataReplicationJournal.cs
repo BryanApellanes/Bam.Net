@@ -17,13 +17,14 @@ namespace Bam.Net.Services.DataReplication
         Queue<DataReplicationJournalEntry> _dataReplicationJournalEntries;
         bool _keepFlushing;
 
-        public DataReplicationJournal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, ILogger logger = null)
+        public DataReplicationJournal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, ITypeConverter typeConverter = null, ILogger logger = null)
         {
             _dataReplicationJournalEntries = new Queue<DataReplicationJournalEntry>();
             _keepFlushing = true;
             SequenceProvider = sequenceProvider;
             Paths = paths;
-            TypeMap = typeMap;            
+            TypeMap = typeMap;
+            TypeConverter = typeConverter ?? new DefaultTypeConverter();
             Logger = logger;
             AppDomain.CurrentDomain.DomainUnload += (o, a) => _keepFlushing = false;
             FlushQueue();
@@ -59,6 +60,8 @@ namespace Bam.Net.Services.DataReplication
             }
         }
 
+        public ITypeConverter TypeConverter { get; set; }
+
         public ILogger Logger { get; set; }
 
         public string GetTypeName(long typeId)
@@ -81,6 +84,16 @@ namespace Bam.Net.Services.DataReplication
             return TypeMap.GetPropertyShortName(propId);
         }
 
+        public T LoadInstance<T>(DataReplicationJournalEntryInfo info) where T : KeyHashAuditRepoData, new()
+        {
+            return LoadInstance<T>(info.InstanceId);
+        }
+
+        public T LoadInstance<T>(DataReplicationJournalEntry entry) where T : KeyHashAuditRepoData, new()
+        {
+            return LoadInstance<T>(entry.InstanceId);
+        }
+
         /// <summary>
         /// Reads the entry from disk by determining what the Id is using GetULongKeyHash.  Keys must be 
         /// made of one or more properties addorned with CompositeKeyAttribute.
@@ -88,9 +101,9 @@ namespace Bam.Net.Services.DataReplication
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
-        public T ReadEntry<T>(T instance) where T: KeyHashAuditRepoData, new()
+        public T LoadInstance<T>(T instance) where T: KeyHashAuditRepoData, new()
         {
-            return ReadEntry<T>(instance.GetULongKeyHash());
+            return LoadInstance<T>(instance.GetULongKeyHash());
         }
 
         /// <summary>
@@ -100,19 +113,24 @@ namespace Bam.Net.Services.DataReplication
         /// <typeparam name="T"></typeparam>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public T ReadEntry<T>(ulong id) where T : KeyHashAuditRepoData, new()
+        public T LoadInstance<T>(ulong id) where T : KeyHashAuditRepoData, new()
         {
-            T toLoad = new T
-            {
-                Id = id
-            };
-            foreach(DataReplicationJournalEntry entry in DataReplicationJournalEntry.LoadInstance<T>(id, JournalDirectory, TypeMap))
+            T toLoad = new T();
+            foreach(DataReplicationJournalEntry entry in DataReplicationJournalEntry.LoadInstanceEntries<T>(id, JournalDirectory, TypeMap))
             {
                 string propertyName = TypeMap.GetPropertyShortName(entry.PropertyId);
                 PropertyInfo prop = typeof(T).GetProperty(propertyName);
-                object value = Convert.ChangeType(entry.Value, prop.PropertyType);
-                toLoad.Property(propertyName, value);
+                try
+                {
+                    object value = TypeConverter.ChangeType(entry.Value, prop.PropertyType);
+                    toLoad.Property(propertyName, value);
+                }
+                catch (Exception ex)
+                {
+                    Log.Default.AddEntry("Failed to set property ({0}) on instance ({1}) of type ({2})", ex, prop.Name, id.ToString(), typeof(T).FullName);
+                }
             }
+            toLoad.Id = id;
             return toLoad;
         }
 
@@ -134,24 +152,25 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public int ExceptionThreshold { get; set; }
 
-        public IEnumerable<DataReplicationJournalEntry> WriteEntries(KeyHashAuditRepoData data)
+        public IEnumerable<DataReplicationJournalEntry> Write(KeyHashAuditRepoData data)
         {
-            Task.Run(() => TypeMap.AddMapping(data));            
-            foreach(DataReplicationJournalEntry entry in DataReplicationJournalEntry.FromInstance(data))
-            {
-                yield return WriteEntry(entry);
-            }
+            Task.Run(() => TypeMap.AddMapping(data));
+            DataReplicationJournalEntry[] journalEntries = DataReplicationJournalEntry.FromInstance(data).ToArray();
+            return EnqueueEntriesForWrite(journalEntries);
         }
 
         public event EventHandler EntryWritten;
         bool _fireQueueEmpty;
         public event EventHandler QueueEmpty;
 
-        protected internal DataReplicationJournalEntry WriteEntry(DataReplicationJournalEntry journalEntry)
+        protected internal IEnumerable<DataReplicationJournalEntry> EnqueueEntriesForWrite(params DataReplicationJournalEntry[] journalEntries)
         {
-            journalEntry.Seq = SequenceProvider.Next();            
-            _dataReplicationJournalEntries.Enqueue(journalEntry);
-            return journalEntry;
+            foreach(DataReplicationJournalEntry journalEntry in journalEntries)
+            {
+                journalEntry.Seq = SequenceProvider.Next();
+                _dataReplicationJournalEntries.Enqueue(journalEntry);
+                yield return journalEntry;
+            }
         }
 
         int _exceptionCount;
@@ -183,6 +202,7 @@ namespace Bam.Net.Services.DataReplication
                             if (_fireQueueEmpty)
                             {
                                 _fireQueueEmpty = false;
+                                this.ClearFileAccessLocks();
                                 QueueEmpty?.Invoke(this, EventArgs.Empty);
                             }
                             Thread.Sleep(300);

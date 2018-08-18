@@ -26,8 +26,8 @@ namespace Bam.Net.Services.DataReplication
                 SecureSession session = SecureSession.Get(request.SessionId);
                 string base64 = session.DecryptWithPrivateKey(request.Data);
                 byte[] data = base64.FromBase64();
-                DataReplicationJournalEntry journalEntry = data.FromBinaryBytes<DataReplicationJournalEntry>();
-                Journal.WriteEntry(journalEntry);
+                DataReplicationJournalEntry[] journalEntry = data.FromBinaryBytes<DataReplicationJournalEntry[]>();
+                Journal.EnqueueEntriesForWrite(journalEntry);
                 return new DataReplicationResponse { Success = true };
             }
             catch (Exception ex)

@@ -25,9 +25,10 @@ namespace Bam.Net
     {
         internal IpcMessage(string name, Type messageType)
         {
-            this.Name = name;           
-            this.LockTimeout = 75;
-            this.MessageType = messageType;
+            Name = name;           
+            LockTimeout = 150;
+            AcquireLockRetryInterval = 50;
+            MessageType = messageType;
         }
 
         internal IpcMessage(string name, Type messageType, string rootDir)
@@ -69,13 +70,20 @@ namespace Bam.Net
             return Create(name, type, null);
         }
 
-        public static IpcMessage Create(string name, Type type, string rootDirectory = null)
+        public static IpcMessage Create(string name, Type type, string rootDirectory = null, bool deleteExisting = false)
         {
             IpcMessage result = new IpcMessage(name, type, rootDirectory);
 
             if (File.Exists(result.MessageFile))
             {
-                throw new InvalidOperationException($"The specified {nameof(IpcMessage)}.Name={name} is already in use");
+                if (deleteExisting)
+                {
+                    File.Delete(result.MessageFile);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"The specified {nameof(IpcMessage)}.Name={name} is already in use");
+                }
             }
 
             return result;
@@ -171,6 +179,20 @@ namespace Bam.Net
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the acquire lock retry interval, the ammount of time in milliseconds to sleep
+        /// between attempts to acquire a lock.
+        /// </summary>
+        /// <value>
+        /// The acquire lock retry interval.
+        /// </value>
+        public int AcquireLockRetryInterval
+        {
+            get;
+            set;
+        }
+
+
         public Type MessageType
         {
             get;
@@ -213,7 +235,7 @@ namespace Bam.Net
         {
             WaitingForLock?.Invoke(this, new EventArgs());
         }
-
+                
         public string LastExceptionMessage { get; set; }
 
         /// <summary>
@@ -295,7 +317,7 @@ namespace Bam.Net
                                 OnWaitingForLock();
                             }
 
-                            Thread.Sleep(100);
+                            Thread.Sleep(AcquireLockRetryInterval);
                         }
                         return LockFile;
                     }, (lockFile) =>

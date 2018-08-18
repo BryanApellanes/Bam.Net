@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Services.DataReplication
 {
     /// <summary>
-    /// A class that provides a mapping between a numeric (long) values and Types.
+    /// A class that provides a mapping between numeric (long) id values and Types.
     /// </summary>
     public class DataReplicationTypeMap
     {
