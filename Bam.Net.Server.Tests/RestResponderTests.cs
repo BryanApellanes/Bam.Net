@@ -30,7 +30,7 @@ namespace Bam.Net.Server.Tests
     [Serializable]
     public class TestClass
     {
-        public long? Id { get; set; }
+        public ulong? Id { get; set; }
         public string Uuid { get; set; }
         public string StringProperty { get; set; }
         public DateTime DateTimeProperty { get; set; }
@@ -39,8 +39,8 @@ namespace Bam.Net.Server.Tests
 
     public class TestStudent
     {
-        public long? Id { get; set; }
-        public long? TestClassId { get; set; }
+        public ulong? Id { get; set; }
+        public ulong? TestClassId { get; set; }
         public string Name { get; set; }
         public virtual TestClass TestClass { get; set; }
     }

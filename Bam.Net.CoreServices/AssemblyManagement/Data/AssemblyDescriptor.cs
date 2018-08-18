@@ -56,15 +56,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
 
             foreach (AssemblyName name in assembly.GetReferencedAssemblies().Where(AssemblyNameFilter))
             {
-                Assembly referenced = Assembly.Load(name);
-                FileInfo file = referenced.GetFileInfo();
-                referenceDescriptors.Add(new AssemblyReferenceDescriptor
+                try
                 {
-                    ReferencerName = Name,
-                    ReferencedName = file.Name,
-                    ReferencerHash = FileHash,
-                    ReferencedHash = file.Sha256()
-                });
+                    Assembly referenced = Assembly.Load(name);
+                    FileInfo file = referenced.GetFileInfo();
+                    referenceDescriptors.Add(new AssemblyReferenceDescriptor
+                    {
+                        ReferencerName = Name,
+                        ReferencedName = file.Name,
+                        ReferencerHash = FileHash,
+                        ReferencedHash = file.Sha256()
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Log.Default.AddEntry("Exception setting reference descriptors", ex);
+                }
             };
             AssemblyReferenceDescriptors = referenceDescriptors.ToList();
         }
@@ -126,14 +133,21 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
                     .Where(AssemblyNameFilter);
                 foreach(AssemblyName assName in assemblyNames)
                 {
-                    Assembly next = Assembly.Load(assName);
-                    if(next == null)
+                    try
                     {
-                        Log.Default.Warning("Assembly not found: ({0})", assName.FullName);
+                        Assembly next = Assembly.Load(assName);
+                        if (next == null)
+                        {
+                            Log.Default.Warning("Assembly not found: ({0})", assName.FullName);
+                        }
+                        else
+                        {
+                            Recurse(next, soFar);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Recurse(next, soFar);
+                        Log.Default.AddEntry("Exception loading assembly ({0}) referenced by ({1})", ex, assName.FullName, ass.FullName);
                     }
                 };
             }

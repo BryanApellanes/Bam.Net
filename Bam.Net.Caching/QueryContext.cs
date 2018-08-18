@@ -21,10 +21,12 @@ namespace Bam.Net.Caching
         {
             return DataSource.Query<T>(this.Filter);
         }
+
         public IEnumerable<object> Retrieve(Type type)
         {
             return DataSource.Query(type, Filter);
         }
+
         public override bool Equals(object obj)
         {
             QueryContext ctx = obj as QueryContext;
@@ -34,6 +36,7 @@ namespace Bam.Net.Caching
             }
             return false;
         }
+
         public override int GetHashCode()
         {
             return Filter.GetHashCode() + DataSource.GetHashCode();

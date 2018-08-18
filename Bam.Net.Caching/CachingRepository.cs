@@ -78,6 +78,7 @@ namespace Bam.Net.Caching
             Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), ExceptionText);
             SourceRepository.AddType(type);
         }
+
         /// <summary>
         /// Queries the source repository and adds the results to the internal cache
         /// </summary>
@@ -120,10 +121,12 @@ namespace Bam.Net.Caching
 
 			return result;
 		}
+
         public override object Create(Type type, object toCreate)
         {
             return Create(toCreate);
         }
+
         public override object Create(object toCreate)
 		{
 			Args.ThrowIfNull(toCreate, "toCreate");
@@ -654,6 +657,7 @@ namespace Bam.Net.Caching
 
             return result;
         }
+
         private void OnEvicted(object sender, EventArgs e)
         {
             Evicted?.Invoke(sender, e);

@@ -3410,11 +3410,9 @@ namespace Bam.Net
         /// <returns>string</returns>
         public static string ToDelimited<T>(this T[] objectsToStringify, ToDelimitedDelegate<T> toDelimiteder, string delimiter)
         {
+            // TODO: change this implementation to use string.Join(delimiter, values.Select(v=> toDelimiteder(v)).ToArray());
             List<string> values = new List<string>();
-            objectsToStringify.Each(v =>
-            {
-                values.Add(toDelimiteder(v));
-            });
+            objectsToStringify.Each(v => values.Add(toDelimiteder(v)));
             return string.Join(delimiter, values.ToArray());
         }
 
