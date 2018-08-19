@@ -4391,7 +4391,7 @@ namespace Bam.Net
             }
             return result;
         }
-
+        
         public static Type MergeToDynamicType(this Type type, params Type[] types)
         {
             List<object> instances = new List<object>();

@@ -143,6 +143,8 @@
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="Comparer.cs" />
+    <Compile Include="ComparerProvider.cs" />
     <Compile Include="Data\DataPaths.cs" />
     <Compile Include="Data\IDataDirectoryProvider.cs" />
     <Compile Include="Encryption\CredentialInfo.cs" />

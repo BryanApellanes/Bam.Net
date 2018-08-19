@@ -123,7 +123,7 @@ namespace Bam.Net.Automation
             {
                 if (string.IsNullOrEmpty(_defaultLib))
                 {
-                    _defaultLib = DefaultConfiguration.GetAppSetting("NugetLib", "net462");
+                    _defaultLib = DefaultConfiguration.GetAppSetting("NugetLib", "net472");
                 }
                 return _defaultLib;
             }

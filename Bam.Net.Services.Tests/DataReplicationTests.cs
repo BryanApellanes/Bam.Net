@@ -69,9 +69,9 @@ namespace Bam.Net.Services.Tests
         public void WriteEventFires()
         {
             DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
-            bool? entryWrittenFired = false;
+            bool? entryFlushedFired = false;
             bool? queueEmptyFired = false;
-            journal.EntryWritten += (o, a) => entryWrittenFired = true;
+            journal.EntryFlushed += (o, a) => entryFlushedFired = true;
             journal.QueueEmpty += (o, a) => queueEmptyFired = true;
             DataReplicationTestClass value = GetDataInstance();
             IEnumerable<DataReplicationJournalEntry> entries = journal.Write(value);
@@ -92,13 +92,39 @@ namespace Bam.Net.Services.Tests
             {
                 Expect.Fail("took too long");
             }
-            Expect.IsTrue(entryWrittenFired.Value);
+            Expect.IsTrue(entryFlushedFired.Value);
             Expect.IsTrue(queueEmptyFired.Value);
             OutLineFormat("journal directory {0}", ConsoleColor.Cyan, journal.JournalDirectory.FullName);
         }
         
         [UnitTest("Data Replication: can read entries")]
         public void CanRead()
+        {
+            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();            
+            DataReplicationTestClass value1 = GetRandomDataInstance();            
+            HashSet<DataReplicationTestClass> retrieved = new HashSet<DataReplicationTestClass>();
+            List<DataReplicationJournalEntry> entries = new List<DataReplicationJournalEntry>();
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            journal.QueueEmpty += (o, a) =>
+            {
+                OutLineFormat("queue empty fired");
+                foreach (DataReplicationJournalEntry entry in entries)
+                {
+                    retrieved.Add(journal.LoadInstance<DataReplicationTestClass>(entry));
+                }
+                blocker.Set();
+            };
+            entries.AddRange(journal.Write(value1));
+            blocker.WaitOne();
+            DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value1.Id);
+            Expect.IsNotNull(check);
+            Expect.AreEqual(check.FirstName, value1.FirstName);
+            Expect.AreEqual(check.LastName, value1.LastName);
+            Expect.AreEqual(check.Address, value1.Address);
+        }
+
+        [UnitTest]
+        public void WillGetLatestPropertyValue()
         {
             DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
             DataReplicationTestClass value1 = GetRandomDataInstance();
@@ -131,24 +157,6 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual(check.FirstName, value2.FirstName);
             Expect.AreEqual(check.LastName, value2.LastName);
             Expect.AreEqual(newAddress, check.Address);
-        }
-
-        [UnitTest]
-        public void WillGetLatestPropertyValue()
-        {
-            throw new NotImplementedException();
-        }
-
-        [UnitTest]
-        public void WillUsePropertyConverter()
-        {
-            throw new NotImplementedException();
-        }
-
-        [UnitTest]
-        public void WillMaintainLimitedHistory()
-        {
-            throw new NotImplementedException();
         }
 
         [UnitTest("Data Replication: can save and load type map")]

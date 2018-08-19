@@ -158,9 +158,11 @@ namespace Bam.Net.Analytics.Classification
             Category c = Category.OneWhere(col => col.Value == category);
             if (c == null)
             {
-                c = new Category();
-                c.Value = category;
-                c.DocumentCount = 0;
+                c = new Category
+                {
+                    Value = category,
+                    DocumentCount = 0
+                };
                 c.Save();
             }
             return c;
@@ -177,10 +179,12 @@ namespace Bam.Net.Analytics.Classification
             Feature f = Feature.OneWhere(col => col.Value == feature && col.CategoryId == cat.Id);
             if (f == null)
             {
-                f = new Feature();
-                f.Value = feature;
-                f.CategoryId = cat.Id;
-                f.FeatureToCategoryCount = 0;
+                f = new Feature
+                {
+                    Value = feature,
+                    CategoryId = cat.Id,
+                    FeatureToCategoryCount = 0
+                };
                 f.Save();
             }
 

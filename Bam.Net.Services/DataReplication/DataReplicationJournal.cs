@@ -17,13 +17,14 @@ namespace Bam.Net.Services.DataReplication
         Queue<DataReplicationJournalEntry> _dataReplicationJournalEntries;
         bool _keepFlushing;
 
-        public DataReplicationJournal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, ITypeConverter typeConverter = null, ILogger logger = null)
+        public DataReplicationJournal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryFlusher flusher = null, ITypeConverter typeConverter = null, ILogger logger = null)
         {
             _dataReplicationJournalEntries = new Queue<DataReplicationJournalEntry>();
             _keepFlushing = true;
             SequenceProvider = sequenceProvider;
             Paths = paths;
             TypeMap = typeMap;
+            Flusher = flusher;
             TypeConverter = typeConverter ?? new DefaultTypeConverter();
             Logger = logger;
             AppDomain.CurrentDomain.DomainUnload += (o, a) => _keepFlushing = false;
@@ -61,6 +62,8 @@ namespace Bam.Net.Services.DataReplication
         }
 
         public ITypeConverter TypeConverter { get; set; }
+
+        public IJournalEntryFlusher Flusher { get; set; }
 
         public ILogger Logger { get; set; }
 
@@ -159,7 +162,12 @@ namespace Bam.Net.Services.DataReplication
             return EnqueueEntriesForWrite(journalEntries);
         }
 
-        public event EventHandler EntryWritten;
+        public DirectoryInfo GetTypeDirectory(long typeId)
+        {
+            return DataReplicationJournalEntry.GetTypeDirectory(this, typeId);
+        }
+
+        public event EventHandler EntryFlushed;
         bool _fireQueueEmpty;
         public event EventHandler QueueEmpty;
 
@@ -191,9 +199,8 @@ namespace Bam.Net.Services.DataReplication
                                 DataReplicationJournalEntry journalEntry = _dataReplicationJournalEntries.Dequeue();
                                 if(journalEntry != null)
                                 {
-                                    FileInfo propertyFile = GetJournalEntryFileInfo(journalEntry);
-                                    journalEntry.Value.SafeWriteToFile(propertyFile.FullName, true);
-                                    EntryWritten?.Invoke(this, new DataReplicationJournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });
+                                    FileInfo propertyFile = Flusher.Flush(this, journalEntry);
+                                    EntryFlushed?.Invoke(this, new DataReplicationJournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });
                                 }
                             }
                         }
@@ -202,7 +209,7 @@ namespace Bam.Net.Services.DataReplication
                             if (_fireQueueEmpty)
                             {
                                 _fireQueueEmpty = false;
-                                this.ClearFileAccessLocks();
+                                Flusher.Cleanup();
                                 QueueEmpty?.Invoke(this, EventArgs.Empty);
                             }
                             Thread.Sleep(300);

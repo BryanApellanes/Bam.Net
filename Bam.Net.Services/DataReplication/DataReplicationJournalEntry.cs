@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Services.DataReplication
 {
     /// <summary>
-    /// Represents a the write of a single property value on a single persisted instance.
+    /// Represents the write of a single property value on a single persisted instance.
     /// </summary>
     public class DataReplicationJournalEntry
     {
@@ -66,21 +66,77 @@ namespace Bam.Net.Services.DataReplication
             return journal.LoadInstance<T>(this);
         }
 
+        public DataReplicationJournalEntry LoadLatestValue(DataReplicationJournal journal)
+        {
+            return LoadLatestValue(journal.JournalDirectory, journal.TypeMap);
+        }
+
+        /// <summary>
+        /// Loads the latest value for the property of the current type instance.
+        /// </summary>
+        /// <param name="journalDirectory">The journal directory.</param>
+        /// <param name="typeMap">The type map.</param>
+        /// <returns></returns>
         public DataReplicationJournalEntry LoadLatestValue(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
         {
+            return GetSequencedHistoryValues(journalDirectory, typeMap).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// /// Gets all previous values for this property that are still available in history ordered by the sequence number.
+        /// </summary>
+        /// <param name="journal">The journal.</param>
+        /// <returns></returns>
+        public IEnumerable<DataReplicationJournalEntry> GetSequencedHistoryValues(DataReplicationJournal journal)
+        {
+            return GetSequencedHistoryValues(journal.JournalDirectory, journal.TypeMap);
+        }
+
+        /// <summary>
+        /// Gets all previous values for this property that are still available in history ordered by the sequence number.
+        /// </summary>
+        /// <param name="journalDirectory">The journal directory.</param>
+        /// <param name="typeMap">The type map.</param>
+        /// <returns></returns>
+        public IEnumerable<DataReplicationJournalEntry> GetSequencedHistoryValues(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        {
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
-            List<string> fileNames = propertyDirectory.GetFiles().Select(f => f.Name).ToList();
-            fileNames.Sort((x, y) => y.CompareTo(x));
-            string fileName = fileNames[0];            
-            DataReplicationJournalEntry entry = this.CopyAs<DataReplicationJournalEntry>();
-            if(!ulong.TryParse(fileName, out ulong seq))
+            return new SortedSet<DataReplicationJournalEntry>(GetHistoryValues(journalDirectory, typeMap), new Comparer<DataReplicationJournalEntry>((x, y) => y.Seq.CompareTo(x.Seq)));
+        }
+
+        /// <summary>
+        /// Gets all previous values for this property that are still available in history.
+        /// </summary>
+        /// <param name="journal">The journal.</param>
+        /// <returns></returns>
+        public IEnumerable<DataReplicationJournalEntry> GetHistoryValues(DataReplicationJournal journal)
+        {
+            return GetHistoryValues(journal.JournalDirectory, journal.TypeMap);
+        }
+
+        /// <summary>
+        /// Gets all previous values for this property that are still available in history.
+        /// </summary>
+        /// <param name="journalDirectory">The journal directory.</param>
+        /// <param name="typeMap">The type map.</param>
+        /// <returns></returns>
+        public IEnumerable<DataReplicationJournalEntry> GetHistoryValues(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        {
+            DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
+            foreach(FileInfo file in propertyDirectory.GetFiles())
             {
-                Log.Default.AddEntry("Failed to parse filename as sequence number ({0})", Path.Combine(propertyDirectory.FullName, fileName));
+                if (ulong.TryParse(file.Name, out ulong seq))
+                {
+                    DataReplicationJournalEntry entry = this.CopyAs<DataReplicationJournalEntry>();
+                    entry.Value = File.ReadAllText(Path.Combine(propertyDirectory.FullName, file.Name));
+                    entry.Seq = seq;
+                    yield return entry;
+                }
+                else
+                {
+                    Log.Default.AddEntry("Failed to parse filename as sequence number ({0})", Path.Combine(propertyDirectory.FullName, file.Name));
+                }
             }
-            
-            entry.Seq = seq;
-            entry.Value = Value = File.ReadAllText(Path.Combine(propertyDirectory.FullName, fileName));
-            return entry;
         }
 
         /// <summary>
@@ -95,6 +151,12 @@ namespace Bam.Net.Services.DataReplication
             return propertyFile;
         }
 
+        /// <summary>
+        /// Gets the property directory where this entry would be written for the specified journal directory and typemap.
+        /// </summary>
+        /// <param name="journalDirectory">The journal directory.</param>
+        /// <param name="typeMap">The type map.</param>
+        /// <returns></returns>
         public DirectoryInfo GetPropertyDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
         {
             DirectoryInfo instanceDirectory = GetInstanceDirectory(journalDirectory, typeMap);
@@ -103,12 +165,29 @@ namespace Bam.Net.Services.DataReplication
             return propertyDirectory;
         }
 
+        /// <summary>
+        /// Gets the instance directory for the object instance this entry is for.
+        /// </summary>
+        /// <param name="journalDirectory">The journal directory.</param>
+        /// <param name="typeMap">The type map.</param>
+        /// <returns></returns>
         public DirectoryInfo GetInstanceDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        {
+            DirectoryInfo typeDirectory = GetTypeDirectory(journalDirectory, typeMap);
+            DirectoryInfo instanceDirectory = new DirectoryInfo(Path.Combine(typeDirectory.FullName, InstanceId.ToString()));
+            return instanceDirectory;
+        }
+
+        public static DirectoryInfo GetTypeDirectory(DataReplicationJournal journal, long typeId)
+        {
+            return new DataReplicationJournalEntry { TypeId = typeId }.GetTypeDirectory(journal.JournalDirectory, journal.TypeMap);
+        }
+
+        public DirectoryInfo GetTypeDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
         {
             string typeDirectoryName = typeMap.GetTypeShortName(TypeId);
             DirectoryInfo typeDirectory = new DirectoryInfo(Path.Combine(journalDirectory.FullName, typeDirectoryName));
-            DirectoryInfo instanceDirectory = new DirectoryInfo(Path.Combine(typeDirectory.FullName, InstanceId.ToString()));
-            return instanceDirectory;
+            return typeDirectory;
         }
 
         /// <summary>

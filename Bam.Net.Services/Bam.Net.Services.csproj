@@ -145,6 +145,7 @@
     <Compile Include="DataReplication\DataReplicationJournalEntry.cs" />
     <Compile Include="DataReplication\DataReplicationJournalEntryInfo.cs" />
     <Compile Include="DataReplication\DataReplicationJournalEntryWrittenEventArgs.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalGroomer.cs" />
     <Compile Include="DataReplication\DataReplicationRequest.cs" />
     <Compile Include="DataReplication\DataReplicationResponse.cs" />
     <Compile Include="DataReplication\DataReplicationServer.cs" />
@@ -245,8 +246,10 @@
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventQuery.cs" />
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventWrapper.cs" />
     <Compile Include="DataReplication\Data\Operation.cs" />
+    <Compile Include="DataReplication\DefaultJournalEntryFlusher.cs" />
     <Compile Include="DataReplication\DefaultTypeConverter.cs" />
     <Compile Include="DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="DataReplication\IJournalEntryFlusher.cs" />
     <Compile Include="DataReplication\ISequenceProvider.cs" />
     <Compile Include="DataReplication\ITypeConverter.cs" />
     <Compile Include="DataReplication\ObjectIdentifier.cs" />
