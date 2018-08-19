@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.14.3\r\n -  add not to reference commit for more information (57bd976a)\r\n -  account for null (c946ee0f)\r\n -  Merge pull request #92 from BryanApellanes/next (ac2b7ed4)\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (d59db370)\r\n -  update readme (6406a96c)\r\n",
+  "ReleaseNotes": "Version 1.15.0\r\n -  change test ids to ulong (73ca7edd)\r\n -  minor refactor, try catch assembly.load (da6714d0)\r\n -  update id (d2849d75)\r\n -  Merge 'origin/work2' into next (d272fb18)\r\n -  fix tests (db1d7dff)\r\n -  sqlitelogger2 (46f21e11)\r\n -  better (e31f4a22)\r\n -  check for id property type (a3d174f4)\r\n -  change ids from long to ulong, correct xref handling of ids (32f5eece)\r\n -  change long to ulong (8251d459)\r\n -  refact raw sql handling (8358da78)\r\n -  refactor for ulong ids (95423be3)\r\n -  regenerate daos (8c86134b)\r\n -  logproviders (17a9039a)\r\n -  add sql wrappers (407618c4)\r\n -  regen dao (3234bf42)\r\n -  account for new ulong usages (a20224ce)\r\n -  fix project file (959f2a9d)\r\n -  minor refactor; wip (e15817e6)\r\n -  move and rename contentservicesregistrycontainer to viewservicesregistrycontainer (f63eb9cd)\r\n -  move and rename contentservicesregistrycontainer to viewservicesregistrycontainer (cee5218e)\r\n -  add testresult query (55440c84)\r\n -  merge refactor 'origin/work2' into next (95e07d73)\r\n -  minor refactor tvg (765d6320)\r\n -  sql (6187fac7)\r\n -  redirect builds to b drive (d265d708)\r\n -  rename ApplicationManager to ApplicationContext (42e3e4cd)\r\n -  fix tests (c469f108)\r\n -  correct order of operations (4e577f02)\r\n -  update README.md (d7b4db89)\r\n -  update bake configs (3e985c16)\r\n -  rename DataSettings to DefaultDataSettingsProvider (d051bd2b)\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (64ab69aa)\r\n -  new ico (563ea712)\r\n -  Merge remote-tracking branch 'origin/work2' into next (adc2577a)\r\n -  doc comments (1a7b1ea8)\r\n -  Merge pull request #93 from BryanApellanes/next (483c273f)\r\n -  docs (88fd1f09)\r\n -  debuggerstepthrough (c5e54412)\r\n",
   "MajorVersion": 1,
-  "MinorVersion": 14,
-  "PatchVersion": 3,
+  "MinorVersion": 15,
+  "PatchVersion": 0,
   "BuildNumber": "",
-  "VersionString": "1.14.3"
+  "VersionString": "1.15.0"
 }

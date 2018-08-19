@@ -2,16 +2,16 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Javascript</id>
-    <version>1.14.3</version>
+    <version>1.15.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>EcmaScript.Net extensions for server side javascript execution</description>
-    <releaseNotes>Version 1.14.3
+    <releaseNotes>Version 1.15.0
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.14.3" />
-      <dependency id="Bam.Net.Incubation" version="1.14.3" />
+      <dependency id="Bam.Net" version="1.15.0" />
+      <dependency id="Bam.Net.Incubation" version="1.15.0" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
       <dependency id="YUICompressor.NET" version="2.7.0.0" />
