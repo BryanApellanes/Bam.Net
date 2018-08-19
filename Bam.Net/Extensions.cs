@@ -191,7 +191,7 @@ namespace Bam.Net
                 return sr.ReadToEnd();
             }
         }
-
+        
         public static T Try<T>(this Func<T> toTry)
         {
             return Try<T>(toTry, out Exception ignore);
@@ -316,6 +316,11 @@ namespace Bam.Net
             return GetNextFileName(path, out int num);
         }
 
+        public static string GetNextFileName(this string path, out int num)
+        {
+            return GetNextFileName(path, null, out num);
+        }
+
         /// <summary>
         /// If the specified file exists, a new path with 
         /// an underscore and a number appended will be 
@@ -323,8 +328,9 @@ namespace Bam.Net
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string GetNextFileName(this string path, out int num)
+        public static string GetNextFileName(this string path, Func<int, string, string, string> namer, out int num)
         {
+            namer = namer ?? ((_i, f, e) => $"{f}_{_i}{e}");
             FileInfo file = new FileInfo(path);
             DirectoryInfo dir = file.Directory;
             string extension = Path.GetExtension(path);
@@ -335,7 +341,7 @@ namespace Bam.Net
             while (File.Exists(currentPath))
             {
                 i++;
-                string nextFile = $"{fileName}_{i}{extension}";
+                string nextFile = namer(i, fileName, extension);
                 currentPath = Path.Combine(dir.FullName, nextFile);
                 num = i;
             }
@@ -991,6 +997,23 @@ namespace Bam.Net
             return result;
         }
 
+        public static bool TryParseKeyValuePairs(this string input, out Dictionary<string, object> parsed, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";")
+        {
+            try
+            {
+                parsed = ParseKeyValuePairs(input, pascalCasify, keyValueSeparator, elementSeparator);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                parsed = new Dictionary<string, object>
+                {
+                    {input, input }
+                };
+                return false;
+            }
+        }
+
         /// <summary>
         /// Parses key value pairs from the string.
         /// </summary>
@@ -1036,7 +1059,7 @@ namespace Bam.Net
             string[] kvp = element.DelimitSplit(keyValueSeparator);
             Args.ThrowIf<ArgumentException>(kvp.Length < 1 || kvp.Length > 2, "Unrecognized Key Value pair format: ({0})", element);
 
-            key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
+            key = (pascalCasify ? kvp[0].PascalCase() : kvp[0]).Trim();
             value = string.Empty;
             if (kvp.Length == 2)
             {
@@ -2049,6 +2072,13 @@ namespace Bam.Net
             return BitConverter.ToInt64(hashBytes, 0);
         }
 
+        public static ulong ToHashULong(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            byte[] hashBytes = ToHashBytes(toBeHashed, algorithm, encoding);
+
+            return BitConverter.ToUInt64(hashBytes, 0);
+        }
+
         public static byte[] ToHashBytes(string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
         {
             HashAlgorithm alg = HashAlgorithms[algorithm]();
@@ -2071,6 +2101,11 @@ namespace Bam.Net
         public static long ToSha256Long(this string toBeHashed)
         {
             return ToHashLong(toBeHashed, Net.HashAlgorithms.SHA256);
+        }
+
+        public static ulong ToSha256ULong(this string toBeHashed)
+        {
+            return ToHashULong(toBeHashed, Net.HashAlgorithms.SHA256);
         }
 
         public static long ToSha1Long(this string toBeHashed)
@@ -2483,6 +2518,12 @@ namespace Bam.Net
             return txt.ToString();
         }
 
+        /// <summary>
+        /// Splits the value into chunks of the specified length.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="maxLength">The maximum length.</param>
+        /// <returns></returns>
         public static IEnumerable<string> SplitByLength(this string value, int maxLength)
         {
             for (int index = 0; index < value.Length; index += maxLength)
@@ -3369,11 +3410,9 @@ namespace Bam.Net
         /// <returns>string</returns>
         public static string ToDelimited<T>(this T[] objectsToStringify, ToDelimitedDelegate<T> toDelimiteder, string delimiter)
         {
+            // TODO: change this implementation to use string.Join(delimiter, values.Select(v=> toDelimiteder(v)).ToArray());
             List<string> values = new List<string>();
-            objectsToStringify.Each(v =>
-            {
-                values.Add(toDelimiteder(v));
-            });
+            objectsToStringify.Each(v => values.Add(toDelimiteder(v)));
             return string.Join(delimiter, values.ToArray());
         }
 
@@ -3698,6 +3737,17 @@ namespace Bam.Net
             return instance;
         }
 
+        public static dynamic ToDynamic(this object instance, Func<PropertyInfo, bool> propertyPredicate, out Type dynamicType)
+        {
+            Type instanceType = instance.GetType();
+            string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
+            dynamicType = instance.ToDynamicType(newTypeName, propertyPredicate, out AssemblyBuilder ignore);
+            ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
+            object filteredProperties = ctor.Invoke(null);
+            DefaultConfiguration.CopyProperties(instance, filteredProperties);
+            return filteredProperties;
+        }
+
         /// <summary>
         /// Creates a dynamic object from the specified instance populating only
         /// the properties that are of value types
@@ -3992,6 +4042,8 @@ namespace Bam.Net
                         prop.PropertyType == typeof(bool) ||
                         prop.PropertyType == typeof(long) ||
                         prop.PropertyType == typeof(long?) ||
+                        prop.PropertyType == typeof(ulong) ||
+                        prop.PropertyType == typeof(ulong?) ||
                         prop.PropertyType == typeof(int) ||
                         prop.PropertyType == typeof(int?) ||
                         prop.PropertyType == typeof(bool?) ||
@@ -4056,8 +4108,10 @@ namespace Bam.Net
             lock (_buildDynamicTypeLock)
             {
                 GetAssemblyAndTypeBuilder(typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder);
-                List<object> all = new List<object>();
-                all.Add(instance);
+                List<object> all = new List<object>
+                {
+                    instance
+                };
                 all.AddRange(toMerge);
                 all.Each(obj =>
                 {

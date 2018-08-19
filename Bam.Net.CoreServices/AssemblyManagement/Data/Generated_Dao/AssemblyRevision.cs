@@ -61,11 +61,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -341,12 +341,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			});			
 		}
 
+		public static AssemblyRevision GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static AssemblyRevision GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static AssemblyRevision GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static AssemblyRevision GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

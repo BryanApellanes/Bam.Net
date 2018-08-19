@@ -61,11 +61,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -211,11 +211,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="WebHookDescriptor",
 		Suffix="1")]
-	public long? WebHookDescriptorId
+	public ulong? WebHookDescriptorId
 	{
 		get
 		{
-			return GetLongValue("WebHookDescriptorId");
+			return GetULongValue("WebHookDescriptorId");
 		}
 		set
 		{
@@ -362,12 +362,22 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 			});			
 		}
 
+		public static WebHookCall GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static WebHookCall GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static WebHookCall GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static WebHookCall GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

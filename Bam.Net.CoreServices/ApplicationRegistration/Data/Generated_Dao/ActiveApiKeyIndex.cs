@@ -61,11 +61,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -327,12 +327,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ActiveApiKeyIndex GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ActiveApiKeyIndex GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ActiveApiKeyIndex GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ActiveApiKeyIndex GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

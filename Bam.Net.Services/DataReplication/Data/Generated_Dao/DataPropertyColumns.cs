@@ -42,11 +42,11 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
                 return new DataPropertyColumns("Cuid");
             }
         }
-        public DataPropertyColumns DataPointCuid
+        public DataPropertyColumns InstanceCuid
         {
             get
             {
-                return new DataPropertyColumns("DataPointCuid");
+                return new DataPropertyColumns("InstanceCuid");
             }
         }
         public DataPropertyColumns Name

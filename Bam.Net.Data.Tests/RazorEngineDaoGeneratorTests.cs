@@ -53,7 +53,7 @@ namespace Bam.Net.Data.Tests
         [UnitTest]
         public static void WriteDaoCollectionPropertyTest()
         {
-            ForeignKeyColumn fk = new ForeignKeyColumn(new Column("ColumnName", DataTypes.Long), "RTable");
+            ForeignKeyColumn fk = new ForeignKeyColumn(new Column("ColumnName", DataTypes.ULong), "RTable");
             fk.TableName = "testTable";
             OutLine(fk.RenderListProperty(), ConsoleColor.Cyan);
         }
@@ -75,14 +75,14 @@ namespace Bam.Net.Data.Tests
             razorParser.GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies;
             Table value = GetTable();
             string id = "".RandomString(5);
-            value.AddColumn(new KeyColumn(id, DataTypes.Long, false));
+            value.AddColumn(new KeyColumn(id, DataTypes.ULong, false));
             value.AddColumn(new ForeignKeyColumn 
                 { 
                     AllowNull = false, 
                     Name = "ForeignKeyColumn", 
                     ReferencedKey = id, 
                     ReferencedTable = "bananas", 
-                    DataType = DataTypes.Long 
+                    DataType = DataTypes.ULong 
                 });
             SchemaManager mgr = new SchemaManager();
             SchemaDefinition schema = mgr.GetCurrentSchema();

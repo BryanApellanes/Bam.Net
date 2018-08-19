@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net.Configuration;
 using Bam.Net.Incubation;
 using Bam.Net.Messaging;
 using Bam.Net.ServiceProxy;
@@ -12,17 +8,11 @@ using System.IO;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Server;
 using Bam.Net.Logging;
-using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
-using Bam.Net.Translation.Yandex;
-using Bam.Net.Translation;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
-using Bam.Net.CoreServices.ServiceRegistration;
-using Bam.Net.CoreServices.OAuth;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
 using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
@@ -31,14 +21,14 @@ namespace Bam.Net.CoreServices
     /// Default application registry container for applications running locally.
     /// </summary>
     [ServiceRegistryContainer]
-    public static class ApplicationServiceRegistryContainer
+    public static class CoreServiceRegistryContainer
     {
         public const string RegistryName = "CoreServiceRegistry";
         static object _coreIncubatorLock = new object();
         static ServiceRegistry _coreServiceRegistry;
 
         static Dictionary<ProcessModes, Func<ServiceRegistry>> _factories;
-        static ApplicationServiceRegistryContainer()
+        static CoreServiceRegistryContainer()
         {
             _factories = new Dictionary<ProcessModes, Func<ServiceRegistry>>
             {
@@ -83,7 +73,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            DataSettings dataSettings = DataSettings.Current;
+            DefaultDataSettingsProvider dataSettings = DefaultDataSettingsProvider.Current;
             string databasesPath = dataSettings.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
@@ -150,7 +140,7 @@ namespace Bam.Net.CoreServices
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<SystemLoggerService>().Use(loggerSvc)
-                .For<DataSettings>().Use(DataSettings.Current)
+                .For<DefaultDataSettingsProvider>().Use(DefaultDataSettingsProvider.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)

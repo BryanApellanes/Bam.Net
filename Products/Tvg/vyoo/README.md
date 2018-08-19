@@ -1,6 +1,6 @@
 ﻿# Vyoo
 
-Vyoo is the view engine underneatch TVG (Troo, Vyoo, Gloo) which powers the Bamvvm framework.
+Vyoo is the view engine underneath TVG (Troo, Vyoo, Gloo) which powers the Bamvvm framework.
 
 - Serves all apps that it finds under [ContentRoot]/apps
 - Will only serve apps whose ProcessMode matches ProcessMode.Current

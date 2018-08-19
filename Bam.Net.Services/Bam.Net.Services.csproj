@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +52,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.2.0, Culture=neutral, PublicKeyToken=0e99375e54769942" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
@@ -88,6 +91,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\AdministrationService.cs" />
+    <Compile Include="Administration\AdministrationServiceRegistryContainer.cs" />
     <Compile Include="AsyncCallback\AsyncCallbackService.cs" />
     <Compile Include="AsyncCallback\Data\AsyncExecutionData.cs" />
     <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncCallbackContext.cs" />
@@ -136,6 +141,15 @@
     <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="DataReplication\Arc.cs" />
+    <Compile Include="DataReplication\DataReplicationJournal.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalEntry.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalEntryInfo.cs" />
+    <Compile Include="DataReplication\DataReplicationJournalEntryWrittenEventArgs.cs" />
+    <Compile Include="DataReplication\DataReplicationRequest.cs" />
+    <Compile Include="DataReplication\DataReplicationResponse.cs" />
+    <Compile Include="DataReplication\DataReplicationServer.cs" />
+    <Compile Include="DataReplication\DataReplicationServiceContainer.cs" />
+    <Compile Include="DataReplication\DataReplicationTypeMap.cs" />
     <Compile Include="DataReplication\Data\CreateOperation.cs" />
     <Compile Include="DataReplication\Data\DataPoint.cs" />
     <Compile Include="DataReplication\Data\DataProperty.cs" />
@@ -231,6 +245,10 @@
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventQuery.cs" />
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventWrapper.cs" />
     <Compile Include="DataReplication\Data\Operation.cs" />
+    <Compile Include="DataReplication\DefaultTypeConverter.cs" />
+    <Compile Include="DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="DataReplication\ISequenceProvider.cs" />
+    <Compile Include="DataReplication\ITypeConverter.cs" />
     <Compile Include="DataReplication\ObjectIdentifier.cs" />
     <Compile Include="DataReplication\OperationIntent.cs" />
     <Compile Include="DataReplication\OpertionEventArgs.cs" />
@@ -241,6 +259,7 @@
     <Compile Include="DataReplication\Data\UpdateOperation.cs" />
     <Compile Include="DataReplication\Data\WriteEvent.cs" />
     <Compile Include="DataReplication\Data\WriteOperation.cs" />
+    <Compile Include="DataReplication\SequenceFile.cs" />
     <Compile Include="Events\EventMessage.cs" />
     <Compile Include="Events\EventSourceService.cs" />
     <Compile Include="Events\EventSourceServiceArgs.cs" />
@@ -453,6 +472,13 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="C:\bam\nuget\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets" Condition="Exists('C:\bam\nuget\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('C:\bam\nuget\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

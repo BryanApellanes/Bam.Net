@@ -44,7 +44,7 @@ namespace Bam.Net.Services.DataReplication
                 _type = Type.GetType(_typeName);
             }
         }
-        public long Id { get; set; }
+        public ulong Id { get; set; }
         public string Uuid { get; set; }
         public string Cuid { get; set; }
 

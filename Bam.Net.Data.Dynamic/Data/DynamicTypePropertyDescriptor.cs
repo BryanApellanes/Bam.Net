@@ -10,7 +10,7 @@ namespace Bam.Net.Data.Dynamic.Data
     [Serializable]
     public class DynamicTypePropertyDescriptor: RepoData
     {
-        public long DynamicTypeDescriptorId { get; set; }
+        public ulong DynamicTypeDescriptorId { get; set; }
         public virtual DynamicTypeDescriptor ParentType { get; set; }
         public string ParentTypeName { get; set; }
         public string PropertyType { get; set; }

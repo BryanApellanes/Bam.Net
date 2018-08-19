@@ -2,37 +2,38 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.14.3</version>
+    <version>1.15.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.14.3
-Updates since v1.14.2:
- -   add systemlogreaderservice (c465ec65)
- -   add credentialhandler to core servcies (81e833d1)
+    <releaseNotes>Version 1.15.0
+Updates since v1.14.3:
+ -   regen daos (c3d54576)
+ -   change ids to ulong (931db84c)
+ -   update readem (367d36aa)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.14.3" />
-      <dependency id="Bam.Net.Data" version="1.14.3" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.14.3" />
+      <dependency id="Bam.Net" version="1.15.0" />
+      <dependency id="Bam.Net.Data" version="1.15.0" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.15.0" />
       <dependency id="Bam.Net.Distributed" version="1.9.1" />
       <dependency id="Bam.Net.Documentation" version="1.9.1" />
-      <dependency id="Bam.Net.Encryption" version="1.14.3" />
-      <dependency id="Bam.Net.Incubation" version="1.14.3" />
-      <dependency id="Bam.Net.Logging" version="1.14.3" />
-      <dependency id="Bam.Net.Messaging" version="1.14.3" />
-      <dependency id="Bam.Net.Server" version="1.14.3" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.14.3" />
-      <dependency id="Bam.Net.UserAccounts" version="1.14.3" />
+      <dependency id="Bam.Net.Encryption" version="1.15.0" />
+      <dependency id="Bam.Net.Incubation" version="1.15.0" />
+      <dependency id="Bam.Net.Logging" version="1.15.0" />
+      <dependency id="Bam.Net.Messaging" version="1.15.0" />
+      <dependency id="Bam.Net.Server" version="1.15.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.15.0" />
+      <dependency id="Bam.Net.UserAccounts" version="1.15.0" />
       <dependency id="Castle.Core" version="4.3.1" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="Common.Logging" version="3.4.1" />
       <dependency id="Common.Logging.Core" version="3.4.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
       <dependency id="Microsoft.CSharp" version="4.5.0" />
-      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
       <dependency id="NSubstitute" version="3.1.0" />
       <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.1" />

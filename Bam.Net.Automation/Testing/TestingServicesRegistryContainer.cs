@@ -27,7 +27,7 @@ namespace Bam.Net.Automation.Testing
         [ServiceRegistryLoader(RegistryName, ProcessModes.Dev)]
         public static ServiceRegistry CreateTestingServicesRegistryForDev()
         {
-            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
+            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "int-heart.bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt());
             return GetServiceRegistry(coreClient);
         }
 
@@ -47,9 +47,9 @@ namespace Bam.Net.Automation.Testing
 
         private static ServiceRegistry GetServiceRegistry(CoreClient coreClient)
         {
-            SQLiteDatabase loggerDb = DataSettings.Current.GetSysDatabase("TestServicesRegistry_DaoLogger2");
+            SQLiteDatabase loggerDb = DefaultDataSettingsProvider.Current.GetSysDatabase("TestServicesRegistry_DaoLogger2");
             ILogger logger = new DaoLogger2(loggerDb);
-            IDatabaseProvider dbProvider = new DataSettingsDatabaseProvider(DataSettings.Current, logger);
+            IDatabaseProvider dbProvider = DefaultDataSettingsProvider.Current;
             coreClient.UserRegistryService.DatabaseProvider = dbProvider;
             coreClient.UserRegistryService.ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
@@ -60,7 +60,7 @@ namespace Bam.Net.Automation.Testing
             return (ServiceRegistry)(new ServiceRegistry())
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(coreClient.UserRegistryService)
-                .For<DataSettings>().Use(DataSettings.Current)
+                .For<DefaultDataSettingsProvider>().Use(DefaultDataSettingsProvider.Current)
                 .For<ILogger>().Use(logger)
                 .For<IDaoLogger>().Use(logger)
                 .For<AppConf>().Use(conf)

@@ -61,11 +61,11 @@ namespace Bam.Net.Encryption
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Encryption
 		ReferencedKey="Id",
 		ReferencedTable="Vault",
 		Suffix="1")]
-	public long? VaultId
+	public ulong? VaultId
 	{
 		get
 		{
-			return GetLongValue("VaultId");
+			return GetULongValue("VaultId");
 		}
 		set
 		{
@@ -196,9 +196,9 @@ namespace Bam.Net.Encryption
 		/// </param>
 		public static VaultKeyCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<VaultKey>();
 			Database db = database ?? Db.For<VaultKey>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<VaultKey>();
 			var results = new VaultKeyCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<VaultKey>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultKeyColumns columns = new VaultKeyColumns();
 				var orderBy = Bam.Net.Data.Order.By<VaultKeyColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<VaultKeyColumns> where, Action<IEnumerable<VaultKey>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultKeyColumns columns = new VaultKeyColumns();
 				var orderBy = Bam.Net.Data.Order.By<VaultKeyColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Encryption
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<VaultKeyColumns> where, Action<IEnumerable<VaultKey>> batchProcessor, Bam.Net.Data.OrderBy<VaultKeyColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				VaultKeyColumns columns = new VaultKeyColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -292,12 +292,22 @@ namespace Bam.Net.Encryption
 			});			
 		}
 
+		public static VaultKey GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static VaultKey GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static VaultKey GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static VaultKey GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

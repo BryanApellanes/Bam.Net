@@ -13,6 +13,15 @@ bake /release:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
 bake /publish:public
 ```
 
+To run a build, deploy, test cycle execute the following commands:
+
+```
+cd C:\bam\tools\bake
+bake /build:.\build.json
+bake /deploy:.\deploy-test.json
+bake /test:.\unit-tests.json
+```
+
 ## Build
 
 Example

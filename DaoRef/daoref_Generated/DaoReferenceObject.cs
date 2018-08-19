@@ -58,18 +58,18 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("DaoReferenceObjectWithForeignKey_DaoReferenceObjectId", new DaoReferenceObjectWithForeignKeyCollection(Database.GetQuery<DaoReferenceObjectWithForeignKeyColumns, DaoReferenceObjectWithForeignKey>((c) => c.DaoReferenceObjectId == GetLongValue("Id")), this, "DaoReferenceObjectId"));				
+				this.ChildCollections.Add("DaoReferenceObjectWithForeignKey_DaoReferenceObjectId", new DaoReferenceObjectWithForeignKeyCollection(Database.GetQuery<DaoReferenceObjectWithForeignKeyColumns, DaoReferenceObjectWithForeignKey>((c) => c.DaoReferenceObjectId == GetULongValue("Id")), this, "DaoReferenceObjectId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -259,9 +259,9 @@ namespace Bam.Net.DaoRef
 		/// </param>
 		public static DaoReferenceObjectCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DaoReferenceObject>();
 			Database db = database ?? Db.For<DaoReferenceObject>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DaoReferenceObject>();
 			var results = new DaoReferenceObjectCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -275,14 +275,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DaoReferenceObjectColumns columns = new DaoReferenceObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -307,14 +307,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DaoReferenceObjectColumns> where, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DaoReferenceObjectColumns columns = new DaoReferenceObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -339,13 +339,13 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DaoReferenceObjectColumns> where, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Bam.Net.Data.OrderBy<DaoReferenceObjectColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DaoReferenceObjectColumns columns = new DaoReferenceObjectColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -355,12 +355,22 @@ namespace Bam.Net.DaoRef
 			});			
 		}
 
+		public static DaoReferenceObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DaoReferenceObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DaoReferenceObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DaoReferenceObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

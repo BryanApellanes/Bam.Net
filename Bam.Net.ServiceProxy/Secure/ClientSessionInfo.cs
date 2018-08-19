@@ -25,7 +25,7 @@ namespace Bam.Net.ServiceProxy.Secure
         /// The database id of the SecureSession instance on the 
         /// server
         /// </summary>
-        public long SessionId
+        public ulong SessionId
         {
             get;
             set;

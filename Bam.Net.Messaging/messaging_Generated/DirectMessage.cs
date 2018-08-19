@@ -58,18 +58,18 @@ namespace Bam.Net.Messaging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("EmailMessage_DirectMessageId", new EmailMessageCollection(Database.GetQuery<EmailMessageColumns, EmailMessage>((c) => c.DirectMessageId == GetLongValue("Id")), this, "DirectMessageId"));				
+				this.ChildCollections.Add("EmailMessage_DirectMessageId", new EmailMessageCollection(Database.GetQuery<EmailMessageColumns, EmailMessage>((c) => c.DirectMessageId == GetULongValue("Id")), this, "DirectMessageId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -145,11 +145,11 @@ namespace Bam.Net.Messaging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Message",
 		Suffix="1")]
-	public long? MessageId
+	public ulong? MessageId
 	{
 		get
 		{
-			return GetLongValue("MessageId");
+			return GetULongValue("MessageId");
 		}
 		set
 		{
@@ -224,9 +224,9 @@ namespace Bam.Net.Messaging.Data
 		/// </param>
 		public static DirectMessageCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DirectMessage>();
 			Database db = database ?? Db.For<DirectMessage>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DirectMessage>();
 			var results = new DirectMessageCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -240,14 +240,14 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DirectMessage>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var orderBy = Bam.Net.Data.Order.By<DirectMessageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -272,14 +272,14 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DirectMessageColumns> where, Action<IEnumerable<DirectMessage>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var orderBy = Bam.Net.Data.Order.By<DirectMessageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -304,13 +304,13 @@ namespace Bam.Net.Messaging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DirectMessageColumns> where, Action<IEnumerable<DirectMessage>> batchProcessor, Bam.Net.Data.OrderBy<DirectMessageColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DirectMessageColumns columns = new DirectMessageColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -320,12 +320,22 @@ namespace Bam.Net.Messaging.Data
 			});			
 		}
 
+		public static DirectMessage GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DirectMessage GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DirectMessage GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DirectMessage GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

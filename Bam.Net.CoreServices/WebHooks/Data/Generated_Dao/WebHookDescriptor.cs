@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookCall_WebHookDescriptorId", new WebHookCallCollection(Database.GetQuery<WebHookCallColumns, WebHookCall>((c) => c.WebHookDescriptorId == GetLongValue("Id")), this, "WebHookDescriptorId"));				
+				this.ChildCollections.Add("WebHookCall_WebHookDescriptorId", new WebHookCallCollection(Database.GetQuery<WebHookCallColumns, WebHookCall>((c) => c.WebHookDescriptorId == GetULongValue("Id")), this, "WebHookDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookDescriptorId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookDescriptorId == GetLongValue("Id")), this, "WebHookDescriptorId"));				
+				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookDescriptorId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookDescriptorId == GetULongValue("Id")), this, "WebHookDescriptorId"));				
 			}			
             this.ChildCollections.Add("WebHookDescriptor_WebHookDescriptorWebHookSubscriber_WebHookSubscriber",  new XrefDaoCollection<WebHookDescriptorWebHookSubscriber, WebHookSubscriber>(this, false));
 							
@@ -71,11 +71,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -423,12 +423,22 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 			});			
 		}
 
+		public static WebHookDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static WebHookDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static WebHookDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static WebHookDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

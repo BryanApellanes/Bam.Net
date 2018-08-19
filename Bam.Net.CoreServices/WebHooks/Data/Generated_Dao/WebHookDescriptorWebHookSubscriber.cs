@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="WebHookDescriptor",
 		Suffix="1")]
-	public long? WebHookDescriptorId
+	public ulong? WebHookDescriptorId
 	{
 		get
 		{
-			return GetLongValue("WebHookDescriptorId");
+			return GetULongValue("WebHookDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="WebHookSubscriber",
 		Suffix="2")]
-	public long? WebHookSubscriberId
+	public ulong? WebHookSubscriberId
 	{
 		get
 		{
-			return GetLongValue("WebHookSubscriberId");
+			return GetULongValue("WebHookSubscriberId");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 			});			
 		}
 
+		public static WebHookDescriptorWebHookSubscriber GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static WebHookDescriptorWebHookSubscriber GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static WebHookDescriptorWebHookSubscriber GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static WebHookDescriptorWebHookSubscriber GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

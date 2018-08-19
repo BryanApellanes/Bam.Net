@@ -2,12 +2,12 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Breve.Tests</id>
-    <version>1.14.3</version>
+    <version>1.15.0</version>
     <title>Bam.Net.Breve.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Breve.Tests</description>
-    <releaseNotes>Version 1.14.3
+    <releaseNotes>Version 1.15.0
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies />

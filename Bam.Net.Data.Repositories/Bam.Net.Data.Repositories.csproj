@@ -55,9 +55,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DnsClient, Version=1.1.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\DnsClient.1.1.1\lib\net45\DnsClient.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -92,10 +89,6 @@
       <HintPath>C:\bam\nuget\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -134,14 +127,14 @@
     <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
-    <Compile Include="DataSettings.cs" />
-    <Compile Include="DataSettingsDatabaseProvider.cs" />
-    <Compile Include="DataSettingsResolver.cs" />
+    <Compile Include="DefaultDataSettingsProvider.cs" />
+    <Compile Include="DefaultDatabaseProviderRepositoryResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
     <Compile Include="IDataSettingsResolver.cs" />
+    <Compile Include="InvalidIdPropertyTypeException.cs" />
     <Compile Include="IReflectionCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />

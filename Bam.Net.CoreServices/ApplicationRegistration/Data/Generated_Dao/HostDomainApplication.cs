@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="HostDomain",
 		Suffix="1")]
-	public long? HostDomainId
+	public ulong? HostDomainId
 	{
 		get
 		{
-			return GetLongValue("HostDomainId");
+			return GetULongValue("HostDomainId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="2")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static HostDomainApplication GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static HostDomainApplication GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static HostDomainApplication GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static HostDomainApplication GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

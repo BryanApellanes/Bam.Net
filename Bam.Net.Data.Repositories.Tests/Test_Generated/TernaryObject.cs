@@ -58,7 +58,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetLongValue("Id")), this, "TernaryObjectId"));				
+				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetULongValue("Id")), this, "TernaryObjectId"));				
 			}						
             this.ChildCollections.Add("TernaryObject_SecondaryObjectTernaryObject_SecondaryObject",  new XrefDaoCollection<SecondaryObjectTernaryObject, SecondaryObject>(this, false));
 				
@@ -67,11 +67,11 @@ namespace Bam.Net.Data.Repositories.Tests
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -215,9 +215,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </param>
 		public static TernaryObjectCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TernaryObject>();
 			Database db = database ?? Db.For<TernaryObject>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TernaryObject>();
 			var results = new TernaryObjectCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -231,14 +231,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TernaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TernaryObjectColumns columns = new TernaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<TernaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -263,14 +263,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TernaryObjectColumns> where, Action<IEnumerable<TernaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TernaryObjectColumns columns = new TernaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<TernaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -295,13 +295,13 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TernaryObjectColumns> where, Action<IEnumerable<TernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<TernaryObjectColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TernaryObjectColumns columns = new TernaryObjectColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -311,12 +311,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static TernaryObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TernaryObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TernaryObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TernaryObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

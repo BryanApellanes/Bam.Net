@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="1")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Machine",
 		Suffix="2")]
-	public long? MachineId
+	public ulong? MachineId
 	{
 		get
 		{
-			return GetLongValue("MachineId");
+			return GetULongValue("MachineId");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ApplicationMachine GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ApplicationMachine GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ApplicationMachine GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ApplicationMachine GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

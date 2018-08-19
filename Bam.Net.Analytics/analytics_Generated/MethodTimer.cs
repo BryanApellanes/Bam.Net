@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -127,11 +127,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Timer",
 		Suffix="1")]
-	public long? TimerId
+	public ulong? TimerId
 	{
 		get
 		{
-			return GetLongValue("TimerId");
+			return GetULongValue("TimerId");
 		}
 		set
 		{
@@ -182,9 +182,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static MethodTimerCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<MethodTimer>();
 			Database db = database ?? Db.For<MethodTimer>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<MethodTimer>();
 			var results = new MethodTimerCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -198,14 +198,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<MethodTimer>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MethodTimerColumns columns = new MethodTimerColumns();
 				var orderBy = Bam.Net.Data.Order.By<MethodTimerColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -230,14 +230,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<MethodTimerColumns> where, Action<IEnumerable<MethodTimer>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MethodTimerColumns columns = new MethodTimerColumns();
 				var orderBy = Bam.Net.Data.Order.By<MethodTimerColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -262,13 +262,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MethodTimerColumns> where, Action<IEnumerable<MethodTimer>> batchProcessor, Bam.Net.Data.OrderBy<MethodTimerColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MethodTimerColumns columns = new MethodTimerColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -278,12 +278,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static MethodTimer GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static MethodTimer GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static MethodTimer GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static MethodTimer GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

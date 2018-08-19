@@ -533,7 +533,7 @@ namespace Bam.Net.Server
         {
             bool result = false;
             IRequest request = context.Request;
-            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);
             string path = request.Url.AbsolutePath;
             string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
             string partsICareAbout = path.TruncateFront(prefix.Length);
@@ -632,6 +632,7 @@ namespace Bam.Net.Server
                 return _subscribers.Contains(logger);
             }
         }
+
         public override void Subscribe(ILogger logger)
         {
             if (!IsSubscribed(logger))

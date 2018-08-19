@@ -58,7 +58,7 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("EventParam_EventId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.EventId == GetLongValue("Id")), this, "EventId"));				
+				this.ChildCollections.Add("EventParam_EventId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.EventId == GetULongValue("Id")), this, "EventId"));				
 			}			
             this.ChildCollections.Add("Event_EventParam_Param",  new XrefDaoCollection<EventParam, Param>(this, false));
 							
@@ -67,11 +67,11 @@ namespace Bam.Net.Logging.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -161,11 +161,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Signature",
 		Suffix="1")]
-	public long? SignatureId
+	public ulong? SignatureId
 	{
 		get
 		{
-			return GetLongValue("SignatureId");
+			return GetULongValue("SignatureId");
 		}
 		set
 		{
@@ -196,11 +196,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="ComputerName",
 		Suffix="2")]
-	public long? ComputerNameId
+	public ulong? ComputerNameId
 	{
 		get
 		{
-			return GetLongValue("ComputerNameId");
+			return GetULongValue("ComputerNameId");
 		}
 		set
 		{
@@ -231,11 +231,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="CategoryName",
 		Suffix="3")]
-	public long? CategoryNameId
+	public ulong? CategoryNameId
 	{
 		get
 		{
-			return GetLongValue("CategoryNameId");
+			return GetULongValue("CategoryNameId");
 		}
 		set
 		{
@@ -266,11 +266,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="SourceName",
 		Suffix="4")]
-	public long? SourceNameId
+	public ulong? SourceNameId
 	{
 		get
 		{
-			return GetLongValue("SourceNameId");
+			return GetULongValue("SourceNameId");
 		}
 		set
 		{
@@ -301,11 +301,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="UserName",
 		Suffix="5")]
-	public long? UserNameId
+	public ulong? UserNameId
 	{
 		get
 		{
-			return GetLongValue("UserNameId");
+			return GetULongValue("UserNameId");
 		}
 		set
 		{
@@ -404,9 +404,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static EventCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Event>();
 			Database db = database ?? Db.For<Event>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Event>();
 			var results = new EventCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -420,14 +420,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Event>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventColumns columns = new EventColumns();
 				var orderBy = Bam.Net.Data.Order.By<EventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -452,14 +452,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<EventColumns> where, Action<IEnumerable<Event>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventColumns columns = new EventColumns();
 				var orderBy = Bam.Net.Data.Order.By<EventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -484,13 +484,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<EventColumns> where, Action<IEnumerable<Event>> batchProcessor, Bam.Net.Data.OrderBy<EventColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventColumns columns = new EventColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -500,12 +500,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static Event GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Event GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Event GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Event GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

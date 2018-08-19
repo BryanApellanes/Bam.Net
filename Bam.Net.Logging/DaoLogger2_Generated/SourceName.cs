@@ -58,18 +58,18 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Event_SourceNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.SourceNameId == GetLongValue("Id")), this, "SourceNameId"));				
+				this.ChildCollections.Add("Event_SourceNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.SourceNameId == GetULongValue("Id")), this, "SourceNameId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -175,9 +175,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static SourceNameCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SourceName>();
 			Database db = database ?? Db.For<SourceName>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<SourceName>();
 			var results = new SourceNameCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -191,14 +191,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SourceName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SourceNameColumns columns = new SourceNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<SourceNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -223,14 +223,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SourceNameColumns> where, Action<IEnumerable<SourceName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SourceNameColumns columns = new SourceNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<SourceNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -255,13 +255,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SourceNameColumns> where, Action<IEnumerable<SourceName>> batchProcessor, Bam.Net.Data.OrderBy<SourceNameColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SourceNameColumns columns = new SourceNameColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -271,12 +271,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static SourceName GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static SourceName GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static SourceName GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static SourceName GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

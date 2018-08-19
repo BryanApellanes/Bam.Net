@@ -61,11 +61,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		ReferencedKey="Id",
 		ReferencedTable="BuildJob",
 		Suffix="1")]
-	public long? BuildJobId
+	public ulong? BuildJobId
 	{
 		get
 		{
-			return GetLongValue("BuildJobId");
+			return GetULongValue("BuildJobId");
 		}
 		set
 		{
@@ -179,7 +179,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -196,9 +196,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// </param>
 		public static BuildResultCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<BuildResult>();
 			Database db = database ?? Db.For<BuildResult>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<BuildResult>();
 			var results = new BuildResultCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<BuildResult>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildResultColumns columns = new BuildResultColumns();
 				var orderBy = Bam.Net.Data.Order.By<BuildResultColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<BuildResultColumns> where, Action<IEnumerable<BuildResult>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildResultColumns columns = new BuildResultColumns();
 				var orderBy = Bam.Net.Data.Order.By<BuildResultColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<BuildResultColumns> where, Action<IEnumerable<BuildResult>> batchProcessor, Bam.Net.Data.OrderBy<BuildResultColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildResultColumns columns = new BuildResultColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -292,12 +292,22 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			});			
 		}
 
+		public static BuildResult GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static BuildResult GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static BuildResult GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static BuildResult GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

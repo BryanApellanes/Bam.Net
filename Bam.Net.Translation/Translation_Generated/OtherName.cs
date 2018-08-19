@@ -61,11 +61,11 @@ namespace Bam.Net.Translation
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Language",
 		Suffix="1")]
-	public long? LanguageId
+	public ulong? LanguageId
 	{
 		get
 		{
-			return GetLongValue("LanguageId");
+			return GetULongValue("LanguageId");
 		}
 		set
 		{
@@ -196,9 +196,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static OtherNameCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<OtherName>();
 			Database db = database ?? Db.For<OtherName>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<OtherName>();
 			var results = new OtherNameCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<OtherName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OtherNameColumns columns = new OtherNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<OtherNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<OtherNameColumns> where, Action<IEnumerable<OtherName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OtherNameColumns columns = new OtherNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<OtherNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OtherNameColumns> where, Action<IEnumerable<OtherName>> batchProcessor, Bam.Net.Data.OrderBy<OtherNameColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				OtherNameColumns columns = new OtherNameColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -292,12 +292,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static OtherName GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static OtherName GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static OtherName GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static OtherName GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

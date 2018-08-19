@@ -178,10 +178,6 @@
     <Compile Include="Sftp.cs" />
     <Compile Include="Ssh.cs" />
     <Compile Include="Testing\CreateStatus.cs" />
-    <Compile Include="Testing\Data\Generated_Dao\TestingContext.cs" />
-    <Compile Include="Testing\Data\Generated_Dao\TestingRepository.cs" />
-    <Compile Include="Testing\ReportGenerator.cs" />
-    <Compile Include="Testing\SaveTestSuiteExecutionSummaryResponse.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscription.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscriptionCollection.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscriptionColumns.cs" />
@@ -205,6 +201,8 @@
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionPagedQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionWrapper.cs" />
+    <Compile Include="Testing\Data\Generated_Dao\TestingContext.cs" />
+    <Compile Include="Testing\Data\Generated_Dao\TestingRepository.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinition.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinitionCollection.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinitionColumns.cs" />
@@ -217,6 +215,8 @@
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteExecutionSummaryPagedQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteExecutionSummaryQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteExecutionSummaryWrapper.cs" />
+    <Compile Include="Testing\ReportGenerator.cs" />
+    <Compile Include="Testing\SaveTestSuiteExecutionSummaryResponse.cs" />
     <Compile Include="Testing\Data\NotificationSubscription.cs" />
     <Compile Include="Testing\Data\TestSuiteDefinition.cs" />
     <Compile Include="Testing\Data\TestDefinition.cs" />

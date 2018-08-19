@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
+    /// <summary>
+    /// Class used to report diagnostic information about a database.
+    /// </summary>
     public class DatabaseInfo
     {
         public DatabaseInfo(Database database)

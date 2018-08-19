@@ -58,22 +58,22 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetULongValue("Id")), this, "SessionId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetULongValue("Id")), this, "SessionId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -177,11 +177,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="User",
 		Suffix="1")]
-	public long? UserId
+	public ulong? UserId
 	{
 		get
 		{
-			return GetLongValue("UserId");
+			return GetULongValue("UserId");
 		}
 		set
 		{
@@ -280,9 +280,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static SessionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Session>();
 			Database db = database ?? Db.For<Session>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Session>();
 			var results = new SessionCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -296,14 +296,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Session>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -328,14 +328,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SessionColumns> where, Action<IEnumerable<Session>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -360,13 +360,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SessionColumns> where, Action<IEnumerable<Session>> batchProcessor, Bam.Net.Data.OrderBy<SessionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionColumns columns = new SessionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -376,12 +376,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Session GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Session GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Session GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Session GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -58,27 +58,27 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ProcessDescriptor_ApplicationId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ProcessDescriptor_ApplicationId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Client_ApplicationId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("Client_ApplicationId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("HostDomainApplication_ApplicationId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("HostDomainApplication_ApplicationId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+				this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetULongValue("Id")), this, "ApplicationId"));				
 			}			
             this.ChildCollections.Add("Application_ApplicationMachine_Machine",  new XrefDaoCollection<ApplicationMachine, Machine>(this, false));
 							
@@ -89,11 +89,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -239,11 +239,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Organization",
 		Suffix="1")]
-	public long? OrganizationId
+	public ulong? OrganizationId
 	{
 		get
 		{
-			return GetLongValue("OrganizationId");
+			return GetULongValue("OrganizationId");
 		}
 		set
 		{
@@ -582,12 +582,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static Application GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Application GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Application GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Application GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

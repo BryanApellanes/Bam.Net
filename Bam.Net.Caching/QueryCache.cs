@@ -19,18 +19,19 @@ namespace Bam.Net.Caching
 
         public IEnumerable<T> Results(IQueryFilterable source, QueryFilter filter)
         {
-            IEnumerable<T> results;
             QueryContext queryContext = new QueryContext(source, filter);
-            if (!_typedQueryResults.TryGetValue(queryContext, out results))
+            if (!_typedQueryResults.TryGetValue(queryContext, out IEnumerable<T> results))
             {
                 results = Reload(queryContext);
             }
             return results;
         }
+
         public IEnumerable<T> Reload(IQueryFilterable source, QueryFilter filter)
         {
             return Reload(new QueryContext(source, filter));
         }
+
         public IEnumerable<T> Reload(QueryContext queryContext)
         {
             IEnumerable<T> results = queryContext.Retrieve<T>();
@@ -38,6 +39,7 @@ namespace Bam.Net.Caching
             return results;
         }
     }
+
     public class QueryCache
     {
         ConcurrentDictionary<QueryContext, IEnumerable<object>> _queryResults;
@@ -48,9 +50,8 @@ namespace Bam.Net.Caching
 
         public IEnumerable<object> Results(Type type, IQueryFilterable source, QueryFilter filter)
         {
-            IEnumerable<object> results;
             QueryContext queryContext = new QueryContext(source, filter);
-            if (!_queryResults.TryGetValue(queryContext, out results))
+            if (!_queryResults.TryGetValue(queryContext, out IEnumerable<object> results))
             {
                 results = Reload(type, queryContext);
             }

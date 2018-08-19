@@ -19,6 +19,15 @@ namespace Bam.Net
             _threads = new Dictionary<string, Thread>(500);
         }
 
+        public static void SleepUntil(Func<bool> checkCondition, int sleep = 300)
+        {
+            Thread.Sleep(sleep);
+            while (!checkCondition())
+            {
+                Thread.Sleep(sleep);
+            }
+        }
+
         public static NamedThread GetThread(string name)
         {
             if (_threads.ContainsKey(name))

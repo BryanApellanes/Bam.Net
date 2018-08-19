@@ -9,10 +9,12 @@ namespace Bam.Net.Services.DataReplication.Data
     public abstract class WriteOperation: Operation
     {  
         public OperationIntent Intent { get; set; }
+
         /// <summary>
         /// The properties that were written
         /// </summary>
         public List<DataProperty> Properties { get; set; }
+
         public override object Execute(IDistributedRepository repo)
         {
             WriteEvent writeEvent = this.CopyAs<WriteEvent>();            
@@ -20,6 +22,7 @@ namespace Bam.Net.Services.DataReplication.Data
             Any?.Invoke(this, new OpertionEventArgs { WriteEvent = writeEvent });
             return writeEvent;
         }
+
         protected void Commit(IDistributedRepository repo, WriteEvent writeEvent)
         {
             repo.Save(SaveOperation.For(writeEvent));

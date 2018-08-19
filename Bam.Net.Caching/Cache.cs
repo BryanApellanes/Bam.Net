@@ -98,7 +98,7 @@ namespace Bam.Net.Caching
 			Items = new HashSet<CacheItem>();
 			ItemsByHits = new SortedSet<CacheItem>();
 			ItemsByMisses = new SortedSet<CacheItem>();
-			ItemsById = new Dictionary<long, CacheItem>();
+			ItemsById = new Dictionary<ulong, CacheItem>();
             ItemsByUuid = new Dictionary<string, CacheItem>();
             ItemsByName = new Dictionary<string, CacheItem>();
 			MetaProvider = Bam.Net.Data.Repositories.MetaProvider.Default;
@@ -158,7 +158,7 @@ namespace Bam.Net.Caching
         /// <value>
         /// The items by identifier.
         /// </value>
-        protected Dictionary<long, CacheItem> ItemsById { get; set; }
+        protected Dictionary<ulong, CacheItem> ItemsById { get; set; }
 
         /// <summary>
         /// Gets or sets the items keyed by UUID.
@@ -222,7 +222,7 @@ namespace Bam.Net.Caching
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public CacheItem Retrieve(long id)
+        public CacheItem Retrieve(ulong id)
         {
             if (ItemsById.TryGetValue(id, out CacheItem result))
             {
@@ -659,7 +659,7 @@ namespace Bam.Net.Caching
                     },
                     () =>
                     {
-                        Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
+                        Dictionary<ulong, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
                         ItemsById = itemsById;
                     },
                     () =>

@@ -141,7 +141,7 @@ namespace Bam.Net.CoreServices
         public static T DownloadProxy<T>(string hostName, int port = 9100, ILogger logger = null, HashSet<Assembly> addedReferenceAssemblies = null)
         {
             logger = logger ?? Log.Default;
-            ProxyFactory factory = new ProxyFactory(DataSettings.Current.GetWorkspaceDirectory(typeof(ProxyFactory)).FullName, logger);
+            ProxyFactory factory = new ProxyFactory(DefaultDataSettingsProvider.Current.GetWorkspaceDirectory(typeof(ProxyFactory)).FullName, logger);
             return factory.GetProxy<T>(hostName, port, logger);
         }
 

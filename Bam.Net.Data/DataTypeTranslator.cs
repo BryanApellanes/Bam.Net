@@ -23,8 +23,12 @@ namespace Bam.Net.Data
                     return typeof(bool);
                 case DataTypes.Int:
                     return typeof(int);
+                case DataTypes.UInt:
+                    return typeof(uint);
                 case DataTypes.Long:
                     return typeof(long);
+                case DataTypes.ULong:
+                    return typeof(ulong);
                 case DataTypes.Decimal:
                     return typeof(decimal);
                 case DataTypes.String:
@@ -44,7 +48,7 @@ namespace Bam.Net.Data
             switch (dataType)
             {
                 case "bigint":
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case "binary":
                     return DataTypes.ByteArray;
                 case "bit":

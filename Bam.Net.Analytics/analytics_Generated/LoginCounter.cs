@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -113,11 +113,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Counter",
 		Suffix="1")]
-	public long? CounterId
+	public ulong? CounterId
 	{
 		get
 		{
-			return GetLongValue("CounterId");
+			return GetULongValue("CounterId");
 		}
 		set
 		{
@@ -148,11 +148,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="UserIdentifier",
 		Suffix="2")]
-	public long? UserIdentifierId
+	public ulong? UserIdentifierId
 	{
 		get
 		{
-			return GetLongValue("UserIdentifierId");
+			return GetULongValue("UserIdentifierId");
 		}
 		set
 		{
@@ -203,9 +203,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static LoginCounterCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<LoginCounter>();
 			Database db = database ?? Db.For<LoginCounter>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<LoginCounter>();
 			var results = new LoginCounterCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -219,14 +219,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<LoginCounter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LoginCounterColumns columns = new LoginCounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<LoginCounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -251,14 +251,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LoginCounterColumns> where, Action<IEnumerable<LoginCounter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LoginCounterColumns columns = new LoginCounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<LoginCounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -283,13 +283,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LoginCounterColumns> where, Action<IEnumerable<LoginCounter>> batchProcessor, Bam.Net.Data.OrderBy<LoginCounterColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LoginCounterColumns columns = new LoginCounterColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -299,12 +299,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static LoginCounter GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static LoginCounter GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static LoginCounter GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static LoginCounter GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -28,7 +28,7 @@ namespace Bam.Net.Data
         public override void SetDataTable(DataTable table)
         {
             DataTable = table;            
-            ((Dao)Value).IdValue = Convert.ToInt64(DataTable.Rows[0][0]);
+            ((Dao)Value).IdValue = Convert.ToUInt64(DataTable.Rows[0][0]);
         }
     }
 }

@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="AssemblyDescriptor",
 		Suffix="1")]
-	public long? AssemblyDescriptorId
+	public ulong? AssemblyDescriptorId
 	{
 		get
 		{
-			return GetLongValue("AssemblyDescriptorId");
+			return GetULongValue("AssemblyDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="AssemblyReferenceDescriptor",
 		Suffix="2")]
-	public long? AssemblyReferenceDescriptorId
+	public ulong? AssemblyReferenceDescriptorId
 	{
 		get
 		{
-			return GetLongValue("AssemblyReferenceDescriptorId");
+			return GetULongValue("AssemblyReferenceDescriptorId");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			});			
 		}
 
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

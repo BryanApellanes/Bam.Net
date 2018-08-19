@@ -58,18 +58,18 @@ namespace Bam.Net.ServiceProxy.Secure
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ConfigSetting_ConfigurationId", new ConfigSettingCollection(Database.GetQuery<ConfigSettingColumns, ConfigSetting>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));				
+				this.ChildCollections.Add("ConfigSetting_ConfigurationId", new ConfigSettingCollection(Database.GetQuery<ConfigSettingColumns, ConfigSetting>((c) => c.ConfigurationId == GetULongValue("Id")), this, "ConfigurationId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -131,11 +131,11 @@ namespace Bam.Net.ServiceProxy.Secure
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="1")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{
@@ -210,9 +210,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// </param>
 		public static ConfigurationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Configuration>();
 			Database db = database ?? Db.For<Configuration>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Configuration>();
 			var results = new ConfigurationCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -226,14 +226,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Configuration>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationColumns columns = new ConfigurationColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigurationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -258,14 +258,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ConfigurationColumns> where, Action<IEnumerable<Configuration>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationColumns columns = new ConfigurationColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigurationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -290,13 +290,13 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ConfigurationColumns> where, Action<IEnumerable<Configuration>> batchProcessor, Bam.Net.Data.OrderBy<ConfigurationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigurationColumns columns = new ConfigurationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -306,12 +306,22 @@ namespace Bam.Net.ServiceProxy.Secure
 			});			
 		}
 
+		public static Configuration GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Configuration GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Configuration GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Configuration GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

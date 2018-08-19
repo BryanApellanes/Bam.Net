@@ -15,8 +15,8 @@ namespace Bam.Net.Data.Repositories
 
 		public Type PocoType { get; set; }
 		public Type DaoType { get; set; }
-		public long OldId { get; set; }
-		public long NewId { get; set; }
+		public ulong OldId { get; set; }
+		public ulong NewId { get; set; }
 		public string Uuid { get; set; }
 
 		public override int GetHashCode()
@@ -25,15 +25,14 @@ namespace Bam.Net.Data.Repositories
 		}
 		public override bool Equals(object obj)
 		{
-			OldToNewIdMapping o = obj as OldToNewIdMapping;
-			if (o != null)
-			{
-				return o.Uuid == this.Uuid;
-			}
-			else
-			{
-				return base.Equals(obj);
-			}
-		}
+            if (obj is OldToNewIdMapping o)
+            {
+                return o.Uuid == this.Uuid;
+            }
+            else
+            {
+                return base.Equals(obj);
+            }
+        }
 	}
 }

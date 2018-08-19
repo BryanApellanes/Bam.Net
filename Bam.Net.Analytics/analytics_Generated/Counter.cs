@@ -58,30 +58,30 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("MethodCounter_CounterId", new MethodCounterCollection(Database.GetQuery<MethodCounterColumns, MethodCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("MethodCounter_CounterId", new MethodCounterCollection(Database.GetQuery<MethodCounterColumns, MethodCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoadCounter_CounterId", new LoadCounterCollection(Database.GetQuery<LoadCounterColumns, LoadCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("LoadCounter_CounterId", new LoadCounterCollection(Database.GetQuery<LoadCounterColumns, LoadCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ClickCounter_CounterId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("ClickCounter_CounterId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoginCounter_CounterId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
+				this.ChildCollections.Add("LoginCounter_CounterId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.CounterId == GetULongValue("Id")), this, "CounterId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -259,9 +259,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static CounterCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Counter>();
 			Database db = database ?? Db.For<Counter>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Counter>();
 			var results = new CounterCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -275,14 +275,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Counter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CounterColumns columns = new CounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<CounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -307,14 +307,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<CounterColumns> where, Action<IEnumerable<Counter>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CounterColumns columns = new CounterColumns();
 				var orderBy = Bam.Net.Data.Order.By<CounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -339,13 +339,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<CounterColumns> where, Action<IEnumerable<Counter>> batchProcessor, Bam.Net.Data.OrderBy<CounterColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CounterColumns columns = new CounterColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -355,12 +355,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Counter GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Counter GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Counter GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Counter GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

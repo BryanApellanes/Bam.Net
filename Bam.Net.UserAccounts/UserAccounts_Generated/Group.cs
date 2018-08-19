@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserGroup_GroupId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));				
+				this.ChildCollections.Add("UserGroup_GroupId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.GroupId == GetULongValue("Id")), this, "GroupId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("GroupPermission_GroupId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));				
+				this.ChildCollections.Add("GroupPermission_GroupId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.GroupId == GetULongValue("Id")), this, "GroupId"));				
 			}			
             this.ChildCollections.Add("Group_GroupPermission_Permission",  new XrefDaoCollection<GroupPermission, Permission>(this, false));
 							
@@ -73,11 +73,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -139,11 +139,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="Role",
 		Suffix="1")]
-	public long? RoleId
+	public ulong? RoleId
 	{
 		get
 		{
-			return GetLongValue("RoleId");
+			return GetULongValue("RoleId");
 		}
 		set
 		{
@@ -290,9 +290,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static GroupCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Group>();
 			Database db = database ?? Db.For<Group>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Group>();
 			var results = new GroupCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -306,14 +306,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Group>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				GroupColumns columns = new GroupColumns();
 				var orderBy = Bam.Net.Data.Order.By<GroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -338,14 +338,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<GroupColumns> where, Action<IEnumerable<Group>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				GroupColumns columns = new GroupColumns();
 				var orderBy = Bam.Net.Data.Order.By<GroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -370,13 +370,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<GroupColumns> where, Action<IEnumerable<Group>> batchProcessor, Bam.Net.Data.OrderBy<GroupColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				GroupColumns columns = new GroupColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -386,12 +386,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Group GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Group GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Group GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Group GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -62,15 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationCore.cs" />
     <Compile Include="ApplicationDataDescriptor.cs" />
-    <Compile Include="ApplicationManager.cs" />
+    <Compile Include="ApplicationContext.cs" />
     <Compile Include="ApplicationDataManager.cs" />
     <Compile Include="ApplicationConfigurationProvider.cs" />
     <Compile Include="ApplicationLogDatabase.cs" />
     <Compile Include="ApplicationLogger.cs" />
-    <Compile Include="ApplicationServiceRegistry.cs" />
+    <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="ConfigurationServiceCredentialProvider.cs" />
+    <Compile Include="ViewServicesRegistryContainer.cs" />
     <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
     <Compile Include="CoreClientInfo.cs" />
@@ -167,6 +167,10 @@
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
       <Name>Bam.Net.Messaging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
+      <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
+      <Name>Bam.Net.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
       <Name>Bam.Net.Server</Name>
@@ -207,8 +211,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServiceRegistries\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

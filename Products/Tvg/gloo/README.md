@@ -6,11 +6,11 @@ and serving that class with gloo.exe.
 # TL;DR
 Serve services:	
 
-gloo /serve:[className] /assemblySearchPattern:[searchPattern]
+gloo /serve:[className] /AssemblySearchPattern:[searchPattern]
 
 or
 
-gloo /registries:[commaSeparatedListOfRegistryNames] /assemblySearchPattern:[searchPattern]
+gloo /registries:[commaSeparatedListOfRegistryNames] /AssemblySearchPattern:[searchPattern]
 
 
 ### Web Service Class

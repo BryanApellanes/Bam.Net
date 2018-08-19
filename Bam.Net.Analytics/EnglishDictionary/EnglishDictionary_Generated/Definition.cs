@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics.EnglishDictionary
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		ReferencedKey="Id",
 		ReferencedTable="Word",
 		Suffix="1")]
-	public long? WordId
+	public ulong? WordId
 	{
 		get
 		{
-			return GetLongValue("WordId");
+			return GetULongValue("WordId");
 		}
 		set
 		{
@@ -196,9 +196,9 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		/// </param>
 		public static DefinitionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Definition>();
 			Database db = database ?? Db.For<Definition>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Definition>();
 			var results = new DefinitionCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Definition>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DefinitionColumns columns = new DefinitionColumns();
 				var orderBy = Bam.Net.Data.Order.By<DefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DefinitionColumns> where, Action<IEnumerable<Definition>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DefinitionColumns columns = new DefinitionColumns();
 				var orderBy = Bam.Net.Data.Order.By<DefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.Analytics.EnglishDictionary
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DefinitionColumns> where, Action<IEnumerable<Definition>> batchProcessor, Bam.Net.Data.OrderBy<DefinitionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DefinitionColumns columns = new DefinitionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -292,12 +292,22 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			});			
 		}
 
+		public static Definition GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Definition GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Definition GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Definition GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

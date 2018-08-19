@@ -8,16 +8,16 @@ namespace Bam.Net.Automation.Testing
         GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle);
         GetTestDefinitionResponse GetTestDefinition(string suiteTitle, TestDefinition testDefinition);
         SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary suiteExecutionSummary);
-        SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId, string tag = null);
+        SaveTestExecutionResponse StartTest(ulong executionSummaryId, ulong testDefinitionId, string tag = null);
         SaveTestExecutionResponse SaveTestExecution(TestExecution execution);
-        SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error);
-        SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle);
-        SaveTestExecutionResponse FinishTest(long executionId);
+        SaveTestExecutionResponse Fail(uint summaryId, string suiteTitle, string testTitle, string error);
+        SaveTestExecutionResponse Pass(uint summaryId, string suiteTitle, string testTitle);
+        SaveTestExecutionResponse FinishTest(ulong executionId);
         RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers();
-        RetrieveTestExecutionResponse RetrieveTestExecutionById(long id);
+        RetrieveTestExecutionResponse RetrieveTestExecutionById(ulong id);
         RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid);        
         SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to);
-        SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId);
+        SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(ulong testId);
         NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress);
         NotificationSubscriptionResponse UnsubscribeFromNotifications(string emailAddress);
     }

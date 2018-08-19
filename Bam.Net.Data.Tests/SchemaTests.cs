@@ -149,7 +149,7 @@ namespace Bam.Net.Data.Tests
 
             string refering = "Referencer";
             mgr.AddTable(refering);
-            mgr.AddColumn(refering, new Column("fk", DataTypes.Long));
+            mgr.AddColumn(refering, new Column("fk", DataTypes.ULong));
 
             int initCount = schema.ForeignKeys.Length;
             mgr.SetForeignKey(tableName, refering, "fk");
@@ -269,7 +269,7 @@ namespace Bam.Net.Data.Tests
             SchemaManager mgr = new SchemaManager();
             SchemaDefinition s = mgr.SetSchema("test");
             SchemaResult r = mgr.AddTable(tableName);
-            r = mgr.AddColumn(tableName, new Column("ColumnOne", DataTypes.Long, false));
+            r = mgr.AddColumn(tableName, new Column("ColumnOne", DataTypes.ULong, false));
             Expect.IsTrue(r.Success);
         }
         
@@ -286,11 +286,10 @@ namespace Bam.Net.Data.Tests
             schema = mgr.SetSchema("fkTest");
 
             mgr.AddTable(targetTable);
-            mgr.AddColumn(targetTable, new Column("PutColumnName", DataTypes.Long));
-
+            mgr.AddColumn(targetTable, new Column("PutColumnName", DataTypes.ULong));
 
             mgr.AddTable(referencingTable);
-            mgr.AddColumn(referencingTable, new Column("PutColumnName", DataTypes.Long));
+            mgr.AddColumn(referencingTable, new Column("PutColumnName", DataTypes.ULong));
 
             mgr.SetForeignKey(targetTable, referencingTable, "fk");
             return schema;

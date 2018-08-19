@@ -61,11 +61,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -99,11 +99,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="User",
 		Suffix="1")]
-	public long? UserId
+	public ulong? UserId
 	{
 		get
 		{
-			return GetLongValue("UserId");
+			return GetULongValue("UserId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="Role",
 		Suffix="2")]
-	public long? RoleId
+	public ulong? RoleId
 	{
 		get
 		{
-			return GetLongValue("RoleId");
+			return GetULongValue("RoleId");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static UserRoleCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UserRole>();
 			Database db = database ?? Db.For<UserRole>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<UserRole>();
 			var results = new UserRoleCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserRole>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserRoleColumns columns = new UserRoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserRoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserRoleColumns> where, Action<IEnumerable<UserRole>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserRoleColumns columns = new UserRoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserRoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserRoleColumns> where, Action<IEnumerable<UserRole>> batchProcessor, Bam.Net.Data.OrderBy<UserRoleColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserRoleColumns columns = new UserRoleColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static UserRole GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static UserRole GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static UserRole GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static UserRole GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -113,7 +113,17 @@ namespace Bam.Net.Data.Repositories
             return DaoRepository.Retrieve(objectType, id);
         }
 
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            return DaoRepository.Retrieve(objectType, id);
+        }
+
         public override T Retrieve<T>(long id)
+        {
+            return DaoRepository.Retrieve<T>(id);
+        }
+
+        public override T Retrieve<T>(ulong id)
         {
             return DaoRepository.Retrieve<T>(id);
         }

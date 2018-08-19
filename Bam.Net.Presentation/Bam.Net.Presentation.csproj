@@ -122,9 +122,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\QRCoder.1.3.3\lib\net40\UnityEngine.dll</HintPath>
-    </Reference>
     <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
     </Reference>
@@ -136,6 +133,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationModel.cs" />
     <Compile Include="Drawing\ColorPalette.cs" />
     <Compile Include="Drawing\Dimensions.cs" />
     <Compile Include="Drawing\Extensions.cs" />
@@ -193,13 +191,16 @@
     <Compile Include="Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="ICompiledTemplate.cs" />
     <Compile Include="ImageMagick.cs" />
+    <Compile Include="IPersistenceModelProvider.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="ITemplateManager.cs" />
+    <Compile Include="IViewModelProvider.cs" />
     <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="Markdown\IDocumentComponent.cs" />
     <Compile Include="Markdown\DocumentComponent.cs" />
     <Compile Include="Markdown\PipeTableDocumentComponent.cs" />
+    <Compile Include="PageModel.cs" />
     <Compile Include="Pdf\Pdf.cs" />
     <Compile Include="Pdf\PdfOrientation.cs" />
     <Compile Include="Pdf\PdfOutput.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Html\ParameterLayouts.cs" />
     <Compile Include="Html\InputFormBuilder.cs" />
     <Compile Include="Html\ServiceProxyWebViewPageExtensions.cs" />
+    <Compile Include="PersistenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Html\RadioList.cs" />
     <Compile Include="Html\Select.cs" />
@@ -218,6 +220,7 @@
     <Compile Include="Html\TagBuilderExtensions.cs" />
     <Compile Include="Html\UrlHelperExtensions.cs" />
     <Compile Include="Inkscape.cs" />
+    <Compile Include="ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Html\Js\DataSet.js" />
@@ -233,7 +236,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Bam.Net.Presentation.nuspec" />
+    <None Include="Bam.Net.Presentation.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Dust\test.dust">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -241,6 +246,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">

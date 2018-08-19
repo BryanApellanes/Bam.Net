@@ -70,7 +70,7 @@ namespace Bam.Net.Caching
 			Value = value;			
 			Meta = metaProvider.GetMeta(this);			
 			Created = DateTime.UtcNow;
-            Id = value.Property<long>("Id", false);
+            Id = value.Property<ulong>("Id", false);
             Uuid = value.Property<string>("Uuid", false);
             Cuid = value.Property<string>("Cuid", false);
             Name = value.Property<string>("Name", false);
@@ -84,7 +84,7 @@ namespace Bam.Net.Caching
         /// </value>
         protected Meta Meta { get; set; }
 
-		public long Id
+		public ulong Id
 		{
 			get;
 			set;

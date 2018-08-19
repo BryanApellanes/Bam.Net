@@ -58,27 +58,27 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Configuration_MachineId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("Configuration_MachineId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("HostAddress_MachineId", new HostAddressCollection(Database.GetQuery<HostAddressColumns, HostAddress>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("HostAddress_MachineId", new HostAddressCollection(Database.GetQuery<HostAddressColumns, HostAddress>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ProcessDescriptor_MachineId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("ProcessDescriptor_MachineId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Nic_MachineId", new NicCollection(Database.GetQuery<NicColumns, Nic>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("Nic_MachineId", new NicCollection(Database.GetQuery<NicColumns, Nic>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Client_MachineId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("Client_MachineId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ApplicationMachine_MachineId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.MachineId == GetLongValue("Id")), this, "MachineId"));				
+				this.ChildCollections.Add("ApplicationMachine_MachineId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.MachineId == GetULongValue("Id")), this, "MachineId"));				
 			}						
             this.ChildCollections.Add("Machine_ApplicationMachine_Application",  new XrefDaoCollection<ApplicationMachine, Application>(this, false));
 				
@@ -87,11 +87,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -521,12 +521,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static Machine GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Machine GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Machine GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Machine GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

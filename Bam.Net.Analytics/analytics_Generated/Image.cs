@@ -58,7 +58,7 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetLongValue("Id")), this, "ImageId"));				
+				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetULongValue("Id")), this, "ImageId"));				
 			}			
             this.ChildCollections.Add("Image_ImageTag_Tag",  new XrefDaoCollection<ImageTag, Tag>(this, false));
 							
@@ -67,11 +67,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -133,11 +133,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Url",
 		Suffix="1")]
-	public long? UrlId
+	public ulong? UrlId
 	{
 		get
 		{
-			return GetLongValue("UrlId");
+			return GetULongValue("UrlId");
 		}
 		set
 		{
@@ -168,11 +168,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Crawler",
 		Suffix="2")]
-	public long? CrawlerId
+	public ulong? CrawlerId
 	{
 		get
 		{
-			return GetLongValue("CrawlerId");
+			return GetULongValue("CrawlerId");
 		}
 		set
 		{
@@ -271,9 +271,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static ImageCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Image>();
 			Database db = database ?? Db.For<Image>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Image>();
 			var results = new ImageCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -287,14 +287,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Image>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageColumns columns = new ImageColumns();
 				var orderBy = Bam.Net.Data.Order.By<ImageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -319,14 +319,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ImageColumns> where, Action<IEnumerable<Image>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageColumns columns = new ImageColumns();
 				var orderBy = Bam.Net.Data.Order.By<ImageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -351,13 +351,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ImageColumns> where, Action<IEnumerable<Image>> batchProcessor, Bam.Net.Data.OrderBy<ImageColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageColumns columns = new ImageColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -367,12 +367,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Image GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Image GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Image GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Image GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

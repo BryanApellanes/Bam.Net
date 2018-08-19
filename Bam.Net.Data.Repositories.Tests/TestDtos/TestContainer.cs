@@ -11,7 +11,7 @@ namespace Bam.Net.Data.Repositories.Tests.TestDtos
     [Serializable]
     public class TestContainer
     {
-        public long Id { get; set; }
+        public ulong Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public DateTime BirthDay { get; set; }

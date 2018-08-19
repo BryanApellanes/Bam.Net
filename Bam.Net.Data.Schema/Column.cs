@@ -22,7 +22,7 @@ namespace Bam.Net.Data.Schema
         }
 
         /// <summary>
-        /// Instantiate a column where Type = Long, AllowNull = false, Key = true
+        /// Instantiate a column where Type = ULong, AllowNull = false, Key = true
         /// </summary>
         /// <param name="columnName"></param>
         /// <param name="tableName"></param>
@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Schema
         {
             this.Name = columnName;
             this.TableName = tableName;
-            this.DataType = DataTypes.Long;
+            this.DataType = DataTypes.ULong;
             this.AllowNull = false;
             this.Key = true;
         }
@@ -128,8 +128,12 @@ namespace Bam.Net.Data.Schema
                         return "bool?";
                     case DataTypes.Int:
                         return "int?";
+                    case DataTypes.UInt:
+                        return "uint?";
                     case DataTypes.Long:
                         return "long?";
+                    case DataTypes.ULong:
+                        return "ulong?";
                     case DataTypes.Decimal:
                         return "decimal?";
                     case DataTypes.String:
@@ -165,7 +169,13 @@ namespace Bam.Net.Data.Schema
                         case DataTypes.Int:
                             SetDbDataype("Int", "10");
                             break;
+                        case DataTypes.UInt:
+                            SetDbDataype("Int", "10");
+                            break;
                         case DataTypes.Long:
+                            SetDbDataype("BigInt", "19");
+                            break;
+                        case DataTypes.ULong:
                             SetDbDataype("BigInt", "19");
                             break;
                         case DataTypes.Decimal:

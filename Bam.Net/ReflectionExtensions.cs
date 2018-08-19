@@ -572,11 +572,17 @@ namespace Bam.Net
                 {
                     value = null;
                 }
-                if((value is int || value is decimal) && 
-                    (property.PropertyType == typeof(long) ||
-                    Nullable.GetUnderlyingType(property.PropertyType) == typeof(long)))
+                else if ((value is int || value is decimal) &&
+                   (property.PropertyType == typeof(long) ||
+                   Nullable.GetUnderlyingType(property.PropertyType) == typeof(long)))
                 {
                     value = Convert.ToInt64(value);
+                }
+                else if ((value is long || value is int || value is decimal) &&
+                   (property.PropertyType == typeof(ulong) ||
+                   property.PropertyType == typeof(ulong?)))
+                {
+                    value = Convert.ToUInt64(value);
                 }
                 property.SetValue(instance, value, null);
             }
@@ -675,7 +681,7 @@ namespace Bam.Net
         public static IEnumerable<T> EachDataProperty<T>(this object instance, Type type, Func<PropertyInfo, bool> propertyPredicate, Func<PropertyInfo, object, T> eacher)
         {
             Args.ThrowIfNull(propertyPredicate, nameof(propertyPredicate));
-            foreach (PropertyInfo pi in type.GetProperties().Where(pi => pi.DeclaringType == type && pi.PropertyType.In(typeof(bool?), typeof(bool), typeof(int), typeof(int?), typeof(long), typeof(long?), typeof(decimal), typeof(decimal?), typeof(string), typeof(byte[]), typeof(DateTime), typeof(DateTime?))))
+            foreach (PropertyInfo pi in type.GetProperties().Where(pi => pi.DeclaringType == type && pi.PropertyType.In(typeof(bool?), typeof(bool), typeof(uint), typeof(uint?), typeof(int), typeof(int?), typeof(ulong), typeof(ulong?), typeof(long), typeof(long?), typeof(decimal), typeof(decimal?), typeof(string), typeof(byte[]), typeof(DateTime), typeof(DateTime?))))
             {
                 if (propertyPredicate(pi))
                 {
@@ -696,7 +702,7 @@ namespace Bam.Net
             {
                 output.AppendFormat("{0}.", type.Namespace);
             }
-            output.Append(type == typeof(int) || type == typeof(long) ? type.Name: type.Name.DropTrailingNonLetters());
+            output.Append(type == typeof(int) || type == typeof(long) || type == typeof(uint) || type == typeof(ulong) ? type.Name: type.Name.DropTrailingNonLetters());
             if (type.IsGenericType)
             {
                 output.AppendFormat("<{0}>", type.GetGenericArguments().ToDelimited(t => includeNamespace ? "{0}.{1}"._Format(t.Namespace, t.ToTypeString(false)): t.ToTypeString(false)));

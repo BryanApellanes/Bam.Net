@@ -58,11 +58,11 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UrlTag_TagId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.TagId == GetLongValue("Id")), this, "TagId"));				
+				this.ChildCollections.Add("UrlTag_TagId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.TagId == GetULongValue("Id")), this, "TagId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ImageTag_TagId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.TagId == GetLongValue("Id")), this, "TagId"));				
+				this.ChildCollections.Add("ImageTag_TagId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.TagId == GetULongValue("Id")), this, "TagId"));				
 			}						
             this.ChildCollections.Add("Tag_UrlTag_Url",  new XrefDaoCollection<UrlTag, Url>(this, false));
 				
@@ -73,11 +73,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -255,9 +255,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static TagCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Tag>();
 			Database db = database ?? Db.For<Tag>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Tag>();
 			var results = new TagCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -271,14 +271,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Tag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TagColumns columns = new TagColumns();
 				var orderBy = Bam.Net.Data.Order.By<TagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -303,14 +303,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TagColumns> where, Action<IEnumerable<Tag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TagColumns columns = new TagColumns();
 				var orderBy = Bam.Net.Data.Order.By<TagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -335,13 +335,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TagColumns> where, Action<IEnumerable<Tag>> batchProcessor, Bam.Net.Data.OrderBy<TagColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TagColumns columns = new TagColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -351,12 +351,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Tag GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Tag GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Tag GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Tag GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

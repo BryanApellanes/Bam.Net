@@ -21,9 +21,9 @@ namespace Bam.Net.Services.Clients
         public CoreProxyableService()
         {
             CoreClient = new CoreClient();
-            ServiceRegistry registry = ApplicationServiceRegistryContainer.Instance;
+            ServiceRegistry registry = CoreServiceRegistryContainer.Instance;
             UserManager userMgr = registry.Get<UserManager>();
-            DataSettings.Current.Init(userMgr);
+            DefaultDataSettingsProvider.Current.Init(userMgr);
             _userManager = userMgr;
         }
 

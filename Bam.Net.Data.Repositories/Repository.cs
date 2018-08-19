@@ -170,7 +170,7 @@ namespace Bam.Net.Data.Repositories
         public virtual object Save(Type type, object toSave)
 		{
             SetMeta(toSave);
-			long? id = GetIdValue(toSave);
+			ulong? id = GetIdValue(toSave);
             toSave.Property("Modified", DateTime.UtcNow, false);
 			object result = null;
 			if (id.HasValue && id.Value != 0)
@@ -224,12 +224,14 @@ namespace Bam.Net.Data.Repositories
         public abstract T Retrieve<T>(int id) where T : class, new();
 		
 		public abstract T Retrieve<T>(long id) where T : class, new();
+        public abstract T Retrieve<T>(ulong id) where T : class, new();
         public abstract T Retrieve<T>(string uuid) where T : class, new();
 		public abstract IEnumerable<T> RetrieveAll<T>() where T : class, new();
 		public abstract IEnumerable<object> RetrieveAll(Type type);
         public abstract void BatchRetrieveAll(Type dtoOrPocoType, int batchSize, Action<IEnumerable<object>> processor);
         public abstract object Retrieve(Type objectType, long id);
-		public abstract object Retrieve(Type objectType, string uuid);
+        public abstract object Retrieve(Type objectType, ulong id);
+        public abstract object Retrieve(Type objectType, string uuid);
         public abstract IEnumerable<object> Query(string propertyName, object propertyValue);
         /// <summary>
         /// Execute query against the underlying SourceRepository.
@@ -353,7 +355,7 @@ namespace Bam.Net.Data.Repositories
 			return GetKeyProperty(typeof(T));
 		}
 
-		protected internal long? GetIdValue(object value)
+		protected internal ulong? GetIdValue(object value)
 		{
 			return Meta.GetId(value);
 		}

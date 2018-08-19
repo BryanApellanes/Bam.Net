@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Subscription_UserId", new SubscriptionCollection(Database.GetQuery<SubscriptionColumns, Subscription>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Subscription_UserId", new SubscriptionCollection(Database.GetQuery<SubscriptionColumns, Subscription>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("OrganizationUser_UserId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("OrganizationUser_UserId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}						
             this.ChildCollections.Add("User_OrganizationUser_Organization",  new XrefDaoCollection<OrganizationUser, Organization>(this, false));
 				
@@ -71,11 +71,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -409,12 +409,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static User GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static User GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static User GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static User GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

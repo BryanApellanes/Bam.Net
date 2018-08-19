@@ -234,6 +234,17 @@ namespace Bam.Net.Yaml.Data
             return GetLatest(dao);
         }
 
+        public override T Retrieve<T>(ulong id)
+        {
+            return (T)Retrieve(typeof(T), id);
+        }
+
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            object dao = DaoRepository.Retrieve(objectType, id);
+            return GetLatest(dao);
+        }
+
         public override object Retrieve(Type objectType, string uuid)
         {
             object dao = DaoRepository.Retrieve(objectType, uuid);

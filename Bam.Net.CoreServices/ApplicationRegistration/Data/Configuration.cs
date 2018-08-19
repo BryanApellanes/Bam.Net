@@ -11,9 +11,9 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
     public class Configuration: AuditRepoData
     {
         public string Name { get; set; }
-        public virtual long MachineId { get; set; }
+        public virtual ulong MachineId { get; set; }
         public virtual Machine Machine { get; set; } 
-        public virtual long ApplicationId { get; set; }
+        public virtual ulong ApplicationId { get; set; }
         public virtual Application Application { get; set; }
         public virtual List<ConfigurationSetting> Settings { get; set; }
     }

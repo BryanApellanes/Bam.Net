@@ -160,18 +160,26 @@
     <Compile Include="DaoLogger_Generated\LogEventPagedQuery.cs" />
     <Compile Include="DaoLogger_Generated\LogEventQuery.cs" />
     <Compile Include="DaoLogger_Generated\Qi\LogEvent.cs" />
+    <Compile Include="DaoLogProvider.cs" />
     <Compile Include="EventIdentifier.cs" />
     <Compile Include="IDaoLogger.cs" />
+    <Compile Include="ILogProvider.cs" />
     <Compile Include="ILogReader.cs" />
     <Compile Include="EzLog.cs" />
     <Compile Include="LogEntry.cs" />
+    <Compile Include="DefaultConfigurationLogProvider.cs" />
+    <Compile Include="LogProvider.cs" />
     <Compile Include="LogReaderFactory.cs" />
+    <Compile Include="LogSchemaType.cs" />
     <Compile Include="NLog\BamNLogTarget.cs" />
     <Compile Include="ObjectRepositoryLogger.cs" />
     <Compile Include="PersistingEventIdProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryLogger.cs" />
     <Compile Include="ObjectRepositoryLoggerLogReader.cs" />
+    <Compile Include="SQLiteLogger.cs" />
+    <Compile Include="SQLiteLogger2.cs" />
+    <Compile Include="SQLiteLogProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DaoLogger.db.js" />
@@ -193,6 +201,10 @@
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>

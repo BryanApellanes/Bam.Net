@@ -18,27 +18,27 @@ namespace Bam.Net.Application
 {
     [Serializable]
     [ServiceRegistryContainer]
-    public class ContentServicesRegistryContainer
+    public class ViewServicesRegistryContainer
     {
-        public const string Name = "ContentServicesRegistry";
+        public const string Name = "ViewServicesRegistry";
         static object _registryLock = new object();
 
         [ServiceRegistryLoader(Name, ProcessModes.Dev)]
-        public static ServiceRegistry CreateTestingServicesRegistryForDev()
+        public static ServiceRegistry CreateViewServicesRegistryForDev()
         {
-            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
+            CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "int-heart.bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt());
             return GetServiceRegistry(coreClient);
         }
 
         [ServiceRegistryLoader(Name, ProcessModes.Test)]
-        public static ServiceRegistry CreateTestingServicesRegistryForTest()
+        public static ServiceRegistry CreateViewServicesRegistryForTest()
         {
             CoreClient coreClient = new CoreClient("int-heart.bamapps.net", 80);
             return GetServiceRegistry(coreClient);
         }
 
         [ServiceRegistryLoader(Name, ProcessModes.Prod)]
-        public static ServiceRegistry CreateTestingServicesRegistryForProd()
+        public static ServiceRegistry CreateViewServicesRegistryForProd()
         {
             CoreClient coreClient = new CoreClient("heart.bamapps.net", 80);
             return GetServiceRegistry(coreClient);
@@ -46,14 +46,14 @@ namespace Bam.Net.Application
 
         private static ServiceRegistry GetServiceRegistry(CoreClient coreClient)
         {
-            SQLiteDatabase loggerDb = DataSettings.Current.GetSysDatabase($"{Name}_DaoLogger2");
+            SQLiteDatabase loggerDb = DefaultDataSettingsProvider.Current.GetSysDatabase($"{Name}_DaoLogger2");
             ILogger logger = new DaoLogger2(loggerDb);
 
             return (ServiceRegistry)(new ServiceRegistry())
                 .For<IUserManager>().Use(coreClient.UserRegistryService)
-                .For<DataSettings>().Use(DataSettings.Current)
+                .For<DefaultDataSettingsProvider>().Use(DefaultDataSettingsProvider.Current)
                 .For<ILogger>().Use(logger)
-                .For<IDatabaseProvider>().Use<DataSettingsDatabaseProvider>();                
+                .For<IDatabaseProvider>().Use<DefaultDataSettingsProvider>();                
         }
     }
 }

@@ -10,21 +10,25 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// An IChunkStorage implementation that stores chunks in the file system.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.Files.IChunkStorage" />
     public class FileSystemChunkStorage: IChunkStorage
     {
         public FileSystemChunkStorage()
         {
-            DataSettings = DataSettings.Current;
+            DataSettings = DefaultDataSettingsProvider.Current;
             Logger = Log.Default;
         }
 
-        public FileSystemChunkStorage(DataSettings dataSettings, ILogger logger = null)
+        public FileSystemChunkStorage(DefaultDataSettingsProvider dataSettings, ILogger logger = null)
         {
             DataSettings = dataSettings;
             Logger = logger;
         }
 
-        public DataSettings DataSettings { get; set; }
+        public DefaultDataSettingsProvider DataSettings { get; set; }
         public ILogger Logger { get; set; }
         public void SetChunk(IChunk chunk)
         {

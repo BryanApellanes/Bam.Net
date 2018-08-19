@@ -149,6 +149,17 @@ namespace Bam.Net
         {
             IsGreaterThan(left, right, string.Format("{0} is not greater than {1}", left, right));
         }
+
+        /// <summary>
+        /// Checks if the specified "left" value is greater than the specified "right" value.
+        /// </summary>
+        /// <param name="left">int on the left of &gt;</param>
+        /// <param name="right">int on the right of &gt;</param>
+        public static void IsGreaterThan(ulong left, ulong right)
+        {
+            IsGreaterThan(left, right, string.Format("{0} is not greater than {1}", left, right));
+        }
+
         /// <summary>
         /// Checks if the specified "left" value is greater than the specified "right" value.
         /// </summary>
@@ -158,7 +169,17 @@ namespace Bam.Net
         {
             if (!(left > right))
                 throw new ExpectFailedException(message);
+        }
 
+        /// <summary>
+        /// Checks if the specified "left" value is greater than the specified "right" value.
+        /// </summary>
+        /// <param name="left">int on the left of &gt;</param>
+        /// <param name="right">int on the right of &gt;</param>
+        public static void IsGreaterThan(ulong left, ulong right, string message)
+        {
+            if (!(left > right))
+                throw new ExpectFailedException(message);
         }
 
         public static void IsGreaterThanOrEqualTo(int left, int right)

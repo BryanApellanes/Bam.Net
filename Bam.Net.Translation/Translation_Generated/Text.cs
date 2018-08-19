@@ -58,22 +58,22 @@ namespace Bam.Net.Translation
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetULongValue("Id")), this, "TextId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetULongValue("Id")), this, "TextId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -135,11 +135,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Language",
 		Suffix="1")]
-	public long? LanguageId
+	public ulong? LanguageId
 	{
 		get
 		{
-			return GetLongValue("LanguageId");
+			return GetULongValue("LanguageId");
 		}
 		set
 		{
@@ -238,9 +238,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static TextCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Text>();
 			Database db = database ?? Db.For<Text>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Text>();
 			var results = new TextCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -254,14 +254,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Text>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TextColumns columns = new TextColumns();
 				var orderBy = Bam.Net.Data.Order.By<TextColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -286,14 +286,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TextColumns> where, Action<IEnumerable<Text>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TextColumns columns = new TextColumns();
 				var orderBy = Bam.Net.Data.Order.By<TextColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -318,13 +318,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TextColumns> where, Action<IEnumerable<Text>> batchProcessor, Bam.Net.Data.OrderBy<TextColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TextColumns columns = new TextColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -334,12 +334,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static Text GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Text GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Text GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Text GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

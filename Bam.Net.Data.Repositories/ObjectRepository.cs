@@ -63,12 +63,14 @@ namespace Bam.Net.Data.Repositories
 			SaveCollections(toCreate);
 			return toCreate;
 		}
+
         public override object Create(Type type, object toCreate)
         {
             ObjectReaderWriter.Write(type, toCreate);
             SaveCollections(toCreate);
             return toCreate;
         }
+
         public override object Create(object toCreate)
 		{
 			ObjectReaderWriter.Write(toCreate.GetType(), toCreate);
@@ -121,6 +123,26 @@ namespace Bam.Net.Data.Repositories
             }
 			return obj;
 		}
+        
+        public override T Retrieve<T>(ulong id)
+        {
+            T value = ObjectReaderWriter.Read<T>(id);
+            if (value != null)
+            {
+                LoadXrefCollectionValues(value);
+            }
+            return value;
+        }
+
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            object obj = ObjectReaderWriter.Read(objectType, id);
+            if (obj != null)
+            {
+                LoadXrefCollectionValues(obj);
+            }
+            return obj;
+        }
 
         public override T Retrieve<T>(string uuid)
         {
@@ -139,7 +161,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> RetrieveAll<T>() 
 		{
-			return this.Query<T>(t => ((object)t).Property<long>("Id") > 0);
+			return this.Query<T>(t => ((object)t).Property<ulong>("Id") > 0);
 		}
 
         public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
@@ -158,7 +180,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<object> RetrieveAll(Type type)
 		{
-			return Query(type, t => ((object)t).Property<long>("Id") > 0);
+			return Query(type, t => ((object)t).Property<ulong>("Id") > 0);
 		}
 
 		public override IEnumerable<object> Query(string propertyName, object value)

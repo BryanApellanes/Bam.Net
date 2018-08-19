@@ -58,7 +58,7 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LeftRight_RightId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.RightId == GetLongValue("Id")), this, "RightId"));				
+				this.ChildCollections.Add("LeftRight_RightId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.RightId == GetULongValue("Id")), this, "RightId"));				
 			}						
             this.ChildCollections.Add("Right_LeftRight_Left",  new XrefDaoCollection<LeftRight, Left>(this, false));
 				
@@ -67,11 +67,11 @@ namespace Bam.Net.DaoRef
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -201,9 +201,9 @@ namespace Bam.Net.DaoRef
 		/// </param>
 		public static RightCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Right>();
 			Database db = database ?? Db.For<Right>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Right>();
 			var results = new RightCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -217,14 +217,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Right>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RightColumns columns = new RightColumns();
 				var orderBy = Bam.Net.Data.Order.By<RightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -249,14 +249,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<RightColumns> where, Action<IEnumerable<Right>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RightColumns columns = new RightColumns();
 				var orderBy = Bam.Net.Data.Order.By<RightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -281,13 +281,13 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RightColumns> where, Action<IEnumerable<Right>> batchProcessor, Bam.Net.Data.OrderBy<RightColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RightColumns columns = new RightColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,12 +297,22 @@ namespace Bam.Net.DaoRef
 			});			
 		}
 
+		public static Right GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Right GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Right GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Right GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

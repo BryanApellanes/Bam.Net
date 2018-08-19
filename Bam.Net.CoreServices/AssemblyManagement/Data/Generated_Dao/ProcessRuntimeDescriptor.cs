@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.ProcessRuntimeDescriptorId == GetLongValue("Id")), this, "ProcessRuntimeDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.ProcessRuntimeDescriptorId == GetULongValue("Id")), this, "ProcessRuntimeDescriptorId"));				
 			}						
             this.ChildCollections.Add("ProcessRuntimeDescriptor_AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptor",  new XrefDaoCollection<AssemblyDescriptorProcessRuntimeDescriptor, AssemblyDescriptor>(this, false));
 				
@@ -67,11 +67,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -353,12 +353,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			});			
 		}
 
+		public static ProcessRuntimeDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ProcessRuntimeDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ProcessRuntimeDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ProcessRuntimeDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

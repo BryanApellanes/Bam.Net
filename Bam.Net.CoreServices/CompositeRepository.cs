@@ -20,9 +20,9 @@ namespace Bam.Net.CoreServices
     /// </summary>
     public class CompositeRepository : AsyncRepository, IHasTypeSchemaTempPathProvider
     {      
-        public CompositeRepository(DaoRepository sourceRepository, DataSettings dataSettings = null)
+        public CompositeRepository(DaoRepository sourceRepository, DefaultDataSettingsProvider dataSettings = null)
         {
-            DataSettings = dataSettings ?? DataSettings.Current;
+            DataSettings = dataSettings ?? DefaultDataSettingsProvider.Current;
             SourceRepository = sourceRepository;
             ReadRepository = new CachingRepository(sourceRepository);
             WriteRepositories = new HashSet<IRepository>();
@@ -48,7 +48,7 @@ namespace Bam.Net.CoreServices
 
         public Task BackupTask { get; protected set; }
 
-        public DataSettings DataSettings { get; set; }
+        public DefaultDataSettingsProvider DataSettings { get; set; }
         public DaoRepository SourceRepository { get; }
         public Database SourceDatabase { get { return SourceRepository?.Database; } }
         public CachingRepository ReadRepository { get;  }
@@ -168,8 +168,18 @@ namespace Bam.Net.CoreServices
         {
             return ReadRepository.Retrieve(objectType, id);
         }
+        
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            return ReadRepository.Retrieve(objectType, id);
+        }
 
         public override T Retrieve<T>(long id)
+        {
+            return ReadRepository.Retrieve<T>(id);
+        }
+
+        public override T Retrieve<T>(ulong id)
         {
             return ReadRepository.Retrieve<T>(id);
         }

@@ -58,51 +58,51 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Account_UserId", new AccountCollection(Database.GetQuery<AccountColumns, Account>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Account_UserId", new AccountCollection(Database.GetQuery<AccountColumns, Account>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Password_UserId", new PasswordCollection(Database.GetQuery<PasswordColumns, Password>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Password_UserId", new PasswordCollection(Database.GetQuery<PasswordColumns, Password>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("PasswordReset_UserId", new PasswordResetCollection(Database.GetQuery<PasswordResetColumns, PasswordReset>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("PasswordReset_UserId", new PasswordResetCollection(Database.GetQuery<PasswordResetColumns, PasswordReset>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("PasswordFailure_UserId", new PasswordFailureCollection(Database.GetQuery<PasswordFailureColumns, PasswordFailure>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("PasswordFailure_UserId", new PasswordFailureCollection(Database.GetQuery<PasswordFailureColumns, PasswordFailure>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LockOut_UserId", new LockOutCollection(Database.GetQuery<LockOutColumns, LockOut>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("LockOut_UserId", new LockOutCollection(Database.GetQuery<LockOutColumns, LockOut>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Login_UserId", new LoginCollection(Database.GetQuery<LoginColumns, Login>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Login_UserId", new LoginCollection(Database.GetQuery<LoginColumns, Login>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("PasswordQuestion_UserId", new PasswordQuestionCollection(Database.GetQuery<PasswordQuestionColumns, PasswordQuestion>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("PasswordQuestion_UserId", new PasswordQuestionCollection(Database.GetQuery<PasswordQuestionColumns, PasswordQuestion>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Setting_UserId", new SettingCollection(Database.GetQuery<SettingColumns, Setting>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Setting_UserId", new SettingCollection(Database.GetQuery<SettingColumns, Setting>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Session_UserId", new SessionCollection(Database.GetQuery<SessionColumns, Session>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("Session_UserId", new SessionCollection(Database.GetQuery<SessionColumns, Session>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserRole_UserId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("UserRole_UserId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserGroup_UserId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("UserGroup_UserId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserPermission_UserId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
+				this.ChildCollections.Add("UserPermission_UserId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.UserId == GetULongValue("Id")), this, "UserId"));				
 			}			
             this.ChildCollections.Add("User_UserRole_Role",  new XrefDaoCollection<UserRole, Role>(this, false));
 				
@@ -115,11 +115,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -617,9 +617,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static UserCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<User>();
 			Database db = database ?? Db.For<User>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<User>();
 			var results = new UserCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -633,14 +633,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<User>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserColumns columns = new UserColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -665,14 +665,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserColumns> where, Action<IEnumerable<User>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserColumns columns = new UserColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -697,13 +697,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserColumns> where, Action<IEnumerable<User>> batchProcessor, Bam.Net.Data.OrderBy<UserColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserColumns columns = new UserColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -713,12 +713,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static User GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static User GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static User GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static User GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

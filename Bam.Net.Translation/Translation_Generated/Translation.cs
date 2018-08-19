@@ -61,11 +61,11 @@ namespace Bam.Net.Translation
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Text",
 		Suffix="1")]
-	public long? TextId
+	public ulong? TextId
 	{
 		get
 		{
-			return GetLongValue("TextId");
+			return GetULongValue("TextId");
 		}
 		set
 		{
@@ -176,11 +176,11 @@ namespace Bam.Net.Translation
 		ReferencedKey="Id",
 		ReferencedTable="Language",
 		Suffix="2")]
-	public long? LanguageId
+	public ulong? LanguageId
 	{
 		get
 		{
-			return GetLongValue("LanguageId");
+			return GetULongValue("LanguageId");
 		}
 		set
 		{
@@ -231,9 +231,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static TranslationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Translation>();
 			Database db = database ?? Db.For<Translation>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Translation>();
 			var results = new TranslationCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -247,14 +247,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Translation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TranslationColumns columns = new TranslationColumns();
 				var orderBy = Bam.Net.Data.Order.By<TranslationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -279,14 +279,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TranslationColumns> where, Action<IEnumerable<Translation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TranslationColumns columns = new TranslationColumns();
 				var orderBy = Bam.Net.Data.Order.By<TranslationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -311,13 +311,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TranslationColumns> where, Action<IEnumerable<Translation>> batchProcessor, Bam.Net.Data.OrderBy<TranslationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TranslationColumns columns = new TranslationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -327,12 +327,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static Translation GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Translation GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Translation GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Translation GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

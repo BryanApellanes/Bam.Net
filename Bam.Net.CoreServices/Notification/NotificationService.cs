@@ -30,8 +30,8 @@ namespace Bam.Net.CoreServices
             UserManager = userManager;
             SmtpSettingsProvider = smtpSettingsProvider ?? DataSettingsSmtpSettingsProvider.Default;
             Logger = logger ?? Log.Default;
-            string emailTemplatesDirectory = DataSettings.Current.GetSysEmailTemplatesDirectory().FullName;
-            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DataSettings.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
+            string emailTemplatesDirectory = DefaultDataSettingsProvider.Current.GetSysEmailTemplatesDirectory().FullName;
+            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DefaultDataSettingsProvider.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
             Templates = new HandlebarsDirectory(NotificationTemplateDirectory);
             Tld = "com";
             Templates.Reload();
@@ -93,7 +93,7 @@ namespace Bam.Net.CoreServices
             return TemplateNotify(user.Email, templateName, data, subject);
         }
 
-        [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
+        [RoleRequired("/NotificationService/AccessDenied", "Admin")]
         public virtual bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
         {
             object data = string.IsNullOrEmpty(jsonData) ? new { } : JsonConvert.DeserializeObject(jsonData);
@@ -119,7 +119,7 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
+        [RoleRequired("/NotificationService/AccessDenied", "Admin")]
         public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null, bool bypassRecipientValidation = false)
         {
             try

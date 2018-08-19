@@ -58,7 +58,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecondaryObjectTernaryObject_SecondaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.SecondaryObjectId == GetLongValue("Id")), this, "SecondaryObjectId"));				
+				this.ChildCollections.Add("SecondaryObjectTernaryObject_SecondaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.SecondaryObjectId == GetULongValue("Id")), this, "SecondaryObjectId"));				
 			}			
             this.ChildCollections.Add("SecondaryObject_SecondaryObjectTernaryObject_TernaryObject",  new XrefDaoCollection<SecondaryObjectTernaryObject, TernaryObject>(this, false));
 							
@@ -67,11 +67,11 @@ namespace Bam.Net.Data.Repositories.Tests
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -147,11 +147,11 @@ namespace Bam.Net.Data.Repositories.Tests
 		ReferencedKey="Id",
 		ReferencedTable="MainObject",
 		Suffix="1")]
-	public long? MainId
+	public ulong? MainId
 	{
 		get
 		{
-			return GetLongValue("MainId");
+			return GetULongValue("MainId");
 		}
 		set
 		{
@@ -250,9 +250,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </param>
 		public static SecondaryObjectCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SecondaryObject>();
 			Database db = database ?? Db.For<SecondaryObject>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<SecondaryObject>();
 			var results = new SecondaryObjectCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -266,14 +266,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SecondaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectColumns columns = new SecondaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -298,14 +298,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SecondaryObjectColumns> where, Action<IEnumerable<SecondaryObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectColumns columns = new SecondaryObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -330,13 +330,13 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SecondaryObjectColumns> where, Action<IEnumerable<SecondaryObject>> batchProcessor, Bam.Net.Data.OrderBy<SecondaryObjectColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SecondaryObjectColumns columns = new SecondaryObjectColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -346,12 +346,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static SecondaryObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static SecondaryObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static SecondaryObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static SecondaryObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

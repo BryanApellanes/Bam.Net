@@ -29,7 +29,7 @@ namespace Bam.Net.Data
             Parent = parent;
             _values = new List<L>();
             _book = new Book<L>();
-            if (!parent.IsNew)
+            if (parent != null && !parent.IsNew)
             {
                 Database = parent?.Database;
 
@@ -63,7 +63,7 @@ namespace Bam.Net.Data
             }
         }
 
-        protected Dictionary<long, X> XrefsByListId
+        protected Dictionary<ulong, X> XrefsByListId
         {
             get;
             set;
@@ -111,13 +111,13 @@ namespace Bam.Net.Data
         object _loadLock = new object();
         public void Load(Database db)
         {
-            if (!_loaded)
+            if (!_loaded && Parent != null)
             {
                 lock (_loadLock)
                 {
                     if (!_loaded)
                     {
-                        XrefsByListId = new Dictionary<long, X>();
+                        XrefsByListId = new Dictionary<ulong, X>();
 
                         QuerySet q = Dao.GetQuerySet(db);
                         q.Select<X>().Where(new AssignValue(ParentColumnName, Parent.IdValue, q.ColumnNameFormatter));
@@ -126,20 +126,22 @@ namespace Bam.Net.Data
                         // should have all the ids of L that should be retrieved
                         if (q.Results[0].DataTable.Rows.Count > 0)
                         {
-                            List<long> ids = new List<long>();
+                            List<ulong> ids = new List<ulong>();
 
                             foreach (DataRow row in q.Results[0].DataTable.Rows)
                             {
-                                long id = Convert.ToInt64(row[ListColumnName]);
+                                ulong id = Convert.ToUInt64(row[ListColumnName]);
                                 ids.Add(id);
-                                X xref = new X();
-                                xref.DataRow = row;
+                                X xref = new X
+                                {
+                                    DataRow = row
+                                };
                                 XrefsByListId.Add(id, xref);
                             }
 
                             QuerySet q2 = Dao.GetQuerySet(db);
                             QueryFilter filter = new QueryFilter(Dao.GetKeyColumnName<L>());
-                            filter.In(ids.ToArray(), db.ParameterPrefix);
+                            filter.In(ids.Select(i => (object)i).ToArray(), db.ParameterPrefix);
                             q2.Select<L>().Where(filter);
                             q2.Execute(db);
 

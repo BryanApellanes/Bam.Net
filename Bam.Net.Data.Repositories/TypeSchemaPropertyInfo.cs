@@ -11,7 +11,11 @@ using Bam.Net.Data.Schema;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class TypeSchemaPropertyInfo: PropertyInfo
+    /// <summary>
+    /// Represents information about a missing primary key/id column or missing foreign key.
+    /// </summary>
+    /// <seealso cref="System.Reflection.PropertyInfo" />
+    public class TypeSchemaPropertyInfo: PropertyInfo
 	{
 		public TypeSchemaPropertyInfo(string name, Type decrlaringType, ITypeTableNameProvider tableNameProvier)
 		{
@@ -139,20 +143,21 @@ namespace Bam.Net.Data.Repositories
 			}
 			return new KeyColumn 
 			{
-				TableName = tableNameProvider.GetTableName(DeclaringType),//TypeSchemaGenerator.GetTableNameForType(DeclaringType),
+				TableName = tableNameProvider.GetTableName(DeclaringType),
 				Name = name,
-				DataType = DataTypes.Long
+				DataType = DataTypes.ULong
 			};
 		}
 
 		Type _foreignKeyTableType;
 		public ForeignKeyColumn ToForeignKeyColumn(ITypeTableNameProvider tableNameProvider = null) {
-			ForeignKeyColumn result = new ForeignKeyColumn(Name, TypeSchemaGenerator.GetTableNameForType(_foreignKeyTableType),
-				TypeSchemaGenerator.GetTableNameForType(DeclaringType, tableNameProvider));
+            ForeignKeyColumn result = new ForeignKeyColumn(Name, TypeSchemaGenerator.GetTableNameForType(_foreignKeyTableType),
+                TypeSchemaGenerator.GetTableNameForType(DeclaringType, tableNameProvider))
+            {
+                DataType = DataTypes.ULong
+            };
 
-			result.DataType = DataTypes.Long;
-
-			return result;
+            return result;
 		}
 	}
 }

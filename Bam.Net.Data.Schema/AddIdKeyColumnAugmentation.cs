@@ -15,7 +15,7 @@ namespace Bam.Net.Data.Schema
             : base()
         {
             this.ColumnName = caps ? "ID": "Id";
-            this.DataType = DataTypes.Long;
+            this.DataType = DataTypes.ULong;
             this.AllowNull = false;
         }
         public override void Execute(string tableName, SchemaManager manager)

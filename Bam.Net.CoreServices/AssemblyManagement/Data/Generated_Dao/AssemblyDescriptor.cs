@@ -58,11 +58,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorProcessRuntimeDescriptor_AssemblyDescriptorId", new AssemblyDescriptorProcessRuntimeDescriptorCollection(Database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>((c) => c.AssemblyDescriptorId == GetULongValue("Id")), this, "AssemblyDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyDescriptorId == GetLongValue("Id")), this, "AssemblyDescriptorId"));				
+				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyDescriptorId == GetULongValue("Id")), this, "AssemblyDescriptorId"));				
 			}			
             this.ChildCollections.Add("AssemblyDescriptor_AssemblyDescriptorProcessRuntimeDescriptor_ProcessRuntimeDescriptor",  new XrefDaoCollection<AssemblyDescriptorProcessRuntimeDescriptor, ProcessRuntimeDescriptor>(this, false));
 				
@@ -73,11 +73,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -393,12 +393,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			});			
 		}
 
+		public static AssemblyDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static AssemblyDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static AssemblyDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static AssemblyDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

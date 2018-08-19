@@ -1,12 +1,23 @@
 # Core Services
-- CoreUserManagerService
-	- manage user accounts
-- CoreApplicationRegistryService
-	- manage application names, owners and api keys
-- CoreConfigurationService
-	- manage application configurations by application name and base addresses
-- CoreLoggerService
-	- duh
+
+Core services are common to all bam applications and are hosted at bamapps.net.
+
+## UserRegistryService
+
+The UserRegistryService manages user accounts for a bam application.  It implements Bam.Net.UserAccounts.IUserManagerwhich is 
+useful for signing up and messaging new users.
+
+## ApplicationRegistrationService
+
+The ApplicationRegistrationService manages applications, their names, their owners and their api keys.
+
+## CoreConfigurationService
+
+The ConfigurationService manages application configuration settings.
+
+## CoreLoggerService
+
+A central implementation of ILogger.
 
 # Persistence Services
 - PersistenceService [todo]

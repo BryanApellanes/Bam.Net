@@ -12,6 +12,11 @@ namespace Bam.Net.Services.DataReplication.Data
     [Serializable]
     public class CreateOperation : WriteOperation
     {
+        public CreateOperation()
+        {
+            Intent = OperationIntent.Create;
+        }
+
         public override object Execute(IDistributedRepository repository)
         {
             repository.Create(this);

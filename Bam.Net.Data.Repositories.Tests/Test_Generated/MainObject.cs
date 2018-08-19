@@ -58,18 +58,18 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetLongValue("Id")), this, "MainId"));				
+				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetULongValue("Id")), this, "MainId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </param>
 		public static MainObjectCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<MainObject>();
 			Database db = database ?? Db.For<MainObject>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<MainObject>();
 			var results = new MainObjectCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<MainObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MainObjectColumns columns = new MainObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<MainObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<MainObjectColumns> where, Action<IEnumerable<MainObject>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MainObjectColumns columns = new MainObjectColumns();
 				var orderBy = Bam.Net.Data.Order.By<MainObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Data.Repositories.Tests
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MainObjectColumns> where, Action<IEnumerable<MainObject>> batchProcessor, Bam.Net.Data.OrderBy<MainObjectColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				MainObjectColumns columns = new MainObjectColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.Data.Repositories.Tests
 			});			
 		}
 
+		public static MainObject GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static MainObject GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static MainObject GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static MainObject GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

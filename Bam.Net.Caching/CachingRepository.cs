@@ -78,6 +78,7 @@ namespace Bam.Net.Caching
             Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), ExceptionText);
             SourceRepository.AddType(type);
         }
+
         /// <summary>
         /// Queries the source repository and adds the results to the internal cache
         /// </summary>
@@ -120,10 +121,12 @@ namespace Bam.Net.Caching
 
 			return result;
 		}
+
         public override object Create(Type type, object toCreate)
         {
             return Create(toCreate);
         }
+
         public override object Create(object toCreate)
 		{
 			Args.ThrowIfNull(toCreate, "toCreate");
@@ -139,8 +142,13 @@ namespace Bam.Net.Caching
 			return Retrieve<T>((long)id);
 		}
 
-		public override T Retrieve<T>(long id)
+		public override T Retrieve<T>(ulong id)
 		{
+            return Retrieve<T>((cache) => cache.Retrieve(id), () => SourceRepository.Retrieve<T>(id));
+        }
+
+        public override T Retrieve<T>(long id)
+        {
             return Retrieve<T>((cache) => cache.Retrieve(id), () => SourceRepository.Retrieve<T>(id));
         }
 
@@ -196,7 +204,27 @@ namespace Bam.Net.Caching
 			return result;
 		}
 
-		public override object Retrieve(Type objectType, string uuid)
+        public override object Retrieve(Type objectType, ulong id)
+        {
+            Cache cache = _cacheManager.CacheFor(objectType);
+            CacheItem cacheItem = cache.Retrieve(id);
+            object result;
+            if (cacheItem == null)
+            {
+                result = SourceRepository.Retrieve(objectType, id);
+                cache.Add(result);
+                RetrievedFromSource?.Invoke(this, new CacheRetrieveEventArgs { Type = objectType, Item = result });
+            }
+            else
+            {
+                result = cacheItem.Value;
+                RetrievedFromCache?.Invoke(this, new CacheRetrieveEventArgs { Type = objectType, Item = result });
+            }
+
+            return result;
+        }
+
+        public override object Retrieve(Type objectType, string uuid)
 		{
 			Cache cache = _cacheManager.CacheFor(objectType);
 			CacheItem cacheItem = cache.Retrieve(uuid);
@@ -629,6 +657,7 @@ namespace Bam.Net.Caching
 
             return result;
         }
+
         private void OnEvicted(object sender, EventArgs e)
         {
             Evicted?.Invoke(sender, e);

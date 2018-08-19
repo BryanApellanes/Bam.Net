@@ -58,22 +58,22 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetULongValue("Id")), this, "UserIdentifierId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetULongValue("Id")), this, "UserIdentifierId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -217,9 +217,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static UserIdentifierCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UserIdentifier>();
 			Database db = database ?? Db.For<UserIdentifier>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<UserIdentifier>();
 			var results = new UserIdentifierCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -233,14 +233,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserIdentifier>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserIdentifierColumns columns = new UserIdentifierColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserIdentifierColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -265,14 +265,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserIdentifierColumns> where, Action<IEnumerable<UserIdentifier>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserIdentifierColumns columns = new UserIdentifierColumns();
 				var orderBy = Bam.Net.Data.Order.By<UserIdentifierColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,13 +297,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserIdentifierColumns> where, Action<IEnumerable<UserIdentifier>> batchProcessor, Bam.Net.Data.OrderBy<UserIdentifierColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UserIdentifierColumns columns = new UserIdentifierColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -313,12 +313,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static UserIdentifier GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static UserIdentifier GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static UserIdentifier GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static UserIdentifier GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

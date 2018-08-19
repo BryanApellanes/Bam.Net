@@ -58,18 +58,18 @@ namespace Bam.Net.Logging.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Event_ComputerNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.ComputerNameId == GetLongValue("Id")), this, "ComputerNameId"));				
+				this.ChildCollections.Add("Event_ComputerNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.ComputerNameId == GetULongValue("Id")), this, "ComputerNameId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -175,9 +175,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static ComputerNameCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ComputerName>();
 			Database db = database ?? Db.For<ComputerName>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ComputerName>();
 			var results = new ComputerNameCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -191,14 +191,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ComputerName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ComputerNameColumns columns = new ComputerNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<ComputerNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -223,14 +223,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ComputerNameColumns> where, Action<IEnumerable<ComputerName>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ComputerNameColumns columns = new ComputerNameColumns();
 				var orderBy = Bam.Net.Data.Order.By<ComputerNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -255,13 +255,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ComputerNameColumns> where, Action<IEnumerable<ComputerName>> batchProcessor, Bam.Net.Data.OrderBy<ComputerNameColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ComputerNameColumns columns = new ComputerNameColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -271,12 +271,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static ComputerName GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ComputerName GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ComputerName GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ComputerName GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

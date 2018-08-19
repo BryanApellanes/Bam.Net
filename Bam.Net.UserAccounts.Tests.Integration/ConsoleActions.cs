@@ -72,7 +72,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
 
         private static void SetVaultDatabase()
         {
-            DataSettings dataSettings = DataSettings.Default;
+            DefaultDataSettingsProvider dataSettings = DefaultDataSettingsProvider.Instance;
             Vault.SystemVaultDatabase = dataSettings.GetSysDatabaseFor(typeof(Vault), "System");
             Vault.SystemVaultDatabase.TryEnsureSchema<Vault>();
         }

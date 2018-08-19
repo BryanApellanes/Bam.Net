@@ -58,18 +58,18 @@ namespace Bam.Net.Automation.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("JobRunData_JobDataId", new JobRunDataCollection(Database.GetQuery<JobRunDataColumns, JobRunData>((c) => c.JobDataId == GetLongValue("Id")), this, "JobDataId"));				
+				this.ChildCollections.Add("JobRunData_JobDataId", new JobRunDataCollection(Database.GetQuery<JobRunDataColumns, JobRunData>((c) => c.JobDataId == GetULongValue("Id")), this, "JobDataId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.Automation.Data
 		/// </param>
 		public static JobDataCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<JobData>();
 			Database db = database ?? Db.For<JobData>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<JobData>();
 			var results = new JobDataCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<JobData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobDataColumns columns = new JobDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<JobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<JobDataColumns> where, Action<IEnumerable<JobData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobDataColumns columns = new JobDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<JobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Automation.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<JobDataColumns> where, Action<IEnumerable<JobData>> batchProcessor, Bam.Net.Data.OrderBy<JobDataColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				JobDataColumns columns = new JobDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.Automation.Data
 			});			
 		}
 
+		public static JobData GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static JobData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static JobData GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static JobData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

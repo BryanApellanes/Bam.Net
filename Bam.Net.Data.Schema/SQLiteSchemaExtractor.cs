@@ -155,7 +155,7 @@ ORDER BY SUBSTR(type, 2, 1), name";
                 case "real":
                     return DataTypes.Decimal;
                 case "bigint":
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case "datetime":
                     return DataTypes.DateTime;
                 case "varchar":

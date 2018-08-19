@@ -64,6 +64,7 @@ namespace Bam.Net.Data.Repositories
         {
             return GetUpdateStatements(instance, type, Database);
         }
+
         public List<SqlStringBuilder> GetUpdateStatements(object instance, Database db)
         {
             return GetUpdateStatements(instance, instance.GetType(), db);

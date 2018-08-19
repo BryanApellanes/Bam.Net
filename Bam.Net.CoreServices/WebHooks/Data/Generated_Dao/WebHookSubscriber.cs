@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookSubscriberId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookSubscriberId == GetLongValue("Id")), this, "WebHookSubscriberId"));				
+				this.ChildCollections.Add("WebHookDescriptorWebHookSubscriber_WebHookSubscriberId", new WebHookDescriptorWebHookSubscriberCollection(Database.GetQuery<WebHookDescriptorWebHookSubscriberColumns, WebHookDescriptorWebHookSubscriber>((c) => c.WebHookSubscriberId == GetULongValue("Id")), this, "WebHookSubscriberId"));				
 			}						
             this.ChildCollections.Add("WebHookSubscriber_WebHookDescriptorWebHookSubscriber_WebHookDescriptor",  new XrefDaoCollection<WebHookDescriptorWebHookSubscriber, WebHookDescriptor>(this, false));
 				
@@ -67,11 +67,11 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -381,12 +381,22 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao
 			});			
 		}
 
+		public static WebHookSubscriber GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static WebHookSubscriber GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static WebHookSubscriber GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static WebHookSubscriber GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

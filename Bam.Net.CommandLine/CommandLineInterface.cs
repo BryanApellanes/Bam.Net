@@ -454,7 +454,11 @@ namespace Bam.Net.CommandLine
         /// <returns></returns>
         public static string GetConfigArgument(string name)
         {
-            string value = DefaultConfiguration.GetAppSetting("name", GetArgument(name));
+            string value = DefaultConfiguration.GetAppSetting(name, string.Empty);
+            if (string.IsNullOrEmpty(value))
+            {
+                value = GetArgument(name);
+            }
             return value;
         }
 

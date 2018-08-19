@@ -1,4 +1,3 @@
-﻿** TODO
-- extract ICache interface from ConcurrentCache
-- change ICacheManager to return ICache instead of ConcurrentCache
-- include LockingCache and LockingCacheManager and implement ICache and ICacheManager
+﻿# Bam.Net.Caching
+
+This namespace contains classes that provide basic memory caching functionality.

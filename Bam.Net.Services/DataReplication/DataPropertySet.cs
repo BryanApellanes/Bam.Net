@@ -22,11 +22,13 @@ namespace Bam.Net.Services.DataReplication
                 }
             };
         }
+
         public DataPropertySet Add(string name, object value)
         {
             Add(new DataProperty { Name = name, Value = value });
             return this;
         }
+
         public DataPropertySet Prop(string name, object value)
         {
             return Prop(name, value, out DataProperty ignore);

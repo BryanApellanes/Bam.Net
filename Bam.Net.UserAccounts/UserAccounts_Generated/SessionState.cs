@@ -61,11 +61,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -155,11 +155,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="Session",
 		Suffix="1")]
-	public long? SessionId
+	public ulong? SessionId
 	{
 		get
 		{
-			return GetLongValue("SessionId");
+			return GetULongValue("SessionId");
 		}
 		set
 		{
@@ -210,9 +210,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static SessionStateCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SessionState>();
 			Database db = database ?? Db.For<SessionState>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<SessionState>();
 			var results = new SessionStateCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -226,14 +226,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SessionState>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionStateColumns columns = new SessionStateColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionStateColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -258,14 +258,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SessionStateColumns> where, Action<IEnumerable<SessionState>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionStateColumns columns = new SessionStateColumns();
 				var orderBy = Bam.Net.Data.Order.By<SessionStateColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -290,13 +290,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SessionStateColumns> where, Action<IEnumerable<SessionState>> batchProcessor, Bam.Net.Data.OrderBy<SessionStateColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				SessionStateColumns columns = new SessionStateColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -306,12 +306,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static SessionState GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static SessionState GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static SessionState GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static SessionState GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

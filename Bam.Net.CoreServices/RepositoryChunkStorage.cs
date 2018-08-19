@@ -11,25 +11,29 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// An IChunkStorage implementation that stores chunk data in an IRepository.
+    /// </summary>
+    /// <seealso cref="Bam.Net.CoreServices.Files.IChunkStorage" />
     public class RepositoryChunkStorage: IChunkStorage
     {
         public RepositoryChunkStorage()
         {
         }
 
-        public RepositoryChunkStorage(DataSettings dataSettings, ILogger logger = null)
+        public RepositoryChunkStorage(DefaultDataSettingsProvider dataSettings, ILogger logger = null)
         {
             DataSettings = dataSettings;
             Repository = new DaoRepository();
             Repository.AddType<ChunkData>();
         }
 
-        public RepositoryChunkStorage(IRepository repository, DataSettings dataSettings, ILogger logger = null):this(dataSettings, logger)
+        public RepositoryChunkStorage(IRepository repository, DefaultDataSettingsProvider dataSettings, ILogger logger = null):this(dataSettings, logger)
         {
             Repository = repository;
         }
 
-        public DataSettings DataSettings { get; set; }
+        public DefaultDataSettingsProvider DataSettings { get; set; }
         public IRepository Repository { get; set; }
 
         public IChunk GetChunk(string hash)

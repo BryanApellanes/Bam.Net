@@ -61,11 +61,11 @@ namespace Bam.Net.Logging.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -99,11 +99,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Event",
 		Suffix="1")]
-	public long? EventId
+	public ulong? EventId
 	{
 		get
 		{
-			return GetLongValue("EventId");
+			return GetULongValue("EventId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Logging.Data
 		ReferencedKey="Id",
 		ReferencedTable="Param",
 		Suffix="2")]
-	public long? ParamId
+	public ulong? ParamId
 	{
 		get
 		{
-			return GetLongValue("ParamId");
+			return GetULongValue("ParamId");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.Logging.Data
 		/// </param>
 		public static EventParamCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<EventParam>();
 			Database db = database ?? Db.For<EventParam>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<EventParam>();
 			var results = new EventParamCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<EventParam>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventParamColumns columns = new EventParamColumns();
 				var orderBy = Bam.Net.Data.Order.By<EventParamColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<EventParamColumns> where, Action<IEnumerable<EventParam>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventParamColumns columns = new EventParamColumns();
 				var orderBy = Bam.Net.Data.Order.By<EventParamColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Logging.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<EventParamColumns> where, Action<IEnumerable<EventParam>> batchProcessor, Bam.Net.Data.OrderBy<EventParamColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				EventParamColumns columns = new EventParamColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.Logging.Data
 			});			
 		}
 
+		public static EventParam GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static EventParam GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static EventParam GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static EventParam GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

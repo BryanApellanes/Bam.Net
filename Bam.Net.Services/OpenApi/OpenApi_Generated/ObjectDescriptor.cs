@@ -58,22 +58,22 @@ namespace Bam.Net.Services.OpenApi
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("FixedField_ObjectDescriptorId", new FixedFieldCollection(Database.GetQuery<FixedFieldColumns, FixedField>((c) => c.ObjectDescriptorId == GetLongValue("Id")), this, "ObjectDescriptorId"));				
+				this.ChildCollections.Add("FixedField_ObjectDescriptorId", new FixedFieldCollection(Database.GetQuery<FixedFieldColumns, FixedField>((c) => c.ObjectDescriptorId == GetULongValue("Id")), this, "ObjectDescriptorId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("PatternedField_ObjectDescriptorId", new PatternedFieldCollection(Database.GetQuery<PatternedFieldColumns, PatternedField>((c) => c.ObjectDescriptorId == GetLongValue("Id")), this, "ObjectDescriptorId"));				
+				this.ChildCollections.Add("PatternedField_ObjectDescriptorId", new PatternedFieldCollection(Database.GetQuery<PatternedFieldColumns, PatternedField>((c) => c.ObjectDescriptorId == GetULongValue("Id")), this, "ObjectDescriptorId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -217,9 +217,9 @@ namespace Bam.Net.Services.OpenApi
 		/// </param>
 		public static ObjectDescriptorCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ObjectDescriptor>();
 			Database db = database ?? Db.For<ObjectDescriptor>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ObjectDescriptor>();
 			var results = new ObjectDescriptorCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -233,14 +233,14 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ObjectDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ObjectDescriptorColumns columns = new ObjectDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ObjectDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -265,14 +265,14 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ObjectDescriptorColumns> where, Action<IEnumerable<ObjectDescriptor>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ObjectDescriptorColumns columns = new ObjectDescriptorColumns();
 				var orderBy = Bam.Net.Data.Order.By<ObjectDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,13 +297,13 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ObjectDescriptorColumns> where, Action<IEnumerable<ObjectDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<ObjectDescriptorColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ObjectDescriptorColumns columns = new ObjectDescriptorColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -313,12 +313,22 @@ namespace Bam.Net.Services.OpenApi
 			});			
 		}
 
+		public static ObjectDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ObjectDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ObjectDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ObjectDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

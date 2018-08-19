@@ -58,18 +58,18 @@ namespace Bam.Net.DaoRef
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TestFkTable_TestTableId", new TestFkTableCollection(Database.GetQuery<TestFkTableColumns, TestFkTable>((c) => c.TestTableId == GetLongValue("Id")), this, "TestTableId"));				
+				this.ChildCollections.Add("TestFkTable_TestTableId", new TestFkTableCollection(Database.GetQuery<TestFkTableColumns, TestFkTable>((c) => c.TestTableId == GetULongValue("Id")), this, "TestTableId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.DaoRef
 		/// </param>
 		public static TestTableCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestTable>();
 			Database db = database ?? Db.For<TestTable>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TestTable>();
 			var results = new TestTableCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestTable>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestTableColumns columns = new TestTableColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TestTableColumns> where, Action<IEnumerable<TestTable>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestTableColumns columns = new TestTableColumns();
 				var orderBy = Bam.Net.Data.Order.By<TestTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.DaoRef
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestTableColumns> where, Action<IEnumerable<TestTable>> batchProcessor, Bam.Net.Data.OrderBy<TestTableColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TestTableColumns columns = new TestTableColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.DaoRef
 			});			
 		}
 
+		public static TestTable GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TestTable GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TestTable GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TestTable GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

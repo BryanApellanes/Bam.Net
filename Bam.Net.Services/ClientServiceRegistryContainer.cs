@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
+using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
@@ -17,22 +18,22 @@ namespace Bam.Net.Services
     public class ClientServiceRegistryContainer
     {
         public const string RegistryName = "ClientServiceRegistry";
-        static ServiceRegistry _coreServiceRegistry;
-        static object _coreIncubatorLock = new object();
+        static ServiceRegistry _clientServiceRegistry;
+        static object _clientRegistryLock = new object();
 
         [ServiceRegistryLoader(RegistryName)]
         public static ServiceRegistry GetServiceRegistry()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
+            return _clientRegistryLock.DoubleCheckLock(ref _clientServiceRegistry, Create);
         }
 
         public static ServiceRegistry Create()
         {
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
-            DaoRepository repo = new DaoRepository(DataSettings.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
+            DaoRepository repo = new DaoRepository(DefaultDataSettingsProvider.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
             repo.AddNamespace(typeof(CatalogItem));
             CatalogRepository catalogRepo = new CatalogRepository(repo, Log.Default);
-            ServiceRegistry coreReg = ApplicationServiceRegistryContainer.Create();
+            ServiceRegistry coreReg = CoreServiceRegistryContainer.Create();
 
             ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
                 .For<ILogger>().Use(Log.Default)
@@ -40,9 +41,11 @@ namespace Bam.Net.Services
                 .For<IRepository>().Use(catalogRepo)
                 .For<DaoRepository>().Use(repo)
                 .For<ICatalogService>().Use<CatalogService>()
-                .For<CatalogService>().Use<CatalogService>();
+                .For<CatalogService>().Use<CatalogService>()
+                .For<SystemPaths>().Use(DefaultDataSettingsProvider.GetPaths())
+                .For<IDataDirectoryProvider>().Use(DefaultDataSettingsProvider.Current);
 
-
+            
             reg.CombineWith(coreReg);
 
             return reg;

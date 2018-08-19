@@ -312,7 +312,8 @@ namespace Bam.Net.Data.Schema
                 Table table = CurrentSchema.GetTable(referencingTable);
                 Table target = CurrentSchema.GetTable(targetTable);
                 Column col = table[referencingColumn];
-                if (col.DataType == DataTypes.Int || col.DataType == DataTypes.Long)
+                if (col.DataType == DataTypes.Int || col.DataType == DataTypes.UInt ||
+                    col.DataType == DataTypes.Long || col.DataType == DataTypes.ULong)
                 {
                     ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable)
                     {
@@ -484,7 +485,7 @@ namespace Bam.Net.Data.Schema
 
                     foreach (dynamic fk in foreignKeys)
                     {
-                        AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.Long));
+                        AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.ULong));
                         SetForeignKey(fk.PrimaryTable, fk.ForeignKeyTable, fk.ReferencingColumn);
                     }
 
@@ -571,11 +572,11 @@ namespace Bam.Net.Data.Schema
             string rightColumnName = string.Format("{0}Id", rightTableName);
             AddXref(leftTableName, rightTableName);
             AddTable(xrefTableName);
-            AddColumn(xrefTableName, new Column("Id", DataTypes.Long, false));
+            AddColumn(xrefTableName, new Column("Id", DataTypes.ULong, false));
             SetKeyColumn(xrefTableName, "Id");
             AddColumn(xrefTableName, new Column("Uuid", DataTypes.String, false));
-            AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.Long, false));
-            AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.Long, false));
+            AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.ULong, false));
+            AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.ULong, false));
             SetForeignKey(leftTableName, xrefTableName, leftColumnName);
             SetForeignKey(rightTableName, xrefTableName, rightColumnName);
         }
@@ -730,11 +731,11 @@ namespace Bam.Net.Data.Schema
             manager.AddXref(leftTableName, rightTableName);
 
             manager.AddTable(xrefTableName);
-            manager.AddColumn(xrefTableName, new Column("Id", DataTypes.Long, false));
+            manager.AddColumn(xrefTableName, new Column("Id", DataTypes.ULong, false));
             manager.SetKeyColumn(xrefTableName, "Id");
             manager.AddColumn(xrefTableName, new Column("Uuid", DataTypes.String, false));
-            manager.AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.Long, false));
-            manager.AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.Long, false));
+            manager.AddColumn(xrefTableName, new Column(leftColumnName, DataTypes.ULong, false));
+            manager.AddColumn(xrefTableName, new Column(rightColumnName, DataTypes.ULong, false));
 
             AddForeignKey(foreignKeys, leftTableName, xrefTableName, leftColumnName);
             AddForeignKey(foreignKeys, rightTableName, xrefTableName, rightColumnName);

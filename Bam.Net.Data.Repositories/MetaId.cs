@@ -12,6 +12,6 @@ namespace Bam.Net.Data.Repositories
 	[Serializable]
 	public class MetaId
 	{
-		public long Value { get; set; }
+		public ulong Value { get; set; }
 	}
 }

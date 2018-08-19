@@ -33,7 +33,7 @@ namespace Bam.Net.UserAccounts.Data
             return Add(user.Id.Value, db);
         }
 
-        public static Login Add(long userId, Database db = null)
+        public static Login Add(ulong userId, Database db = null)
         {
             Login result = new Login();
             result.UserId = userId;

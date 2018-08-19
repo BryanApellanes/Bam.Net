@@ -10,8 +10,10 @@ namespace Bam.Net.Data.Repositories
 	public interface IObjectReaderWriter
 	{
 		T Read<T>(long id);
+        T Read<T>(ulong id);
 		object Read(Type type, long id);
-		T Read<T>(string uuid);
+        object Read(Type type, ulong id);
+        T Read<T>(string uuid);
 		object Read(Type type, string uuid);
 		T ReadByHash<T>(string hash);
 		object ReadByHash(Type type, string hash);
@@ -29,7 +31,8 @@ namespace Bam.Net.Data.Repositories
 		DirectoryInfo GetTypeDirectory(Type type);
 		DirectoryInfo GetPropertyDirectory(PropertyInfo prop);
 		T ReadProperty<T>(PropertyInfo prop, long id);
-		T ReadProperty<T>(PropertyInfo prop, string uuid);
+        T ReadProperty<T>(PropertyInfo prop, ulong id);
+        T ReadProperty<T>(PropertyInfo prop, string uuid);
 		T ReadPropertyVersion<T>(PropertyInfo prop, string hash, int version);
 		void WriteProperty(PropertyInfo prop, object value);
 	}

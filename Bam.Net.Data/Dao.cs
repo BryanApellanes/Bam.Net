@@ -213,7 +213,7 @@ namespace Bam.Net.Data
 
         public override int GetHashCode()
         {
-            long id = IdValue.GetValueOrDefault();
+            ulong id = IdValue.GetValueOrDefault();
             if (id > 0)
             {
                 return id.GetHashCode();
@@ -331,8 +331,12 @@ namespace Bam.Net.Data
                     return TypeCode.Boolean;
                 case DataTypes.Int:
                     return TypeCode.Int32;
+                case DataTypes.UInt:
+                    return TypeCode.UInt32;
                 case DataTypes.Long:
                     return TypeCode.Int64;
+                case DataTypes.ULong:
+                    return TypeCode.UInt64;
                 case DataTypes.Decimal:
                     return TypeCode.Decimal;
                 case DataTypes.String:
@@ -1203,8 +1207,12 @@ namespace Bam.Net.Data
 
         public static string TableName(object instance)
         {
-            Type type = instance.GetType();
-            return TableName(type);
+            if(instance != null)
+            {
+                Type type = instance.GetType();
+                return TableName(type);
+            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -1250,9 +1258,9 @@ namespace Bam.Net.Data
             return name;
         }
 
-        long? _idValue;
+        ulong? _idValue;
         [Exclude]
-        public long? IdValue
+        public ulong? IdValue
         {
             get
             {
@@ -1261,7 +1269,7 @@ namespace Bam.Net.Data
                 {
                     try
                     {
-                        _idValue = new long?(Convert.ToInt64(value));
+                        _idValue = new ulong?(Convert.ToUInt64(value));
                     }
                     catch (Exception ex)
                     {
@@ -1506,6 +1514,17 @@ namespace Bam.Net.Data
             return new long?();
         }
 
+        protected ulong? GetULongValue(string columnName)
+        {
+            object val = GetCurrentValue(columnName);
+            if (val != null && val != DBNull.Value)
+            {
+                return new ulong?(Convert.ToUInt64(val));
+            }
+
+            return new ulong?();
+        }
+
         protected decimal? GetDecimalValue(string columnName)
         {
             object val = GetCurrentValue(columnName);
@@ -1589,7 +1608,7 @@ namespace Bam.Net.Data
             {
                 if (value != null && value != DBNull.Value)
                 {
-                    IdValue = new long?(Convert.ToInt64(value));
+                    IdValue = new ulong?(Convert.ToUInt64(value));
                 }
             }
             else if (this.NewValues.ContainsKey(columnName))

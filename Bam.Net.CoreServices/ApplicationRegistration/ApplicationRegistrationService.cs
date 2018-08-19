@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices
 
         protected ApplicationRegistrationService() { }
 
-        public ApplicationRegistrationService(DataSettings dataSettings, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
+        public ApplicationRegistrationService(DefaultDataSettingsProvider dataSettings, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
         {
             ApplicationRegistrationRepository = coreRepo;
             ApplicationRegistrationRepository.WarningsAsErrors = false;
@@ -333,7 +333,7 @@ namespace Bam.Net.CoreServices
             throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(ApplicationRegistrationService)}.{nameof(ApplicationRegistrationService.SetKeyToken)}");
         }
 
-        protected DataSettings DataSettings { get; set; }
+        protected DefaultDataSettingsProvider DataSettings { get; set; }
 
         protected internal ApiKeyInfo GenerateApiKeyInfo(CoreServices.ApplicationRegistration.Data.Application app)
         {

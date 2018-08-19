@@ -21,7 +21,7 @@ namespace Bam.Net.Automation.Testing.Data
         public string ComputerName { get; set; }
         public DateTime? StartedTime { get; set; }
         public DateTime? FinishedTime { get; set; }
-        public long TestSuiteDefinitionId { get; set; }
+        public ulong TestSuiteDefinitionId { get; set; }
         public virtual TestSuiteDefinition TestSuiteDefinition { get; set; }
 		public virtual TestExecution[] TestExecutions { get; set; }
 

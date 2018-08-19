@@ -58,18 +58,18 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetLongValue("Id")), this, "BuildJobId"));				
+				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetULongValue("Id")), this, "BuildJobId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -200,7 +200,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		{
 			if(UniqueFilterProvider != null)
 			{
-				return UniqueFilterProvider();
+				return UniqueFilterProvider(this);
 			}
 			else
 			{
@@ -217,9 +217,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// </param>
 		public static BuildJobCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<BuildJob>();
 			Database db = database ?? Db.For<BuildJob>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<BuildJob>();
 			var results = new BuildJobCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -233,14 +233,14 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<BuildJob>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildJobColumns columns = new BuildJobColumns();
 				var orderBy = Bam.Net.Data.Order.By<BuildJobColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -265,14 +265,14 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<BuildJobColumns> where, Action<IEnumerable<BuildJob>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildJobColumns columns = new BuildJobColumns();
 				var orderBy = Bam.Net.Data.Order.By<BuildJobColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -297,13 +297,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<BuildJobColumns> where, Action<IEnumerable<BuildJob>> batchProcessor, Bam.Net.Data.OrderBy<BuildJobColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				BuildJobColumns columns = new BuildJobColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -313,12 +313,22 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			});			
 		}
 
+		public static BuildJob GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static BuildJob GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static BuildJob GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static BuildJob GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

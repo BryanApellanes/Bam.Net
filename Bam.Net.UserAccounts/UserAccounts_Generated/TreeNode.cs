@@ -58,22 +58,22 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetLongValue("Id")), this, "ParentTreeNodeId"));				
+				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetULongValue("Id")), this, "ParentTreeNodeId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetLongValue("Id")), this, "TreeNodeId"));				
+				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetULongValue("Id")), this, "TreeNodeId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -149,11 +149,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="TreeNode",
 		Suffix="1")]
-	public long? ParentTreeNodeId
+	public ulong? ParentTreeNodeId
 	{
 		get
 		{
-			return GetLongValue("ParentTreeNodeId");
+			return GetULongValue("ParentTreeNodeId");
 		}
 		set
 		{
@@ -252,9 +252,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static TreeNodeCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TreeNode>();
 			Database db = database ?? Db.For<TreeNode>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<TreeNode>();
 			var results = new TreeNodeCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -268,14 +268,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<TreeNode>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TreeNodeColumns columns = new TreeNodeColumns();
 				var orderBy = Bam.Net.Data.Order.By<TreeNodeColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -300,14 +300,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<TreeNodeColumns> where, Action<IEnumerable<TreeNode>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TreeNodeColumns columns = new TreeNodeColumns();
 				var orderBy = Bam.Net.Data.Order.By<TreeNodeColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -332,13 +332,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TreeNodeColumns> where, Action<IEnumerable<TreeNode>> batchProcessor, Bam.Net.Data.OrderBy<TreeNodeColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				TreeNodeColumns columns = new TreeNodeColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -348,12 +348,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static TreeNode GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TreeNode GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TreeNode GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TreeNode GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

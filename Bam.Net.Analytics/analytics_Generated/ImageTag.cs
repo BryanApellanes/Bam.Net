@@ -61,11 +61,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -99,11 +99,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Image",
 		Suffix="1")]
-	public long? ImageId
+	public ulong? ImageId
 	{
 		get
 		{
-			return GetLongValue("ImageId");
+			return GetULongValue("ImageId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Tag",
 		Suffix="2")]
-	public long? TagId
+	public ulong? TagId
 	{
 		get
 		{
-			return GetLongValue("TagId");
+			return GetULongValue("TagId");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static ImageTagCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ImageTag>();
 			Database db = database ?? Db.For<ImageTag>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ImageTag>();
 			var results = new ImageTagCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ImageTag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageTagColumns columns = new ImageTagColumns();
 				var orderBy = Bam.Net.Data.Order.By<ImageTagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ImageTagColumns> where, Action<IEnumerable<ImageTag>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageTagColumns columns = new ImageTagColumns();
 				var orderBy = Bam.Net.Data.Order.By<ImageTagColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ImageTagColumns> where, Action<IEnumerable<ImageTag>> batchProcessor, Bam.Net.Data.OrderBy<ImageTagColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ImageTagColumns columns = new ImageTagColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static ImageTag GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ImageTag GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ImageTag GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ImageTag GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

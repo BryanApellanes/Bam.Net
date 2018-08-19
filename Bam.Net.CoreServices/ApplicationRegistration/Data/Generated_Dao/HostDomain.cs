@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("HostDomainApplication_HostDomainId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.HostDomainId == GetLongValue("Id")), this, "HostDomainId"));				
+				this.ChildCollections.Add("HostDomainApplication_HostDomainId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.HostDomainId == GetULongValue("Id")), this, "HostDomainId"));				
 			}			
             this.ChildCollections.Add("HostDomain_HostDomainApplication_Application",  new XrefDaoCollection<HostDomainApplication, Application>(this, false));
 							
@@ -67,11 +67,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -409,12 +409,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static HostDomain GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static HostDomain GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static HostDomain GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static HostDomain GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

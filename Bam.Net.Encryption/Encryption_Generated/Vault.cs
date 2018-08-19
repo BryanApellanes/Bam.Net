@@ -58,22 +58,22 @@ namespace Bam.Net.Encryption
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("VaultItem_VaultId", new VaultItemCollection(Database.GetQuery<VaultItemColumns, VaultItem>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
+				this.ChildCollections.Add("VaultItem_VaultId", new VaultItemCollection(Database.GetQuery<VaultItemColumns, VaultItem>((c) => c.VaultId == GetULongValue("Id")), this, "VaultId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("VaultKey_VaultId", new VaultKeyCollection(Database.GetQuery<VaultKeyColumns, VaultKey>((c) => c.VaultId == GetLongValue("Id")), this, "VaultId"));				
+				this.ChildCollections.Add("VaultKey_VaultId", new VaultKeyCollection(Database.GetQuery<VaultKeyColumns, VaultKey>((c) => c.VaultId == GetULongValue("Id")), this, "VaultId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -203,9 +203,9 @@ namespace Bam.Net.Encryption
 		/// </param>
 		public static VaultCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Vault>();
 			Database db = database ?? Db.For<Vault>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Vault>();
 			var results = new VaultCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -299,12 +299,22 @@ namespace Bam.Net.Encryption
 			});			
 		}
 
+		public static Vault GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Vault GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Vault GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Vault GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

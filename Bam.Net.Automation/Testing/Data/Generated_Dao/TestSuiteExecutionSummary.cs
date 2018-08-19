@@ -58,18 +58,18 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TestExecution_TestSuiteExecutionSummaryId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestSuiteExecutionSummaryId == GetLongValue("Id")), this, "TestSuiteExecutionSummaryId"));				
+				this.ChildCollections.Add("TestExecution_TestSuiteExecutionSummaryId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestSuiteExecutionSummaryId == GetULongValue("Id")), this, "TestSuiteExecutionSummaryId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -163,11 +163,11 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 	// property:TestSuiteDefinitionId, columnName:TestSuiteDefinitionId	
 	[Bam.Net.Data.Column(Name="TestSuiteDefinitionId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
-	public long? TestSuiteDefinitionId
+	public ulong? TestSuiteDefinitionId
 	{
 		get
 		{
-			return GetLongValue("TestSuiteDefinitionId");
+			return GetULongValue("TestSuiteDefinitionId");
 		}
 		set
 		{
@@ -397,12 +397,22 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			});			
 		}
 
+		public static TestSuiteExecutionSummary GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TestSuiteExecutionSummary GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TestSuiteExecutionSummary GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TestSuiteExecutionSummary GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

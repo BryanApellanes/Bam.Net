@@ -184,7 +184,7 @@ namespace Bam.Net.Data.MsSql
             switch (sqlDataType)
             {
                 case Smo.SqlDataType.BigInt:
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case Smo.SqlDataType.Binary:
                     return DataTypes.ByteArray;
                 case Smo.SqlDataType.Bit:
@@ -214,7 +214,7 @@ namespace Bam.Net.Data.MsSql
                 case Smo.SqlDataType.None:
                     return DataTypes.String;
                 case Smo.SqlDataType.Numeric:
-                    return DataTypes.Long;
+                    return DataTypes.ULong;
                 case Smo.SqlDataType.Real:
                     return DataTypes.String;
                 case Smo.SqlDataType.SmallDateTime:

@@ -90,7 +90,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			ObjectRepository repo = GetTestObjectRepository();
 			repo.AddType(typeof(TestContainer));
 			TestContainer toCreate = new TestContainer();
-			Expect.AreEqual(0, toCreate.Id);
+			Expect.AreEqual((ulong)0, toCreate.Id);
 			string testName = "Test Name".RandomLetters(5);
 			toCreate.Name = testName;
 			toCreate.BirthDay = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0));
@@ -105,7 +105,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			ObjectRepository repo = GetTestObjectRepository();
 			
 			TestContainer toCreate = new TestContainer();
-			Expect.AreEqual(0, toCreate.Id);
+			Expect.AreEqual((ulong)0, toCreate.Id);
 			string testName = "Test Name".RandomLetters(5);
 			toCreate.Name = testName;
 			toCreate.BirthDay = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0));
@@ -225,7 +225,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		public class NotSerializable
 		{
-			public long Id { get; set; }
+			public ulong Id { get; set; }
 			public string Name { get; set; }
 			public bool BooleanProperty { get; set; }
 

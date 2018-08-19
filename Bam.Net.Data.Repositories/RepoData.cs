@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -15,7 +14,7 @@ namespace Bam.Net.Data.Repositories
     [Serializable]
 	public abstract class RepoData
 	{
-		public long Id { get; set; }
+		public ulong Id { get; set; }
         private DateTime? _created;
 
         /// <summary>

@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("GroupPermission_PermissionId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
+				this.ChildCollections.Add("GroupPermission_PermissionId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.PermissionId == GetULongValue("Id")), this, "PermissionId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserPermission_PermissionId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
+				this.ChildCollections.Add("UserPermission_PermissionId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.PermissionId == GetULongValue("Id")), this, "PermissionId"));				
 			}						
             this.ChildCollections.Add("Permission_GroupPermission_Group",  new XrefDaoCollection<GroupPermission, Group>(this, false));
 				
@@ -73,11 +73,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -153,11 +153,11 @@ namespace Bam.Net.UserAccounts.Data
 		ReferencedKey="Id",
 		ReferencedTable="TreeNode",
 		Suffix="1")]
-	public long? TreeNodeId
+	public ulong? TreeNodeId
 	{
 		get
 		{
-			return GetLongValue("TreeNodeId");
+			return GetULongValue("TreeNodeId");
 		}
 		set
 		{
@@ -304,9 +304,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static PermissionCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Permission>();
 			Database db = database ?? Db.For<Permission>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Permission>();
 			var results = new PermissionCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -320,14 +320,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Permission>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PermissionColumns columns = new PermissionColumns();
 				var orderBy = Bam.Net.Data.Order.By<PermissionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -352,14 +352,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PermissionColumns> where, Action<IEnumerable<Permission>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PermissionColumns columns = new PermissionColumns();
 				var orderBy = Bam.Net.Data.Order.By<PermissionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -384,13 +384,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PermissionColumns> where, Action<IEnumerable<Permission>> batchProcessor, Bam.Net.Data.OrderBy<PermissionColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PermissionColumns columns = new PermissionColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -400,12 +400,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Permission GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Permission GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Permission GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Permission GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

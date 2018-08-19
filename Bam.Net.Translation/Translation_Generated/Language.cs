@@ -58,30 +58,30 @@ namespace Bam.Net.Translation
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));				
+				this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetULongValue("Id")), this, "LanguageId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -315,9 +315,9 @@ namespace Bam.Net.Translation
 		/// </param>
 		public static LanguageCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Language>();
 			Database db = database ?? Db.For<Language>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Language>();
 			var results = new LanguageCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -331,14 +331,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -363,14 +363,14 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LanguageColumns> where, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -395,13 +395,13 @@ namespace Bam.Net.Translation
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LanguageColumns> where, Action<IEnumerable<Language>> batchProcessor, Bam.Net.Data.OrderBy<LanguageColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -411,12 +411,22 @@ namespace Bam.Net.Translation
 			});			
 		}
 
+		public static Language GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Language GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Language GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Language GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

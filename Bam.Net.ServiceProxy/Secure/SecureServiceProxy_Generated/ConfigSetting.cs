@@ -61,11 +61,11 @@ namespace Bam.Net.ServiceProxy.Secure
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -141,11 +141,11 @@ namespace Bam.Net.ServiceProxy.Secure
 		ReferencedKey="Id",
 		ReferencedTable="Configuration",
 		Suffix="1")]
-	public long? ConfigurationId
+	public ulong? ConfigurationId
 	{
 		get
 		{
-			return GetLongValue("ConfigurationId");
+			return GetULongValue("ConfigurationId");
 		}
 		set
 		{
@@ -196,9 +196,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// </param>
 		public static ConfigSettingCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ConfigSetting>();
 			Database db = database ?? Db.For<ConfigSetting>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<ConfigSetting>();
 			var results = new ConfigSettingCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -212,14 +212,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ConfigSetting>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigSettingColumns columns = new ConfigSettingColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -244,14 +244,14 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ConfigSettingColumns> where, Action<IEnumerable<ConfigSetting>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigSettingColumns columns = new ConfigSettingColumns();
 				var orderBy = Bam.Net.Data.Order.By<ConfigSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -276,13 +276,13 @@ namespace Bam.Net.ServiceProxy.Secure
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ConfigSettingColumns> where, Action<IEnumerable<ConfigSetting>> batchProcessor, Bam.Net.Data.OrderBy<ConfigSettingColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				ConfigSettingColumns columns = new ConfigSettingColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -292,12 +292,22 @@ namespace Bam.Net.ServiceProxy.Secure
 			});			
 		}
 
+		public static ConfigSetting GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ConfigSetting GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ConfigSetting GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ConfigSetting GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

@@ -12,6 +12,11 @@ namespace Bam.Net.Services.DataReplication.Data
     [Serializable]
     public class UpdateOperation: WriteOperation
 	{
+        public UpdateOperation()
+        {
+            Intent = OperationIntent.Update;
+        }
+
 		public override object Execute(IDistributedRepository repository)
 		{
             repository.Update(this);

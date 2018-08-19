@@ -58,18 +58,18 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetLongValue("Id")), this, "CrawlerId"));				
+				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetULongValue("Id")), this, "CrawlerId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -189,9 +189,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static CrawlerCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Crawler>();
 			Database db = database ?? Db.For<Crawler>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Crawler>();
 			var results = new CrawlerCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -205,14 +205,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Crawler>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CrawlerColumns columns = new CrawlerColumns();
 				var orderBy = Bam.Net.Data.Order.By<CrawlerColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -237,14 +237,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<CrawlerColumns> where, Action<IEnumerable<Crawler>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CrawlerColumns columns = new CrawlerColumns();
 				var orderBy = Bam.Net.Data.Order.By<CrawlerColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -269,13 +269,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<CrawlerColumns> where, Action<IEnumerable<Crawler>> batchProcessor, Bam.Net.Data.OrderBy<CrawlerColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				CrawlerColumns columns = new CrawlerColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -285,12 +285,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Crawler GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Crawler GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Crawler GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Crawler GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

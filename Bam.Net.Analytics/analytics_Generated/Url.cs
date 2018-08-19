@@ -58,11 +58,11 @@ namespace Bam.Net.Analytics
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+				this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetULongValue("Id")), this, "UrlId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+				this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetULongValue("Id")), this, "UrlId"));				
 			}			
             this.ChildCollections.Add("Url_UrlTag_Tag",  new XrefDaoCollection<UrlTag, Tag>(this, false));
 							
@@ -71,11 +71,11 @@ namespace Bam.Net.Analytics
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -123,11 +123,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Protocol",
 		Suffix="1")]
-	public long? ProtocolId
+	public ulong? ProtocolId
 	{
 		get
 		{
-			return GetLongValue("ProtocolId");
+			return GetULongValue("ProtocolId");
 		}
 		set
 		{
@@ -158,11 +158,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Domain",
 		Suffix="2")]
-	public long? DomainId
+	public ulong? DomainId
 	{
 		get
 		{
-			return GetLongValue("DomainId");
+			return GetULongValue("DomainId");
 		}
 		set
 		{
@@ -193,11 +193,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Port",
 		Suffix="3")]
-	public long? PortId
+	public ulong? PortId
 	{
 		get
 		{
-			return GetLongValue("PortId");
+			return GetULongValue("PortId");
 		}
 		set
 		{
@@ -228,11 +228,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Path",
 		Suffix="4")]
-	public long? PathId
+	public ulong? PathId
 	{
 		get
 		{
-			return GetLongValue("PathId");
+			return GetULongValue("PathId");
 		}
 		set
 		{
@@ -263,11 +263,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="QueryString",
 		Suffix="5")]
-	public long? QueryStringId
+	public ulong? QueryStringId
 	{
 		get
 		{
-			return GetLongValue("QueryStringId");
+			return GetULongValue("QueryStringId");
 		}
 		set
 		{
@@ -298,11 +298,11 @@ namespace Bam.Net.Analytics
 		ReferencedKey="Id",
 		ReferencedTable="Fragment",
 		Suffix="6")]
-	public long? FragmentId
+	public ulong? FragmentId
 	{
 		get
 		{
-			return GetLongValue("FragmentId");
+			return GetULongValue("FragmentId");
 		}
 		set
 		{
@@ -425,9 +425,9 @@ namespace Bam.Net.Analytics
 		/// </param>
 		public static UrlCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Url>();
 			Database db = database ?? Db.For<Url>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Url>();
 			var results = new UrlCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -441,14 +441,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Url>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlColumns columns = new UrlColumns();
 				var orderBy = Bam.Net.Data.Order.By<UrlColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -473,14 +473,14 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UrlColumns> where, Action<IEnumerable<Url>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlColumns columns = new UrlColumns();
 				var orderBy = Bam.Net.Data.Order.By<UrlColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -505,13 +505,13 @@ namespace Bam.Net.Analytics
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UrlColumns> where, Action<IEnumerable<Url>> batchProcessor, Bam.Net.Data.OrderBy<UrlColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				UrlColumns columns = new UrlColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -521,12 +521,22 @@ namespace Bam.Net.Analytics
 			});			
 		}
 
+		public static Url GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Url GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Url GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Url GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

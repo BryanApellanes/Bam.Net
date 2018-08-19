@@ -58,11 +58,11 @@ namespace Bam.Net.UserAccounts.Data
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("Group_RoleId", new GroupCollection(Database.GetQuery<GroupColumns, Group>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
+				this.ChildCollections.Add("Group_RoleId", new GroupCollection(Database.GetQuery<GroupColumns, Group>((c) => c.RoleId == GetULongValue("Id")), this, "RoleId"));				
 			}
 			if(_database != null)
 			{
-				this.ChildCollections.Add("UserRole_RoleId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
+				this.ChildCollections.Add("UserRole_RoleId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.RoleId == GetULongValue("Id")), this, "RoleId"));				
 			}						
             this.ChildCollections.Add("Role_UserRole_User",  new XrefDaoCollection<UserRole, User>(this, false));
 				
@@ -71,11 +71,11 @@ namespace Bam.Net.UserAccounts.Data
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -229,9 +229,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// </param>
 		public static RoleCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<Role>();
 			Database db = database ?? Db.For<Role>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<Role>();
 			var results = new RoleCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -245,14 +245,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Role>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<RoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -277,14 +277,14 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<RoleColumns> where, Action<IEnumerable<Role>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var orderBy = Bam.Net.Data.Order.By<RoleColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -309,13 +309,13 @@ namespace Bam.Net.UserAccounts.Data
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RoleColumns> where, Action<IEnumerable<Role>> batchProcessor, Bam.Net.Data.OrderBy<RoleColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				RoleColumns columns = new RoleColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -325,12 +325,22 @@ namespace Bam.Net.UserAccounts.Data
 			});			
 		}
 
+		public static Role GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static Role GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static Role GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static Role GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

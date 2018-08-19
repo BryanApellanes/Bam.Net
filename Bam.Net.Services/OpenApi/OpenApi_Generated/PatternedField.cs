@@ -61,11 +61,11 @@ namespace Bam.Net.Services.OpenApi
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -169,11 +169,11 @@ namespace Bam.Net.Services.OpenApi
 		ReferencedKey="Id",
 		ReferencedTable="ObjectDescriptor",
 		Suffix="1")]
-	public long? ObjectDescriptorId
+	public ulong? ObjectDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ObjectDescriptorId");
+			return GetULongValue("ObjectDescriptorId");
 		}
 		set
 		{
@@ -224,9 +224,9 @@ namespace Bam.Net.Services.OpenApi
 		/// </param>
 		public static PatternedFieldCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<PatternedField>();
 			Database db = database ?? Db.For<PatternedField>();
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<PatternedField>();
 			var results = new PatternedFieldCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
@@ -240,14 +240,14 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<PatternedField>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PatternedFieldColumns columns = new PatternedFieldColumns();
 				var orderBy = Bam.Net.Data.Order.By<PatternedFieldColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -272,14 +272,14 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PatternedFieldColumns> where, Action<IEnumerable<PatternedField>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PatternedFieldColumns columns = new PatternedFieldColumns();
 				var orderBy = Bam.Net.Data.Order.By<PatternedFieldColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -304,13 +304,13 @@ namespace Bam.Net.Services.OpenApi
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PatternedFieldColumns> where, Action<IEnumerable<PatternedField>> batchProcessor, Bam.Net.Data.OrderBy<PatternedFieldColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				PatternedFieldColumns columns = new PatternedFieldColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -320,12 +320,22 @@ namespace Bam.Net.Services.OpenApi
 			});			
 		}
 
+		public static PatternedField GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static PatternedField GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static PatternedField GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static PatternedField GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

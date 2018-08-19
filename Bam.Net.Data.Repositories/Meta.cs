@@ -198,7 +198,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public long Id
+		public ulong Id
 		{
 			get
 			{
@@ -361,11 +361,16 @@ namespace Bam.Net.Data.Repositories
         public static string GetIdHash(object value, Type type = null)
         {
             type = type ?? value.GetType();
-            long id = Meta.GetId(value).Value;
+            ulong id = Meta.GetId(value).Value;
             return GetIdHash(id, type);
         }
 
         public static string GetIdHash(long id, Type type)
+        {
+            return "{0}::{1}"._Format(id, type.FullName).Md5();
+        }
+
+        public static string GetIdHash(ulong id, Type type)
         {
             return "{0}::{1}"._Format(id, type.FullName).Md5();
         }
@@ -447,17 +452,24 @@ namespace Bam.Net.Data.Repositories
 			{
 				throw new NoIdPropertyException(type);
 			}
+
+            if(keyProp != null && keyProp.PropertyType != typeof(ulong) && keyProp.PropertyType != typeof(ulong?))
+            {
+                throw new InvalidIdPropertyTypeException(keyProp);
+            }
 			return keyProp;
 		}
-		protected virtual long? GetId(bool throwIfNoIdProperty = true)
+
+		protected virtual ulong? GetId(bool throwIfNoIdProperty = true)
         {
             return GetId(Data, throwIfNoIdProperty);
         }
-        protected internal static long? GetId(object value, bool throwIfNoIdProperty = true)
+
+        protected internal static ulong? GetId(object value, bool throwIfNoIdProperty = true)
         {
             PropertyInfo pocoProp = GetKeyProperty(value.GetType(), throwIfNoIdProperty);
-            object idValue = pocoProp.GetValue(value);
-            return (long?)idValue;
+            object idValue = pocoProp.GetValue(value);   
+            return (ulong?)idValue;
         }
 		
 		/// <summary>
@@ -474,17 +486,17 @@ namespace Bam.Net.Data.Repositories
 			PropertyInfo idProp = type.GetProperty("Id");
 			if (idProp != null)
 			{
-				long id = (long)idProp.GetValue(value);
+				ulong id = (ulong)idProp.GetValue(value);
                 if (id == 0)
                 {
-                    long retrievedId = GetNextId(type, objectReaderWriter);
+                    ulong retrievedId = GetNextId(type, objectReaderWriter);
 
                     idProp.SetValue(value, retrievedId);
                 }
 			}
 		}
 
-        protected internal long GetNextId(Type type, IObjectReaderWriter objectReaderWriter = null)
+        protected internal ulong GetNextId(Type type, IObjectReaderWriter objectReaderWriter = null)
         {
             objectReaderWriter = objectReaderWriter ?? this.ObjectReaderWriter;
             DirectoryInfo dir = new DirectoryInfo(Path.Combine(objectReaderWriter.RootDirectory, type.Name));
@@ -496,7 +508,7 @@ namespace Bam.Net.Data.Repositories
                 msg.Write(metaId);                
             }
             
-            long retrievedId = ++metaId.Value;
+            ulong retrievedId = ++metaId.Value;
             msg.Write(new MetaId { Value = retrievedId });
             return retrievedId;
         }
@@ -517,12 +529,11 @@ namespace Bam.Net.Data.Repositories
 				{
 					uuid = (string)uuidProp.GetValue(data);
 				}
-				Guid guid;
-				if (!Guid.TryParse(uuid, out guid) || string.IsNullOrEmpty(uuid))
-				{
-					guid = Guid.NewGuid();
-				}
-				uuidProp.SetValue(data, guid.ToString());
+                if (!Guid.TryParse(uuid, out Guid guid) || string.IsNullOrEmpty(uuid))
+                {
+                    guid = Guid.NewGuid();
+                }
+                uuidProp.SetValue(data, guid.ToString());
 			}
 		}
 

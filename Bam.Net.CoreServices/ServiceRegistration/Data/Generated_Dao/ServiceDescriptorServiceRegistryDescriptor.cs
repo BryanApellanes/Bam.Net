@@ -99,11 +99,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="ServiceDescriptor",
 		Suffix="1")]
-	public long? ServiceDescriptorId
+	public ulong? ServiceDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ServiceDescriptorId");
+			return GetULongValue("ServiceDescriptorId");
 		}
 		set
 		{
@@ -134,11 +134,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="ServiceRegistryDescriptor",
 		Suffix="2")]
-	public long? ServiceRegistryDescriptorId
+	public ulong? ServiceRegistryDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ServiceRegistryDescriptorId");
+			return GetULongValue("ServiceRegistryDescriptorId");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			});			
 		}
 
+		public static ServiceDescriptorServiceRegistryDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ServiceDescriptorServiceRegistryDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ServiceDescriptorServiceRegistryDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ServiceDescriptorServiceRegistryDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

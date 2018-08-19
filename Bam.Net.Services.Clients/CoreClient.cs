@@ -43,7 +43,7 @@ namespace Bam.Net.Services.Clients
             WireInvocationEventHandlers();
         }
 
-        public CoreClient(ILogger logger = null) : this(Organization.Public.Name, DefaultApplicationName, "bamapps.net", 80, null, logger ?? Log.Default)
+        public CoreClient(ILogger logger = null) : this(Organization.Public.Name, DefaultApplicationName, "heart.bamapps.net", 80, null, logger ?? Log.Default)
         { }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace Bam.Net.Services.Clients
             {
                 Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient))
             };
-            ApplicationServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+            CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
 
@@ -426,7 +426,7 @@ namespace Bam.Net.Services.Clients
             ApplicationName = applicationName;
             HostName = hostName;
             Port = port;
-            WorkspaceDirectory = workingDirectory ?? DataSettings.Current.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
+            WorkspaceDirectory = workingDirectory ?? DefaultDataSettingsProvider.Current.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
             HashAlgorithm = HashAlgorithms.SHA256;
             Logger = logger ?? Log.Default;
             ProxyFactory = new ProxyFactory(WorkspaceDirectory, Logger);

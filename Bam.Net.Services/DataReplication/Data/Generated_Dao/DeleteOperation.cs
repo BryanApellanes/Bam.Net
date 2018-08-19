@@ -55,6 +55,7 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("DataProperty_DeleteOperationId", new DataPropertyCollection(Database.GetQuery<DataPropertyColumns, DataProperty>((c) => c.DeleteOperationId == GetLongValue("Id")), this, "DeleteOperationId"));				
@@ -272,11 +273,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		/// </param>
 		public static DeleteOperationCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<DeleteOperation>();
 			Database db = database ?? Db.For<DeleteOperation>();
-			var results = new DeleteOperationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<DeleteOperation>();
+			var results = new DeleteOperationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -286,14 +289,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DeleteOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeleteOperationColumns columns = new DeleteOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<DeleteOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -318,14 +321,14 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DeleteOperationColumns> where, Action<IEnumerable<DeleteOperation>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeleteOperationColumns columns = new DeleteOperationColumns();
 				var orderBy = Bam.Net.Data.Order.By<DeleteOperationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -350,13 +353,13 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<DeleteOperationColumns> where, Action<IEnumerable<DeleteOperation>> batchProcessor, Bam.Net.Data.OrderBy<DeleteOperationColumns> orderBy, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				DeleteOperationColumns columns = new DeleteOperationColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -713,6 +716,25 @@ namespace Bam.Net.Services.DataReplication.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<DeleteOperationColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DeleteOperationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DeleteOperationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<DeleteOperation>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<DeleteOperation>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

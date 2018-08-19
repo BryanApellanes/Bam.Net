@@ -58,18 +58,18 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TestExecution_TestDefinitionId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestDefinitionId == GetLongValue("Id")), this, "TestDefinitionId"));				
+				this.ChildCollections.Add("TestExecution_TestDefinitionId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestDefinitionId == GetULongValue("Id")), this, "TestDefinitionId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -257,11 +257,11 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="TestSuiteDefinition",
 		Suffix="1")]
-	public long? TestSuiteDefinitionId
+	public ulong? TestSuiteDefinitionId
 	{
 		get
 		{
-			return GetLongValue("TestSuiteDefinitionId");
+			return GetULongValue("TestSuiteDefinitionId");
 		}
 		set
 		{
@@ -432,12 +432,22 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			});			
 		}
 
+		public static TestDefinition GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static TestDefinition GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static TestDefinition GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static TestDefinition GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

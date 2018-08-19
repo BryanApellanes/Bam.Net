@@ -61,11 +61,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -337,11 +337,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Application",
 		Suffix="1")]
-	public long? ApplicationId
+	public ulong? ApplicationId
 	{
 		get
 		{
-			return GetLongValue("ApplicationId");
+			return GetULongValue("ApplicationId");
 		}
 		set
 		{
@@ -372,11 +372,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="Machine",
 		Suffix="2")]
-	public long? MachineId
+	public ulong? MachineId
 	{
 		get
 		{
-			return GetLongValue("MachineId");
+			return GetULongValue("MachineId");
 		}
 		set
 		{
@@ -523,12 +523,22 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			});			
 		}
 
+		public static ProcessDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static ProcessDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static ProcessDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static ProcessDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}

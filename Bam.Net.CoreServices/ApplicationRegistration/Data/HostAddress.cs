@@ -10,7 +10,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
     [Serializable]
     public class HostAddress: RepoData
     {
-        public long MachineId { get; set; }
+        public ulong MachineId { get; set; }
         public virtual Machine Machine { get; set; }
         public string IpAddress { get; set; }
         public string AddressFamily { get; set; }
