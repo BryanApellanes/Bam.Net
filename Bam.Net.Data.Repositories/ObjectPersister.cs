@@ -799,12 +799,15 @@ namespace Bam.Net.Data.Repositories
 			foreach (FileInfo file in typeDir.GetFiles().Where(f => f.HasNoExtension()))
 			{
 				T instance = file.FromBinaryFile<T>();
-				Meta<T> meta = new Meta<T>(instance, this);
-				if (predicate(instance) && !metaList.Contains(meta))
-				{
-					metaList.Add(meta);
-					results.Add(instance);
-				}
+                if(instance != null)
+                {
+                    Meta<T> meta = new Meta<T>(instance, this);
+                    if (predicate(instance) && !metaList.Contains(meta))
+                    {
+                        metaList.Add(meta);
+                        results.Add(instance);
+                    }
+                }
 			}
 			return results.ToArray();
 		}
@@ -817,12 +820,15 @@ namespace Bam.Net.Data.Repositories
 			foreach (string hash in hashes)
 			{
 				T instance = ReadByHash<T>(hash);
-				Meta<T> meta = new Meta<T>(instance, this);
-				if (predicate(instance) && !metaList.Contains(meta))
-				{
-					metaList.Add(meta);
-					results.Add(instance);
-				}
+                if(instance != null)
+                {
+                    Meta<T> meta = new Meta<T>(instance, this);
+                    if (predicate(instance) && !metaList.Contains(meta))
+                    {
+                        metaList.Add(meta);
+                        results.Add(instance);
+                    }
+                }
 			}
 
 			return results.ToArray();
