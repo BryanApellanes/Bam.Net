@@ -116,9 +116,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		}
 
 		[UnitTest]
-		public void ObjectReaderWriterQueryTest()
+		public void ObjectPersisterQueryTest()
 		{
-			ObjectReaderWriter rw = new ObjectReaderWriter(".\\TESTOBJECTREADERWRITER");
+			ObjectPersister rw = new ObjectPersister(".\\TESTOBJECTREADERWRITER");
 			string random = "RandomString_".RandomLetters(8);
 			Parent one = new Parent { Name = "{0}:: Parent One"._Format(random) };
 			Parent two = new Parent { Name = "{0}::Parent Two"._Format(random) };
@@ -142,7 +142,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		[UnitTest]
 		public void ObjectReaderWriterQueryPropertyTest()
 		{
-			ObjectReaderWriter rw = new ObjectReaderWriter(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
+			ObjectPersister rw = new ObjectPersister(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
 			string random = "RandomString_".RandomLetters(5);
 			Parent one = new Parent { Name = "{0}:: Parent Name one"._Format(random) };
 			Parent two = new Parent { Name = "{0}:: Parent Name two"._Format(random) };
@@ -169,7 +169,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		[UnitTest]
 		public void ObjectReaderWriterUpdateTest()
 		{
-			ObjectReaderWriter rw = new ObjectReaderWriter(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
+			ObjectPersister rw = new ObjectPersister(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
 			string random = "RandomString_".RandomLetters(5);
 			Parent one = new Parent { Name = "{0}:: Parent Name one"._Format(random) };			
 			rw.Write(typeof(Parent), one);			

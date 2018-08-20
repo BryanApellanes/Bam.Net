@@ -25,7 +25,7 @@ namespace Bam.Net.Automation.Testing
     [Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
     public class TestReportService : ProxyableService, IRequiresHttpContext, ITestReportService
     {
-        protected TestReportService() : this(new SQLiteDatabaseProvider(DefaultDataSettingsProvider.Current.GetSysDatabaseDirectory().FullName, Log.Default), Log.Default)
+        protected TestReportService() : this(new SQLiteDatabaseProvider(DefaultDataDirectoryProvider.Current.GetSysDatabaseDirectory().FullName, Log.Default), Log.Default)
         {
         }
 

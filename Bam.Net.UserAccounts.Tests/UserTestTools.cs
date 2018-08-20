@@ -95,9 +95,9 @@ namespace Bam.Net.UserAccounts.Tests
         public static UserManager CreateTestUserManager(string appName = "test")
         {
             UserManagerConfig config = new UserManagerConfig();
-            config.SmtpSettingsVaultPath = DefaultDataSettingsProvider.Instance.GetSysDatabasePathFor(typeof(Vault), "System");
+            config.SmtpSettingsVaultPath = DefaultDataDirectoryProvider.Instance.GetSysDatabasePathFor(typeof(Vault), "System");
             config.ApplicationName = appName;
-            config.EmailTemplateDirectoryPath = DefaultDataSettingsProvider.Instance.GetSysEmailTemplatesDirectory().FullName;
+            config.EmailTemplateDirectoryPath = DefaultDataDirectoryProvider.Instance.GetSysEmailTemplatesDirectory().FullName;
 
             UserManager mgr = config.Create();
             return mgr;

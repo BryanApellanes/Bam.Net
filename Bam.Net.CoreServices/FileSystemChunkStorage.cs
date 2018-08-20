@@ -18,17 +18,17 @@ namespace Bam.Net.CoreServices
     {
         public FileSystemChunkStorage()
         {
-            DataSettings = DefaultDataSettingsProvider.Current;
+            DataSettings = DefaultDataDirectoryProvider.Current;
             Logger = Log.Default;
         }
 
-        public FileSystemChunkStorage(DefaultDataSettingsProvider dataSettings, ILogger logger = null)
+        public FileSystemChunkStorage(DefaultDataDirectoryProvider dataSettings, ILogger logger = null)
         {
             DataSettings = dataSettings;
             Logger = logger;
         }
 
-        public DefaultDataSettingsProvider DataSettings { get; set; }
+        public DefaultDataDirectoryProvider DataSettings { get; set; }
         public ILogger Logger { get; set; }
         public void SetChunk(IChunk chunk)
         {

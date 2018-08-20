@@ -30,8 +30,8 @@ namespace Bam.Net.CoreServices
             UserManager = userManager;
             SmtpSettingsProvider = smtpSettingsProvider ?? DataSettingsSmtpSettingsProvider.Default;
             Logger = logger ?? Log.Default;
-            string emailTemplatesDirectory = DefaultDataSettingsProvider.Current.GetSysEmailTemplatesDirectory().FullName;
-            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DefaultDataSettingsProvider.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
+            string emailTemplatesDirectory = DefaultDataDirectoryProvider.Current.GetSysEmailTemplatesDirectory().FullName;
+            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DefaultDataDirectoryProvider.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
             Templates = new HandlebarsDirectory(NotificationTemplateDirectory);
             Tld = "com";
             Templates.Reload();

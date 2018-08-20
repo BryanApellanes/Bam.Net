@@ -21,7 +21,7 @@ namespace Bam.Net.Data.Dynamic
     /// </summary>
     public class DynamicTypeManager: Loggable
     {
-        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataSettingsProvider settings) 
+        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataDirectoryProvider settings) 
         {
             DataSettings = settings;
             JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager));
@@ -39,7 +39,7 @@ namespace Bam.Net.Data.Dynamic
                 }
             };
         }
-        public DefaultDataSettingsProvider DataSettings { get; set; }
+        public DefaultDataDirectoryProvider DataSettings { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
