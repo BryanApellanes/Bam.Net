@@ -9,9 +9,9 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class DefaultDataSettingsProvider : DatabaseProvider<SQLiteDatabase>, IDataDirectoryProvider
+    public class DefaultDataDirectoryProvider : DatabaseProvider<SQLiteDatabase>, IDataDirectoryProvider
     {
-        public DefaultDataSettingsProvider()
+        public DefaultDataDirectoryProvider()
         {
             DataRootDirectory = "C:\\bam\\data";
             AppDataDirectory = "AppData";
@@ -27,7 +27,7 @@ namespace Bam.Net.Data.Repositories
             Logger = Log.Default;            
         }
 
-        public DefaultDataSettingsProvider(ProcessMode processMode, ILogger logger = null):this()
+        public DefaultDataDirectoryProvider(ProcessMode processMode, ILogger logger = null):this()
         {
             ProcessMode = processMode;
             Logger = logger ?? Log.Default;
@@ -50,7 +50,7 @@ namespace Bam.Net.Data.Repositories
 
         public static DataPaths GetDataPaths(ProcessMode mode)
         {
-            return DataPaths.Get(new DefaultDataSettingsProvider(mode));
+            return DataPaths.Get(new DefaultDataDirectoryProvider(mode));
         }
 
         public ProcessMode ProcessMode { get; set; }
@@ -66,23 +66,23 @@ namespace Bam.Net.Data.Repositories
         public string EmailTemplatesDirectory { get; set; }
         public string AssemblyDirectory { get; set; }
 
-        static DefaultDataSettingsProvider _default;
+        static DefaultDataDirectoryProvider _default;
         static object _defaultLock = new object();
-        public static DefaultDataSettingsProvider Instance
+        public static DefaultDataDirectoryProvider Instance
         {
             get
             {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new DefaultDataSettingsProvider());
+                return _defaultLock.DoubleCheckLock(ref _default, () => new DefaultDataDirectoryProvider());
             }
         }
 
-        static DefaultDataSettingsProvider _fromConfig;
+        static DefaultDataDirectoryProvider _fromConfig;
         static object _fromConfigLock = new object();
-        public static DefaultDataSettingsProvider Current
+        public static DefaultDataDirectoryProvider Current
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DefaultDataSettingsProvider(ProcessMode.Current));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DefaultDataDirectoryProvider(ProcessMode.Current));
             }
         }
 

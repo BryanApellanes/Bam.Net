@@ -65,7 +65,7 @@ namespace Bam.Net.Data.Repositories
 			set;
 		}
 
-		public Xref Load(IObjectReaderWriter objectLoader)
+		public Xref Load(IObjectPersister objectLoader)
 		{
 			object left = objectLoader.ReadByHash(Type.GetType(LeftType), LeftHash);
 			object right = objectLoader.ReadByHash(Type.GetType(RightType), RightHash);

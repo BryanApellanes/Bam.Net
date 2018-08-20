@@ -11,11 +11,10 @@ namespace Bam.Net.Data.Repositories
 {
 	public class MetaProvider : Bam.Net.Data.Repositories.IMetaProvider
 	{
-		public MetaProvider(IObjectReaderWriter objectReaderWriter)
+		public MetaProvider(IObjectPersister objectPersister)
 		{
-			this.ObjectReaderWriter = objectReaderWriter;
+			ObjectPersister = objectPersister;
 		}
-
 		
 		static IMetaProvider _default;
 		static object _defaultLock = new object();
@@ -23,15 +22,15 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				return _defaultLock.DoubleCheckLock(ref _default, () => new MetaProvider(Bam.Net.Data.Repositories.ObjectReaderWriter.Default));
+				return _defaultLock.DoubleCheckLock(ref _default, () => new MetaProvider(Bam.Net.Data.Repositories.ObjectPersister.Default));
 			}
 		}
 
-		public IObjectReaderWriter ObjectReaderWriter { get; set; }
+		public IObjectPersister ObjectPersister { get; set; }
 
 		public virtual Meta GetMeta(object data)
 		{
-			return new Meta(data, ObjectReaderWriter);
+			return new Meta(data, ObjectPersister);
 		}
 	}
 }

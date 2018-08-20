@@ -25,20 +25,21 @@ namespace Bam.Net.Data.Repositories
     /// as it needs more testing.
 	/// </summary>
 	[Serializable]
-	public class ObjectReaderWriter: Loggable, IObjectReaderWriter
+	public class ObjectPersister: Loggable, IObjectPersister
 	{
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectReaderWriter"/> class.
+        /// Initializes a new instance of the <see cref="ObjectPersister"/> class.
         /// </summary>
         /// <param name="rootDirectory">The root directory.</param>
-        public ObjectReaderWriter(string rootDirectory)
+        public ObjectPersister(string rootDirectory)
 			: base()
 		{
 			RootDirectory = rootDirectory;
+            ObjectReader = new ObjectReader(rootDirectory);
             BackgroundThreadQueue = new BackgroundThreadQueue<Meta> { Process = Write };
 		}
 
-		static IObjectReaderWriter _objectReaderWriter;
+		static IObjectPersister _objectReaderWriter;
 		static object _readerWriterLock = new object();
         /// <summary>
         /// Gets or sets the default.
@@ -46,17 +47,19 @@ namespace Bam.Net.Data.Repositories
         /// <value>
         /// The default.
         /// </value>
-        public static IObjectReaderWriter Default
+        public static IObjectPersister Default
 		{
 			get
 			{
-                return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(Path.Combine(DefaultDataSettingsProvider.Current.AppDataDirectory, "ObjectRepositoryData")));
+                return _readerWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectPersister(Path.Combine(DefaultDataDirectoryProvider.Current.AppDataDirectory, "ObjectRepositoryData")));
 			}
 			set
 			{
 				_objectReaderWriter = value;
 			}
 		}
+
+        public IObjectReader ObjectReader { get; set; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -82,8 +85,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public T Read<T>(long id)
 		{
-			string idHash = GetIdHash(id, typeof(T));
-			return ReadByHash<T>(idHash);
+            return ObjectReader.Read<T>(id);
+			//string idHash = GetIdHash(id, typeof(T));
+			//return ReadByHash<T>(idHash);
 		}
 
 
@@ -95,8 +99,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public T Read<T>(ulong id)
         {
-            string idHash = GetIdHash(id, typeof(T));
-            return ReadByHash<T>(idHash);
+            return ObjectReader.Read<T>(id);
+            //string idHash = GetIdHash(id, typeof(T));
+            //return ReadByHash<T>(idHash);
         }
 
         /// <summary>
@@ -107,8 +112,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public object Read(Type type, long id)
 		{
-			string idHash = GetIdHash(id, type);
-			return ReadByHash(type, idHash);
+            return ObjectReader.Read(type, id);
+			//string idHash = GetIdHash(id, type);
+			//return ReadByHash(type, idHash);
 		}
 
         /// <summary>
@@ -119,8 +125,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public object Read(Type type, ulong id)
         {
-            string idHash = GetIdHash(id, type);
-            return ReadByHash(type, idHash);
+            return ObjectReader.Read(type, id);
+            //string idHash = GetIdHash(id, type);
+            //return ReadByHash(type, idHash);
         }
 
         /// <summary>
@@ -131,8 +138,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public T Read<T>(string uuid)
 		{
-			string uuidHash = GetUuidHash(uuid, typeof(T));
-			return ReadByHash<T>(uuidHash);
+            return ObjectReader.Read<T>(uuid);
+			//string uuidHash = GetUuidHash(uuid, typeof(T));
+			//return ReadByHash<T>(uuidHash);
 		}
 
         /// <summary>
@@ -143,8 +151,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public object Read(Type type, string uuid)
 		{
-			string uuidHash = GetUuidHash(uuid, type);
-			return ReadByHash(type, uuidHash);
+            return ObjectReader.Read(type, uuid);
+			//string uuidHash = GetUuidHash(uuid, type);
+			//return ReadByHash(type, uuidHash);
 		}
 
         /// <summary>
@@ -155,7 +164,8 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public virtual T ReadByHash<T>(string hash)
 		{
-			return (T)ReadByHash(typeof(T), hash);
+            return ObjectReader.ReadByHash<T>(hash);
+			//return (T)ReadByHash(typeof(T), hash);
 		}
 
         /// <summary>
@@ -166,14 +176,15 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public virtual object ReadByHash(Type type, string hash)
 		{
-            if (type.HasCustomAttributeOfType<SerializableAttribute>())
-            {
-                return ReadSerializableTypeByHash(type, hash);
-            }
-            else
-            {
-                return ReadPropertiesByHash(type, hash);
-            }
+            return ObjectReader.ReadByHash(type, hash);
+            //if (type.HasCustomAttributeOfType<SerializableAttribute>())
+            //{
+            //    return ReadSerializableTypeByHash(type, hash);
+            //}
+            //else
+            //{
+            //    return ReadPropertiesByHash(type, hash);
+            //}
         }
 
         /// <summary>
@@ -181,30 +192,30 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="hash">The hash.</param>
-        /// <returns></returns>
-        protected virtual object ReadPropertiesByHash(Type type, string hash)
-		{
-			object result = type.Construct();
-			foreach (PropertyInfo prop in type.GetProperties().Where(p=> p.CanWrite))
-			{
-				prop.SetValue(result, ReadProperty(type, prop, hash));
-			}
+        ///// <returns></returns>
+        //protected virtual object ReadPropertiesByHash(Type type, string hash)
+        //{
+        //    object result = type.Construct();
+        //    foreach (PropertyInfo prop in type.GetProperties().Where(p => p.CanWrite))
+        //    {
+        //        prop.SetValue(result, ReadProperty(type, prop, hash));
+        //    }
 
-			return result;
-		}
+        //    return result;
+        //}
 
-        /// <summary>
-        /// Reads the serializable type by hash.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="hash">The hash.</param>
-        /// <returns></returns>
-        protected virtual object ReadSerializableTypeByHash(Type type, string hash)
-		{
-			IpcMessage msg = IpcMessage.Get(hash, type, RootDirectory);
-			SubscribeToIpcMessageEvents(msg);
-			return msg.Read<object>();
-		}
+        //      /// <summary>
+        //      /// Reads the serializable type by hash.
+        //      /// </summary>
+        //      /// <param name="type">The type.</param>
+        //      /// <param name="hash">The hash.</param>
+        //      /// <returns></returns>
+        //      protected virtual object ReadSerializableTypeByHash(Type type, string hash)
+        //{
+        //	IpcMessage msg = IpcMessage.Get(hash, type, RootDirectory);
+        //	SubscribeToIpcMessageEvents(msg);
+        //	return msg.Read<object>();
+        //}
 
         /// <summary>
         /// Gets or sets the background thread queue.
@@ -402,7 +413,7 @@ namespace Bam.Net.Data.Repositories
             if (data is Meta meta)
             {
                 data = meta.Data;
-                meta.ObjectReaderWriter = this;
+                meta.ObjectPersister = this;
             }
             else
             {
@@ -430,7 +441,7 @@ namespace Bam.Net.Data.Repositories
 				if (data == null)
 					return false;
 				type = type ?? data.GetType();
-				string idHash = GetIdHash(data, type);
+				string idHash = Meta.GetIdHash(data, type);
 				IpcMessage.Delete(idHash, type, RootDirectory);
 				string uuidHash = GetUuidHash(data, type);
 				IpcMessage.Delete(uuidHash, type, RootDirectory);
@@ -536,11 +547,13 @@ namespace Bam.Net.Data.Repositories
                 .GetProperties()
                 .Where(prop => prop.PropertyType == typeof(string) ||
                     prop.PropertyType == typeof(bool) ||
+                    prop.PropertyType == typeof(bool?) ||
                     prop.PropertyType == typeof(int) ||
                     prop.PropertyType == typeof(int?) ||
                     prop.PropertyType == typeof(long) ||
                     prop.PropertyType == typeof(long?) ||
-                    prop.PropertyType == typeof(bool?) ||
+                    prop.PropertyType == typeof(ulong) ||
+                    prop.PropertyType == typeof(ulong?) ||                    
                     prop.PropertyType == typeof(decimal) ||
                     prop.PropertyType == typeof(decimal?) ||
                     prop.PropertyType == typeof(byte[]) ||
@@ -560,7 +573,7 @@ namespace Bam.Net.Data.Repositories
         protected void DeleteObjectProperties(Type type, object value)
         {
 			type = type ?? value.GetType();
-			string idHash = GetIdHash(value, type);
+			string idHash = Meta.GetIdHash(value, type);
 			string uuidHash = GetUuidHash(value, type);
 			foreach (PropertyInfo prop in type.GetProperties())
 			{
@@ -652,52 +665,57 @@ namespace Bam.Net.Data.Repositories
 
 		public T ReadProperty<T>(PropertyInfo prop, long id)
 		{
-			return (T)ReadProperty(prop, id);
+            return ObjectReader.ReadProperty<T>(prop, id);
+			//return (T)ReadProperty(prop, id);
 		}
 
         public T ReadProperty<T>(PropertyInfo prop, ulong id)
         {
-            return (T)ReadProperty(prop, id);
+            return ObjectReader.ReadProperty<T>(prop, id);
+            //return (T)ReadProperty(prop, id);
         }
 
-        protected object ReadProperty(PropertyInfo prop, long id)
-		{
-			string hash = GetIdHash(id, prop.DeclaringType);
-			return ReadProperty(prop, hash);
-		}
+  //      protected object ReadProperty(PropertyInfo prop, long id)
+		//{
+		//	string hash = GetIdHash(id, prop.DeclaringType);
+		//	return ReadProperty(prop, hash);
+		//}
 
-        protected object ReadProperty(PropertyInfo prop, ulong id)
-        {
-            string hash = GetIdHash(id, prop.DeclaringType);
-            return ReadProperty(prop, hash);
-        }
+        //protected object ReadProperty(PropertyInfo prop, ulong id)
+        //{
+        //    string hash = GetIdHash(id, prop.DeclaringType);
+        //    return ReadProperty(prop, hash);
+        //}
 
         public T ReadProperty<T>(PropertyInfo prop, string uuid)
 		{
-			string hash = GetUuidHash(uuid, typeof(T));
-			return ReadPropertyByHash<T>(prop, hash);
+            return ObjectReader.ReadProperty<T>(prop, uuid);
+			//string hash = GetUuidHash(uuid, typeof(T));
+			//return ReadPropertyByHash<T>(prop, hash);
 		}
 
-		protected T ReadPropertyByHash<T>(PropertyInfo prop, string hash)
-		{
-			return (T)ReadProperty(prop, hash);
-		}
-        protected object ReadProperty(PropertyInfo prop, string hash)
-        {
-            return ReadProperty(prop.DeclaringType, prop, hash);
-        }
+		//protected T ReadPropertyByHash<T>(PropertyInfo prop, string hash)
+		//{
+		//	return (T)ReadProperty(prop, hash);
+		//}
+
+        //protected object ReadProperty(PropertyInfo prop, string hash)
+        //{
+        //    return ReadProperty(prop.DeclaringType, prop, hash);
+        //}
 
         protected object ReadProperty(Type type, PropertyInfo prop, string hash)
 		{
 			DirectoryInfo propRoot = GetPropertyDirectory(type, prop);
-			int version = GetHighestVersionNumber(propRoot, prop, hash);
+			int version = Meta.GetHighestVersionNumber(propRoot, prop, hash);
 			return ReadPropertyVersion(prop, hash, propRoot, version);
 		}
 
 		public T ReadPropertyVersion<T>(PropertyInfo prop, string hash, int version)
 		{
-			DirectoryInfo propRoot = GetPropertyDirectory(typeof(T), prop);
-			return (T)ReadPropertyVersion(prop, hash, propRoot, version);
+            return ObjectReader.ReadPropertyVersion<T>(prop, hash, version);
+			//DirectoryInfo propRoot = GetPropertyDirectory(typeof(T), prop);
+			//return (T)ReadPropertyVersion(prop, hash, propRoot, version);
 		}
 
 		private static object ReadPropertyVersion(PropertyInfo prop, string hash, DirectoryInfo propRoot, int version)
@@ -717,6 +735,7 @@ namespace Bam.Net.Data.Repositories
 				dir.Delete(true);
 			}
 		}
+
         public void WriteProperty(PropertyInfo prop, object value)
         {
             WriteProperty(prop.DeclaringType, prop, value);
@@ -731,7 +750,7 @@ namespace Bam.Net.Data.Repositories
 			object propValue = prop.GetValue(value);
 			if (propValue != null)
 			{
-				string idHash = GetIdHash(value, type);
+				string idHash = Meta.GetIdHash(value, type);
 				WriteProperty(type, prop, propValue, idHash);
 				string uuidHash = GetUuidHash(value, type);
 				WriteProperty(type, prop, propValue, uuidHash);
@@ -747,6 +766,7 @@ namespace Bam.Net.Data.Repositories
 			}
 			return dir;
 		}
+
         public DirectoryInfo GetPropertyDirectory(PropertyInfo prop)
         {
             return GetPropertyDirectory(prop.DeclaringType, prop);
@@ -765,63 +785,63 @@ namespace Bam.Net.Data.Repositories
 
         protected virtual string GetUuidHash(object value, Type type)
 		{
-			string result = GetUuidHash("", Type.Missing.GetType());
+			string result = Meta.GetUuidHash("", Type.Missing.GetType());
 			if (value != null)
 			{
-				result = GetUuidHash("", type);
+				result = Meta.GetUuidHash("", type);
 				PropertyInfo uuidProp = value.GetType().GetProperty("Uuid");
 				if (uuidProp != null)
 				{
 					string uuid = (string)uuidProp.GetValue(value);
 					if (!string.IsNullOrEmpty(uuid))
 					{
-						result = GetUuidHash(uuid, type);
+						result = Meta.GetUuidHash(uuid, type);
 					}
 				}
 			}
 			return result;
 		}
 
-		protected string GetUuidHash(string uuid, Type type)
-		{
-            return Meta.GetUuidHash(uuid, type);
-		}
+		//protected string GetUuidHash(string uuid, Type type)
+		//{
+  //          return Meta.GetUuidHash(uuid, type);
+		//}
 
-		protected virtual string GetIdHash(object value, Type type = null)
-		{
-            return Meta.GetIdHash(value, type);
-		}
+		//protected virtual string GetIdHash(object value, Type type = null)
+		//{
+  //          return Meta.GetIdHash(value, type);
+		//}
 
-        protected virtual string GetIdHash(ulong id, Type type)
-        {
-            return Meta.GetIdHash(id, type);
-        }
+        //protected virtual string GetIdHash(ulong id, Type type)
+        //{
+        //    return Meta.GetIdHash(id, type);
+        //}
 
-        protected virtual string GetIdHash(long id, Type type)
-		{
-            return Meta.GetIdHash(id, type);
-		}
+  //      protected virtual string GetIdHash(long id, Type type)
+		//{
+  //          return Meta.GetIdHash(id, type);
+		//}
 
-        protected internal int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
-		{
-			return Meta.GetNextVersionNumber(propRoot, prop, hash);
-		}
+  //      protected internal int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
+		//{
+		//	return Meta.GetNextVersionNumber(propRoot, prop, hash);
+		//}
 
-		protected internal static int GetHighestVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
-		{
-			return Meta.GetHighestVersionNumber(propRoot, prop, hash);
-		}
+		//protected internal static int GetHighestVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
+		//{
+		//	return Meta.GetHighestVersionNumber(propRoot, prop, hash);
+		//}
 		
-		private List<FileInfo> GetPropertyFiles(DirectoryInfo propRoot, PropertyInfo prop, string hash)
-		{
-			DirectoryInfo propRootForHash = new DirectoryInfo(Path.Combine(propRoot.FullName, hash, prop.PropertyType.Name));
-			if (!propRootForHash.Exists)
-			{
-				propRootForHash.Create();
-			}
-			List<FileInfo> files = propRootForHash.GetFiles().Where(f => f.HasNoExtension()).ToList();
-			return files;
-		}
+		//private List<FileInfo> GetPropertyFiles(DirectoryInfo propRoot, PropertyInfo prop, string hash)
+		//{
+		//	DirectoryInfo propRootForHash = new DirectoryInfo(Path.Combine(propRoot.FullName, hash, prop.PropertyType.Name));
+		//	if (!propRootForHash.Exists)
+		//	{
+		//		propRootForHash.Create();
+		//	}
+		//	List<FileInfo> files = propRootForHash.GetFiles().Where(f => f.HasNoExtension()).ToList();
+		//	return files;
+		//}
 
 		private void SubscribeToIpcMessageEvents(IpcMessage msg)
 		{
@@ -834,7 +854,7 @@ namespace Bam.Net.Data.Repositories
         private void WriteProperty(Type type, PropertyInfo prop, object propValue, string hash)
         {
             DirectoryInfo propRoot = GetPropertyDirectory(type, prop);
-            int version = GetNextVersionNumber(propRoot, prop, hash);
+            int version = Meta.GetNextVersionNumber(propRoot, prop, hash);
             string writeToRootDir = Path.Combine(propRoot.FullName, hash);
             IpcMessage msg = IpcMessage.Get(version.ToString(), prop.PropertyType, writeToRootDir);
             msg.Write(propValue);
@@ -842,7 +862,7 @@ namespace Bam.Net.Data.Repositories
 
 		private IpcMessage GetIdMessage(object data, Type type = null)
 		{
-			string idHash = GetIdHash(data, type);
+			string idHash = Meta.GetIdHash(data, type);
 			return GetHashMessage(data, idHash, type);
 		}
 		private IpcMessage GetUuidMessage(object data, Type type = null)

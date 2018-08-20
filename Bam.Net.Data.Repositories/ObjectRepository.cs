@@ -26,7 +26,7 @@ namespace Bam.Net.Data.Repositories
 	{
 		public ObjectRepository() 
 		{
-			ObjectReaderWriter = Repositories.ObjectReaderWriter.Default;
+			ObjectReaderWriter = Repositories.ObjectPersister.Default;
 			MetaProvider = Repositories.MetaProvider.Default;
 			BlockOnChildWrites = false;
 			TypeSchemaGenerator = new TypeSchemaGenerator();            
@@ -35,7 +35,7 @@ namespace Bam.Net.Data.Repositories
 		public ObjectRepository(string rootDirectory)
 			: this()
 		{
-			ObjectReaderWriter = new Repositories.ObjectReaderWriter(rootDirectory);
+			ObjectReaderWriter = new Repositories.ObjectPersister(rootDirectory);
 			BlockOnChildWrites = false;
 		}
 
@@ -386,7 +386,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
             
-		protected internal IObjectReaderWriter ObjectReaderWriter { get; set; }
+		protected internal IObjectPersister ObjectReaderWriter { get; set; }
 		protected internal IMetaProvider MetaProvider { get; set; }
 		protected TypeSchemaGenerator TypeSchemaGenerator { get; private set; }
         object _typeSchemaLock = new object();

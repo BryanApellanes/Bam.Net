@@ -16,7 +16,7 @@ using MongoDB.Driver.Linq;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class MongoObjectReaderWriter: ObjectReaderWriter
+	public class MongoObjectReaderWriter: ObjectPersister
 	{
 		private string _connectionString;
 		private string _databaseName;
