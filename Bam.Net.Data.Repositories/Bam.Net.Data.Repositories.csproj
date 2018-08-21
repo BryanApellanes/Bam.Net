@@ -130,11 +130,13 @@
     <Compile Include="DefaultDataDirectoryProvider.cs" />
     <Compile Include="DefaultDatabaseProviderRepositoryResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
+    <Compile Include="ObjectPersisterDirectoryProvider.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
     <Compile Include="IDataSettingsResolver.cs" />
-    <Compile Include="IFileSystemPersister.cs" />
+    <Compile Include="IObjectPersisterDirectoryProvider.cs" />
+    <Compile Include="IHashedObjectReader.cs" />
     <Compile Include="InvalidIdPropertyTypeException.cs" />
     <Compile Include="IObjectQueryer.cs" />
     <Compile Include="IObjectReader.cs" />

@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
-    public interface IFileSystemPersister
+    public interface IObjectPersisterDirectoryProvider
     {
         string RootDirectory { get; set; }
         DirectoryInfo GetTypeDirectory(Type type);
         DirectoryInfo GetPropertyDirectory(PropertyInfo prop);
+        DirectoryInfo GetPropertyDirectory(Type type, PropertyInfo prop);
     }
 }

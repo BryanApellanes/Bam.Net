@@ -14,9 +14,13 @@ namespace Bam.Net.Data.Repositories
         public ObjectReader(string rootDirectory)
         {
             RootDirectory = rootDirectory;
+            FileSystemPersisterDirectoryProvider = new ObjectPersisterDirectoryProvider(rootDirectory);
         }
 
         public string RootDirectory { get; set; }
+
+        protected IObjectPersisterDirectoryProvider FileSystemPersisterDirectoryProvider { get; }
+
         /// <summary>
         /// Reads the specified identifier.
         /// </summary>
@@ -180,28 +184,17 @@ namespace Bam.Net.Data.Repositories
 
         public DirectoryInfo GetTypeDirectory(Type type)
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.Combine(RootDirectory, type.Name));
-            if (!dir.Exists)
-            {
-                dir.Create();
-            }
-            return dir;
+            return FileSystemPersisterDirectoryProvider.GetTypeDirectory(type);
         }
 
         public DirectoryInfo GetPropertyDirectory(PropertyInfo prop)
         {
-            return GetPropertyDirectory(prop.DeclaringType, prop);
+            return FileSystemPersisterDirectoryProvider.GetPropertyDirectory(prop);
         }
 
         public DirectoryInfo GetPropertyDirectory(Type type, PropertyInfo prop)
         {
-            DirectoryInfo typeDirectory = GetTypeDirectory(type);
-            DirectoryInfo dir = new DirectoryInfo(Path.Combine(typeDirectory.FullName, prop.Name));
-            if (!dir.Exists)
-            {
-                dir.Create();
-            }
-            return dir;
+            return FileSystemPersisterDirectoryProvider.GetPropertyDirectory(type, prop);
         }
 
         /// <summary>
@@ -226,10 +219,7 @@ namespace Bam.Net.Data.Repositories
 
         private void SubscribeToIpcMessageEvents(IpcMessage msg)
         {
-            Subscribers.Each(logger =>
-            {
-                msg.Subscribe(logger);
-            });
+            Subscribers.Each(logger => msg.Subscribe(logger));
         }
 
         public static object ReadPropertyVersion(PropertyInfo prop, string hash, DirectoryInfo propRoot, int version)

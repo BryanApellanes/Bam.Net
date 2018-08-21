@@ -358,6 +358,25 @@ namespace Bam.Net.Data.Repositories
             return "{0}::{1}"._Format(uuid, type.FullName).Md5();
         }
 
+        public static string GetUuidHash(object value, Type type)
+        {
+            string result = GetUuidHash("", Type.Missing.GetType());
+            if (value != null)
+            {
+                result = GetUuidHash("", type);
+                PropertyInfo uuidProp = value.GetType().GetProperty("Uuid");
+                if (uuidProp != null)
+                {
+                    string uuid = (string)uuidProp.GetValue(value);
+                    if (!string.IsNullOrEmpty(uuid))
+                    {
+                        result = GetUuidHash(uuid, type);
+                    }
+                }
+            }
+            return result;
+        }
+
         public static string GetIdHash(object value, Type type = null)
         {
             type = type ?? value.GetType();

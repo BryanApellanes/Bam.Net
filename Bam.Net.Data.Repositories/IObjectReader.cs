@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
-    public interface IObjectReader: IFileSystemPersister
+    public interface IObjectReader: IObjectPersisterDirectoryProvider, IHashedObjectReader
     {   
         T Read<T>(long id);
         T Read<T>(ulong id);
@@ -16,8 +16,6 @@ namespace Bam.Net.Data.Repositories
         object Read(Type type, ulong id);
         T Read<T>(string uuid);
         object Read(Type type, string uuid);
-        T ReadByHash<T>(string hash);
-        object ReadByHash(Type type, string hash);
 
         T ReadProperty<T>(PropertyInfo prop, long id);
         T ReadProperty<T>(PropertyInfo prop, ulong id);

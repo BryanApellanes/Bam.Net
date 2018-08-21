@@ -36,6 +36,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			RootDirectory = rootDirectory;
             ObjectReader = new ObjectReader(rootDirectory);
+            ObjectPersisterDirectoryProvider = new ObjectPersisterDirectoryProvider(rootDirectory);
             BackgroundThreadQueue = new BackgroundThreadQueue<Meta> { Process = Write };
 		}
 
@@ -60,6 +61,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
         public IObjectReader ObjectReader { get; set; }
+        public IObjectPersisterDirectoryProvider ObjectPersisterDirectoryProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -392,7 +394,7 @@ namespace Bam.Net.Data.Repositories
 				type = type ?? data.GetType();
 				string idHash = Meta.GetIdHash(data, type);
 				IpcMessage.Delete(idHash, type, RootDirectory);
-				string uuidHash = GetUuidHash(data, type);
+				string uuidHash = Meta.GetUuidHash(data, type);
 				IpcMessage.Delete(uuidHash, type, RootDirectory);
 				DeleteObjectProperties(type, data);
 				DeleteHash(data, type);
@@ -523,7 +525,7 @@ namespace Bam.Net.Data.Repositories
         {
 			type = type ?? value.GetType();
 			string idHash = Meta.GetIdHash(value, type);
-			string uuidHash = GetUuidHash(value, type);
+			string uuidHash = Meta.GetUuidHash(value, type);
 			foreach (PropertyInfo prop in type.GetProperties())
 			{
 				DeleteProperty(type, prop, idHash);
@@ -673,63 +675,30 @@ namespace Bam.Net.Data.Repositories
 			{
 				string idHash = Meta.GetIdHash(value, type);
 				WriteProperty(type, prop, propValue, idHash);
-				string uuidHash = GetUuidHash(value, type);
+				string uuidHash = Meta.GetUuidHash(value, type);
 				WriteProperty(type, prop, propValue, uuidHash);
 			}
 		}
 
 		public DirectoryInfo GetTypeDirectory(Type type)
 		{
-			DirectoryInfo dir = new DirectoryInfo(Path.Combine(RootDirectory, type.Name));
-			if(!dir.Exists)
-			{
-				dir.Create();
-			}
-			return dir;
+            return ObjectPersisterDirectoryProvider.GetTypeDirectory(type);
 		}
 
         public DirectoryInfo GetPropertyDirectory(PropertyInfo prop)
         {
-            return GetPropertyDirectory(prop.DeclaringType, prop);
+            return ObjectPersisterDirectoryProvider.GetPropertyDirectory(prop);
         }
 
         public DirectoryInfo GetPropertyDirectory(Type type, PropertyInfo prop)
 		{
-			DirectoryInfo typeDirectory = GetTypeDirectory(type);
-			DirectoryInfo dir = new DirectoryInfo(Path.Combine(typeDirectory.FullName, prop.Name));
-			if (!dir.Exists)
-			{
-				dir.Create();
-			}
-			return dir;
+            return ObjectPersisterDirectoryProvider.GetPropertyDirectory(type, prop);
 		}
-
-        protected virtual string GetUuidHash(object value, Type type)
-		{
-			string result = Meta.GetUuidHash("", Type.Missing.GetType());
-			if (value != null)
-			{
-				result = Meta.GetUuidHash("", type);
-				PropertyInfo uuidProp = value.GetType().GetProperty("Uuid");
-				if (uuidProp != null)
-				{
-					string uuid = (string)uuidProp.GetValue(value);
-					if (!string.IsNullOrEmpty(uuid))
-					{
-						result = Meta.GetUuidHash(uuid, type);
-					}
-				}
-			}
-			return result;
-		}
-
+        
 		private void SubscribeToIpcMessageEvents(IpcMessage msg)
 		{
-			Subscribers.Each(logger =>
-			{
-				msg.Subscribe(logger);
-			});
-		}
+            Subscribers.Each(logger => msg.Subscribe(logger));
+        }
 
         private void WriteProperty(Type type, PropertyInfo prop, object propValue, string hash)
         {
@@ -745,9 +714,10 @@ namespace Bam.Net.Data.Repositories
 			string idHash = Meta.GetIdHash(data, type);
 			return GetHashMessage(data, idHash, type);
 		}
+
 		private IpcMessage GetUuidMessage(object data, Type type = null)
 		{
-			string uuidHash = GetUuidHash(data, type);
+			string uuidHash = Meta.GetUuidHash(data, type);
 			return GetHashMessage(data, uuidHash, type);
 		}
 
