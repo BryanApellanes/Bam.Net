@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class DataReplicationJournalEntryWrittenEventArgs: EventArgs
+    public class JournalEntryWrittenEventArgs: EventArgs
     {
-        public DataReplicationJournalEntry JournalEntry { get; set; }
+        public JournalEntry JournalEntry { get; set; }
         public FileInfo File { get; set; }
     }
 }

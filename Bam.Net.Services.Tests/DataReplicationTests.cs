@@ -25,24 +25,24 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: can get journal")]
         public void CanGetJournal()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
+            Journal journal = GetTestObject<Journal>();
             Expect.IsNotNull(journal, "journal was null");
         }
 
         [UnitTest("Data Replication: type map should not be null")]
         public void TypeMapShouldNotBeNull()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
+            Journal journal = GetTestObject<Journal>();
             Expect.IsNotNull(journal.TypeMap);
         }
 
         [UnitTest("Data Replication: Can write entries")]
         public void CanWriteEntries()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
+            Journal journal = GetTestObject<Journal>();
             DataReplicationTestClass value = GetDataInstance();
 
-            IEnumerable<DataReplicationJournalEntry> entries = journal.Write(value);
+            IEnumerable<JournalEntry> entries = journal.Write(value);
             WriteToConsole(journal, entries);
             value.Address = "A new Address";
 
@@ -52,9 +52,9 @@ namespace Bam.Net.Services.Tests
             OutLineFormat("journal directory {0}", ConsoleColor.Cyan, journal.JournalDirectory.FullName);
         }
 
-        private static void WriteToConsole(DataReplicationJournal journal, IEnumerable<DataReplicationJournalEntry> entries)
+        private static void WriteToConsole(Journal journal, IEnumerable<JournalEntry> entries)
         {
-            foreach (DataReplicationJournalEntry entry in entries)
+            foreach (JournalEntry entry in entries)
             {
                 Console.WriteLine("TypeId={0}, PropertyId={1}, TypeName={2}, PropertyName={3}, Value={4}",
                     entry.TypeId,
@@ -68,14 +68,14 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: Write events fire")]
         public void WriteEventFires()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
+            Journal journal = GetTestObject<Journal>();
             bool? entryFlushedFired = false;
             bool? queueEmptyFired = false;
             journal.EntryFlushed += (o, a) => entryFlushedFired = true;
             journal.QueueEmpty += (o, a) => queueEmptyFired = true;
             DataReplicationTestClass value = GetDataInstance();
-            IEnumerable<DataReplicationJournalEntry> entries = journal.Write(value);
-            foreach (DataReplicationJournalEntry entry in entries)
+            IEnumerable<JournalEntry> entries = journal.Write(value);
+            foreach (JournalEntry entry in entries)
             {
                 Console.WriteLine("TypeId={0}, PropertyId={1}, TypeName={2}, PropertyName={3}, Value={4}",
                     entry.TypeId,
@@ -100,15 +100,15 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: can read entries")]
         public void CanRead()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();            
+            Journal journal = GetTestObject<Journal>();            
             DataReplicationTestClass value1 = GetRandomDataInstance();            
             HashSet<DataReplicationTestClass> retrieved = new HashSet<DataReplicationTestClass>();
-            List<DataReplicationJournalEntry> entries = new List<DataReplicationJournalEntry>();
+            List<JournalEntry> entries = new List<JournalEntry>();
             AutoResetEvent blocker = new AutoResetEvent(false);
             journal.QueueEmpty += (o, a) =>
             {
                 OutLineFormat("queue empty fired");
-                foreach (DataReplicationJournalEntry entry in entries)
+                foreach (JournalEntry entry in entries)
                 {
                     retrieved.Add(journal.LoadInstance<DataReplicationTestClass>(entry));
                 }
@@ -126,17 +126,17 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void WillGetLatestPropertyValue()
         {
-            DataReplicationJournal journal = GetTestObject<DataReplicationJournal>();
+            Journal journal = GetTestObject<Journal>();
             DataReplicationTestClass value1 = GetRandomDataInstance();
             DataReplicationTestClass value2 = GetDataInstance();
             DataReplicationTestClass value3 = GetRandomDataInstance();
             HashSet<DataReplicationTestClass> retrieved = new HashSet<DataReplicationTestClass>();
-            List<DataReplicationJournalEntry> entries = new List<DataReplicationJournalEntry>();
+            List<JournalEntry> entries = new List<JournalEntry>();
             AutoResetEvent blocker = new AutoResetEvent(false);
             journal.QueueEmpty += (o, a) =>
             {
                 OutLineFormat("queue empty fired");
-                foreach (DataReplicationJournalEntry entry in entries)
+                foreach (JournalEntry entry in entries)
                 {
                     retrieved.Add(journal.LoadInstance<DataReplicationTestClass>(entry));
                 }

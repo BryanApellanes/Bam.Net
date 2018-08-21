@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class DataReplicationJournalGroomer
+    public class JournalGroomer
     {
-        public DataReplicationJournalGroomer(DataReplicationJournal journal, int groomIntervalMilliseconds, ILogger logger = null)
+        public JournalGroomer(Journal journal, int groomIntervalMilliseconds, ILogger logger = null)
         {
-            MaxEntries = 10;
+            MaxEntries = 100;
             Journal = journal;
             Logger = logger ?? Log.Default;
             Timer = new Timer(Groom, null, groomIntervalMilliseconds, groomIntervalMilliseconds);
@@ -21,7 +21,7 @@ namespace Bam.Net.Services.DataReplication
 
         protected Timer Timer { get; }
         public int MaxEntries { get; set; }
-        public DataReplicationJournal Journal { get; }
+        public Journal Journal { get; }
         public ILogger Logger { get; set; }
 
         public void Groom()

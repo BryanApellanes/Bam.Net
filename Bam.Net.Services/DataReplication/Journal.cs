@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 namespace Bam.Net.Services.DataReplication
 {
     [Serializable]
-    public class DataReplicationJournal: Loggable
+    public class Journal: Loggable
     {
-        Queue<DataReplicationJournalEntry> _dataReplicationJournalEntries;
+        Queue<JournalEntry> _dataReplicationJournalEntries;
         bool _keepFlushing;
 
-        public DataReplicationJournal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryFlusher flusher = null, ITypeConverter typeConverter = null, ILogger logger = null)
+        public Journal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher = null, ITypeConverter typeConverter = null, ILogger logger = null)
         {
-            _dataReplicationJournalEntries = new Queue<DataReplicationJournalEntry>();
+            _dataReplicationJournalEntries = new Queue<JournalEntry>();
             _keepFlushing = true;
             SequenceProvider = sequenceProvider;
             Paths = paths;
             TypeMap = typeMap;
-            Flusher = flusher;
+            Flusher = flusher ?? new DefaultJournalEntryValueFlusher();
             TypeConverter = typeConverter ?? new DefaultTypeConverter();
             Logger = logger;
             AppDomain.CurrentDomain.DomainUnload += (o, a) => _keepFlushing = false;
@@ -55,16 +55,15 @@ namespace Bam.Net.Services.DataReplication
             {
                 if(_journalDirectory == null)
                 {
-                    _journalDirectory = new DirectoryInfo(Path.Combine(Paths.Data.AppData, nameof(DataReplicationJournalEntry).Pluralize()));
+                    _journalDirectory = new DirectoryInfo(Path.Combine(Paths.Data.AppData, nameof(JournalEntry).Pluralize()));
                 }
                 return _journalDirectory;
             }
         }
 
         public ITypeConverter TypeConverter { get; set; }
-
-        public IJournalEntryFlusher Flusher { get; set; }
-
+        public IJournalEntryValueFlusher Flusher { get; set; }
+        public IJournalEntryValueLoader Loader { get; set; }
         public ILogger Logger { get; set; }
 
         public string GetTypeName(long typeId)
@@ -87,12 +86,12 @@ namespace Bam.Net.Services.DataReplication
             return TypeMap.GetPropertyShortName(propId);
         }
 
-        public T LoadInstance<T>(DataReplicationJournalEntryInfo info) where T : KeyHashAuditRepoData, new()
+        public T LoadInstance<T>(JournalEntryInfo info) where T : KeyHashAuditRepoData, new()
         {
             return LoadInstance<T>(info.InstanceId);
         }
 
-        public T LoadInstance<T>(DataReplicationJournalEntry entry) where T : KeyHashAuditRepoData, new()
+        public T LoadInstance<T>(JournalEntry entry) where T : KeyHashAuditRepoData, new()
         {
             return LoadInstance<T>(entry.InstanceId);
         }
@@ -119,7 +118,7 @@ namespace Bam.Net.Services.DataReplication
         public T LoadInstance<T>(ulong id) where T : KeyHashAuditRepoData, new()
         {
             T toLoad = new T();
-            foreach(DataReplicationJournalEntry entry in DataReplicationJournalEntry.LoadInstanceEntries<T>(id, JournalDirectory, TypeMap))
+            foreach(JournalEntry entry in JournalEntry.LoadInstanceEntries<T>(id, JournalDirectory, TypeMap, Loader))
             {
                 string propertyName = TypeMap.GetPropertyShortName(entry.PropertyId);
                 PropertyInfo prop = typeof(T).GetProperty(propertyName);
@@ -142,7 +141,7 @@ namespace Bam.Net.Services.DataReplication
         /// </summary>
         /// <param name="journalEntry">The journal entry.</param>
         /// <returns></returns>
-        public FileInfo GetJournalEntryFileInfo(DataReplicationJournalEntry journalEntry)
+        public FileInfo GetJournalEntryFileInfo(JournalEntry journalEntry)
         {
             return journalEntry.GetFileInfo(JournalDirectory, TypeMap);
         }
@@ -155,25 +154,25 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public int ExceptionThreshold { get; set; }
 
-        public IEnumerable<DataReplicationJournalEntry> Write(KeyHashAuditRepoData data)
+        public IEnumerable<JournalEntry> Write(KeyHashAuditRepoData data)
         {
             Task.Run(() => TypeMap.AddMapping(data));
-            DataReplicationJournalEntry[] journalEntries = DataReplicationJournalEntry.FromInstance(data).ToArray();
+            JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
             return EnqueueEntriesForWrite(journalEntries);
         }
 
         public DirectoryInfo GetTypeDirectory(long typeId)
         {
-            return DataReplicationJournalEntry.GetTypeDirectory(this, typeId);
+            return JournalEntry.GetTypeDirectory(this, typeId);
         }
 
         public event EventHandler EntryFlushed;
         bool _fireQueueEmpty;
         public event EventHandler QueueEmpty;
 
-        protected internal IEnumerable<DataReplicationJournalEntry> EnqueueEntriesForWrite(params DataReplicationJournalEntry[] journalEntries)
+        protected internal IEnumerable<JournalEntry> EnqueueEntriesForWrite(params JournalEntry[] journalEntries)
         {
-            foreach(DataReplicationJournalEntry journalEntry in journalEntries)
+            foreach(JournalEntry journalEntry in journalEntries)
             {
                 journalEntry.Seq = SequenceProvider.Next();
                 _dataReplicationJournalEntries.Enqueue(journalEntry);
@@ -196,11 +195,11 @@ namespace Bam.Net.Services.DataReplication
                             _fireQueueEmpty = true;
                             while(_dataReplicationJournalEntries.Count > 0)
                             {
-                                DataReplicationJournalEntry journalEntry = _dataReplicationJournalEntries.Dequeue();
+                                JournalEntry journalEntry = _dataReplicationJournalEntries.Dequeue();
                                 if(journalEntry != null)
                                 {
                                     FileInfo propertyFile = Flusher.Flush(this, journalEntry);
-                                    EntryFlushed?.Invoke(this, new DataReplicationJournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });
+                                    EntryFlushed?.Invoke(this, new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });
                                 }
                             }
                         }
@@ -218,7 +217,7 @@ namespace Bam.Net.Services.DataReplication
                     catch (Exception ex)
                     {
                         _exceptionCount++;
-                        Logger.AddEntry("Exception in {0}.{1}: Count {2}", ex, nameof(DataReplicationJournal), nameof(FlushQueue), _exceptionCount.ToString());
+                        Logger.AddEntry("Exception in {0}.{1}: Count {2}", ex, nameof(Journal), nameof(FlushQueue), _exceptionCount.ToString());
                         if (_exceptionCount >= ExceptionThreshold)
                         {
                             _keepFlushing = false;

@@ -10,7 +10,7 @@ namespace Bam.Net.Services.DataReplication
     /// <summary>
     /// Represents information about a journal entry with the value.
     /// </summary>
-    public class DataReplicationJournalEntryInfo
+    public class JournalEntryInfo
     {    
         /// <summary>
         /// Gets or sets the type id determined by DataReplicationtypeMap.
@@ -44,14 +44,14 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public long PropertyId { get; set; }
 
-        public DataReplicationJournalEntry Load(DataReplicationJournal journal)
+        public JournalEntry Load(Journal journal)
         {
             return Load(journal.JournalDirectory, journal.TypeMap);
         }
 
-        public DataReplicationJournalEntry Load(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public JournalEntry Load(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
         {
-            DataReplicationJournalEntry entry = this.CopyAs<DataReplicationJournalEntry>();
+            JournalEntry entry = this.CopyAs<JournalEntry>();
             return entry.LoadLatestValue(journalDirectory, typeMap);            
         }
     }

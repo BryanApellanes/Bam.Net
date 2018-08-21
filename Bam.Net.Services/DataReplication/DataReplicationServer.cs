@@ -11,12 +11,12 @@ namespace Bam.Net.Services.DataReplication
 {
     public class DataReplicationServer : StreamingServer<DataReplicationRequest, DataReplicationResponse>
     {
-        public DataReplicationServer(DataReplicationJournal journal)
+        public DataReplicationServer(Journal journal)
         {
             Journal = journal;
         }
 
-        public DataReplicationJournal Journal { get; set; }
+        public Journal Journal { get; set; }
 
         public override DataReplicationResponse ProcessRequest(StreamingContext<DataReplicationRequest> context)
         {
@@ -26,7 +26,7 @@ namespace Bam.Net.Services.DataReplication
                 SecureSession session = SecureSession.Get(request.SessionId);
                 string base64 = session.DecryptWithPrivateKey(request.Data);
                 byte[] data = base64.FromBase64();
-                DataReplicationJournalEntry[] journalEntry = data.FromBinaryBytes<DataReplicationJournalEntry[]>();
+                JournalEntry[] journalEntry = data.FromBinaryBytes<JournalEntry[]>();
                 Journal.EnqueueEntriesForWrite(journalEntry);
                 return new DataReplicationResponse { Success = true };
             }

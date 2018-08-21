@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class DefaultJournalEntryFlusher : IJournalEntryFlusher
+    public class DefaultJournalEntryValueFlusher : IJournalEntryValueFlusher
     {
-        public FileInfo Flush(DataReplicationJournal journal, DataReplicationJournalEntry journalEntry)
+        public FileInfo Flush(Journal journal, JournalEntry journalEntry)
         {
             FileInfo propertyFile = journal.GetJournalEntryFileInfo(journalEntry);
             journalEntry.Value.SafeWriteToFile(propertyFile.FullName, true);
