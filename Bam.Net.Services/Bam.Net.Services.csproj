@@ -65,6 +65,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -141,7 +145,12 @@
     <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="DataReplication\Arc.cs" />
+    <Compile Include="DataReplication\CompressionJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\CompressionJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\CompressionJournalEntryValueManager.cs" />
     <Compile Include="DataReplication\DefaultJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\DefaultJournalEntryValueManager.cs" />
+    <Compile Include="DataReplication\IJournalEntryValueManager.cs" />
     <Compile Include="DataReplication\Journal.cs" />
     <Compile Include="DataReplication\JournalEntry.cs" />
     <Compile Include="DataReplication\JournalEntryInfo.cs" />

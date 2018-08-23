@@ -31,18 +31,19 @@ namespace Bam.Net.Services.DataReplication
 
         protected void Groom(object state)
         {
+            Logger.AddEntry("Journal.Groom started {0}", new Instant().ToString());
             Queue<DirectoryInfo> directoryInfos = new Queue<DirectoryInfo>();
             directoryInfos.Enqueue(Journal.JournalDirectory);
-            while(directoryInfos.Count > 0)
+            while (directoryInfos.Count > 0)
             {
                 DirectoryInfo directoryInfo = directoryInfos.Dequeue();
-                if(directoryInfo != null && directoryInfo.Exists)
+                if (directoryInfo != null && directoryInfo.Exists)
                 {
                     List<FileInfo> fileInfos = directoryInfo.GetFiles().ToList();
                     fileInfos.Sort((x, y) => y.Name.CompareTo(x.Name));
-                    if(fileInfos.Count > 10)
+                    if (fileInfos.Count > MaxEntries)
                     {
-                        for(int i = 10; i< fileInfos.Count; i++)
+                        for (int i = MaxEntries; i < fileInfos.Count; i++)
                         {
                             FileInfo fileInfo = fileInfos[i];
                             try
@@ -56,12 +57,13 @@ namespace Bam.Net.Services.DataReplication
                             }
                         }
                     }
-                    foreach(DirectoryInfo directory in directoryInfo.GetDirectories())
+                    foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                     {
                         directoryInfos.Enqueue(directory);
                     }
                 }
             }
+            Logger.AddEntry("Journal.Groom finished {0}", new Instant().ToString());
         }
     }
 }

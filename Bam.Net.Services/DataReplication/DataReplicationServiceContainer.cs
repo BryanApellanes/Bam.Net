@@ -94,7 +94,7 @@ namespace Bam.Net.Services.DataReplication
             registry
                 .For<SequenceFile>().Use<SequenceFile>()
                 .For<ISequenceProvider>().Use<FileSequenceProvider>()
-                .For<IJournalEntryValueFlusher>().Use<DefaultJournalEntryValueFlusher>()
+                .For<IJournalEntryValueManager>().Use<DefaultJournalEntryValueManager>()
                 .For<ITypeConverter>().Use<DefaultTypeConverter>()
                 .For<DataReplicationTypeMap>().Use<DataReplicationTypeMap>()
                 .For<Journal>().Use<Journal>();                

@@ -17,14 +17,14 @@ namespace Bam.Net.Services.DataReplication
         Queue<JournalEntry> _dataReplicationJournalEntries;
         bool _keepFlushing;
 
-        public Journal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher = null, ITypeConverter typeConverter = null, ILogger logger = null)
+        public Journal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueManager valueManager = null, ITypeConverter typeConverter = null, ILogger logger = null)
         {
             _dataReplicationJournalEntries = new Queue<JournalEntry>();
             _keepFlushing = true;
             SequenceProvider = sequenceProvider;
             Paths = paths;
             TypeMap = typeMap;
-            Flusher = flusher ?? new DefaultJournalEntryValueFlusher();
+            ValueManager = valueManager;
             TypeConverter = typeConverter ?? new DefaultTypeConverter();
             Logger = logger;
             AppDomain.CurrentDomain.DomainUnload += (o, a) => _keepFlushing = false;
@@ -62,8 +62,25 @@ namespace Bam.Net.Services.DataReplication
         }
 
         public ITypeConverter TypeConverter { get; set; }
-        public IJournalEntryValueFlusher Flusher { get; set; }
-        public IJournalEntryValueLoader Loader { get; set; }
+
+        public IJournalEntryValueManager ValueManager { get; }
+
+        public IJournalEntryValueFlusher Flusher
+        {
+            get
+            {
+                return ValueManager.Flusher;
+            }
+        }
+
+        public IJournalEntryValueLoader Loader
+        {
+            get
+            {
+                return ValueManager.Loader;
+            }
+        }
+
         public ILogger Logger { get; set; }
 
         public string GetTypeName(long typeId)

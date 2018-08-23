@@ -124,18 +124,21 @@ namespace Bam.Net.Services.DataReplication
         {
             loader = loader ?? new DefaultJournalEntryValueLoader();
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
-            foreach(FileInfo file in propertyDirectory.GetFiles())
+            if (propertyDirectory.Exists)
             {
-                if (ulong.TryParse(file.Name, out ulong seq))
+                foreach (FileInfo file in propertyDirectory.GetFiles())
                 {
-                    JournalEntry entry = this.CopyAs<JournalEntry>();
-                    entry.Value = loader.LoadValue(Path.Combine(propertyDirectory.FullName, file.Name));
-                    entry.Seq = seq;
-                    yield return entry;
-                }
-                else
-                {
-                    Log.Default.AddEntry("Failed to parse filename as sequence number ({0})", Path.Combine(propertyDirectory.FullName, file.Name));
+                    if (ulong.TryParse(file.Name, out ulong seq))
+                    {
+                        JournalEntry entry = this.CopyAs<JournalEntry>();
+                        entry.Value = loader.LoadValue(Path.Combine(propertyDirectory.FullName, file.Name));
+                        entry.Seq = seq;
+                        yield return entry;
+                    }
+                    else
+                    {
+                        Log.Default.AddEntry("Failed to parse filename as sequence number ({0})", Path.Combine(propertyDirectory.FullName, file.Name));
+                    }
                 }
             }
         }

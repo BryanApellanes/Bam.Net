@@ -57,18 +57,15 @@ namespace Bam.Net
             {
                 Throw();
             }
-            int month;
-            int day;
-            int year;
-            if(!int.TryParse(monthDayYear[0], out month))
+            if (!int.TryParse(monthDayYear[0], out int month))
             {
                 Throw();
             }
-            if(!int.TryParse(monthDayYear[1], out day))
+            if (!int.TryParse(monthDayYear[1], out int day))
             {
                 Throw();
             }
-            if(!int.TryParse(monthDayYear[2], out year))
+            if(!int.TryParse(monthDayYear[2], out int year))
             {
                 Throw();
             }
@@ -77,14 +74,7 @@ namespace Bam.Net
 
         public static Instant FromString(string instantString)
         {
-            int month;
-            int day;
-            int year;
-            int hour;
-            int minute;
-            int second;
-            int millisecond;
-            Parse(instantString, out month, out day, out year, out hour, out minute, out second, out millisecond);
+            Parse(instantString, out int month, out int day, out int year, out int hour, out int minute, out int second, out int millisecond);
 
             return new Instant(new DateTime(year, month, day, hour, minute, second, millisecond));
         }

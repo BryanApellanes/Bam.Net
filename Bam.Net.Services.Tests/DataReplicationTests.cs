@@ -115,7 +115,7 @@ namespace Bam.Net.Services.Tests
                 blocker.Set();
             };
             entries.AddRange(journal.Write(value1));
-            blocker.WaitOne();
+            blocker.WaitOne(5000);
             DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value1.Id);
             Expect.IsNotNull(check);
             Expect.AreEqual(check.FirstName, value1.FirstName);
