@@ -50,6 +50,16 @@ namespace Bam.Net
             return "{Month}/{Day}/{Year};{Hour}.{Minute}.{Second}.{Millisecond}".NamedFormat(this);
         }
 
+        public string ToString(Func<Instant, string> toStringer)
+        {
+            return toStringer(this);
+        }
+
+        public static string ToString(DateTime dateTime, Func<Instant, string> toStringer)
+        {
+            return new Instant(dateTime).ToString(toStringer);
+        }
+
         public static Instant FromDateString(string dateString)
         {
             string[] monthDayYear = dateString.DelimitSplit("/");
