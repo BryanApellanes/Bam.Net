@@ -142,6 +142,7 @@
     <Compile Include="CachingRepositoryTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DatabaseRepositoryUnitTests.cs" />
+    <Compile Include="DbDataExample.cs" />
     <Compile Include="ObjectRepositoryUnitTests.cs" />
     <Compile Include="Partials\MainObject.cs" />
     <Compile Include="Partials\SecondaryObject.cs" />

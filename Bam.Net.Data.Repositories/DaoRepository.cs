@@ -860,7 +860,7 @@ namespace Bam.Net.Data.Repositories
 			if (xrefPropertyProvider != null)
 			{
 				handledProperties = new HashSet<string>(xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.ToList());
-				xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.Each(daoXrefPropertyName =>
+				xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.BackwardsEach(daoXrefPropertyName =>
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
 					PropertyInfo pocoProperty = xrefPropertyProvider.UpdatedXrefCollectionProperties[daoXrefPropertyName];
