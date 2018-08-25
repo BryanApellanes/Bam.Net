@@ -125,17 +125,24 @@ namespace Bam.Net.Logging
 
             while (_keepLogging)
             {
-                _waitForEnqueueLogEvent.WaitOne();
-                Thread.Sleep(CommitCycleDelay);
-                while (_logEventQueue.Count > 0)
+                try
                 {
-                    if (_logEventQueue.TryDequeue(out LogEvent logEvent))
+                    _waitForEnqueueLogEvent.WaitOne();
+                    Thread.Sleep(CommitCycleDelay);
+                    while (_logEventQueue.Count > 0)
                     {
-                        if (logEvent != null && (int)logEvent.Severity <= (int)Verbosity)
+                        if (_logEventQueue.TryDequeue(out LogEvent logEvent))
                         {
-                            CommitLogEvent(logEvent);
+                            if (logEvent != null && (int)logEvent.Severity <= (int)Verbosity)
+                            {
+                                CommitLogEvent(logEvent);
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"Exception in logging commit thread: {ex.Message}");
                 }
             }
         }
@@ -145,16 +152,23 @@ namespace Bam.Net.Logging
         /// </summary>
         public virtual void BlockUntilEventQueueIsEmpty(int sleep = 0)
         {
-            if(_loggingThread != null && _loggingThread.ThreadState == System.Threading.ThreadState.Running)
+            try
             {
-                _keepLogging = false;
-                while (_logEventQueue.Count > 0)
+                if (_loggingThread != null && _loggingThread.ThreadState == System.Threading.ThreadState.Running)
                 {
-                    _waitForEnqueueLogEvent.Set();
-                    Thread.Sleep(3);                    
-                }                
+                    _keepLogging = false;
+                    while (_logEventQueue.Count > 0)
+                    {
+                        _waitForEnqueueLogEvent.Set();
+                        Thread.Sleep(3);
+                    }
+                }
+                Thread.Sleep(sleep);
             }
-            Thread.Sleep(sleep);
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Exception in {nameof(BlockUntilEventQueueIsEmpty)}: {ex.Message}");
+            }
         }
 
         internal ConcurrentQueue<LogEvent> LogEventQueue
