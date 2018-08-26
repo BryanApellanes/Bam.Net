@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services.DataReplication
+namespace Bam.Net.Services
 {
-    public interface IJournalEntryValueFlusher
+    public class Indexer
     {
-        FileInfo Flush(Journal journal, JournalEntry entry);
+        public DirectoryInfo IndexDirectory { get; set; }
     }
 }

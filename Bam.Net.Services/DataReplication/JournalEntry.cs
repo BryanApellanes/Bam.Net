@@ -55,7 +55,17 @@ namespace Bam.Net.Services.DataReplication
         /// The value.
         /// </value>
         public string Value { get; set; }
-        
+
+        public override string ToString()
+        {
+            return $"{TypeId}.{PropertyId}.{InstanceId}({Value})";
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().ToSha1Int();
+        }
+
         public JournalEntryInfo ToInfo()
         {
             return this.CopyAs<JournalEntryInfo>();
@@ -77,9 +87,9 @@ namespace Bam.Net.Services.DataReplication
         /// <param name="journalDirectory">The journal directory.</param>
         /// <param name="typeMap">The type map.</param>
         /// <returns></returns>
-        public JournalEntry LoadLatestValue(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap, IJournalEntryValueLoader loader = null)
+        public JournalEntry LoadLatestValue(DirectoryInfo journalDirectory, JournalTypeMap typeMap, IJournalEntryValueLoader loader = null)
         {
-            return GetSequencedHistoryValues(journalDirectory, typeMap).FirstOrDefault();
+            return GetSequencedHistoryValues(journalDirectory, typeMap, loader).FirstOrDefault();
         }
 
         /// <summary>
@@ -98,7 +108,7 @@ namespace Bam.Net.Services.DataReplication
         /// <param name="journalDirectory">The journal directory.</param>
         /// <param name="typeMap">The type map.</param>
         /// <returns></returns>
-        public IEnumerable<JournalEntry> GetSequencedHistoryValues(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap, IJournalEntryValueLoader loader = null)
+        public IEnumerable<JournalEntry> GetSequencedHistoryValues(DirectoryInfo journalDirectory, JournalTypeMap typeMap, IJournalEntryValueLoader loader = null)
         {
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
             return new SortedSet<JournalEntry>(LoadHistory(journalDirectory, typeMap, loader), new Comparer<JournalEntry>((x, y) => y.Seq.CompareTo(x.Seq)));
@@ -120,9 +130,9 @@ namespace Bam.Net.Services.DataReplication
         /// <param name="journalDirectory">The journal directory.</param>
         /// <param name="typeMap">The type map.</param>
         /// <returns></returns>
-        public IEnumerable<JournalEntry> LoadHistory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap, IJournalEntryValueLoader loader = null)
+        public IEnumerable<JournalEntry> LoadHistory(DirectoryInfo journalDirectory, JournalTypeMap typeMap, IJournalEntryValueLoader loader = null)
         {
-            loader = loader ?? new DefaultJournalEntryValueLoader();
+            loader = loader ?? new JournalEntryValueLoader();
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
             if (propertyDirectory.Exists)
             {
@@ -148,7 +158,7 @@ namespace Bam.Net.Services.DataReplication
         /// </summary>
         /// <param name="journalDirectory">The journal directory.</param>
         /// <returns></returns>
-        public FileInfo GetFileInfo(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public FileInfo GetFileInfo(DirectoryInfo journalDirectory, JournalTypeMap typeMap)
         {
             DirectoryInfo propertyDirectory = GetPropertyDirectory(journalDirectory, typeMap);
             FileInfo propertyFile = new FileInfo(Path.Combine(propertyDirectory.FullName, Seq.ToString()));
@@ -161,7 +171,7 @@ namespace Bam.Net.Services.DataReplication
         /// <param name="journalDirectory">The journal directory.</param>
         /// <param name="typeMap">The type map.</param>
         /// <returns></returns>
-        public DirectoryInfo GetPropertyDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public DirectoryInfo GetPropertyDirectory(DirectoryInfo journalDirectory, JournalTypeMap typeMap)
         {
             DirectoryInfo instanceDirectory = GetInstanceDirectory(journalDirectory, typeMap);
             string propertyDirectoryName = typeMap.GetPropertyShortName(PropertyId);
@@ -175,7 +185,7 @@ namespace Bam.Net.Services.DataReplication
         /// <param name="journalDirectory">The journal directory.</param>
         /// <param name="typeMap">The type map.</param>
         /// <returns></returns>
-        public DirectoryInfo GetInstanceDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public DirectoryInfo GetInstanceDirectory(DirectoryInfo journalDirectory, JournalTypeMap typeMap)
         {
             DirectoryInfo typeDirectory = GetTypeDirectory(journalDirectory, typeMap);
             DirectoryInfo instanceDirectory = new DirectoryInfo(Path.Combine(typeDirectory.FullName, InstanceId.ToString()));
@@ -187,7 +197,7 @@ namespace Bam.Net.Services.DataReplication
             return new JournalEntry { TypeId = typeId }.GetTypeDirectory(journal.JournalDirectory, journal.TypeMap);
         }
 
-        public DirectoryInfo GetTypeDirectory(DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap)
+        public DirectoryInfo GetTypeDirectory(DirectoryInfo journalDirectory, JournalTypeMap typeMap)
         {
             string typeDirectoryName = typeMap.GetTypeShortName(TypeId);
             DirectoryInfo typeDirectory = new DirectoryInfo(Path.Combine(journalDirectory.FullName, typeDirectoryName));
@@ -202,21 +212,21 @@ namespace Bam.Net.Services.DataReplication
         public static IEnumerable<JournalEntry> FromInstance(KeyHashAuditRepoData instance)
         {
             Args.ThrowIfNull(instance, "instance");
-            long typeId = DataReplicationTypeMap.GetTypeId(instance, out object dynamicInstance, out Type dynamicType);
+            long typeId = JournalTypeMap.GetTypeId(instance, out object dynamicInstance, out Type dynamicType);
             instance.Id = instance.GetULongKeyHash();
             foreach (PropertyInfo prop in dynamicType.GetProperties())
             {
-                yield return new JournalEntry { TypeId = typeId, InstanceId = instance.Id, PropertyId = DataReplicationTypeMap.GetPropertyId(prop, out string ignore), Value = prop.GetValue(dynamicInstance)?.ToString() };
+                yield return new JournalEntry { TypeId = typeId, InstanceId = instance.Id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string ignore), Value = prop.GetValue(dynamicInstance)?.ToString() };
             }
         }
 
-        public static IEnumerable<JournalEntry> LoadInstanceEntries<T>(ulong id, DirectoryInfo journalDirectory, DataReplicationTypeMap typeMap, IJournalEntryValueLoader loader = null) where T: KeyHashAuditRepoData, new()
+        public static IEnumerable<JournalEntry> LoadInstanceEntries<T>(ulong id, DirectoryInfo journalDirectory, JournalTypeMap typeMap, IJournalEntryValueLoader loader = null) where T: KeyHashAuditRepoData, new()
         {
-            long typeId = DataReplicationTypeMap.GetTypeId(new T(), out object dynamicInstance, out Type dynamicType);
+            long typeId = JournalTypeMap.GetTypeId(new T(), out object dynamicInstance, out Type dynamicType);
             foreach(PropertyInfo prop in dynamicType.GetProperties())
             {
-                JournalEntry entry = new JournalEntry { TypeId = typeId, InstanceId = id, PropertyId = DataReplicationTypeMap.GetPropertyId(prop, out string ignore) };
-                yield return entry.LoadLatestValue(journalDirectory, typeMap, loader);  
+                JournalEntry entry = new JournalEntry { TypeId = typeId, InstanceId = id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string ignore) };
+                yield return entry.LoadLatestValue(journalDirectory, typeMap, loader) ?? entry;  
             }
         }        
     }

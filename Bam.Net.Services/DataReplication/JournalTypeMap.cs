@@ -14,9 +14,9 @@ namespace Bam.Net.Services.DataReplication
     /// <summary>
     /// A class that provides a mapping between numeric (long) id values and Types.
     /// </summary>
-    public class DataReplicationTypeMap
+    public class JournalTypeMap
     {
-        public DataReplicationTypeMap(SystemPaths paths) : this()
+        public JournalTypeMap(SystemPaths paths) : this()
         {
             if(paths != null)
             {
@@ -24,7 +24,7 @@ namespace Bam.Net.Services.DataReplication
             }
         }
         
-        protected DataReplicationTypeMap()
+        protected JournalTypeMap()
         {
             TypeMappings = new ConcurrentDictionary<long, string>();
             PropertyMappings = new ConcurrentDictionary<long, string>();
@@ -34,14 +34,14 @@ namespace Bam.Net.Services.DataReplication
         
         public string Save()
         {
-            string path = Path.Combine(Directory.FullName, nameof(DataReplicationTypeMap));
+            string path = Path.Combine(Directory.FullName, nameof(JournalTypeMap));
             this.ToJsonFile(path);
             return path;
         }
 
-        public static DataReplicationTypeMap Load(string path)
+        public static JournalTypeMap Load(string path)
         {
-            DataReplicationTypeMap typeMap = path.FromJsonFile<DataReplicationTypeMap>();
+            JournalTypeMap typeMap = path.FromJsonFile<JournalTypeMap>();
             typeMap.Directory = new FileInfo(path).Directory;
             return typeMap;
         }

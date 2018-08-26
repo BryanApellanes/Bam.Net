@@ -17,14 +17,20 @@ namespace Bam.Net.Services.DataReplication
         Queue<JournalEntry> _dataReplicationJournalEntries;
         bool _keepFlushing;
 
-        public Journal(SystemPaths paths, DataReplicationTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueManager valueManager = null, ITypeConverter typeConverter = null, ILogger logger = null)
+        public Journal(ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter, ILogger logger = null) 
+            : this(SystemPaths.Get(DefaultDataDirectoryProvider.Current), new JournalTypeMap(SystemPaths.Get(DefaultDataDirectoryProvider.Current)), sequenceProvider, flusher, loader, typeConverter, logger)
+        { }
+
+        public Journal(SystemPaths paths, JournalTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter = null, ILogger logger = null)
         {
             _dataReplicationJournalEntries = new Queue<JournalEntry>();
             _keepFlushing = true;
+            ExceptionThreshold = 100;
             SequenceProvider = sequenceProvider;
             Paths = paths;
             TypeMap = typeMap;
-            ValueManager = valueManager;
+            Flusher = flusher;
+            Loader = loader;
             TypeConverter = typeConverter ?? new DefaultTypeConverter();
             Logger = logger;
             AppDomain.CurrentDomain.DomainUnload += (o, a) => _keepFlushing = false;
@@ -45,7 +51,7 @@ namespace Bam.Net.Services.DataReplication
             }
 
         }
-        protected internal DataReplicationTypeMap TypeMap { get; set; }
+        protected internal JournalTypeMap TypeMap { get; set; }
         protected internal ISequenceProvider SequenceProvider { get; set; }
 
         DirectoryInfo _journalDirectory;
@@ -55,31 +61,17 @@ namespace Bam.Net.Services.DataReplication
             {
                 if(_journalDirectory == null)
                 {
-                    _journalDirectory = new DirectoryInfo(Path.Combine(Paths.Data.AppData, nameof(JournalEntry).Pluralize()));
+                    _journalDirectory = new DirectoryInfo(Path.Combine(Paths.Data.AppData, GetType().Name, nameof(JournalEntry).Pluralize()));
                 }
                 return _journalDirectory;
             }
         }
 
         public ITypeConverter TypeConverter { get; set; }
+        
+        public IJournalEntryValueFlusher Flusher { get; internal set; }
 
-        public IJournalEntryValueManager ValueManager { get; }
-
-        public IJournalEntryValueFlusher Flusher
-        {
-            get
-            {
-                return ValueManager.Flusher;
-            }
-        }
-
-        public IJournalEntryValueLoader Loader
-        {
-            get
-            {
-                return ValueManager.Loader;
-            }
-        }
+        public IJournalEntryValueLoader Loader { get; internal set; }
 
         public ILogger Logger { get; set; }
 
@@ -171,7 +163,7 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public int ExceptionThreshold { get; set; }
 
-        public IEnumerable<JournalEntry> Write(KeyHashAuditRepoData data)
+        public IEnumerable<JournalEntry> Enqueue(KeyHashAuditRepoData data)
         {
             Task.Run(() => TypeMap.AddMapping(data));
             JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
@@ -184,8 +176,13 @@ namespace Bam.Net.Services.DataReplication
         }
 
         public event EventHandler EntryFlushed;
+
         bool _fireQueueEmpty;
         public event EventHandler QueueEmpty;
+
+        public event EventHandler ExceptionThresholdReached;
+
+        public event EventHandler EntriesEnqueued;
 
         protected internal IEnumerable<JournalEntry> EnqueueEntriesForWrite(params JournalEntry[] journalEntries)
         {
@@ -195,6 +192,7 @@ namespace Bam.Net.Services.DataReplication
                 _dataReplicationJournalEntries.Enqueue(journalEntry);
                 yield return journalEntry;
             }
+            FireEvent(EntriesEnqueued, new JournalEntriesEnqueuedEventArgs { JournalEntries = journalEntries });
         }
 
         int _exceptionCount;
@@ -216,7 +214,7 @@ namespace Bam.Net.Services.DataReplication
                                 if(journalEntry != null)
                                 {
                                     FileInfo propertyFile = Flusher.Flush(this, journalEntry);
-                                    EntryFlushed?.Invoke(this, new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });
+                                    FireEvent(EntryFlushed, new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });                                    
                                 }
                             }
                         }
@@ -225,8 +223,8 @@ namespace Bam.Net.Services.DataReplication
                             if (_fireQueueEmpty)
                             {
                                 _fireQueueEmpty = false;
-                                Flusher.Cleanup();
-                                QueueEmpty?.Invoke(this, EventArgs.Empty);
+                                _exceptionCount = 0;
+                                FireEvent(QueueEmpty, EventArgs.Empty);
                             }
                             Thread.Sleep(300);
                         }
@@ -239,6 +237,7 @@ namespace Bam.Net.Services.DataReplication
                         {
                             _keepFlushing = false;
                             Logger.AddEntry("ExceptionThreshold reached ({0}), stopping flushing thread.", ExceptionThreshold.ToString());
+                            FireEvent(ExceptionThresholdReached, new JournalExceptionThresholdReachedEventArgs { Journal = this });
                         }
                     }
                 }

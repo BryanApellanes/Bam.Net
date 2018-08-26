@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class DefaultJournalEntryValueLoader : IJournalEntryValueLoader
+    public class JournalEntryValueLoader : IJournalEntryValueLoader
     {
+        public JournalEntryValueLoader()
+        {
+            Values = new Dictionary<string, string>();
+        }
+
+        // TODO: use this as cache
+        public Dictionary<string, string> Values { get; set; }
         public string LoadValue(string filePath)
         {
             return File.ReadAllText(filePath);

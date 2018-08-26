@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public interface IJournalEntryValueManager
+    public class JournalExceptionThresholdReachedEventArgs: EventArgs
     {
-        IJournalEntryValueFlusher Flusher { get; }
-        IJournalEntryValueLoader Loader { get; }
+        public Journal Journal { get; set; }
     }
 }

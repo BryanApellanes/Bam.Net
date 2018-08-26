@@ -7,24 +7,22 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class CompressionJournalEntryValueFlusher : IJournalEntryValueFlusher
+    public class CompressedJournalEntryValueFlusher : IJournalEntryValueFlusher
     {
-        public CompressionJournalEntryValueFlusher()
+        public CompressedJournalEntryValueFlusher()
         {
             Encoding = Encoding.UTF8;
         }
 
         public Encoding Encoding { get; set; }
 
-        public void Cleanup()
-        {
-            this.ClearFileAccessLocks();
-        }
-
         public FileInfo Flush(Journal journal, JournalEntry entry)
         {
             FileInfo propertyFile = journal.GetJournalEntryFileInfo(entry);
-            Encoding.GetBytes(entry.Value).GZip().ToBase64().SafeWriteToFile(propertyFile.FullName);
+            if (!string.IsNullOrEmpty(entry.Value))
+            {                
+                Encoding.GetBytes(entry.Value).GZip().ToBase64().SafeWriteToFile(propertyFile.FullName, true);
+            }
             return propertyFile;
         }
     }
