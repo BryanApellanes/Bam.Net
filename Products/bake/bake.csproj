@@ -133,7 +133,9 @@
     <None Include="build.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="deploy-dev.json" />
+    <None Include="deploy-dev.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="deploy-prod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -284,21 +284,26 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
-            
+
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
             OutLineFormat("Deploying commit: {0}", ConsoleColor.Green, commit);
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
             foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
             {
-                if(string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
+                if (string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
                 {
                     DeployWindowsService(latestBinaries, svcInfo);
                 }
             }
 
-            Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices.ToDictionary(d => d.Host);
-            foreach(DaemonInfo daemon in deployInfo.Daemons)
+            DeployDaemons(targetHost, latestBinaries, deployInfo);
+        }
+
+        private static void DeployDaemons(string targetHost, DirectoryInfo latestBinaries, DeployInfo deployInfo)
+        {
+            Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices?.ToDictionary(d => d.Host) ?? new Dictionary<string, DaemonServiceInfo>();
+            foreach (DaemonInfo daemon in deployInfo.Daemons)
             {
                 if (!hostDaemonServiceInfos.ContainsKey(daemon.Host))
                 {
@@ -314,16 +319,16 @@ namespace Bam.Net.Automation
             {
                 string host = daemonInfo.Host;
                 if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
-                {                    
+                {
                     InstallDaemon(daemonInfo, latestBinaries);
                     SetDaemonAppSettings(daemonInfo);
                 }
             }
 
             // install the bamd monitor service on each host
-            foreach(string host in hostDaemonServiceInfos.Keys)
+            foreach (string host in hostDaemonServiceInfos.Keys)
             {
-                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                 {
                     UninstallBamDaemonService(host);
                     InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.CopyAs<DaemonProcessInfo>()).ToList());
@@ -333,7 +338,7 @@ namespace Bam.Net.Automation
                 }
             }
         }
-        
+
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
         public static void Test()
         {
