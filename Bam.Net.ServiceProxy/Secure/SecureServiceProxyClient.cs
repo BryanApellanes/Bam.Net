@@ -338,9 +338,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
         protected internal void SetSessionKeyAndIv()
         {
-            AesKeyVectorPair kvp;
-            SetSessionKeyRequest request;
-            CreateSetSessionKeyRequest(out kvp, out request);
+            CreateSetSessionKeyRequest(out AesKeyVectorPair kvp, out SetSessionKeyRequest request);
 
             SecureChannelMessage response = this.Post<SecureChannelMessage>(typeof(SecureChannel).Name, "SetSessionKey", new object[] { request });
             if (!response.Success)
@@ -354,15 +352,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
         protected internal void CreateSetSessionKeyRequest(out AesKeyVectorPair kvp, out SetSessionKeyRequest request)
         {
-            kvp = new AesKeyVectorPair();
-            string keyCipher = kvp.Key.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string keyHash = kvp.Key.Sha256();
-            string keyHashCipher = keyHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string ivCipher = kvp.IV.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string ivHash = kvp.IV.Sha256();
-            string ivHashCipher = ivHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-
-            request = new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
+            request = SecureSession.CreateSetSessionKeyInfo(SessionInfo.PublicKey, out kvp);
         }
 
         private static EncryptedValidationToken CreateEncryptedValidationToken(string jsonParamsString, string publicKeyPem)
@@ -372,10 +362,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
         private void Initialize()
         {
-            this.InvokingMethod += (s, a) =>
-            {
-                TryStartSession();
-            };
+            this.InvokingMethod += (s, a) => TryStartSession();
         }
 
         private void TryStartSession()

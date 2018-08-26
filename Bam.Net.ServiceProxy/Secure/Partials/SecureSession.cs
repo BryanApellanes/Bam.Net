@@ -159,7 +159,7 @@ namespace Bam.Net.ServiceProxy.Secure
         
         /// <summary>
         /// Gets a SecureSession with the specified sessionIdentifier creating it
-        /// if necessary
+        /// if necessary.
         /// </summary>
         /// <param name="sessionIdentifier"></param>
         /// <returns></returns>
@@ -251,6 +251,11 @@ namespace Bam.Net.ServiceProxy.Secure
             return encryptor.Value;
         }
 
+        /// <summary>
+        /// Decrypts the specified cipher using symmetric decryption (aes).
+        /// </summary>
+        /// <param name="cipher">The cipher.</param>
+        /// <returns></returns>
         public string Decrypt(string cipher)
         {
             return Decrypt(cipher, out Decrypted decrypted);
@@ -287,10 +292,11 @@ namespace Bam.Net.ServiceProxy.Secure
         /// Perform asymmetric encryption on the specified plainText
         /// </summary>
         /// <param name="plainText"></param>
+        /// <param name="engine"></param>
         /// <returns></returns>
         public string EncryptWithPublicKey(string plainText, IAsymmetricBlockCipher engine = null)
         {
-            AsymmetricKeyParameter key = AsymmetricKey.ToKeyPair().Public;// GetPublicKey();
+            AsymmetricKeyParameter key = AsymmetricKey.ToKeyPair().Public;
 
             return plainText.EncryptWithPublicKey(key, null, engine);
         }
@@ -320,6 +326,19 @@ namespace Bam.Net.ServiceProxy.Secure
 
                 return _privateKey;
             }
+        }
+
+        public static SetSessionKeyRequest CreateSetSessionKeyInfo(string publicKey, out AesKeyVectorPair kvp)
+        {
+            kvp = new AesKeyVectorPair();
+            string keyCipher = kvp.Key.EncryptWithPublicKey(publicKey, Encoding.UTF8);
+            string keyHash = kvp.Key.Sha256();
+            string keyHashCipher = keyHash.EncryptWithPublicKey(publicKey, Encoding.UTF8);
+            string ivCipher = kvp.IV.EncryptWithPublicKey(publicKey, Encoding.UTF8);
+            string ivHash = kvp.IV.Sha256();
+            string ivHashCipher = ivHash.EncryptWithPublicKey(publicKey, Encoding.UTF8);
+
+            return new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
         }
 
         private static SecureSession CreateSession(string identifier, Instant instant = null)

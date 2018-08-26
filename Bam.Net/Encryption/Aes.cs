@@ -100,9 +100,11 @@ namespace Bam.Net.Encryption
         /// <returns></returns>
         public static string Decrypt(string base64EncodedValue, string base64EncodedKey, string base64EncodedIV)
         {
-            AesManaged aes = new AesManaged();
-            aes.IV = Convert.FromBase64String(base64EncodedIV);
-            aes.Key = Convert.FromBase64String(base64EncodedKey);
+            AesManaged aes = new AesManaged
+            {
+                IV = Convert.FromBase64String(base64EncodedIV),
+                Key = Convert.FromBase64String(base64EncodedKey)
+            };
 
             ICryptoTransform decryptor = aes.CreateDecryptor();
 

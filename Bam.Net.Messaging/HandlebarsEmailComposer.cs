@@ -17,16 +17,19 @@ namespace Bam.Net.Messaging
             FileExtension = "hbs";
             SetTemplateDirectory("HandlebarsEmailTemplates");
         }
+
         public HandlebarsDirectory Templates { get; set; }
         
         public override string[] GetTemplateNames()
         {
             return Templates.Directory.GetFiles($"*.{FileExtension}").Select(fi => Path.GetFileNameWithoutExtension(fi.Name)).ToArray();
         }
+
         public override bool TemplateExists(string emailName)
         {
             return new FileInfo(GetFileName(emailName)).Exists;
         }
+
         public override string GetEmailBody(string emailName, params object[] data)
         {
             Args.ThrowIfNullOrEmpty(emailName, "emailName");
@@ -47,6 +50,7 @@ namespace Bam.Net.Messaging
             }
             return Templates.Templates[emailName](combined);
         }
+
         protected internal override string GetTemplateContent(string emailName)
         {
             string fileName = GetFileName(emailName);
