@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Streaming
 {
-    public abstract class StreamingServer<TRequest, TResponse>: StreamingServer
+    public abstract class StreamingServer<TRequest, TResponse>: StreamingServer 
     {
         protected internal override void ReadRequest(TcpClient client)
         {
@@ -65,10 +65,7 @@ namespace Bam.Net.Server.Streaming
             Port = port;
             Name = 6.RandomLetters();
 
-            Started += (o, a) =>
-            {
-                Subscribe(logger);
-            };
+            Started += (o, a) => Subscribe(logger);
         }
 
         public string Name { get; set; }

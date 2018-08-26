@@ -13,7 +13,7 @@ namespace Bam.Net.Server.Streaming
     {
         public StreamingClient(string hostName, int port) : base(hostName, port) { }
 
-        public StreamingResponse<TResponse> SendRequest(TRequest message)
+        public virtual StreamingResponse<TResponse> SendRequest(TRequest message)
         {
             StreamingRequest<TRequest> request = new StreamingRequest<TRequest> { Message = message };
             SendRequest(request);
@@ -42,7 +42,7 @@ namespace Bam.Net.Server.Streaming
 
         protected NetworkStream NetworkStream { get; set; }
 
-        public StreamingResponse SendRequest(object message)
+        public virtual StreamingResponse SendRequest(object message)
         {
             SendRequest(NetworkStream, message);
             return ReceiveResponse<StreamingResponse>(NetworkStream);
