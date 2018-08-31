@@ -48,8 +48,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InterSystems.Data.CacheClient">
-      <HintPath>C:\bam\nuget\packages\InterSystemsCache.1.0.4\lib\netstandard2.0\InterSystems.Data.CacheClient.dll</HintPath>
+    <Reference Include="InterSystems.Data.CacheClient, Version=4.5.0.0, Culture=neutral, PublicKeyToken=ad350a26c4a4447c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>driver\InterSystems.Data.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -105,6 +106,14 @@
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="driver\DotNetGatewaySS.exe" />
+    <Content Include="driver\DotNetGatewaySS64.exe" />
+    <Content Include="driver\InterSystems.CacheExtreme.dll" />
+    <Content Include="driver\InterSystems.CacheExtreme.xml" />
+    <Content Include="driver\InterSystems.Data.CacheClient.dll" />
+    <Content Include="driver\InterSystems.Data.CacheClient.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
