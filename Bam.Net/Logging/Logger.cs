@@ -148,7 +148,7 @@ namespace Bam.Net.Logging
         }
 
         /// <summary>
-        /// Blocks the current thread until the event queue is empty.
+        /// Blocks the current thread until the event queue empties.
         /// </summary>
         public virtual void BlockUntilEventQueueIsEmpty(int sleep = 0)
         {

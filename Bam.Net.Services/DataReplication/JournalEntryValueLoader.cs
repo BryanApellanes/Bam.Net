@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bam.Net.Logging;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,16 +11,72 @@ namespace Bam.Net.Services.DataReplication
 {
     public class JournalEntryValueLoader : IJournalEntryValueLoader
     {
-        public JournalEntryValueLoader()
+        public JournalEntryValueLoader(ILogger logger = null)
         {
-            Values = new Dictionary<string, string>();
+            Values = new ConcurrentDictionary<string, string>();
+            Logger = logger ?? Log.Default;
         }
 
-        // TODO: use this as cache
-        public Dictionary<string, string> Values { get; set; }
-        public string LoadValue(string filePath)
+        public ILogger Logger { get; set; }
+        public bool Reload { get; set; }
+
+        public ConcurrentDictionary<string, string> Values { get; set; }
+
+        public virtual string LoadValue(string filePath)
         {
-            return File.ReadAllText(filePath);
+            if (Values.ContainsKey(filePath))
+            {
+                return Values[filePath];
+            }
+            return ReadFile(filePath);
+        }
+
+        public virtual string ReadFile(string filePath)
+        {
+            string result = string.Empty;
+            if (!Values.ContainsKey(filePath))
+            {
+                if (File.Exists(filePath))
+                {
+                    result = SetValue(filePath, File.ReadAllText(filePath));
+                }
+                else
+                {
+                    WarnFileNotFound(filePath);
+                }
+            }
+
+            if (Reload)
+            {
+                if (File.Exists(filePath))
+                {
+                    result = SetValue(filePath, File.ReadAllText(filePath));
+                    Reload = false;
+                }
+                else
+                {
+                    WarnFileNotFound(filePath);
+                }
+            }
+            return result;
+        }
+
+        protected virtual string SetValue(string filePath, string value)
+        {
+            if (!Values.ContainsKey(filePath))
+            {
+                Values.TryAdd(filePath, value);
+            }
+            else
+            {
+                Values[filePath] = value;
+            }
+            return value;
+        }
+
+        private void WarnFileNotFound(string filePath)
+        {
+            Logger.AddEntry("{0}.{1}: File not found: {2}", LogEventType.Warning, this.GetType().Name, nameof(LoadValue), filePath);
         }
     }
 }

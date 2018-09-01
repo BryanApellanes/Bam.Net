@@ -16,6 +16,13 @@ namespace Bam.Net.Services.DataReplication
     /// </summary>
     public class JournalEntry
     {
+        public event EventHandler Written;
+
+        internal void OnEntryWritten(object sender, EventArgs a)
+        {
+            Written?.Invoke(sender, a);
+        }
+
         /// <summary>
         /// Gets or sets the type id determined by DataReplicationtypeMap.
         /// </summary>

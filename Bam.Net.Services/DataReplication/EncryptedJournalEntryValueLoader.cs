@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class EncryptedJournalEntryValueLoader : IJournalEntryValueLoader
+    public class EncryptedJournalEntryValueLoader : JournalEntryValueLoader
     {
         public EncryptedJournalEntryValueLoader() : this(KeySet.ForApplication)
         { }
@@ -20,15 +20,10 @@ namespace Bam.Net.Services.DataReplication
 
         public KeySet KeySet { get; set; }
 
-        // TODO: add dictionary cache (Dictionary<filePath:string, value:string>)
-        public string LoadValue(string filePath)
+        public override string LoadValue(string filePath)
         {
-            if (File.Exists(filePath))
-            {
-                string cipher = File.ReadAllText(filePath);
-                return KeySet.Decrypt(cipher);
-            }
-            return string.Empty;
+            string cipher = base.LoadValue(filePath);
+            return KeySet.Decrypt(cipher);
         }
     }
 }

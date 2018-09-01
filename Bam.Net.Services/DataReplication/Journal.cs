@@ -165,9 +165,27 @@ namespace Bam.Net.Services.DataReplication
 
         public IEnumerable<JournalEntry> Enqueue(KeyHashAuditRepoData data)
         {
+            return Enqueue(data, (e) => { });
+        }
+
+        public IEnumerable<JournalEntry> Enqueue(KeyHashAuditRepoData data, Action<JournalEntry[]> onFullyFlushed)
+        {
             Task.Run(() => TypeMap.AddMapping(data));
             JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
-            return EnqueueEntriesForWrite(journalEntries);
+            HashSet<JournalEntry> written = new HashSet<JournalEntry>();
+            foreach(JournalEntry entry in journalEntries)
+            {
+                entry.Written += (o, a) =>
+                {
+                    written.Add(((JournalEntryWrittenEventArgs)a).JournalEntry);
+                    if (written.Count == journalEntries.Length)
+                    {
+                        onFullyFlushed(written.ToArray());
+                    }
+                };
+            }
+            EnqueueEntriesForWrite(journalEntries);
+            return journalEntries;
         }
 
         public DirectoryInfo GetTypeDirectory(long typeId)
@@ -184,13 +202,12 @@ namespace Bam.Net.Services.DataReplication
 
         public event EventHandler EntriesEnqueued;
 
-        protected internal IEnumerable<JournalEntry> EnqueueEntriesForWrite(params JournalEntry[] journalEntries)
+        protected internal void EnqueueEntriesForWrite(params JournalEntry[] journalEntries)
         {
             foreach(JournalEntry journalEntry in journalEntries)
             {
                 journalEntry.Seq = SequenceProvider.Next();
                 _dataReplicationJournalEntries.Enqueue(journalEntry);
-                yield return journalEntry;
             }
             FireEvent(EntriesEnqueued, new JournalEntriesEnqueuedEventArgs { JournalEntries = journalEntries });
         }
@@ -214,7 +231,9 @@ namespace Bam.Net.Services.DataReplication
                                 if(journalEntry != null)
                                 {
                                     FileInfo propertyFile = Flusher.Flush(this, journalEntry);
-                                    FireEvent(EntryFlushed, new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile });                                    
+                                    JournalEntryWrittenEventArgs  eventArgs = new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile };
+                                    FireEvent(EntryFlushed, eventArgs);
+                                    journalEntry.OnEntryWritten(this, eventArgs);
                                 }
                             }
                         }

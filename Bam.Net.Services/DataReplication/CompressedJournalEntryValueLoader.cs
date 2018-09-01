@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
-    public class CompressedJournalEntryValueLoader : IJournalEntryValueLoader
+    public class CompressedJournalEntryValueLoader : JournalEntryValueLoader
     {
         public CompressedJournalEntryValueLoader()
         {
@@ -16,17 +16,9 @@ namespace Bam.Net.Services.DataReplication
 
         public Encoding Encoding { get; set; }
 
-        public string LoadValue(string filePath)
+        public override string LoadValue(string filePath)
         {
-            if (File.Exists(filePath))
-            {
-                string base64 = File.ReadAllText(filePath);
-                if (!string.IsNullOrEmpty(base64))
-                {
-                    return Encoding.GetString(base64.FromBase64().GUnzip());
-                }
-            }
-            return string.Empty;
+            return Encoding.GetString(base.LoadValue(filePath).FromBase64().GUnzip());
         }
     }
 }

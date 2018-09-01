@@ -18,7 +18,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: can get type map")]
         public void CanGetTypeMap()
         {
-            JournalTypeMap typeMap = GetTestObject<JournalTypeMap>();
+            JournalTypeMap typeMap = GetTestObjectWithEncryptedJournal<JournalTypeMap>();
             Expect.IsNotNull(typeMap, "typeMap was null");
         }
 
@@ -107,27 +107,36 @@ namespace Bam.Net.Services.Tests
             }
         }
 
-        [UnitTest("Data Replication: can read entries")]
-        public void CanRead()
+        [UnitTest("Data Replication: can read compressed entries")]
+        public void CanReadCompressed()
         {
-            Journal journal = GetTestObject<Journal>();
+            Journal journal = GetTestObjectWithCompressedJournal<Journal>();
+            DoReadTest(journal);
+        }
+
+        [UnitTest("Data Replication: can read encrypted entries")]
+        public void CanReadEncrypted()
+        {
+            Journal journal = GetTestObjectWithEncryptedJournal<Journal>();
+            DoReadTest(journal);
+        }
+
+        private static void DoReadTest(Journal journal)
+        {
             DataReplicationTestClass value1 = GetRandomDataInstance();
             HashSet<DataReplicationTestClass> retrieved = new HashSet<DataReplicationTestClass>();
             List<JournalEntry> entries = new List<JournalEntry>();
             AutoResetEvent blocker = new AutoResetEvent(false);
-            journal.QueueEmpty += (o, a) =>
+            bool? fullyFlushed = false;
+            entries.AddRange(journal.Enqueue(value1, (je)=>
             {
-                OutLineFormat("queue empty fired");
-                foreach (JournalEntry entry in entries)
-                {
-                    retrieved.Add(journal.LoadInstance<DataReplicationTestClass>(entry));
-                }
                 blocker.Set();
-            };
-            entries.AddRange(journal.Enqueue(value1));
+                fullyFlushed = true;
+            }));
             blocker.WaitOne(5000);
             DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value1.Id);
             Expect.IsNotNull(check);
+            Expect.IsTrue(fullyFlushed.Value);
             Expect.AreEqual(value1.FirstName, check.FirstName);
             Expect.AreEqual(value1.LastName, check.LastName);
             Expect.AreEqual(value1.Address, check.Address);
@@ -178,7 +187,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: can save and load type map")]
         public void CanSaveAndLoadTypeMap()
         {
-            JournalTypeMap typeMap = GetTestObject<JournalTypeMap>();
+            JournalTypeMap typeMap = GetTestObjectWithEncryptedJournal<JournalTypeMap>();
             typeMap.AddMapping(new DataReplicationTestClass());
             int typeCount = typeMap.TypeMappings.Count;
             int propCount = typeMap.PropertyMappings.Count;
@@ -228,8 +237,17 @@ namespace Bam.Net.Services.Tests
             registry.For<Journal>().Use<Journal>();
             yield return registry.Get<Journal>();
         }
-        
-        private T GetTestObject<T>()
+
+        private T GetTestObjectWithCompressedJournal<T>()
+        {
+            ServiceRegistry registry = JournalRegistryContainer.GetServiceRegistry();
+            registry.For<IJournalEntryValueFlusher>().Use<CompressedJournalEntryValueFlusher>();
+            registry.For<IJournalEntryValueLoader>().Use<CompressedJournalEntryValueLoader>();
+            registry.For<Journal>().Use<Journal>();
+            return registry.Get<T>();
+        }
+
+        private T GetTestObjectWithEncryptedJournal<T>()
         {
             ServiceRegistry registry = JournalRegistryContainer.GetServiceRegistry();
             registry.For<IJournalEntryValueFlusher>().Use<EncryptedJournalEntryValueFlusher>();
