@@ -27,11 +27,24 @@ namespace Bam.Net.Logging
         void AddEntry(string messageSignature, Exception ex);
         void AddEntry(string messageSignature, int verbosity, Exception ex);
         void AddEntry(string messageSignature, LogEventType type, Exception ex);
+
+        /// <summary>
+        /// Adds an information log entry.
+        /// </summary>
+        /// <param name="messageSignature">The message signature.</param>
+        /// <param name="variableMessageValues">The variable message values.</param>
         void AddEntry(string messageSignature, params string[] variableMessageValues);
         void AddEntry(string messageSignature, int verbosity, params string[] variableMessageValues);
         void AddEntry(string messageSignature, LogEventType type, params string[] variableMessageValues);
         void AddEntry(string messagesignature, int verbosity, Exception ex, params string[] variableMessageValues);
         void AddEntry(string messagesignature, LogEventType type, Exception ex, params string[] variableMessageValues);
+
+        /// <summary>
+        /// Adds an error log entry.
+        /// </summary>
+        /// <param name="messageSignature">The message signature.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="variableMessageValues">The variable message values.</param>
         void AddEntry(string messageSignature, Exception ex, params string[] variableMessageValues);
 
         void BlockUntilEventQueueIsEmpty(int sleep = 0);

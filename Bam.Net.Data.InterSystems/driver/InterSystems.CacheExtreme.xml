@@ -1,0 +1,3305 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InterSystems.CacheExtreme</name>
+    </assembly>
+    <members>
+        <member name="T:InterSystems.BuildInfo">
+            <summary>
+            Version Information
+            </summary>
+        </member>
+        <member name="T:InterSystems.Globals.ByteArrayRegion">
+            <summary>
+            Class <c>ByteArrayRegion</c> specifies a region of a byte array,
+            encapsulating the source array, the starting offset, and the length
+            of the region.  
+            </summary>
+            <remarks>
+            This class provides a convenient and efficient way to
+            pass a byte array region as an argument to the Connection methods
+            <see cref="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])"/> or
+            <see cref="M:InterSystems.Globals.Connection.CallProcedure(System.String,System.String,System.Object[])"/>, without having to copy the region
+            to a separate <c>byte[]</c> instance.
+            </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.ByteArrayRegion.#ctor">
+            <summary>
+            Constructs an uninitialized instance of <c>ByteArrayRegion</c>.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ByteArrayRegion.#ctor(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Constructs an instance of <c>ByteArrayRegion</c> with specified source
+            array, offset, and length.
+            </summary>
+            <param name="sourceArray"> the array containing the region.</param>
+            <param name="offset"> the starting offset of the region within 
+            <c>sourceArray</c>.</param>
+            <param name="length"> the length of the region.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ByteArrayRegion.Set(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Sets all defining attributes of the region.
+            </summary>
+            <param name="sourceArray"> the source array containing the region.</param>
+            <param name="offset"> the starting offset of the region within the source array.
+            </param>
+            <param name="length"> the length of the region.</param>
+        </member>
+        <member name="P:InterSystems.Globals.ByteArrayRegion.SourceArray">
+            <summary>
+            The source array containing the region.
+            </summary>
+        </member>
+        <member name="P:InterSystems.Globals.ByteArrayRegion.Offset">
+            <summary>
+            The starting offset of the region within the source array.
+            </summary>
+        </member>
+        <member name="P:InterSystems.Globals.ByteArrayRegion.Length">
+            <summary>
+            The length of the region.
+            </summary>
+        </member>
+        <member name="T:InterSystems.Globals.Connection">
+             <summary>
+             <c>Connection</c> represents a connection to a Globals
+             database, which must be started before performing any operations on globals.
+             </summary>
+             <remarks><para>
+             Refer to <see cref="T:InterSystems.Globals.NodeReference"/> for a general introduction to the globals
+             persistence model, and operations that can be performed on globals.
+             See the GlobalsSample application for code examples using this class.
+             </para><para>
+             The Globals database to which to connect must be identified by specifying
+             the pathname of the installation's root directory, as the value of the environment
+             variable <c>GLOBALS_HOME</c>.
+             </para><para>
+             Methods of this class may throw <see cref="T:InterSystems.Globals.GlobalsException"/>.
+             </para><para>
+             Usage:
+             </para><para>
+               Get a <c>Connection</c> instance by calling the <c>ConnectionContext</c> method
+                <see cref="M:InterSystems.Globals.ConnectionContext.GetConnection"/>.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.Connect"/> to start the connection.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.IsConnected"/> to check whether this <c>Connection</c> instance is
+               connected to a Globals database.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.GetNamespace"/> to determine the namespace to which this
+               <c>Connection</c>
+               instance is connected.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.CreateNodeReference(System.String)"/> to create instances of
+               <see cref="T:InterSystems.Globals.NodeReference"/>
+               to perform operations on globals.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.CreateList"/> to create instances of <see cref="T:InterSystems.Globals.ValueList"/>, for
+               serializing
+               heterogeneous lists of primitive datatypes.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.CreateGlobalsDirectory"/> to create a browsable list of all the globals in
+               the Globals database.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.StartTransaction"/>, <see cref="M:InterSystems.Globals.Connection.Commit"/>, <see cref="M:InterSystems.Globals.Connection.Rollback"/>,
+               <see cref="M:InterSystems.Globals.Connection.Rollback(System.Int32)"/>, and <see cref="M:InterSystems.Globals.Connection.TransactionLevel"/> to manage database
+               transactions.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.Connection.Close"/> to explicitly close the connection (required, to release
+               underlying
+               resources).
+            </para><para>
+            Thread Safety
+            </para><para>
+            Class <c>Connection</c> is conditionally thread-safe.  A <c>Connection</c>
+            instance can be safely used in multiple threads, if no methods are
+            called which change attributes of its state which persist across
+            multiple calls: whether or not it is connected (<c>Connect</c>), whether or
+            not it is closed (<c>Close</c>), the current namespace (<c>SetNamespace</c>),
+            whether or not a transaction is in progress (<c>StartTransaction</c>,
+            <c>Commit</c>,
+            <c>Rollback</c>), and whether or not all locks have been released
+            (<c>ReleaseAllLocks</c>).   If any of
+            these methods is called on a <c>Connection</c> instance that is used in
+            multiple threads, the code can be made thread-safe by synchronizing
+            each sequence of method calls that changes the instance's state and
+            depends on that state remaining unchanged by other threads, using the
+            lock provided by the property <see cref="P:InterSystems.Globals.Connection.SyncLock"/>.  For example:
+            <code>
+            lock (myConnection.SyncLock) {
+               try {
+                  // Make sure this instance is Connected.
+                  if (!myConnection.IsConnected()) {
+                     myConnection.Connect(myNamespace, myUseName, myPassword);
+                  }
+                  else {
+                     // Make sure this instance is connected to the desired namespace.
+                     myConnection.SetNamespace(myNamespace);
+                  }
+                  // Before using transactions, check whether a transaction is
+                  // already in progress.
+                  if (myConnection.TransactionLevel() != 0) {
+                     // A transaction is already in progress.
+                  }
+               }
+               catch (GlobalsException ex) {
+                  if (ex.ErrorCode == GlobalsException.METHOD_CALLED_AFTER_CLOSE) {
+                     // Another thread may have closed this Connection instance.
+                  }
+               }
+            }
+            </code>
+            While this block of code is executing, no method on the same
+            <c>Connection</c> instance will execute in any other thread, whether or
+            not the other thread explicitly synchronizes on <c>SyncLock</c>.  In the
+            synchronized block, it is only necessary to set those attributes of
+            the <c>Connection</c>'s state which might be modified in another
+            thread, and upon which code in the current block depends.  For
+            instance, if no other thread ever calls <c>SetNamespace</c>, and if the
+            instance's namespace has already been set to the desired value, then it is
+            not necessary to call <c>SetNamespace</c> in this block. If this block does not
+            use transactions, or if this is the only thread that uses transactions,
+            then it is not necessary to check whether a transaction is
+            in progress.  If another thread may have called <c>ReleaseAllLocks</c>, then any
+            locks needed within this block should be acquired within this block.
+             </para></remarks>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.#ctor">
+            <summary>
+            A protected constructor is defined to permit deriving classes from
+            <c>Connection</c>.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Connect">
+            <summary>
+            Connects to the Globals database, using environment variable
+            <c>GLOBALS_HOME</c> to locate the Globals database.
+            </summary>
+            <remarks>
+            Throws <c>GlobalsException</c> if this <c>Connection</c> intance is already
+            connected.
+            </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Connect(System.String,System.String,System.String)">
+            <summary>
+            Connects to a specified namespace, using environment variable
+            <c>GLOBALS_HOME</c> to locate the Globals database.
+            </summary>
+            <remarks>
+            Throws
+            <c>GlobalsException</c> if this <c>Connection</c> intance is already
+            connected.
+            </remarks>
+            <param name="namespc"> the namespace to which to connect.</param>
+            <param name="user"> name of user connecting.</param>
+            <param name="password"> password of user connecting.</param>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.IsConnected">
+            <summary>
+            Indicates whether this <c>Connection</c> instance is currently connected to
+            a Globals database.
+            </summary>
+            <remarks>
+            When a <c>Connection</c> instance is returned
+            by the <c>ConnectionContext</c> method
+            <see cref="M:InterSystems.Globals.ConnectionContext.GetConnection"/>, it is possible that it is already
+            connected. <c>IsConnected()</c> can be called to avoid calling
+            <see cref="M:InterSystems.Globals.Connection.Connect"/> and having it throw a <c>GlobalsException</c> if this
+            instance is already connected.
+            </remarks>
+            <returns> <c>true</c> if connected (that is, if
+            <c>Connect(String, String, String)</c> has been
+            called successfully, and <see cref="M:InterSystems.Globals.Connection.Close"/> has not been called since
+            <c>connect</c> was called), else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Close">
+            <summary>
+            Closes a connection. It is important to call this method when finished
+            with a connection, in order to ensure that all locks, licenses, and other
+            resources associated with the connection are released.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.SetNamespace(System.String)">
+            <summary>
+            Sets the current namespace within the Globals database.
+            </summary>
+            <param name="namespc">  the namespace to set as current namespace.</param>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.GetNamespace">
+            <summary>
+            Returns the current namespace within the Globals database.
+            </summary><remarks>
+            Throws <c>GlobalsException</c> if called when this <c>Connection</c>
+            instance is not connected to a Globals database.
+            </remarks>
+            <returns> The namespace to which this <c>Connection</c> instance
+            is currently connected.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.ReleaseAllLocks">
+            <summary>
+            Releases all locks currently held in this connection.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.StartTransaction">
+            <summary>
+            Starts a transaction (which may be a nested transaction).
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Commit">
+            <summary>
+            Commits one level of transaction for the current session.
+            </summary>
+            <remarks>
+            If <c>commit()</c> is
+            called when <c>transactionLevel()</c> is greater than 1, it
+            merges the current transaction level with the enclosing transaction, so that it
+            can still be rolled back by calling <c>rollback()</c>.  When <c>commit()</c>
+            is called at <c>transactionLevel()</c> 1, it permanently commits any changes
+            made during the transaction.
+            </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Rollback">
+            <summary>
+            Performs a rollback of all levels of the current transaction.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.Rollback(System.Int32)">
+            <summary>
+            Rolls back <c>levelCount</c> levels of transaction, where levelCount is a
+            positive integer.
+            </summary><remarks>
+            Do nothing if <c>levelCount</c> &lt;= 0, and stop rolling back once
+            transactionLevel reaches 0, if levelCount is greater than initial transactionLevel.
+            </remarks>
+            <param name="levelCount"> the number of level to rollback.</param>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.TransactionLevel">
+            <summary>
+            Returns current transaction level of this connection (0 if not in a
+            transaction).
+            </summary>
+            <returns> the current transaction level.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CreateNodeReference">
+            <summary>
+            Creates a <see cref="T:InterSystems.Globals.NodeReference"/> instance with no specified global name.
+            </summary>
+            <returns> a new instance of <see cref="T:InterSystems.Globals.NodeReference"/>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CreateNodeReference(System.String)">
+            <summary>
+            Creates a <see cref="T:InterSystems.Globals.NodeReference"/> instance with the name specified in the
+            parameter.
+            </summary>
+            <param name="name"> the name of the global referred to by this
+            <c>NodeReference</c>.</param>
+            <returns> a new instance of <c>NodeReference</c> with the
+                    specified global name.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CreateList">
+            <summary>
+            Creates an empty <see cref="T:InterSystems.Globals.ValueList"/>.
+            </summary>
+            <returns> a new instance of <c>ValueList</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CreateList(System.Int32)">
+            <summary>
+            Creates an empty <see cref="T:InterSystems.Globals.ValueList"/> with a specified initial buffer size.
+            </summary><remarks>
+            This method permits
+            optional tuning of the amount of memory used for a list's underlying implementation.
+            By default, a <see cref="T:InterSystems.Globals.ValueList"/> is created with a 1 kbyte buffer, which
+            grows if needed
+            but never gets smaller.  Specifying a smaller <c>bufferSize</c> may save
+            memory if a list is known to need significantly less than 1 kbytes.  Specifying
+            a larger <c>bufferSize</c> may enhance performance by avoiding repeated
+            reallocation to grow the buffer, if a list is known to need significantly more than
+            1 kbytes.
+            </remarks>
+            <param name="bufferSize"> initial size in bytes of underlying buffer.</param>
+            <returns> a new instance of <c>ValueList</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CreateGlobalsDirectory">
+            <summary>
+            Creates a directory of the global names in the current namespace,
+            positioned before the first global name in collating sequence.
+            </summary>
+            <returns> a new instance of <c>GlobalsDirectory</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript function, passing 0 or more arguments and
+            returning the function's return value as an instance of <c>string</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            </summary>
+            <remarks>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            <p>
+            The return value is an instance of <c>string</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>byte[]</c>
+            rather than <c>string</c>, use <see cref="M:InterSystems.Globals.Connection.CallBytesFunction(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>ValueList</c>
+            rather than <c>string</c>, use <see cref="M:InterSystems.Globals.Connection.CallListFunction(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="functionName"> name of the Cache ObjectScript function to
+            call.</param>
+            <param name="routineName"> name of the routine containing the function.</param>
+            <param name="args"> 0 or more arguments to pass to the function.</param>
+            <returns> the value returned by the Cache ObjectScript function, as an instance
+            of <c>string</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallBytesFunction(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript function, passing 0 or more arguments and
+            returning the function's return value as an instance of
+            <c>byte[]</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.
+            </summary>
+            <remarks>
+            This method is identical to <see cref="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])"/>,
+            except that string values are returned as instances of <c>byte[]</c>
+            rather than <c>string</c>.
+            <p>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            The return value is an instance of <c>byte[]</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>string</c>
+            rather than <c>byte[]</c>, use <see cref="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>ValueList</c>
+            rather than <c>byte[]</c>, use <see cref="M:InterSystems.Globals.Connection.CallListFunction(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="functionName"> name of the Cache ObjectScript function to
+            call.</param>
+            <param name="routineName"> name of the routine containing the function.</param>
+            <param name="args"> 0 or more arguments to pass to the function.</param>
+            <returns> the value returned by the Cache ObjectScript function, as an instance
+            of <c>byte[]</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallListFunction(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript function, passing 0 or more arguments and
+            returning the function's return value as an instance of
+            <see cref="T:InterSystems.Globals.ValueList"/>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.
+            </summary>
+            <remarks>
+            This method is identical to <see cref="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])"/>,
+            except that string values are returned as instances of <c>ValueList</c>
+            rather than <c>string</c>.
+            <p>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <c>ValueList</c>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            The return value is an instance of <c>ValueList</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>string</c>
+            rather than <c>ValueList</c>, use <see cref="M:InterSystems.Globals.Connection.CallFunction(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>byte[]</c>
+            rather than <c>ValueList</c>, use <see cref="M:InterSystems.Globals.Connection.CallBytesFunction(System.String,System.String,System.Object[])"/>.
+            </p><p>
+            Throws  <see cref="T:InterSystems.Globals.GlobalsException"/> if the called function returns a string
+            value which is not in valid internal format for <c>ValueList</c>.
+            </p></remarks>
+            <param name="functionName"> name of the Cache ObjectScript function to
+            call.</param>
+            <param name="routineName"> name of the routine containing the function.</param>
+            <param name="args"> 0 or more arguments to pass to the function.</param>
+            <returns> the value returned by the Cache ObjectScript function, as an instance
+            of <c>ValueList</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallProcedure(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript procedure, passing 0 or more arguments.
+            </summary>
+            <remarks>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </remarks>
+            <param name="procedureName"> name of the Cache ObjectScript procedure to
+            call.</param>
+            <param name="routineName"> name of the routine containing the procedure.</param>
+            <param name="args"> 0 or more arguments to pass to the procedure.</param>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method, passing 0 or more arguments and
+            returning the method's return value as an instance of <c>string</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            </summary>
+            <remarks>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            <p>
+            The return value is an instance of <c>string</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>byte[]</c>
+            rather than <c>string</c>, use <see cref="M:InterSystems.Globals.Connection.CallBytesClassMethod(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>ValueList</c>
+            rather than <c>string</c>, use <see cref="M:InterSystems.Globals.Connection.CallListClassMethod(System.String,System.String,System.Object[])"/>.
+            </p><p>
+            Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the called method does not return a
+            value.  To call a Cache class method which does not return a value, use
+            <see cref="M:InterSystems.Globals.Connection.CallVoidClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class
+            to which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+            <returns> the value returned by the Cache ObjectScript class method, as an instance
+            of <c>string</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallBytesClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method, passing 0 or more arguments and
+            returning the method's return value as an instance of
+            <c>byte[]</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.
+            </summary>
+            <remarks>
+            This method is identical to <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/>,
+            except that string values are returned as instances of <c>byte[]</c>
+            rather than <c>string</c>.
+            <p>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            The return value is an instance of <c>byte[]</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>string</c>
+            rather than <c>byte[]</c>, use <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>ValueList</c>
+            rather than <c>byte[]</c>, use <see cref="M:InterSystems.Globals.Connection.CallListClassMethod(System.String,System.String,System.Object[])"/>.
+            </p><p>
+            Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the called method does not return a
+            value.  To call a Cache class method which does not return a value, use
+            <see cref="M:InterSystems.Globals.Connection.CallVoidClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class to
+            which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+            <returns> the value returned by the Cache ObjectScript class method, as an instance
+            of <c>byte[]</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallListClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method, passing 0 or more arguments and
+            returning the method's return value as an instance of
+            <see cref="T:InterSystems.Globals.ValueList"/>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.
+            </summary>
+            <remarks>
+            This method is identical to <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/>,
+            except that string values are returned as instances of <c>ValueList</c>
+            rather than <c>string</c>.
+            <p>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <c>ValueList</c>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            The return value is an instance of <c>ValueList</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            To cause string values to be returned as instances of <c>string</c>
+            rather than <c>ValueList</c>, use <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/>.
+            To cause string values to be returned as instances of <c>byte[]</c>
+            rather than <c>ValueList</c>, use <see cref="M:InterSystems.Globals.Connection.CallBytesClassMethod(System.String,System.String,System.Object[])"/>.
+            </p><p>
+            Throws  <see cref="T:InterSystems.Globals.GlobalsException"/> if the called method returns a string value
+            which is not in valid internal format for <c>ValueList</c>.
+            Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the called method does not return a
+            value.  To call a Cache class method which does not return a value, use
+            <see cref="M:InterSystems.Globals.Connection.CallVoidClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class to
+            which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+            <returns> the value returned by the Cache ObjectScript class method, as an instance
+            of <c>ValueList</c>, <c>int</c>, <c>long</c>, or
+            <c>double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.CallVoidClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method with no return value,
+            passing 0 or more arguments.
+            </summary>
+            <remarks>
+            This method is identical to <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/>,
+            except that string values are returned as instances of <c>byte[]</c>
+            rather than <c>string</c>.
+            <p>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c>, <see cref="T:InterSystems.Globals.ValueList"/>,
+            <c>byte[]</c>, or <see cref="T:InterSystems.Globals.ByteArrayRegion"/>.  Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments.  Throws <see cref="T:InterSystems.Globals.GlobalsException"/>
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            This method may be used to call Cache class methods which return no value,
+            or to call Cache class methods which do return a value, when the caller does not
+            need the return value.  To call Cache class methods and get their return values,
+            use <see cref="M:InterSystems.Globals.Connection.CallClassMethod(System.String,System.String,System.Object[])"/> or <see cref="M:InterSystems.Globals.Connection.CallBytesClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class to
+            which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+        </member>
+        <member name="M:InterSystems.Globals.Connection.GetProductVersion">
+             <summary>
+             Gets the version of Cache to which this Connection instance is connected.
+             Throws <c>GlobalsException</c> if this Connection instance
+             is not connected.
+             </summary>
+            
+             <returns> the Cache version.</returns>
+        </member>
+        <member name="P:InterSystems.Globals.Connection.SyncLock">
+            <summary>
+            Lock for synchronizing multi-threaded access to this
+            <c>Connection</c> instance.
+            </summary>
+        </member>
+        <member name="T:InterSystems.Globals.ConnectionContext">
+            <summary>
+            Class <c>ConnectionContext</c> is used to get the instance of <see cref="T:InterSystems.Globals.Connection"/>
+            for the current context.
+            </summary>
+            <remarks><para>
+            The Globals API permits only one connection to be active at
+            time, within a context.
+            By default (that is, using the non-thread-specific
+            threading model), the context is the entire process.  If <see cref="M:InterSystems.Globals.ConnectionContext.SetOption(System.Int32,System.Int32)"/> has
+            been called to specify a thread-specific threading model, the context is the
+            current thread.  Within the context, the
+            <c>Connection</c> instance is
+            managed as a singleton: the instance is created the first time it is requested (by
+            calling <see cref="M:InterSystems.Globals.ConnectionContext.GetConnection"/>),
+            and the same instance is returned for all subsequent requests.
+            </para><para>
+            A <c>Connection</c> instance must be connected by calling
+            the <c>Connection</c> method <see cref="M:InterSystems.Globals.Connection.Connect"/>
+            before it can be used.  A <c>Connection</c> instance returned by
+            <c>GetConnection</c> may or may not already be connected (although it is
+            guaranteed not to be already connected if this is the first call to
+            <c>GetConnection</c> within the current application.  To determine whether
+            a <c>Connection</c> instance is connected, call
+            the <c>Connection</c> method <see cref="M:InterSystems.Globals.Connection.IsConnected"/>.
+            <c>Connection.Connect</c> throws
+            <c>GlobalsException</c>, if called when the <c>Connection</c> instance
+            is already connected.
+            </para><para>
+            See the GlobalsSample application for code examples using this class.
+            </para><para>
+            Methods of this class may throw <see cref="T:InterSystems.Globals.GlobalsException"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL">
+            <summary>
+            Option for specifying whether a connection is thread-specific or
+            non-thread-specific.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_NON_THREAD_SPECIFIC">
+            <summary>  <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL"/> option value to specify a
+            non-thread-specific connection.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_THREAD_SPECIFIC">
+            <summary>  <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL"/> option value to specify a
+            thread-specific connection.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ConnectionContext.#ctor">
+            <summary>
+            A protected constructor is defined to permit deriving classes from
+            <c>ConnectionContext</c>.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ConnectionContext.GetConnection">
+            <summary>  Gets a <c>Connection</c>
+             with a thread-specific implementation, or
+             a <c>Connection</c> with a non-thread-specific implementation,
+             depending on the <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL"/> option, which defaults to
+             non-thread-specific.
+            </summary>
+            <remarks>
+              <para>
+             A  non-thread-specific <c>Connection</c> can be used in any thread,
+             and only one
+             non-thread-specific <c>Connection</c> can be created.
+             It is thread-safe, but
+             does not provide parallelism for globals operations.  Once an application has
+             created a non-thread-specific <c>Connection</c>, it cannot create any
+             thread-specific
+             <c>Connection</c>.
+             </para><para>
+             A thread-specific <c>Connection</c> can only be used in the thread in which
+             it is
+             created, and only one thread-specific <c>Connection</c> can be
+             created per thread.  It can be used
+             concurrently with other thread-specific connections in other threads,
+             and globals operations in different thread-specific connections can be performed
+             in parallel, hardware permitting.  Once an application has created a
+             thread-specific connection, it cannot create a non-thread-specific Connection.
+            </para>
+            <para>
+             When this method is called, if no prior instance of <c>Connection</c>
+             exists
+            within the context determined by the
+             <c>THREADING_MODEL</c> (application-wide for
+             <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_NON_THREAD_SPECIFIC"/> or
+             within the current thread for <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_THREAD_SPECIFIC"/>),
+             a new <c>Connection</c>
+             instance is created and returned. Otherwise, the existing <c>Connection</c>
+             instance is returned.
+             </para></remarks>
+             <returns> a singleton instance of <c>Connection</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ConnectionContext.GetConnection(System.String)">
+            <summary>  Gets an instance of a class, specified by name,
+              that is derived from <c>Connection</c>.
+            </summary>
+            <remarks><para>
+             The class specified by <c>connectionClassName</c>, or one of its superclasses,
+             must be derived from <c>Connection</c>, and must have a public constructor which takes
+             no parameters, or a <see cref="T:InterSystems.Globals.GlobalsException"/> is thrown.
+             </para><para>
+             This method determines the context (application-wide or within the current thread)
+             based on <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL"/>, and manages the <c>Connection</c> instance
+             as a singleton within that context, in the same way as <see cref="M:InterSystems.Globals.ConnectionContext.GetConnection"/>.
+             This method enforces the same restriction that a thread-specific
+             <c>Connection</c> cannot be created if a non-thread-specific
+             <c>Connection</c> has already been created, and vice-versa.
+             </para><para>
+             When this method is called, if no prior instance of <c>Connection</c>
+             exists within the context determined by the
+             <c>THREADING_MODEL</c> (application-wide for
+             <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_NON_THREAD_SPECIFIC"/> or
+             within the current thread for <see cref="F:InterSystems.Globals.ConnectionContext.THREADING_MODEL_THREAD_SPECIFIC"/>),
+             a new instance of the class specified by <c>connectionClassName</c> is
+             created and returned.  If a <c>Connection</c> instance already exists,
+             then if it is an instance of the class specified by <c>connectionClassName</c>,
+             it is returned.  Otherwise, an exception is thrown.
+             </para><para>
+             This method is intended to enable <c>ConnectionContext</c> to be
+             extended to manage singleton instances of classes which are derived from
+             <see cref="T:InterSystems.Globals.Connection"/>.
+              The following example defines
+             class <c>MyNamespace.MyConnectionContext</c>
+             to manage class <c>MyNamespace.MyConnection</c>:
+            <code>
+            using System;
+            namespace MyNamespace {
+               public class MyConnectionContext : ConnectionContext {
+                  public static MyConnection GetMyConnection() {
+                     string assemblyQualifiedName =
+                            Type.GetType("MyNamespace.MyConnection").AssemblyQualifiedName;
+                     return (MyConnection)GetConnection(assemblyQualifiedName);
+                  }
+               }
+            }
+            </code>
+            </para></remarks>
+            <param name="connectionClassName"> the assembly-qualified name of a class
+            which is derived from  <c>Connection</c>.</param>
+             <returns> a singleton instance of <c>Connection</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ConnectionContext.SetOption(System.Int32,System.Int32)">
+            <summary>  Sets configurations options.</summary>
+            <param name="option"> option to set.</param>
+            <param name="value"> value to which to set the option.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ConnectionContext.GetOption(System.Int32)">
+            <summary>  Find out currently configured options.</summary>
+            <param name="option"> option for which a value is requested.</param>
+            <returns> option value.</returns>
+        </member>
+        <member name="T:InterSystems.Globals.GlobalsDirectory">
+             <summary>
+             <c>GlobalsDirectory</c> represents a browsable directory of the
+             names of globals
+             in the current namespace of a Globals database.
+             </summary>
+             <remarks>
+             <para>
+             Global names may be browsed in
+             ascending or descending collating sequence.  These names may be passed to
+             the <c>Connection</c> method
+             <see cref="M:InterSystems.Globals.Connection.CreateNodeReference(System.String)"/> to create instances of
+             <see cref="T:InterSystems.Globals.NodeReference"/> that can be used to perform operations on globals.
+             </para><para>
+             Refer to <see cref="T:InterSystems.Globals.NodeReference"/>
+             for a general introduction to the globals
+             persistence model, and operations that can be performed on globals.
+             See the GlobalsSample application for code examples using this class.
+             </para><para>
+             Methods of this class may throw <see cref="T:InterSystems.Globals.GlobalsException"/>.
+             </para><para>
+             Usage:
+             </para><para>
+               Create a <c>GlobalsDirectory</c> instance by calling the <c>Connection</c> method
+                <see cref="M:InterSystems.Globals.Connection.CreateGlobalsDirectory"/>.
+             </para><para>
+               Current position for a newly-created instance is before the first global name in
+                collating sequence, and the instance contains the names of those globals that
+                exist or have descendants at the time the instance is created.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.NextGlobalName"/> to get the next name after the current position.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.NextGlobalName(System.String)"/> to get the next name in collating
+                sequence after the specified <c>globalName</c>.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.PreviousGlobalName"/> to get the previous name before the current
+                position.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.PreviousGlobalName(System.String)"/> to get the previous name in
+                collating sequence before the specified <c>globalName</c>.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.Refresh"/> to bring this <c>GlobalsDirectory</c> instance up to date
+                with any globals that have been created or killed since this intance was created or
+                most recently refreshed.
+             </para><para>
+               Call <see cref="M:InterSystems.Globals.GlobalsDirectory.Close"/> when finished using this instance, to release underlying resources
+                (important in order to avoid a memory leak in the underlying implementation).
+             </para>
+            <para>
+            Thread Safety
+            </para><para>
+            Interface <c>GlobalsDirectory</c> is conditionally thread-safe.
+            Different instances of <c>GlobalsDirectory</c> can always be used safely in
+            multiple threads.  Most <c>GlobalsDirectory</c> methods change the state of
+            the <c>GlobalsDirectory</c> instance on which they are called, in a way that
+            persists across multiple calls, and which would affect behavior of
+            that <c>GlobalsDirectory</c> instance in another thread.  For example,
+            <c>NextGlobalName</c> and <c>PreviousGlobalName</c> change the current position
+            within the list, <c>Refresh</c> can change which globals are included in the
+            list, and <c>Close</c> changes the state of whether or not the instance is
+            closed.  The same instance of <c>GlobalsDirectory</c> can be used safely in
+            multiple threads, provided that each sequence of method calls that
+            changes the instance's state and depends on that state remaining
+            unchanged is synchronized using the lock returned by the method
+            <see cref="P:InterSystems.Globals.GlobalsDirectory.SyncLock"/>.  For example:
+            <code>
+            lock (myDirectory.SyncLock) {
+               try {
+                  myDirectory.Refresh();
+                  String myGlobalName = "";
+                  int myGlobalCount = 0;
+                  do {
+                     globalName = myDirectory.NextGlobalName(myGlobalName);
+                     if (myGlobalName != "") {
+                        myGlobalCount++;
+                     }
+                  } while (myGlobalName != "");
+                  // myGlobalCount is guaranteed to contain the correct count of the
+                  // number of globals in this GlobalsDirectory instance at the time
+                  // when myDirectory.Refresh() was called.
+               }
+               catch (GlobalsException ex) {
+                  if (ex.ErrorCode == GlobalsException.METHOD_CALLED_AFTER_CLOSE) {
+                     // Another thread may have closed this GlobalsDirectory instance.
+                  }
+               }
+            }
+            </code>
+            While this block of code is executing, no method on the same
+            <c>GlobalsDirectory</c> instance will execute in any other thread, whether or
+            not the other thread explicitly synchronizes on <c>SyncLock</c>.
+            </para> </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.#ctor">
+            <summary>
+            A protected constructor is defined to permit deriving classes from
+            <c>GlobalsDirectory</c>.
+            </summary>
+            <remarks>
+            Throws a <c>GlobalsException</c> if a <c>Connection</c> is not connected
+            in the current context.
+            </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.NextGlobalName">
+            <summary>
+            Gets the next global name in collating sequence after the current position.
+            </summary>
+            <returns> next global name, or empty string if there is no next name.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.NextGlobalName(System.String)">
+            <summary>
+            Gets the next global name in collating sequence after the specified
+            <c>globalName</c>.
+            </summary>
+            <remarks>
+            Specified <c>globalName</c> does not need to
+            actually exist.  Resets position to just after the returned name.
+            Specify empty string for <c>globalName</c>, to get the first global name
+            in the collating sequence.
+            </remarks>
+            <param name="globalName"> name preceding returned name in collating sequence.
+            </param>
+            <returns> next global name, or empty string if there is no next name.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.PreviousGlobalName">
+            <summary>
+            Gets the previous global name in collating sequence before the current position.
+            </summary>
+            <returns> previous global name, or empty string if there is no previous name.
+            </returns>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.PreviousGlobalName(System.String)">
+            <summary>
+            Gets the previous global name in collating sequence before the specified
+            <c>globalName</c>.
+            </summary>
+            <remarks>
+            Specified <c>globalName</c> does not need to
+            actually exist.  Resets position to just before the returned name.
+            Specify empty string for <c>globalName</c>, to get the last global name
+            in the collating sequence.
+            </remarks>
+            <param name="globalName"> name following returned name in collating sequence.
+            </param>
+            <returns> previous global name, or empty string if there is no previous name.
+            </returns>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.Refresh">
+            <summary> Refreshes this <c>GlobalDirectory</c> instance to include any globals
+            that have been added, and removes any globals that have been killed, since this
+            instance was created, or since the most recent call to <c>refresh</c>.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsDirectory.Close">
+            <summary>
+            Releases memory or other resources used by underlying implementation,
+            when caller is finished using this <c>GlobalsDirectory</c> instance (important
+            in order to avoid memory leak in underlying implementation).
+            </summary>
+        </member>
+        <member name="P:InterSystems.Globals.GlobalsDirectory.SyncLock">
+            <summary>
+            Lock for synchronizing multi-threaded access to this
+            <c>GlobalsDirectory</c> instance.
+            </summary>
+        </member>
+        <member name="T:InterSystems.Globals.GlobalsException">
+            <summary>
+            <c>GlobalsException</c> is thrown by all classes of the globals API.
+            </summary><remarks>
+            <see cref="P:System.Exception.Message"/> provides a displayable text message
+            giving specific information
+            about the user or internal error which caused this <c>GlobalsException</c> to be
+            thrown. <see cref="P:InterSystems.Globals.GlobalsException.ErrorCode"/> provides a numeric error code which can be used
+            programmatically
+            to distinguish some specific errors.  <c>const int</c> fields of
+            <c>GlobalsException</c>
+            provide constants for some of these numeric codes.  <c>getErrorCode()</c> returns
+            the value <c>UNDEFINED</c> (0) for cases in which no numeric error code is defined
+            for the error.
+            </remarks>
+        </member>
+        <member name="F:InterSystems.Globals.GlobalsException.UNDEFINED">
+            <summary>
+            No numeric error code is defined for the error which caused this
+            <c>GlobalsException</c> to be thrown.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.GlobalsException.NOT_CONNECTED">
+            <summary>  A method was called which requires being connected, while not connected.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.GlobalsException.METHOD_CALLED_AFTER_CLOSE">
+            <summary>  A method was called on a globals API object instance after its
+            <c>close()</c> method was called.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.GlobalsException.REQUIRED_PARAMETER_NULL">
+            <summary>  <c>null</c> was passed for a required method parameter.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.GlobalsException.PARAMETER_OUT_OF_RANGE">
+            <summary> A parameter value is out of range.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsException.#ctor(System.String)">
+            <summary>
+            Construct an instance of <c>GlobalsException</c> with the specified message.
+            </summary>
+            <param name="message"> Message describing the current exception.</param>
+        </member>
+        <member name="M:InterSystems.Globals.GlobalsException.#ctor(System.String,System.Int32)">
+            <summary>
+            Construct an instance of <c>GlobalsException</c> with the specified message
+            and numeric error code.
+            </summary>
+            <param name="message"> Message describing the current exception.</param>
+            <param name="errorCode"> Numeric error code associated with the current exception.
+            </param>
+        </member>
+        <member name="P:InterSystems.Globals.GlobalsException.ErrorCode">
+            <summary>
+            The numeric error code for the error which caused the exception to be thrown.
+            </summary>
+            <remarks>
+            Error code <see cref="F:InterSystems.Globals.GlobalsException.UNDEFINED"/> means that no specific error code is defined
+            for this situation.
+            </remarks>
+        </member>
+        <member name="T:InterSystems.Globals.LockException">
+            <summary>
+            <c>LockException</c> is thrown if a request to acquire a lock fails,
+             due to timing out waiting for the lock to become available.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.LockException.#ctor">
+            <summary>
+            Construct an instance of <c>LockException</c> with default message
+            "Cannot acquire lock".
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.LockException.#ctor(System.String)">
+            <summary>
+            Construct an instance of <c>LockException</c> with the specified message.
+            </summary>
+            <param name="message"> Message describing the current exception.</param>
+        </member>
+        <member name="T:InterSystems.Globals.NodeReference">
+            <summary>
+            <c>NodeReference</c> represents a reference to a global node in
+            a Globals database.
+            </summary>
+            <remarks>
+            <c>NodeReference</c> is the primary class for manipulating globals.
+            See the GlobalsSample application for code examples using this class.
+            <para>
+            
+            A global is a persistent sparse multi-dimensional array, which
+            consists of one or more storage elements or "nodes".  Each node is
+            identified by a node reference (which is, essentially, its logical address),
+            which consists of a name (the name of the global to which this node
+            belongs) and zero or more subscripts.
+            </para><para>
+            
+            A node reference with just a name and no subscripts identifies the
+            root node of a global.  Node references with a name and one subscript
+            identify the first level of nodes in the global, and in general
+            node references with N subscripts identify the Nth level of nodes in
+            the global.
+            </para><para>
+            
+            A node may contain data (up to 2 megabytes), or it may have one or
+            more descendants, or "subnodes", or it may contain data and also have
+            subnodes.
+            </para><para>
+            
+            The name of a global is always a <c>String</c>. The name must be unique
+            within the first 31 characters, the first character must be a
+            letter (upper or lower case), the last character must be a letter or digit,
+            and the remaining characters may be letters, digits, or a period ('.').
+            </para><para>
+            
+            Subscripts may be of any of the types <c>String</c>,
+            <c>Int32</c>, <c>Int64</c>, or <c>Double</c>.
+            Subscripts of any of these types can be mixed among the nodes of the
+            same global, at the same or different levels.
+            </para><para>
+            
+            The data value of a global node can be of any of the types
+            <c>String</c>, <c>Int32</c>, <c>Int64</c>,
+            <c>Double</c>, <c>Byte[]</c>, or an encoded list of any of
+            these types, which is encapsulated in the class <see cref="T:InterSystems.Globals.ValueList"/>.
+            <see cref="T:InterSystems.Globals.ValueList"/> provides methods for appending elements of any of these
+            types to a list, and getting items from a list, providing
+            efficient, transparent serialization/deserialization.
+            </para><para>
+            
+            Operations that can be performed on globals:
+            </para><para>
+            
+            Store data in, or retrieve data from, a node specified by a node reference.
+            </para><para>
+            
+            Delete ("kill") the data in a node, and/or kill a node and all of its descendants.
+            </para><para>
+            
+            Determine whether a node contains data ("is defined"), and whether it has
+            any descendants (subnodes).
+            </para><para>
+            
+            Iterate over the subnodes of a given node, at any desired level, in ascending or
+            descending collating order.
+            </para><para>
+            
+            Traverse all of the defined subnodes of a global, in forward (depth-first,
+            left-to-right) or reverse order.
+            </para><para>
+            
+            Increment the numeric value of a node by a specified amount as a guaranteed atomic
+            operation, as a way of generating monotonically increasing sequences (e.g. to use as
+            unique identifiers).
+            </para><para>
+            
+            Acquire and release shared or exclusive locks on a global reference, to provide
+            concurrency control for shared access to globals.
+            </para><para>
+            
+            The <see cref="T:InterSystems.Globals.Connection"/> class provides methods to start, commit,
+            and roll back transactions, which can be used to guarantee that a sequence of operations
+            on one or more globals either all succeed, or are all rolled back.
+            </para><para>
+            
+            To create a <c>NodeReference</c> instance, call the <c>Connection</c> method
+            <see cref="M:InterSystems.Globals.Connection.CreateNodeReference"/>.
+            </para><para>
+            To release memory or resources used by the underlying implementation,
+            call <see cref="M:InterSystems.Globals.NodeReference.Close"/> when finished using a
+            <c>NodeReference</c> instance (important in order to avoid
+            a memory leak in the underlying implementation).
+            </para><para>
+            Methods of this class may throw <see cref="T:InterSystems.Globals.GlobalsException"/>.
+            </para><para>
+            Thread Safety
+            </para><para>
+            Class <c>NodeReference</c> is conditionally thread-safe.
+            Different instances of <c>NodeReference</c> can always be used safely in
+            multiple threads.  The same instance of <c>NodeReference</c> can be used
+            safely in multiple threads, if no methods are called which change
+            attributes of its state which persist across multiple calls: the name (<c>SetName</c>),
+            the number
+            and values of subscripts (<c>AppendSubscript</c>, <c>SetSubscript</c>,
+            <c>SetSubscriptCount</c>), the options (<c>SetOption</c>), and whether or not
+            the instance has been closed (<c>Close</c>).  If any of
+            these methods is called on a <c>NodeReference</c> instance that is used in
+            multiple threads, the code can be made thread-safe by synchronizing
+            each sequence of method calls that changes the instance's state and
+            depends on that state remaining unchanged by other threads, using the lock provided by
+            the property <see cref="P:InterSystems.Globals.NodeReference.SyncLock"/>.  For example:
+            <code>
+            lock (myRef.SyncLock) {
+               try {
+                  myRef.SetName("MyGlobal");
+                  myRef.SetSubscriptCount(0);
+                  // myRef is guananteed to refer to the global named "MyGlobal", with
+                  // no subscripts, when myRef.Set(5) is called.
+                  myRef.Set(5);
+               }
+               catch (GlobalsException ex) {
+                  if (ex.ErrorCode == GlobalsException.METHOD_CALLED_AFTER_CLOSE) {
+                     // Another thread may have closed this NodeReference instance.
+                  }
+               }
+            }
+            </code>
+            While this block of code is executing, no method on the same
+            <c>NodeReference</c> instance will execute in any other thread, whether or
+            not the other thread explicitly synchronizes on <c>SyncLock</c>.  In the
+            synchronized block, it is only necessary to set those attributes of
+            the <c>NodeReference</c> instance's state which might be modified in another
+            thread, and upon which code in the current block depends.  For
+            instance, if no other thread ever calls <c>SetName</c>, and if the
+            instance's name has already been set to the desired value, then it is
+            not necessary to call <c>SetName</c> in this block.  The block in this
+            example does not need to call <c>SetOption</c>, because it does not
+            call any methods which depend on options.
+            </para>
+            </remarks>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.LOCK_TIMEOUT">
+            <summary> Option for specifying lock timeout
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.NO_LOCK_TIMEOUT">
+            <summary> <see cref="F:InterSystems.Globals.NodeReference.LOCK_TIMEOUT"/> option indicating no timeout (wait forever)
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.DEFAULT_LOCK_TIMEOUT">
+            <summary> <see cref="F:InterSystems.Globals.NodeReference.LOCK_TIMEOUT"/> option indicating default timeout (10 seconds)
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.SHARED_LOCK">
+            <summary>
+            Value for the <c>lockType</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32)"/>
+            or <see cref="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32)"/>. Allow
+            other process to also lock this node as well.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.EXCLUSIVE_LOCK">
+            <summary>
+            Value for the <c>lockType</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32)"/>
+            or <see cref="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32)"/>. Do NOT
+            allow other process to also lock this node.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.LOCK_INCREMENTALLY">
+            <summary>
+            Value for the <c>lockMode</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32)"/>.
+            Acquire the lock in addition to any locks already held.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.LOCK_NON_INCREMENTALLY">
+            <summary>
+            Value for the <c>lockMode</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32)"/>.
+            Acquire the lock, and release any locks previously held.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.RELEASE_IMMEDIATELY">
+            <summary>
+            Value for the <c>releaseMode</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32)"/>.
+            Release the lock immediately.
+            </summary>
+        </member>
+        <member name="F:InterSystems.Globals.NodeReference.RELEASE_AT_TRANSACTION_END">
+            <summary>
+            Value for the <c>releaseMode</c> parameter of <see cref="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32)"/>.
+            Release the lock after the transaction completes.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.#ctor">
+            <summary>
+            A protected constructor is defined to permit deriving classes from
+            <c>NodeReference</c>.
+            </summary>
+            <remarks>
+            Throws a <c>GlobalsException</c> if a <c>Connection</c> is not connected
+            in the current context.
+            </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetName(System.String)">
+             <summary>
+             Sets the name of the global referred to by this <c>NodeReference</c> instance.
+             </summary>
+            
+             <param name="name"> global name referred to by this <c>NodeReference</c> instance.
+             </param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetName">
+             <summary>
+             Gets the name of the global referred to by this <c>NodeReference</c> instance.
+             </summary>
+            
+             <returns> global name referred to by this <c>NodeReference</c> instance.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Close">
+            <summary>
+            Releases memory or other resources used by underlying implementation,
+            when caller is finished using this <c>NodeReference</c> instance (important in
+            order to avoid memory leak in underlying implementation).
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetObject">
+             <summary>
+             Gets the nodes's value as an <c>Object</c>, which will be an instance of
+             <c>Int32</c>, <c>Int64</c>, <c>Double</c>, or <c>String</c>.
+              This returns <c>null</c> if the object is undefined.
+             </summary>
+            
+             <returns> the node's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetObject(System.Object[])">
+             <summary>
+             Gets the nodes's value as an <c>Object</c>, which will be an instance of
+             <c>Int32</c>, <c>Int64</c>, <c>Double</c>, or <c>String</c>.
+              This returns <c>null</c> if the object is undefined.
+             </summary>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> the node's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetInt">
+             <summary>
+             Gets this nodes's value as <c>Int32</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <returns> node's value as <c>Int32</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetInt(System.Object[])">
+             <summary>
+             Gets this nodes's value as <c>Int32</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <c>Int32</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetLong">
+             <summary>
+             Gets this nodes's value as <c>Int64</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <returns> node's value as <c>Int64</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetLong(System.Object[])">
+             <summary>
+             Gets this nodes's value as <c>Int64</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <c>Int64</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetDouble">
+             <summary>
+             Gets this nodes's value as <c>Double</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <returns> node's value as <c>Double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetDouble(System.Object[])">
+             <summary>
+             Gets this nodes's value as <c>Double</c>. Throws <see cref="T:InterSystems.Globals.UndefinedException"/>
+             if node is undefined.
+             </summary>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <c>Double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetString">
+             <summary>
+             Gets this nodes's value as <c>String</c>. Returns <c>null</c>
+             if node is undefined.
+             </summary>
+            
+             <returns> node's value as <c>String</c> (<c>null</c> if node is undefined).
+             </returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetString(System.Object[])">
+            <summary>
+            Gets this nodes's value as <c>String</c>. Returns <c>null</c> if node
+            is undefined.
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+            <returns> node's value as <c>String</c> (<c>null</c> if node is undefined).
+            </returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetBytes">
+             <summary>
+             Gets this node's value as <c>Byte[]</c>. Returns <c>null</c> if node
+             is undefined.
+             </summary>
+            
+             <returns> node's value as <c>Byte[]</c> (<c>null</c> if node is undefined).
+             </returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetBytes(System.Object[])">
+             <summary>
+             Gets this node's value as <c>Byte[]</c>. Returns <c>null</c> if node is
+             undefined.
+             </summary>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <c>Byte[]</c> (<c>null</c> if node is undefined).
+             </returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetList">
+             <summary>
+             Gets this nodes's value as <see cref="T:InterSystems.Globals.ValueList"/>. Returns <c>null</c> if node is
+             undefined.
+             </summary>
+             <remarks>
+             If the return value is assigned to a variable
+             which was not previously null, <see cref="M:InterSystems.Globals.NodeReference.Close"/> should be called on that
+             variable, prior to making the assignment, to release the previous instance's
+             underlying resources in order to avoid a memory leak.  Alternatively,
+             call <see cref="M:InterSystems.Globals.NodeReference.GetList(InterSystems.Globals.ValueList)"/>, passing the variable as the parameter,
+             so that the previous instance is reused.
+             </remarks>
+            
+             <returns> node's value as <see cref="T:InterSystems.Globals.ValueList"/> (<c>null</c> if node is undefined).
+             </returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetList(System.Object[])">
+             <summary>
+             Gets this nodes's value as <see cref="T:InterSystems.Globals.ValueList"/>. Returns <c>null</c> if node is
+             undefined.
+             </summary>
+             <remarks>
+             If the return value is assigned to a variable
+             which was not previously null, <see cref="M:InterSystems.Globals.NodeReference.Close"/> should be called on that
+             variable, prior to making the assignment, to release the previous instance's
+             underlying resources in order to avoid a memory leak.  Alternatively,
+             call <see cref="M:InterSystems.Globals.NodeReference.GetList(InterSystems.Globals.ValueList)"/>, passing the variable as the parameter,
+             so that the previous instance is reused.
+             </remarks>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <see cref="T:InterSystems.Globals.ValueList"/> (<c>null</c> if node is
+             undefined).</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetList(InterSystems.Globals.ValueList)">
+             <summary>
+             Gets this nodes's value as <see cref="T:InterSystems.Globals.ValueList"/>. Returns <c>null</c> if node is
+             undefined.
+             </summary>
+             <remarks>
+             The <see cref="T:InterSystems.Globals.ValueList"/> passed in <c>reuseList</c> is modified to
+             contain the node's value, and is returned, rather than creating a new
+             <c>ValueList</c> instance.  It is not modified if the node is undefined.
+             </remarks>
+            
+             <param name="reuseList"> Prior instance of <see cref="T:InterSystems.Globals.ValueList"/> to be modified
+             and returned.</param>
+             <returns> node's value as <see cref="T:InterSystems.Globals.ValueList"/> (<c>null</c> if node is
+             undefined).</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetList(InterSystems.Globals.ValueList,System.Object[])">
+             <summary>
+             Gets this nodes's value as <see cref="T:InterSystems.Globals.ValueList"/>. Returns <c>null</c> if node is
+             undefined.
+             </summary>
+             <remarks>
+             The <see cref="T:InterSystems.Globals.ValueList"/> passed in <c>reuseList</c> is modified to
+             contain the node's value, and is returned, rather than creating a new
+             <c>ValueList</c> instance.  It is not modified if the node is undefined.
+             </remarks>
+            
+             <param name="reuseList"> Prior instance of <see cref="T:InterSystems.Globals.ValueList"/> to be modified
+             and returned.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> node's value as <see cref="T:InterSystems.Globals.ValueList"/> (<c>null</c> if node is
+             undefined).</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Int32)">
+             <summary>
+             Sets the current node's value to the <c>Int32</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Int32</c> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Int32,System.Object[])">
+             <summary>
+             Sets the current node's value to the <c>Int32</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Int32</c> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Int64)">
+             <summary>
+             Sets the current node's value to the <c>Int64</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Int64</c> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Int64,System.Object[])">
+             <summary>
+             Sets the current node's value to the <c>Int64</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Int64</c> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Double)">
+             <summary>
+             Sets the current node's value to the <c>Double</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Double</c> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Double,System.Object[])">
+             <summary>
+             Sets the current node's value to the <c>Double</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>Double</c> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.String)">
+             <summary>
+             Sets the current node's value to the <c>String</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>String</c> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.String,System.Object[])">
+             <summary>
+             Sets the current node's value to the <c>String</c> value in the parameter.
+             </summary>
+            
+             <param name="value"> <c>String</c> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Byte[])">
+             <summary>
+             Sets the current node's value to the <c>Byte[]</c> value in the parameter.
+             </summary>
+            
+             <param name="value">  <c>Byte[]</c> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(System.Byte[],System.Object[])">
+             <summary>
+             Sets the current node's value to the <c>Byte[]</c> value in the parameter.
+             </summary>
+            
+             <param name="value">  <c>Byte[]</c> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(InterSystems.Globals.ValueList)">
+             <summary>
+             Sets the current node's value to the <see cref="T:InterSystems.Globals.ValueList"/> value in the parameter.
+             </summary>
+            
+             <param name="list"> <see cref="T:InterSystems.Globals.ValueList"/> value to which to set this node.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Set(InterSystems.Globals.ValueList,System.Object[])">
+             <summary>
+             Sets the current node's value to the <see cref="T:InterSystems.Globals.ValueList"/> value in the parameter.
+             </summary>
+            
+             <param name="list"> <see cref="T:InterSystems.Globals.ValueList"/> value to which to set this node.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.     </param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetOption(System.Int32,System.Int32)">
+            <summary> Sets options for this <c>NodeReference</c> instance.
+            </summary>
+            <param name="option"> option to set.</param>
+            <param name="value"> value to which to set the option.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetOption(System.Int32)">
+            <summary> Find out currently configured options for this <c>NodeReference</c>
+            instance.
+            </summary>
+            <param name="option"> option.</param>
+            <returns> option value.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Kill">
+            <summary>
+            Kills the node and any descendants (deletes their values, causing them to
+            be undefined).
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Kill(System.Object[])">
+            <summary>
+            Kills the node and any descendants (deletes their values, causing them to
+            be undefined).
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.KillNode">
+            <summary>
+            Kills the node, but not its descendants (deletes its value, causing it to
+            be undefined).
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.KillNode(System.Object[])">
+            <summary>
+            Kills the node, but not its descendants (deletes its value, causing it to
+            be undefined).
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Increment(System.Int32)">
+             <summary>
+             Atomically increment by the specified number.
+             </summary>
+            
+             <param name="number"> value by which to increment this node's value.</param>
+             <returns> the incremented value.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Increment(System.Int32,System.Object[])">
+             <summary>
+             Atomically increment by the specified number.
+             </summary>
+            
+             <param name="number"> value by which to increment this node's value.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> the incremented value.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Exists">
+            <summary>
+            Determine whether this node contains data (that is, is defined).
+            </summary>
+            <returns> <c>true</c> if the node contains data, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.Exists(System.Object[])">
+            <summary>
+            Determine whether this node contains data (that is, is defined).
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+            <returns> <c>true</c> if the node contains data, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.HasData">
+            <summary>
+            Determine whether this node contains data (that is, is defined).
+            </summary>
+            <returns> <c>true</c> if the node contains data, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.HasData(System.Object[])">
+            <summary>
+            Determine whether this node contains data (that is, is defined).
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+            <returns> <c>true</c> if the node contains data, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.HasSubnodes">
+            <summary>
+            Determine whether this node has subnodes (that is, descendants).
+            </summary>
+            <returns> <c>true</c> if the node has subnodes, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.HasSubnodes(System.Object[])">
+            <summary>
+            Determine whether this node has subnodes (that is, descendants).
+            </summary>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+            <returns> <c>true</c> if the node has subnodes, else <c>false</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Int32)">
+             <summary>
+             Append subscript with type <c>Int32</c> and value <c>subscriptValue</c>.
+             </summary>
+            
+             <param name="subscriptValue"> value of the appended subscript.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Int64)">
+             <summary>
+             Append subscript with type <c>Int64</c> and value <c>subscriptValue</c>.
+             </summary>
+            
+             <param name="subscriptValue"> value of the appended subscript.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Double)">
+             <summary>
+             Append subscript with type <c>Double</c> and value <c>subscriptValue</c>.
+             </summary>
+            
+             <param name="subscriptValue"> value of the appended subscript.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AppendSubscript(System.String)">
+             <summary>
+             Append subscript with type <c>String</c> and value <c>subscriptValue</c>.
+             </summary>
+            
+             <param name="subscriptValue"> value of the appended subscript.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetSubscript(System.Int32,System.Int32)">
+             <summary>
+             Sets a specified subscript's value as an <c>Int32</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             If <c>subscriptPosition</c> ==
+             <c>getSubscriptCount()</c> + 1, this is equivalent to
+             <see cref="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Int32)"/>.
+             Throws
+             <see cref="T:InterSystems.Globals.GlobalsException"/> if <c>subscriptPosition</c> &gt;
+             <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/> + 1.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <param name="value"> value of the subscript as an <c>Int32</c>.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetSubscript(System.Int32,System.Int64)">
+             <summary>
+             Sets a specified subscript's value as an <c>Int64</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             If <c>subscriptPosition</c> ==
+             <c>getSubscriptCount()</c> + 1, this is equivalent to
+             <see cref="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Int64)"/>.
+             Throws
+             <see cref="T:InterSystems.Globals.GlobalsException"/> if <c>subscriptPosition</c> &gt;
+             <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/> + 1.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <param name="value"> value of the subscript as an <c>Int64</c>.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetSubscript(System.Int32,System.Double)">
+             <summary>
+             Sets a specified subscript's value as a <c>Double</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             If <c>subscriptPosition</c> ==
+             <c>getSubscriptCount()</c> + 1, this is equivalent to
+             <see cref="M:InterSystems.Globals.NodeReference.AppendSubscript(System.Double)"/>.
+             Throws
+             <see cref="T:InterSystems.Globals.GlobalsException"/> if <c>subscriptPosition</c> &gt;
+             <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/> + 1.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <param name="value"> value of the subscript as a <c>Double</c>.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetSubscript(System.Int32,System.String)">
+             <summary>
+             Sets a specified subscript's value as a <c>String</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             If <c>subscriptPosition</c> ==
+             <c>getSubscriptCount()</c> + 1, this is equivalent to
+             <see cref="M:InterSystems.Globals.NodeReference.AppendSubscript(System.String)"/>.
+             Throws
+             <see cref="T:InterSystems.Globals.GlobalsException"/> if <c>subscriptPosition</c> &gt;
+             <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/> + 1.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <param name="value"> value of the subscript as a <c>String</c>.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetIntSubscript(System.Int32)">
+             <summary>
+             Gets a specified subscript's value as an <c>Int32</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>subscriptPosition</c> &gt; <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/>,
+             or if the value is not an <c>Int32</c>.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <returns> the <c>Int32</c> value at this subcript position.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetLongSubscript(System.Int32)">
+             <summary>
+             Gets a specified subscript's value as an <c>Int64</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>subscriptPosition</c> &gt; <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/>,
+             or if the value is not an <c>Int32</c> or an <c>Int64</c>.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <returns> the <c>Int64</c> value at this subcript position.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetDoubleSubscript(System.Int32)">
+             <summary>
+             Gets a specified subscript's value as a <c>Double</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>subscriptPosition</c> &gt; <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/>,
+             or if the value is not a <c>Double</c>.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <returns> the <c>Double</c> value at this subcript position.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetStringSubscript(System.Int32)">
+             <summary>
+             Gets a specified subscript's value as a <c>String</c>
+             (specifying position starting from 1).
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>subscriptPosition</c> &gt; <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/>,
+             or if the value is not a <c>String</c>.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <returns> the <c>String</c> value at this subcript position.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetObjectSubscript(System.Int32)">
+             <summary>
+             Gets a specified subscript's value (specifying position starting from 1).
+             The returned <c>Object</c> will be an instance of <c>String</c>,
+             <c>Int32</c>, <c>Int64</c>, or <c>Double</c>.
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>subscriptPosition</c> &gt; <see cref="M:InterSystems.Globals.NodeReference.GetSubscriptCount"/>.
+             </remarks>
+            
+             <param name="subscriptPosition"> position of the subscript (starting from 1 for
+             most significant subscript).</param>
+             <returns> the <c>Object</c> value at this subcript position.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.GetSubscriptCount">
+             <summary>
+             Returns the current number of subscripts in this node reference.
+             </summary>
+            
+             <returns> number of subscripts.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.SetSubscriptCount(System.Int32)">
+             <summary>
+             Sets number of subscripts to a smaller number (discarding excess trailing
+             subscripts).
+             </summary>
+             <remarks>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if
+             <c>number</c> is greater than <c>GetSubscriptCount()</c>.
+             </remarks>
+            
+             <param name="number"> number of subscripts for this <c>NodeReference</c> after
+             call completes.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.NextSubscript">
+             <summary>
+             Gets the next subscript, at the current level, for which a node exists which either
+             has data or has one or more subnodes.
+             </summary>
+             <remarks>
+             Returns the next subscript in ascending collation order as a <c>String</c>,
+             or returns empty string
+             if no node exists with a higher-collating subscript value at the current level.
+             (The current level is determined by the number of subscripts which have been
+             specified for this <c>NodeReference</c>.)
+             <para>
+             To gets the first subscript at the current level, specify subscript value ""
+             (empty string).
+             </para><para>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the current <c>NodeReference</c> does not
+             specify any subscripts.
+             </para>
+             </remarks>
+            
+             <returns> next subscript at the current level, or empty string if there
+             is no next subscript.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.NextSubscript(System.Object[])">
+             <summary>
+             Gets the next subscript, at the current level, for which a node exists which either
+             has data or has one or more subnodes.
+             </summary>
+             <remarks>
+             Returns the next subscript in ascending collation order as a <c>String</c>,
+             or returns empty string
+             if no node exists with a higher-collating subscript value at the current level.
+             (The current level is determined by the number of subscripts which have been
+             specified for this <c>NodeReference</c>.)
+             <para>
+             To gets the first subscript at the current level, specify subscript value ""
+             (empty string).
+             </para><para>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the current <c>NodeReference</c> does not
+             specify any subscripts.
+             </para>
+             </remarks>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> next subscript at the current level, or empty string if there
+             is no next subscript.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.PreviousSubscript">
+             <summary>
+             Gets the previous subscript, at the current level, for which a node exists which either
+             has data or has one or more subnodes.
+             </summary>
+             <remarks>
+             Returns the previous subscript in ascending collation order as a <c>String</c>,
+             or returns empty string
+             if no node exists with a lower-collating subscript value at the current level.
+             (The current level is determined by the number of subscripts which have been
+             specified for this <c>NodeReference</c>.)
+             <para>
+             To get the last subscript at the current level, specify subscript value ""
+             (empty string).
+             </para><para>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the current <c>NodeReference</c> does not
+             specify any subscripts.
+             </para>
+             </remarks>
+            
+             <returns> previous subscript at the current level, or empty string if there
+             is no previous subscript.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.PreviousSubscript(System.Object[])">
+             <summary>
+             Gets the previous subscript, at the current level, for which a node exists which either
+             has data or has one or more subnodes.
+             </summary>
+             <remarks>
+             Returns the previous subscript in ascending collation order as a <c>String</c>,
+             or returns empty string
+             if no node exists with a lower-collating subscript value at the current level.
+             (The current level is determined by the number of subscripts which have been
+             specified for this <c>NodeReference</c>.)
+             <para>
+             To get the last subscript at the current level, specify subscript value ""
+             (empty string).
+             </para><para>
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the current <c>NodeReference</c> does not
+             specify any subscripts.
+             </para>
+             </remarks>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns> previous subscript at the current level, or empty string if there
+             is no previous subscript.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.NextNodeSubscripts">
+             <summary>
+             Gets all of the subscripts of the next defined node in this multidimensional array,
+             to facilitate traversing the array in forward order.
+             </summary>
+             <remarks>
+             The traversal order is depth-first (subnodes of current node
+             before next node at same level),
+             left-to-right (ascending subscript collation order).
+             The root node is not included in the traversal order.
+             Subscripts are returned only for nodes which contain data, but undefined nodes
+             which have subnodes are taken into account in determining the traversal order.
+             <para>
+             To get the subscripts of the first subscripted node, specify a single subscript
+             whose value is the empty string ("").
+             </para>
+             </remarks>
+            
+             <returns>Subscripts of the next node, as an array of <c>object</c>, or null if
+             there is no next node.  Each element of the array is an instance of
+             <c>string</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.NextNodeSubscripts(System.Object[])">
+             <summary>
+             Gets all of the subscripts of the next defined node in this multidimensional array,
+             to facilitate traversing the array in forward order.
+             </summary>
+             <remarks>
+             The traversal order is depth-first (subnodes of current node
+             before next node at same level),
+             left-to-right (ascending subscript collation order).
+             The root node is not included in the traversal order.
+             Subscripts are returned only for nodes which contain data, but undefined nodes
+             which have subnodes are taken into account in determining the traversal order.
+             <para>
+             To get the subscripts of the first subscripted node, specify a single subscript
+             whose value is the empty string ("").
+             </para>
+             </remarks>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns>Subscripts of the next node, as an array of <c>object</c>, or null if
+             there is no next node.  Each element of the array is an instance of
+             <c>string</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.PreviousNodeSubscripts">
+             <summary>
+             Gets all of the subscripts of the previous defined node in this multidimensional
+             array, to facilitate traversing the array in reverse order.
+             </summary>
+             <remarks>
+             The traversal order is the reverse of the order used by
+             <see cref="M:InterSystems.Globals.NodeReference.NextNodeSubscripts"/>.
+             The root node is included in the traversal order, as the last node in the
+             order.
+             Subscripts are returned only for nodes which contain data, but undefined nodes
+             which have subnodes are taken into account in determining the traversal order.
+             <para>
+             To get the subscripts of the last node (which is the first node in the reverse
+             order used by this method), specify a single subscript
+             whose value is the empty string ("").
+             </para><para>
+             The unsubscripted root node is indicated by returning a non-null array
+             with length zero.  If there is no node previous to the current node,
+             <c>null</c> is returned.
+             </para>
+             </remarks>
+            
+             <returns>Subscripts of the previous node, as an array of <c>object</c>, or null if
+             there is no previous node.  Each element of the array is an instance of
+             <c>string</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.PreviousNodeSubscripts(System.Object[])">
+             <summary>
+             Gets all of the subscripts of the previous defined node in this multidimensional
+             array, to facilitate traversing the array in reverse order.
+             </summary>
+             <remarks>
+             The traversal order is the reverse of the order used by
+             <see cref="M:InterSystems.Globals.NodeReference.NextNodeSubscripts(System.Object[])"/>.
+             The root node is included in the traversal order, as the last node in the
+             order.
+             Subscripts are returned only for nodes which contain data, but undefined nodes
+             which have subnodes are taken into account in determining the traversal order.
+             <para>
+             To get the subscripts of the last node (which is the first node in the reverse
+             order used by this method), specify a single subscript
+             whose value is the empty string ("").
+             </para><para>
+             The unsubscripted root node is indicated by returning a non-null array
+             with length zero.  If there is no node previous to the current node,
+             <c>null</c> is returned.
+             </para>
+             </remarks>
+            
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+             <returns>Subscripts of the previous node, as an array of <c>object</c>, or null if
+             there is no previous node.  Each element of the array is an instance of
+             <c>string</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32)">
+            <summary>
+            Acquire a lock on the <c>NodeReference</c>.
+            </summary>
+            <remarks><para>
+            If <c>lockType</c> = <c>SHARED_LOCK</c>, lock is shared,
+            else (<c>lockType</c> = <c>EXCLUSIVE_LOCK</c>), lock is exclusive.
+            </para>
+            <para>
+            A shared lock prevents another caller from acquiring an exclusive lock, but allows
+            other callers to acquire shared locks. An exclusive lock prevents other
+            callers from acquiring any lock.
+            </para><para>
+            If <c>lockMode</c> = <c>LOCK_INCREMENTALLY</c>, lock is acquired
+            incrementally, i.e. any previously held locks are not released;
+            else (<c>lockMode</c> = <c>LOCK_NON_INCREMENTALLY</c>), any previously held
+            locks are released.
+            </para><para>
+            The time in seconds to wait before timing out and throwing <c>LockException</c>
+            is specified by option <c>LOCK_TIMEOUT</c>, which defaults to
+            <c>DEFAULT_LOCK_TIMEOUT</c>
+            (10 seconds), and can be set to other values by calling
+            <c>setOption(LOCK_TIMEOUT, value)</c>, where value may be any number of
+            seconds, or <c>NO_LOCK_TIMEOUT</c> (-1) to wait forever.
+            </para>
+            </remarks>
+            <param name="lockType"> type of lock to acquire.</param>
+            <param name="lockMode"> mode in which to acquire lock.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.AcquireLock(System.Int32,System.Int32,System.Object[])">
+            <summary>
+            Acquire a lock on the <c>NodeReference</c>.
+            </summary>
+            <remarks><para>
+            If <c>lockType</c> = <c>SHARED_LOCK</c>, lock is shared,
+            else (<c>lockType</c> = <c>EXCLUSIVE_LOCK</c>), lock is exclusive.
+            </para>
+            <para>
+            A shared lock prevents another caller from acquiring an exclusive lock, but allows
+            other callers to acquire shared locks. An exclusive lock prevents other
+            callers from acquiring any lock.
+            </para><para>
+            If <c>lockMode</c> = <c>LOCK_INCREMENTALLY</c>, lock is acquired
+            incrementally, i.e. any previously held locks are not released;
+            else (<c>lockMode</c> = <c>LOCK_NON_INCREMENTALLY</c>), any previously held
+            locks are released.
+            </para><para>
+            The time in seconds to wait before timing out and throwing <c>LockException</c>
+            is specified by option <c>LOCK_TIMEOUT</c>, which defaults to
+            <c>DEFAULT_LOCK_TIMEOUT</c>
+            (10 seconds), and can be set to other values by calling
+            <c>setOption(LOCK_TIMEOUT, value)</c>, where value may be any number of
+            seconds, or <c>NO_LOCK_TIMEOUT</c> (-1) to wait forever.
+            </para>
+            </remarks>
+            <param name="lockType"> type of lock to acquire.</param>
+            <param name="lockMode"> mode in which to acquire lock.</param>
+            <param name="subscripts">  0 or more optional subscripts to qualify the node
+            reference.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32)">
+             <summary>
+             Release a lock on the <c>NodeReference</c>.
+             </summary>
+             <remarks>
+             <para>
+             If <c>lockTytpe</c> =
+             <c>SHARED_LOCK</c>, release a
+             shared lock, else (<c>lockType</c> = <c>EXCLUSIVE_LOCK</c>), release an
+             exclusive lock.
+             If <c>releaseMode</c> = <c>RELEASE_IMMEDIATELY</c>, release lock
+             immediately, else
+             (<c>releaseMode</c> = <c>RELEASE_AT_TRANSACTION_END</c>), lock is
+             released at end of current transaction.
+             </para>
+             <para>
+             NOTE: Use the <c>Connection</c> method <see cref="M:InterSystems.Globals.Connection.ReleaseAllLocks"/> to
+             release all locks.
+             </para>
+             </remarks>
+            
+             <param name="lockType"> type of lock to release.</param>
+             <param name="releaseMode"> mode in which to release lock.</param>
+        </member>
+        <member name="M:InterSystems.Globals.NodeReference.ReleaseLock(System.Int32,System.Int32,System.Object[])">
+             <summary>
+             Release a lock on the <c>NodeReference</c>.
+             </summary>
+             <remarks>
+             <para>
+             If <c>lockTytpe</c> =
+             <c>SHARED_LOCK</c>, release a
+             shared lock, else (<c>lockType</c> = <c>EXCLUSIVE_LOCK</c>), release an
+             exclusive lock.
+             If <c>releaseMode</c> = <c>RELEASE_IMMEDIATELY</c>, release lock
+             immediately, else
+             (<c>releaseMode</c> = <c>RELEASE_AT_TRANSACTION_END</c>), lock is
+             released at end of current transaction.
+             </para>
+             <para>
+             NOTE: Use <see cref="M:InterSystems.Globals.Connection.ReleaseAllLocks"/> to release all locks.
+             </para>
+             </remarks>
+            
+             <param name="lockType"> type of lock to release.</param>
+             <param name="releaseMode"> mode in which to release lock.</param>
+             <param name="subscripts">  0 or more optional subscripts to qualify the node
+             reference.</param>
+        </member>
+        <member name="P:InterSystems.Globals.NodeReference.SyncLock">
+            <summary>
+            Lock for synchronizing multi-threaded access to this
+            <c>NodeReference</c> instance.
+            </summary>
+        </member>
+        <member name="T:InterSystems.Globals.ProductInfo">
+            <summary>
+            Class <CODE>ProductInfo</CODE> provides information about the installed
+            version of Cache.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ProductInfo.GetProductVersion">
+            <summary>
+            Gets the Cache version.
+            The application must be connected or a
+            <CODE>GlobalsException</CODE> is thrown.
+            </summary>
+            <returns> the Cache version.</returns>
+        </member>
+        <member name="T:InterSystems.Globals.UndefinedException">
+            <summary>
+            <c>UndefinedException</c> is thrown by methods which get the value of a
+             global node, if the node is undefined (that is, does not have any data value).
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.UndefinedException.#ctor">
+            <summary>
+            Construct an instance of <c>UndefinedException</c> with default message
+            "&lt;UNDEFINED&gt;".
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.UndefinedException.#ctor(System.String)">
+            <summary>
+            Construct an instance of <c>UndefinedException</c> with the specified message.
+            </summary>
+            <param name="message"> Message describing the current exception.</param>
+        </member>
+        <member name="T:InterSystems.Globals.ValueList">
+             <summary>
+             <c>ValueList</c> encapsulates a serialized list of items of primitive
+             datatypes.
+             </summary>
+             <remarks>
+             <para>
+             The underlying format is transparent to applications, and is efficiently
+             implemented by the Globals database.
+             The list may include nested instances of <c>ValueList</c>.
+             Refer to <see cref="T:InterSystems.Globals.NodeReference"/> for a general introduction to the globals
+             persistence model, and operations that can be performed on globals.
+             See the GlobalsSample application for code examples using this class.
+             </para><para>
+             To create an empty <c>ValueList</c> instance, call the <c>Connection</c> method
+             <see cref="M:InterSystems.Globals.Connection.CreateList"/>.
+             </para><para>
+             To get the value of a global node as a <c>ValueList</c>,
+             call the <c>NodeReference</c> method <see cref="M:InterSystems.Globals.NodeReference.GetList"/>.
+             </para><para>
+             To set the value of a global node as a <c>ValueList</c>,
+             call the <c>NodeReference</c> method <see cref="M:InterSystems.Globals.NodeReference.Set(InterSystems.Globals.ValueList)"/>.
+             </para><para>
+             To release memory or resources used by the underlying implementation,
+             call <see cref="M:InterSystems.Globals.ValueList.Close"/> when finished using a
+             <c>ValueList</c> instance (important in order to avoid
+             a memory leak in the underlying implementation).
+             </para><para>
+             When adding items to a <c>ValueList</c>, items are always appended to the end of
+             the list, using one of the <c>Append</c> methods.  When getting items from
+             a list, there is an implicit cursor position which is initially at the beginning of
+             the list, for a newly-created list, a list which has been emptied by calling
+             <c>Clear()</c>,  or a list returned from the <c>NodeReference</c> method
+             <see cref="M:InterSystems.Globals.NodeReference.GetList"/>.
+             Each of the <c>getNext</c> methods advances the cursor position to the next
+             item in the list.  <c>ResetToFirst</c> resets it to the beginning of the list.
+             <c>SkipNext</c> can be used to advance the cursor position past a specified number
+             of items without getting their values.
+             </para><para>
+             Methods of this class may throw <see cref="T:InterSystems.Globals.GlobalsException"/>.
+             Each of the <c>GetNext</c> methods throw a <see cref="T:InterSystems.Globals.GlobalsException"/>
+             if the cursor is already at the end of the list.
+             </para>
+            <para>
+            Thread Safety
+            </para><para>
+            Class <c>ValueList</c> is conditionally thread-safe.
+            Different instances of <c>ValueList</c> can always be used safely in
+            multiple threads.  Most <c>ValueList</c> methods change the state of
+            the <c>ValueList</c> instance on which they are called, in a way that
+            persists across multiple calls, and which would affect behavior
+            of that <c>ValueList</c> instance in another thread.  For example,
+            <c>Append</c> and <c>Clear</c> change the number and value of items contained
+            in the list; <c>GetNext&lt;type&gt;</c>, <c>GetAll</c>, <c>SkipNext</c>,
+            and <c>ResetToFirst</c>
+            change the implicit read cursor position; and <c>Close</c> changes the
+            state of whether or not the instance is closed.
+            The same instance of <c>ValueList</c> can be used
+            safely in multiple threads, provided that each sequence of
+            method calls that changes the instance's state and depends on
+            that state remaining unchanged is synchronized using the lock
+            provided by the property <see cref="P:InterSystems.Globals.ValueList.SyncLock"/>.  For example:
+            <code>
+            lock (myList.SyncLock) {
+               try {
+                  myList.Clear();
+                  myList.Append(5);
+                  myList.Append("Hello");
+                  // myList is now guaranteed to contain two items, 5 and "Hello".
+               }
+               catch (GlobalsException ex) {
+                  if (ex.ErrorCode == GlobalsException.METHOD_CALLED_AFTER_CLOSE) {
+                     // Another thread may have closed this ValueList instance.
+                  }
+               }
+            }
+            </code>
+            While this block of code is executing, no method on the same
+            <c>ValueList</c> instance will execute in any other thread, whether or
+            not the other thread explicitly synchronizes on <c>SyncLock</c>.  In the
+            synchronized block, it is only necessary to set those attributes of
+            the <c>ValueList</c> instance's state which might be modified in another
+            thread, and upon which code in the current block depends.  For
+            instance, the block in this example only appends items to the list,
+            it does not get items from the list, so it does not need to call
+            <c>ResetToFirst</c> to ensure reading from a known cursor position.
+            </para> </remarks>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.#ctor">
+            <summary>
+            A protected constructor is defined to permit deriving classes from
+            <c>ValueList</c>.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.#ctor(System.Int32)">
+            <summary>
+            Creates an empty <c>ValueListImpl</c> instance with a specified initial
+            buffer size.
+            </summary>
+            <remarks>
+            This constructor permits
+            optional tuning of the amount of memory used for a list's underlying implementation.
+            By default, a <see cref="T:InterSystems.Globals.ValueList"/> is created with a 1 kbyte buffer, which
+            grows if needed
+            but never gets smaller.  Specifying a smaller <c>bufferSize</c> may save
+            memory if a list is known to need significantly less than 1 kbytes.  Specifying
+            a larger <c>bufferSize</c> may enhance performance by avoiding repeated
+            reallocation to grow the buffer, if a list is known to need significantly more than
+            1 kbytes.
+            </remarks>
+            <param name="bufferSize"> initial size in bytes of underlying buffer.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.String)">
+             <summary>
+            Appends a <c>String</c> value to the list.
+             </summary>
+            
+             <param name="value"> <c>String</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Int32)">
+             <summary>
+             Appends an <c>Int32</c> value to the list.
+             </summary>
+            
+             <param name="value"> <c>Int32</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Int64)">
+             <summary>
+             Appends a <c>Int64</c> value to the list.
+             </summary>
+            
+             <param name="value"> <c>Int64</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Double)">
+             <summary>
+            Appends a <c>Double</c> value to the list.
+             </summary>
+            
+             <param name="value"> <c>Double</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Decimal)">
+            <summary>
+            Appends a <c>Decimal</c> value to the list.
+            </summary>
+            <param name="value"> <c>Decimal</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Byte[])">
+             <summary>
+            Appends a <c>byte[]</c> value to the list.
+             </summary>
+            
+             <param name="value"> <c>byte[]</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(InterSystems.Globals.ValueList)">
+             <summary>
+             Appends a <c>ValueList</c> value to the list.
+             </summary>
+             <remarks>
+             The specified
+             <c>list</c> is appended as a single item, which is a nested list
+             within the list to which it is appended.  This item can be retrieved as
+             a <c>ValueList</c> by calling <see cref="M:InterSystems.Globals.ValueList.GetNextList"/>.  The caller is
+             responsible for knowing that the item is a <c>ValueList</c> and calling
+             <see cref="M:InterSystems.Globals.ValueList.GetNextList"/> to retrieve it; <see cref="M:InterSystems.Globals.ValueList.GetNextObject"/> returns
+             it as an instance of <c>java.lang.String</c>.
+             </remarks>
+            
+             <param name="list"> <c>ValueList</c> value to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Append(System.Object[])">
+             <summary>
+             Appends a variable number of values to the list.
+             </summary>
+             <remarks>
+             The values must be
+             of types <c>String</c>, <c>Int32</c>, <c>Int64</c>,
+             <c>Double</c>, <c>Decimal</c>, <c>byte[]</c>, or <c>ValueList</c>, or
+             a <see cref="T:InterSystems.Globals.GlobalsException"/> is thrown.
+             </remarks>
+            
+             <param name="values"> Values to append to list.</param>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextString">
+             <summary>
+             Gets the next item from the list as a <c>String</c>.
+             </summary>
+             <remarks>
+             Returns <c>null</c> if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as a <c>String</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextInt">
+             <summary>
+             Gets the next item from the list as an <c>Int32</c>.
+             </summary>
+             <remarks>
+             Returns 0 if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as an <c>Int32</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextLong">
+             <summary>
+             Gets the next item from the list as a <c>Int64</c>.
+             </summary>
+             <remarks>
+             Returns 0 if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as a <c>Int64</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextDouble">
+             <summary>
+             Gets the next item from the list as a <c>Double</c>.
+             </summary>
+             <remarks>
+             Returns 0 if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as a <c>Double</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextDecimal">
+            <summary>
+            Gets the next item from the list as a <c>Decimal</c>.
+            </summary>
+            <remarks>
+            Returns 0 if list item is null. Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the
+            list item is a string which does not validly represent a decimal number.
+            </remarks>
+            <returns> Next item's value as a <c>Decimal</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextBytes">
+             <summary>
+             Gets the next item from the list as <c>byte[]</c>.
+             </summary>
+             <remarks>
+             Returns <c>null</c> if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as <c>byte[]</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextList">
+             <summary>
+            Gets the next item from the list as a <c>ValueList</c>.
+             </summary>
+             <remarks>
+             <para>
+             Returns <c>null</c> if list item is null.
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the list item is not a valid
+             <c>ValueList</c>.
+             </para><para>
+             If the return value is assigned to a variable
+             which was not previously null, <see cref="M:InterSystems.Globals.ValueList.Close"/> should be called on that
+             variable, prior to making the assignment, to release the previous instance's
+             underlying resources in order to avoid a memory leak.  Alternatively,
+             call <see cref="M:InterSystems.Globals.ValueList.GetNextList(InterSystems.Globals.ValueList)"/>, passing the variable as the parameter,
+             so that the previous instance is reused.
+             </para></remarks>
+            
+             <returns> Next item's value as <c>ValueList</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextList(InterSystems.Globals.ValueList)">
+             <summary>
+            Gets the next item from the list as a <c>ValueList</c>.
+             </summary>
+             <remarks>
+             <para>
+             Returns <c>null</c> if list item is null.
+             Throws <see cref="T:InterSystems.Globals.GlobalsException"/> if the list item is not a valid
+             <c>ValueList</c>.
+             </para><para>
+             The <c>ValueList</c> passed in <c>reuseList</c> is modified to
+             contain the item's value, and is returned, rather than creating a new
+             <c>ValueList</c> instance.  It is not modified if the list item is null.
+             </para></remarks>
+            
+             <param name="reuseList"> Prior instance of <see cref="T:InterSystems.Globals.ValueList"/> to be
+             modified and returned.</param>
+             <returns> Next item's value as <c>ValueList</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextObject">
+             <summary>
+             Gets the next item from the list as an <c>Object</c>.
+             </summary><remarks>
+             The returned
+             <c>Object</c> is an instance of <c>String</c>, <c>Int32eger</c>,
+             <c>Int64</c>, <c>Double</c>, or <c>Decimal</c>, depending on the type and
+             value of the item in the list.  Integer values are returned as <c>Int32</c>
+             if they are within the range of <c>Int32</c>, else they are returned as
+             <c>Int64</c>.
+             This method never returns an instance of <c>byte[]</c>; items which were appended
+             to a list as <c>byte[]</c> will be returned as <c>String</c>.
+             Returns <c>null</c> if list item is null.
+             </remarks>
+            
+             <returns> Next item's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetNextObject(System.Boolean)">
+             <summary>
+             Gets the next item from the list as an <c>Object</c>.
+             </summary><remarks>
+             The returned
+             <c>Object</c> is an instance of <c>String</c>, <c>byte[]</c>,
+             <c>Int32</c>,
+             <c>Int64</c>, <c>Double</c>, or <c>Decimal</c>, depending on the type and
+             value of the item in the list, and on the value of the <c>returnBytes</c>
+             parameter.  Integer values are returned as <c>Int32</c>
+             if they are within the range of <c>Int32</c>, else they are returned as
+             <c>Int64</c>.
+             Items which were appended to the list as either <c>String</c> or
+             <c>bytes[]</c> will be
+             returned as <c>byte[]</c> if <c>returnBytes</c> is <c>true</c>,
+             else they will be returned as <c>String</c>.
+             Returns <c>null</c> if list item is null.
+             </remarks>
+            
+             <param name="returnBytes"> If <c>true</c>, return strings as <c>byte[]</c>,
+            else return them as <c>String</c>.</param>
+             <returns> Next item's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetAll">
+             <summary>
+             Gets all items from the list as <c>Object[]</c>.
+             </summary><remarks>
+             Each returned
+             <c>Object</c> is an
+             instance of <c>String</c>, <c>Int32</c>, <c>Int64</c>,
+             <c>Double</c>, or <c>Decimal</c>, depending on the type and
+             value of the item in the list.  Integer values are returned as <c>Int32</c>
+             if they are within the range of <c>Int32</c>, else they are returned as
+             <c>Int64</c>.
+             This method never returns an instance of <c>byte[]</c>; items which were appended
+             to a list as <c>byte[]</c> will be returned as <c>String</c>.
+             A given <c>Object</c> is <c>null</c> if the corresponding list item is null.
+             Returns <c>null</c> if the list is empty.
+             Gets all items starting from beginning of list, regardless of previous
+             cursor position; leaves cursor beyond last item in the list.
+             </remarks>
+            
+             <returns> Next item's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.GetAll(System.Boolean)">
+             <summary>
+             Gets all items from the list as <c>Object[]</c>.
+             </summary><remarks>
+             Each returned Object is an
+             instance of <c>String</c>, <c>byte[]</c>, <c>Int32</c>,
+             <c>Int64</c>, <c>Double</c>, or <c>Decimal</c>, depending on the type and
+             value of the item in the list.  Integer values are returned as <c>Int32</c>
+             if they are within the range of <c>Int32</c>, else they are returned as
+             <c>Int64</c>.
+             Items which were appended to the list as either <c>String</c> or
+             <c>byte[]</c> will be
+             returned as <c>byte[]</c> if <c>returnBytes</c> is <c>true</c>,
+             else they will be returned as <c>String</c>.
+             A given <c>Object</c> is <c>null</c> if the corresponding list item is null.
+             Returns <c>null</c> if the list is empty.
+             Gets all items starting from beginning of list, regardless of previous
+             cursor position; leaves cursor beyond last item in the list.
+             </remarks>
+            
+             <param name="returnBytes"> If <c>true</c>, return strings as <c>byte[]</c>,
+             else return them as <c>String</c>.</param>
+             <returns> Next item's value as an <c>Object</c>.</returns>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.SkipNext(System.Int32)">
+             <summary>
+             Advances the cursor past the number of list items specified by <c>count</c>
+             without getting their values.
+             </summary><remarks>
+             Throws a <see cref="T:InterSystems.Globals.GlobalsException"/> if fewer than
+             <c>count</c>
+             items remain in the list beyond the cursor position.
+             </remarks>
+            
+             <param name="count">  The number of items to skip past.</param>
+            
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.ResetToFirst">
+            <summary>
+            Resets the cursor to the beginning of the list.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Clear">
+            <summary>
+            Clears the list, causing it to contain 0 items.
+            </summary>
+        </member>
+        <member name="M:InterSystems.Globals.ValueList.Close">
+            <summary>
+            Releases memory or other resources used by underlying implementation,
+            when caller is finished using this <c>ValueList</c> instance (important in
+            order to avoid memory leak in underlying implementation).
+            </summary><remarks>
+            If any other
+            method is called after calling cleanup on a <c>ValueList</c> instance,
+            a <see cref="T:InterSystems.Globals.GlobalsException"/> is thrown.
+            </remarks>
+        </member>
+        <member name="P:InterSystems.Globals.ValueList.Length">
+            <summary>
+            The number of items in the list.
+            </summary>
+        </member>
+        <member name="P:InterSystems.Globals.ValueList.SyncLock">
+            <summary>
+            Lock for synchronizing multi-threaded access to this
+            <c>ValueList</c> instance.
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.Embedded">
+            <summary>
+            Embedded attribute
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.Index">
+            <summary>
+            Index Attribute
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.Index.name">
+            <summary>
+            Index name
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.Index.fields">
+            <summary>
+            Index fields
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.Index.type">
+            <summary>
+            Index type
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.IndexType">
+            <summary>
+            IndexType attribute
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.IndexType.none">
+            <summary>
+            no index
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.IndexType.bitmap">
+            <summary>
+            bitmap index
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.IndexType.bitslice">
+            <summary>
+            bitslice index
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.IndexType.simple">
+            <summary>
+            simple index
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.IndexType.idkey">
+            <summary>
+            (compound) idkey
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.Serialized">
+            <summary>
+            Serialized attribute
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.Transient">
+            <summary>
+            Transient attribute
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Attributes.Id">
+            <summary>
+            Id Attribute
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Attributes.Id.generated">
+            <summary>
+            System generated flag
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.Event">
+            <summary><CODE>Event</CODE> provides methods that operate on XEP Events
+            (storing events, creating a query, setting a filter, indexing etc)
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.INDEX_MODE_ASYNC_ON">
+            <summary>
+            Set this option to turn asynchronous indexing on (default option).
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.INDEX_MODE_ASYNC_OFF">
+            <summary>
+            Set this option to turn asynchronous indexing off.
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.INDEX_MODE_SYNC">
+            <summary>
+            Set this option to use syncronous indexing.
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.FETCH_LEVEL_ALL">
+            <summary>
+            Set this option to fetch all data (default option).
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.FETCH_LEVEL_DATATYPES_ONLY">
+            <summary>
+            Set this option to fetch only datatype data. Arrays, object types and collections
+            will not be fetched.
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.FETCH_LEVEL_NO_ARRAY_TYPES">
+            <summary>
+            Set this option to fetch all data except arrays.
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.FETCH_LEVEL_NO_OBJECT_TYPES">
+            <summary>
+            Set this option to fetch all non-object data.
+            </summary>
+        </member>
+        <member name="F:InterSystems.XEP.Event.FETCH_LEVEL_NO_COLLECTIONS">
+            <summary>
+            Set this option to fetch all data except collections.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.Event.Close">
+            <summary>Releases all resources held by this event</summary>
+        </member>
+        <member name="M:InterSystems.XEP.Event.Store(System.Object)">
+            <summary>Stores the C# object.</summary>
+            <param name="obj">C# object to be saved</param>
+            <returns> long database id of the newly inserted object,
+            or 0 (zero) if the database id could not be returned 
+            or does not apply (for example if composite IDKEYs are used)
+            NOTE: For performance reasons the TCP/IP version will always 
+            return 0
+            </returns>
+        </member>
+        <member name="M:InterSystems.XEP.Event.Store(System.Object[])">
+            <summary>Stores an array of C# objects.</summary>
+            <param name="objects">array of C# objects to be saved</param>
+            <returns> long database ids of all newly inserted objects,
+            or 0 (zeros) if composite IDKEYs are used
+            </returns>
+        </member>
+        <member name="M:InterSystems.XEP.Event.CreateQuery``1(System.String)">
+            <summary>
+            Create an instance of EventQuery.
+            </summary>
+            <param name="sqlText">SQL query text</param>
+            <returns>An instance of EventQuery</returns>
+        </member>
+        <member name="M:InterSystems.XEP.Event.GetObject(System.Int64)">
+            <summary>Retrieves an object given its database id.
+            Returns null if no object with this id exists.</summary>
+            <param name="id">database id</param>
+            <returns> Object an event object</returns>
+        </member>
+        <member name="M:InterSystems.XEP.Event.UpdateObject(System.Int64,System.Object)">
+            <summary>Updates an existing object given its database id.</summary>
+            <param name="id">database id</param>
+            <param name="obj">new object</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.DeleteObject(System.Int64)">
+            <summary>Deletes an object given its database id.</summary>
+            <param name="id">database id</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.GetObject(System.Object[])">
+            <summary>Gets an object given its IDKEYs.</summary>
+            <param name="idkeys">composite IDKEY</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.UpdateObject(System.Object[],System.Object)">
+            <summary>Updates an object given its IDKEYs.</summary>
+            <param name="idkeys">composite IDKEY</param>
+            <param name="obj">object to update</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.DeleteObject(System.Object[])">
+            <summary>Deletes an object given its IDKEYs.</summary>
+            <param name="idkeys">composite IDKEY</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.IsEvent(System.Object)">
+            <summary>Checks whether an object (or class) is an event in the XEP sense</summary>
+            <param name="objectOrClass">C# object or class object</param>
+        </member>
+        <member name="M:InterSystems.XEP.Event.StartIndexing">
+            <summary>Start populating indexes asynchronously. This method will throw 
+            an exception if called on an event created with INDEX_MODE_SYNC index mode.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.Event.StopIndexing">
+            <summary>Stop populating indexes asynchronously. This method will throw 
+            an exception if called on an event created with INDEX_MODE_SYNC index mode.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.Event.WaitForIndexing(System.Int32)">
+            <summary>Wait for asynchronous indexing to be completed for this class.
+            If timeout is -1, wait forever or until indexing completes, else
+            timeout after the specified number of seconds, returning false if indexing has
+            not completed.  If timeout is 0, immediately return true if indexing has
+            completed or false if it has not. This method will throw  an exception if 
+            called on an event created with INDEX_MODE_SYNC index mode.
+            
+            In ECP configurations, this method applies only to indexing of objects inserted
+            via the current App Server.
+            
+            </summary>
+            <param name="timeout">Seconds to wait before timing out, -1 for no timeout (wait forever)
+            </param>
+            <returns> true if indexing has completed, false if timed out before indexed completed
+            </returns>
+        </member>
+        <member name="M:InterSystems.XEP.Event.ParallelStore(System.Object[],System.Int32)">
+             <summary>Stores an array of C# objects taking advantage of concurrent
+             utilities for potential insert performance speedup. It is important to note
+             that the potential speedup would result from taking advantage of multiple 
+             threads/cores to serialize the data. Once the data is serialized, the rest
+             of the store process will be equally I/O bound as the ordinary version of 
+             store. This method should be used only on multi-core machines. It is recommended
+             that the non-parallel version of store is used to get the baseline insert
+             rate numbers. Whether ParallelStore performs better depends on the particular 
+             environment. Once the base line is obtained, and the number of cores is
+             retrieved (for example by calling Environment.ProcessorCount, 
+             it might be a good idea to experiment with different splitFactors to see if 
+             using ParallelStore will result in performance boost. 
+             Please note that unlike the regular version, ParallelStore does not 
+             (for performance reasons) return the ids of all the objects that were inserted.
+             splitFactor should always be greater than 2; otherwise regular Store method will
+             be utilized. 
+            
+             IMPORTANT NOTES: True parallel version (utilizing DotNet 4.0 concurrent libraries
+                              is only available for DotNet 4.0+). Prior versions will simply
+                              call the regular Store method.
+                              This method should only be used when no other threading either at
+                              the application, or at the XEP level is used.
+            </summary>
+             <param name="objects">array of C# objects to be saved</param>
+             <param name="splitFactor"> number of parallel tasks used to serialize the data</param>
+        </member>
+        <member name="T:InterSystems.XEP.EventPersister">
+            <summary><c>EventPersister</c> is the main entry point for the XEP module.
+            It provides methods that can be used to set XEP options up, establish an XEP
+            connection, import schema, produce XEP <c>Event</c> objects, get an Ado.NET
+            connection sharing the same process space. It also provides methods to control
+            transactions and perform other tasks.
+            
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetAdoNetConnection">
+            <summary>Returns an ADO.NET connection
+            <strong>Important Note:</strong> When connecting via TCP/IP, the ADO.NET connection is
+            also used by the XEP engine, so the users should be careful not to close or corrupt 
+            the connection obtained by this method as that might cause the XEP engine to fail.
+            </summary>
+            <returns> an ADO.NET connection</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetConnection">
+            <summary>Returns the underlying Globals connection.</summary>
+            <returns> Globals connection</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.SetInterfaceResolver(InterSystems.XEP.InterfaceResolver)">
+             <summary>Sets InterfaceResolver. InterfaceResolver is only relevant when using
+             the flat import mode. All Event objects created via this EventPersiser
+             object will share the InterfaceResolver object. InterfaceResolver defaults
+             to null if this method is not called. See documentation for more info
+             on InterfaceResolver and how it should be used to inform the XEP engine
+             what actual runtime types it can expect for any fields declared as interfaces.
+            
+             IMPORTANT: Even if set, InterfaceResolver will not be used to resolve 
+                        interfaces when importing classes using the full mode.
+            
+             </summary>
+             <param name="interfaceResolver">An implementation of InterfaceResolver</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetInterfaceResolver">
+            <summary>Returns currently set InterfaceResolver.</summary>
+            <returns> an instance of InterfaceResolver, or null if none set</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Connect(System.String,System.Int32,System.String,System.String,System.String,System.String)">
+            <summary>Connect to Cache using the parameters specified below. This flavor is
+            to be used for connecting via TCP/IP only.
+            </summary>
+            <param name="host">TCP/IP host address</param>
+            <param name="port">TCP/IP port number</param>
+            <param name="nmspace">Cache namespace to connect to</param>
+            <param name="username">username</param>
+            <param name="password">password</param>
+            <param name="log">log</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Connect(System.String,System.Int32,System.String,System.String,System.String)">
+            <summary>Connect to Cache using the parameters specified below. This flavor is
+            to be used for connecting via TCP/IP only.
+            </summary>
+            <param name="host">TCP/IP host address</param>
+            <param name="port">TCP/IP port number</param>
+            <param name="nmspace">Cache namespace to connect to</param>
+            <param name="username">username</param>
+            <param name="password">password</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Connect(System.String)">
+            <summary>Connect to Cache using the CacheADOConnection.ConnectionString specified below. This flavor is
+            to be used for connecting via TCP/IP only.  By default pooling is turned on, which is different than the four
+            parameter argument to Connect() which turns pooling off.
+            </summary>
+            <param name="connString">CacheADOConnection.ConnectionString (a set of key value pairs)</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Connect(System.String,System.String,System.String)">
+            <summary>Connect to Cache using the parameters specified below. Can be used to connect
+            locally only. For TCP/IP connections, use the alternative overloading.</summary>
+            <param name="nmspace">Cache namespace to connect to</param>
+            <param name="username">username</param>
+            <param name="password">password</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Close">
+            <summary>Close this EventPersister instance</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallProcedure(System.String,System.String,System.Object[])">
+            <summary>Call a COS procedure. Reference parameters (in the COS sense) 
+            are not supported.</summary>
+            <param name="procedureName">procedure name</param>
+            <param name="routineName">routine name</param>
+            <param name="args">procedure arguments</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallFunction(System.String,System.String,System.Object[])">
+            <summary>Call a COS function. Reference parameters (in the COS sense) 
+            are not supported.</summary>
+            <param name="functionName">procedure name</param>
+            <param name="routineName">routine name</param>
+            <param name="args">procedure arguments</param>
+            <returns> return value</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method, passing 0 or more arguments and
+            returning the method's return value as an instance of <c>string</c>,
+            <c>int</c>, <c>long</c>, or <c>double</c>.
+            </summary>
+            <remarks>
+            Arguments may be of any of the types <c>string</c>,
+            <c>int</c>, <c>long</c>, <c>double</c> or <c>byte[]</c>. Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments. Throws an exception
+            if a non-null argument is passed to the right of a null argument.
+            <p>
+            To call a Cache class method which does not return a value, use
+            <see cref="M:InterSystems.XEP.EventPersister.CallVoidClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class
+            to which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+            <returns> the value returned by the Cache ObjectScript class method, as an 
+            instance of <c>string</c>, <c>int</c>, <c>long</c> or <c>double</c>.
+            </returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallVoidClassMethod(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript class method with no return value,
+            passing 0 or more arguments.
+            </summary>
+            <remarks>
+            <p>
+            Arguments may be of any of the types <c>string</c>, <c>int</c>, 
+            <c>long</c>, <c>double</c> or <c>byte[]</c>. Trailing arguments
+            may be omitted, causing default values to be used for those arguments,
+            either by passing fewer than the full number of arguments, or by
+            passing <c>null</c> for trailing arguments. Throws an exception
+            if a non-null argument is passed to the right of a null argument.
+            </p><p>
+            This method may be used to call Cache class methods which return no value,
+            or to call Cache class methods which do return a value, when the caller does not
+            need the return value. To call Cache class methods and get their return values,
+            use <see cref="M:InterSystems.XEP.EventPersister.CallClassMethod(System.String,System.String,System.Object[])"/>.
+            </p></remarks>
+            <param name="className"> fully qualified name of the Cache class to
+            which the called method belongs.</param>
+            <param name="methodName"> name of the Cache class method.</param>
+            <param name="args"> 0 or more arguments to pass to the method.</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallBytesClassMethod(System.String,System.String,System.Object[])">
+             <summary>
+             Calls a Cache class method passing 0 or more arguments and
+             returning the class method's return value as <c>byte[]</c>.
+             This method is identical to {@link #CallClassMethod}, except 
+             that string values are returned as instances of <c>byte[]</c>
+             rather than <c>string</c>.
+             Arguments may be of any of the types <c>string</c>, <c>int</c>, 
+             <c>long</c>, <c>double</c>, or <c>byte[]</c>. Trailing arguments 
+             may be omitted, causing  default values to be used for those 
+             arguments, either by passing fewer than the full number of 
+             arguments, or by passing <c>null</c> for trailing arguments. 
+            
+             The return value is a <c>byte[]</c>.
+             To cause string values to be returned as instances of <c>string</c>
+             use {@link #CallClassMethod}.
+             To cause string values to be returned as instances of <c>ValueList</c>
+             or <c>VList</c> use {@link #CallListClassMethod}.
+             </summary>
+            
+             <param name="className"> fully qualified name of the Cache class to which the called
+                              method belongs.</param>
+             <param name="methodName"> name of the Cache class method.</param>
+             <param name="args"> 0 or more arguments to pass to the function.</param>
+             <returns> the value returned by the Cache ObjectScript function, as byte[].</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallBytesFunction(System.String,System.String,System.Object[])">
+            <summary>
+            Calls a Cache ObjectScript function, passing 0 or more arguments and
+            returning the function's return value as a byte[]. This method is 
+            identical to {@link #CallFunction}, except that string values are 
+            returned as <c>byte[]</c> rather than <c>string</c>.
+            Arguments may be of any of the types <c>string</c>, <c>int</c>, 
+            <c>long</c>, <c>double</c> or <c>byte[]</c>. Trailing arguments 
+            may be omitted, causing  default values to be used for those 
+            arguments, either by passing fewer than the full number of arguments, 
+            or by passing <c>null</c> for trailing arguments. 
+            
+            The return value is a <c>byte[]</c>.
+            To cause string values to be returned as instances of <c>string</c>
+            use {@link #CallFunction}.
+            To cause string values to be returned as instances of <c>ValueList</c>
+            or <c>VList</c> use {@link #CallListFunction}.
+            </summary>
+            
+            <param name="functionName"> name of the Cache ObjectScript function to call.</param>
+            <param name="routineName"> name of the routine containing the function.</param>
+            <param name="args"> 0 or more arguments to pass to the function.</param>
+            <returns> the value returned by the Cache ObjectScript function, as a byte[].</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallListClassMethod(System.String,System.String,System.Object[])">
+            <summary> Calls a Cache class method passing 0 or more arguments and
+             returning the class method's return value as an instance of
+             {@link ValueList} {in-memory version) or {@link VList} (TCP/IP version)
+             This method is identical to {@link #CallClassMethod}, except that 
+             string values are returned as instances of <c>ValueList</c> or 
+             <c>VList</c> rather than <c>string</c>, <c>int</c>, <c>long</c>, 
+             <c>double</c>, or <c>byte[]</c>. Trailing arguments may be omitted, 
+             causing default values to be used for those arguments, either by 
+             passing fewer than the full number of arguments, or by passing 
+             <c>null</c> for trailing arguments. 
+             
+             The return value is an instance of <c>ValueList</c> or <c>VList</c>.
+             To cause string values to be returned as instances of <c>string</c>
+             use {@link #CallClassMethod}.
+             To cause string values to be returned as instances of <c>byte[]</c>
+             use {@link #CallBytesClassMethod}.
+             </summary>
+            
+             <param name="className"> fully qualified name of the Cache class to which the called
+                    method belongs.</param>
+             <param name="methodName"> name of the Cache class method.</param>
+             <param name="args"> 0 or more arguments to pass to the function.</param>
+             <returns> the value returned by the Cache ObjectScript function, as <c>ValueList</c> 
+             (in-memory version) or <c>VList</c> (TCP/IP version).</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.CallListFunction(System.String,System.String,System.Object[])">
+            <summary> Calls a Cache ObjectScript function, passing 0 or more arguments and
+             returning the function's return value as an instance of
+             {@link ValueList} {in-memory version) or {@link VList} (TCP/IP version)
+             This method is identical to {@link #CallFunction}, except that string 
+             values are returned as instances of <c>VList</c> or <c>VList</c> 
+             rather than <c>string</c>. Arguments may be of any of the types
+             <c>string</c>, <c>int</c>, <c>long</c>, <c>double</c> or <c>byte[]</c>. 
+             Trailing arguments may be omitted, causing default values to be used for 
+             those arguments, either by passing fewer than the full number of arguments, 
+             or by passing <c>null</c> for trailing arguments. 
+             
+             The return value is an instance of <c>ValueList</c> or <c>VList</c>.
+             To cause string values to be returned as instances of <c>string</c>
+             use {@link #CallFunction}.
+             To cause string values to be returned as instances of <c>byte[]</c>
+             use {@link #CallBytesFunction}.
+             </summary>
+             
+             <param name="functionName"> name of the Cache ObjectScript function to call.</param>
+             <param name="routineName"> name of the routine containing the function.</param>
+             <param name="args"> 0 or more arguments to pass to the function.</param>
+             <returns> the value returned by the Cache ObjectScript function, as <c>ValueList</c> 
+             (in-memory version) or <c>VList</c> (TCP/IP version).</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetEvent(System.String)">
+            <summary>Returns an event object that corresponds to the supplied class name.
+            </summary>
+            <param name="className">name of the C# class</param>
+            <returns> an Event object</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetEvent(System.String,System.Int32)">
+            <summary>Returns an event object that corresponds to the supplied class name.
+            </summary>
+            Also sets up the indexing mode to be used.
+            <param name="className">name of the C# class</param>
+            <param name="indexMode">index mode to be used</param>
+            <returns> an Event object</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.ImportSchema(System.String)">
+             <summary>If parameter is a class name, import the corresponding class
+             and any dependencies. If the parameter is a DLL file, import all
+             classes in the DLL file and any dependencies. As part of the import,
+             the XEP engine will first try to see if the corresponding schema
+             already exists on the Cache side. If such schema already exists,
+             and it appears to be in sync with the C# schema, import will be
+             skipped. Should a schema already exist, but it appears different,
+             a check will be performed to see if there is any data. If there is
+             no data, a new schema will be generated. If there is existing data,
+             an exception will be thrown. Returns an array of imported class names.
+            
+             Since XEP needs to know the actual (concrete) runtime types, if
+             any fields are declared as interfaces, these fields will be skipped
+             (ignored) by XEP by default, unless an implementation of
+             InterfaceResolver has been set (by calling setInterfaceResolver).
+             For any interfaces whose concrete implementation types are not found
+             in the InterfaceResolver, the default behavior is applied (which means
+             that the corresponding field will not be projected, nor considered in
+             store/load)
+            
+             This flavor should be used for performance oriented applications.
+             The object hierarchy will be fully flattened, and all references
+             will be embedded (projected as ObjectScript serial objects). For
+             applications that require richer feature set, and better correspondence
+             between the C# and ObjectScript object schemas, but are not performance
+             critical, one should use importSchemaFull flavor.
+             </summary>
+             
+             <param name="classOrDLLName">name of the C# class or DLL</param>
+             <returns>an array of imported class names</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.ImportSchemaFull(System.String)">
+             <summary>See importSchema(String classOrJarFileName) for more info. This flavor is different 
+             from that one in that it will not generate the flattened object model, and will allow
+             references. While this mode allows a much closer mapping from Java to ObjectScript
+             by preserving the inheritance model and projecting Java references to ObjectScript,
+             using this mode will invariably result in slower performance. For performance
+             oriented applications, one should use the alternative importSchema flavor.
+            
+             IMPORTANT: Any class to be imported in the full mode must declare a user defined
+                        Id Key (use @ID for single field keys, or @Index for compound id keys).
+             
+             </summary>
+             <param name="classOrDLLName">name of the C# class or DLL</param>
+             <returns>an array of imported class names</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.ImportSchemaFull(System.String[])">
+            <summary> See importSchema(String[] classes) for more info. This flavor is different from
+             that one in that it will not generate the flattened object model, and will allow
+             references. While this mode allows a much closer mapping from C# to ObjectScript
+             by preserving the inheritance model and projecting C# references to ObjectScript,
+             using this mode will invariably result in slower performance. For performance
+             oriented applications, one should use the alternative importSchema flavor.
+            
+             IMPORTANT: Any class to be imported in the full mode must declare a user defined
+                        Id Key (use @ID for single field keys, or @Index for compound id keys).
+             
+             </summary>
+            
+             <param name="classNames">class names to be imported</param>
+             <returns>an array of imported class names</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.ImportSchema(System.String[])">
+            <summary> Import the given classes and any dependencies. As part of the
+             import, the XEP engine will first try to see if the corresponding
+             schema already exists on the Cache side. If such schema already
+             exists, and it appears to be in sync with the C# schema, import
+             will be skipped. Should a schema already exist, but it appears
+             different, a check will be performed to see if there is any data.
+             If there is no data, a new schema will be generated. If there is
+             existing data, an exception will be thrown. Returns an array of
+             imported class names.
+            
+             Since XEP needs to know the actual (concrete) runtime types, if
+             any fields are declared as interfaces, these fields will be skipped
+             (ignored) by XEP by default, unless an implementation of
+             InterfaceResolver has been set (by calling setInterfaceResolver).
+             For any interfaces whose concrete implementation types are not found
+             in the InterfaceResolver, the default behavior is applied (which means
+             that the corresponding field will not be projected, nor considered in
+             store/load)
+             
+             This flavor should be used for performance oriented applications.
+             The object hierarchy will be fully flattened, and all references
+             will be embedded (projected as ObjectScript serial objects). For
+             applications that require richer feature set, and better correspondence
+             between the C# and ObjectScript object schemas, but are not performance
+             critical, one should use importSchemaFull flavor.
+            </summary>
+            
+             <param name="classNames">class names to be imported</param>
+             <returns>an array of imported class names</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.DeleteExtent(System.String)">
+            <summary>Deletes all objects in the given extent.</summary>
+            <param name="className">name of the C# event</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.DeleteClass(System.String)">
+            <summary>Deletes a COS class. Deletes only the specified class.
+            No dependencies are deleted.</summary>
+            <param name="className">name of the class to delete</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.StartTransaction">
+            <summary>Start a transaction (which may be a nested transaction)</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Commit">
+            <summary>Commit one level of transaction</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Rollback">
+            <summary>Rollback all levels of transaction</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.Rollback(System.Int32)">
+            <summary>Rollback levelCount levels of transaction, where levelCount is a positive integer.
+            Do nothing if levelCount less than or equal to 0, and stop rolling back once transactionLevel 
+            reaches 0, if levelCount is greater than initial transactionLevel.
+            Note: This method is not supported when connected via TCP/IP.
+            </summary>
+            <param name="level">transaction level</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetTransactionLevel">
+            <summary>Return current transaction level (0 if not in transaction).</summary>
+            <returns> transaction level</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventPersister.GetGlobalName(System.String)">
+            <summary>Returns the name of the corresponding Cache global where the data is stored .</summary>
+            <param name="className">class name</param>
+            <returns>Cache global name</returns>
+        </member>
+        <member name="T:InterSystems.XEP.EventQuery`1">
+            <summary><CODE>EventQuery</CODE> can be used to retrieve, update and delete
+            individual events from the database.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.AddParameter(System.Object)">
+            <summary>Binds a parameter.</summary>
+            <param name="val">parameter value</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.Execute">
+            <summary>Execute this XEP query.</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.ExecuteAndFetchAll(System.Int32)">
+            <summary>Executes the query and fetches all data. In case of the TCP/IP version 
+            and on multi-core machines setting the splitFactor parameter to anything 
+            between 3 and the total number of cores should speed up execution as the 
+            de-serialization will be done in parallel by using splitFactor cores/threads.
+            Otherwise (using in-memory version or setting splitFactor to 2 or less)
+            is equivalent to calling Execute followed by calling GetNext in a loop.
+            This is also the case when this method is invoked on DotNet version 3.x
+            or less, or when a full schema option is selected.</summary>
+            <returns>all objects matching the query</returns>
+            <param name="splitFactor"> number of threads to use (should be > 2)</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.GetNext">
+            <summary>Gets the next object.</summary>
+            <returns> next object, null if no more objects for this query</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.UpdateCurrent(`0)">
+            <summary>Updates the object most recently returned by GetNext().</summary>
+            <param name="obj">object to be updated</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.DeleteCurrent">
+            <summary>Deletes the object most recently returned by GetNext()</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.Close">
+            <summary>Closes the query.</summary>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.GetAll">
+            <summary>Gets all data in one fell swoop. Can be used to get all data that matches 
+            the given query. Can be used only after a query has been executed, and
+            cannot be combined with calls to getNext.
+            
+            IMPORTANT: This is a convenience method. For best performance, if you need to 
+            process one element at the time only, always choose getNext instead. There is 
+            a high cost associated with maintaining a list of objects.
+            </summary>
+            <returns>all objects matching the query</returns>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.SetFetchLevel(System.Int32)">
+             <summary> Sets the fetch level. By setting fetch level, it is possible to control the 
+             amount of data returned. For example, by setting the fetch level to 
+             FETCH_LEVEL_DATATYPES_ONLY, objects returned by this query will only have their
+             datatype fields set. Any object types, arrays, collections etc. fields will not
+             get populated. Using this option can dramatically improve query performance.
+             Currently supported fetch levels:
+            
+             FETCH_LEVEL_ALL - default, all fields populated
+             FETCH_LEVEL_DATATYPES_ONLY - only datatype fields filled in
+             FETCH_LEVEL_NO_ARRAY_TYPES - all arrays will be skipped
+             FETCH_LEVEL_NO_OBJECT_TYPES - all object types will be skipped
+             FETCH_LEVEL_NO_COLLECTIONS - all collections will be skipped
+             </summary>
+             <param name="level">fetch level to be set</param>
+        </member>
+        <member name="M:InterSystems.XEP.EventQuery`1.GetFetchLevel">
+            <summary> Returns the current fetch level.</summary>
+            <returns>currently set fetch level</returns>
+        </member>
+        <member name="T:InterSystems.XEP.InterfaceResolver">
+            <summary>
+            A call-back mechanism allowing the application to specify the actual (concrete) 
+            runtime type for any fields declared as interfaces. This allows the applications 
+            to use interface types, but also satisfies the need of the XEP engine to know 
+            the concrete types ahead of time.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.InterfaceResolver.GetImplementationType(System.Type,System.String,System.Type)">
+            <summary>
+            Returns the actual (concrete) runtime type, given a declaring class (optional),
+            field name (optional) and the interface type (not optional).
+            </summary>
+            <param name="declaringClass">declaring class</param>
+            <param name="fieldName">field name</param>
+            <param name="interfaceClass">interface class</param>
+            <returns>actual (concrete) type</returns>
+        </member>
+        <member name="M:InterSystems.XEP.Internal.XMLClassGenerator.addAttribute(System.String,System.String)">
+            XML writes
+        </member>
+        <member name="T:InterSystems.XEP.LocalEvent">
+            <summary>
+            Not intended for application use.
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.PersisterFactory">
+            <summary><CODE>PersisterFactory</CODE>. Main XEP entry point. Provides factory 
+            method that can be used to produce EventPersister objects.
+            </summary>
+        </member>
+        <member name="M:InterSystems.XEP.PersisterFactory.CreatePersister">
+            <summary>Creates a new persister object.</summary>
+            <returns> EventPersister instance</returns>
+        </member>
+        <member name="T:InterSystems.XEP.RemoteEvent">
+            <summary>
+            Not intended for application use. 
+            </summary>
+        </member>
+        <member name="T:InterSystems.XEP.XEPException">
+            <summary><CODE>XEPException</CODE> is thrown by all XEP APIs.</summary>
+        </member>
+        <member name="M:InterSystems.XEP.XEPException.#ctor(System.Exception,System.String)">
+            <param name="x"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:InterSystems.XEP.XEPException.#ctor(System.String)">
+            <param name="message"></param>
+        </member>
+    </members>
+</doc>
