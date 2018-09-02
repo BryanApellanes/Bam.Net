@@ -10,6 +10,7 @@ using Bam.Net.Incubation;
 using System.IO;
 using System.Data.SQLite;
 using System.Data.Common;
+using System.Diagnostics;
 
 namespace Bam.Net.Data.SQLite
 {
@@ -100,6 +101,44 @@ namespace Bam.Net.Data.SQLite
                 }
 
                 return _databaseFile;
+            }
+        }
+
+        public bool GCOnRelease { get; set; }
+
+        public override void ReleaseConnection(DbConnection conn)
+        {
+            ReleaseConnection(conn, GCOnRelease);
+        }
+
+        public void ReleaseConnection(DbConnection conn, bool gcCollect)
+        {
+            base.ReleaseConnection(conn);
+            if (gcCollect)
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        public void ReleaseAllConnections()
+        {
+            lock (connectionLock)
+            {
+                foreach (DbConnection conn in Connections)
+                {
+                    try
+                    {
+                        conn.Close();
+                        conn.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine($"Exception releasing database connection: {ex.Message}");
+                    }
+                }
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 

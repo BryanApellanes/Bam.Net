@@ -134,6 +134,7 @@
     <Compile Include="Catalog\CatalogRepository.cs" />
     <Compile Include="Catalog\Data\CatalogItem.cs" />
     <Compile Include="Catalog\Data\ItemProperty.cs" />
+    <Compile Include="ChunkClientKeyValueStore.cs" />
     <Compile Include="Chunking\Chunk.cs" />
     <Compile Include="Chunking\ChunkClient.cs" />
     <Compile Include="Chunking\ChunkException.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Chunking\ChunkResponse.cs" />
     <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="ClientServiceRegistryContainer.cs" />
+    <Compile Include="DatabaseKeyValueStore.cs" />
     <Compile Include="DataReplication\Arc.cs" />
     <Compile Include="DataReplication\CompressedJournal.cs" />
     <Compile Include="DataReplication\CompressedJournalEntryValueFlusher.cs" />
@@ -152,9 +154,15 @@
     <Compile Include="DataReplication\EncryptedJournalEntryValueFlusher.cs" />
     <Compile Include="DataReplication\EncryptedJournalEntryValueLoader.cs" />
     <Compile Include="DataReplication\EncryptedJournalManager.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalManager.cs" />
     <Compile Include="DataReplication\JournalClient.cs" />
+    <Compile Include="DataReplication\JournaledRepository.cs" />
     <Compile Include="DataReplication\JournalRequestTypes.cs" />
-    <Compile Include="Indexer.cs" />
+    <Compile Include="FileSystemKeyValueStore.cs" />
+    <Compile Include="IKeyValueStore.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndex.cs" />
     <Compile Include="DataReplication\JournalEntryValueLoader.cs" />
     <Compile Include="DataReplication\IJournalManager.cs" />
     <Compile Include="DataReplication\Journal.cs" />
@@ -313,6 +321,13 @@
     <Compile Include="Hosts\Data\HostEntryData.cs" />
     <Compile Include="Hosts\HostEntry.cs" />
     <Compile Include="Hosts\HostsService.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePair.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairCollection.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairColumns.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairPagedQuery.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairQuery.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValueStoreContext.cs" />
+    <Compile Include="KeyValueStore_Generated\Qi\KeyValuePair.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
     <Compile Include="OpenApi\Objects\ContactObject.cs" />
@@ -484,6 +499,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="KeyValueStore.db.js" />
     <Content Include="OpenApi\OpenApi.db.js" />
   </ItemGroup>
   <ItemGroup>

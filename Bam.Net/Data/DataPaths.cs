@@ -17,6 +17,7 @@ namespace Bam.Net.Data
                 SysData = dataDirectoryProvider.GetSysDataDirectory().FullName,
 
                 AppData = dataDirectoryProvider.GetAppDataDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName,
+                UserData = dataDirectoryProvider.GetAppUsersDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName,
                 AppDatabase = dataDirectoryProvider.GetAppDatabaseDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName,
                 AppRepository = dataDirectoryProvider.GetAppRepositoryDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName,
                 AppFiles = dataDirectoryProvider.GetAppFilesDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName,
@@ -26,8 +27,8 @@ namespace Bam.Net.Data
 
         public string DataRoot { get; set; }
         public string SysData { get; set; }
-
-        public string AppData { get; set; }        
+        public string AppData { get; set; }
+        public string UserData { get; set; }
         public string AppDatabase { get; set; }
         public string AppRepository { get; set; }
         public string AppFiles { get; set; }

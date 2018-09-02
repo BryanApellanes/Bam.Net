@@ -14,7 +14,7 @@ namespace Bam.Net.Services.DataReplication
     [Serializable]
     public class Journal: Loggable
     {
-        Queue<JournalEntry> _dataReplicationJournalEntries;
+        Queue<JournalEntry> _journalEntries;
         bool _keepFlushing;
 
         public Journal(ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter, ILogger logger = null) 
@@ -23,7 +23,7 @@ namespace Bam.Net.Services.DataReplication
 
         public Journal(SystemPaths paths, JournalTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter = null, ILogger logger = null)
         {
-            _dataReplicationJournalEntries = new Queue<JournalEntry>();
+            _journalEntries = new Queue<JournalEntry>();
             _keepFlushing = true;
             ExceptionThreshold = 100;
             SequenceProvider = sequenceProvider;
@@ -172,8 +172,13 @@ namespace Bam.Net.Services.DataReplication
         {
             Task.Run(() => TypeMap.AddMapping(data));
             JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
+            return Enqueue(journalEntries, onFullyFlushed);
+        }
+
+        public IEnumerable<JournalEntry> Enqueue(JournalEntry[] journalEntries, Action<JournalEntry[]> onFullyFlushed)
+        {
             HashSet<JournalEntry> written = new HashSet<JournalEntry>();
-            foreach(JournalEntry entry in journalEntries)
+            foreach (JournalEntry entry in journalEntries)
             {
                 entry.Written += (o, a) =>
                 {
@@ -207,7 +212,7 @@ namespace Bam.Net.Services.DataReplication
             foreach(JournalEntry journalEntry in journalEntries)
             {
                 journalEntry.Seq = SequenceProvider.Next();
-                _dataReplicationJournalEntries.Enqueue(journalEntry);
+                _journalEntries.Enqueue(journalEntry);
             }
             FireEvent(EntriesEnqueued, new JournalEntriesEnqueuedEventArgs { JournalEntries = journalEntries });
         }
@@ -222,12 +227,12 @@ namespace Bam.Net.Services.DataReplication
                 {
                     try
                     {
-                        if (_dataReplicationJournalEntries.Count > 0)
+                        if (_journalEntries.Count > 0)
                         {
                             _fireQueueEmpty = true;
-                            while(_dataReplicationJournalEntries.Count > 0)
+                            while(_journalEntries.Count > 0)
                             {
-                                JournalEntry journalEntry = _dataReplicationJournalEntries.Dequeue();
+                                JournalEntry journalEntry = _journalEntries.Dequeue();
                                 if(journalEntry != null)
                                 {
                                     FileInfo propertyFile = Flusher.Flush(this, journalEntry);

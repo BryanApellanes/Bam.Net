@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services
+namespace Bam.Net.Analytics
 {
-    public class Indexer
+    public interface IFeatureExtractor
     {
-        public DirectoryInfo IndexDirectory { get; set; }
+        string[] ExtractFeatures(string value);
     }
 }

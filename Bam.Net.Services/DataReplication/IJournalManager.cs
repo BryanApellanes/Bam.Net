@@ -13,7 +13,7 @@ namespace Bam.Net.Services.DataReplication
         IJournalEntryValueFlusher Flusher { get; }
         IJournalEntryValueLoader Loader { get; }
 
-        void Enqueue(IEnumerable<JournalEntry> journalEntries);
+        void Enqueue(IEnumerable<JournalEntry> journalEntries, Action<JournalEntry[]> onFullFlushed = null);
 
         T Load<T>(ulong id) where T : KeyHashAuditRepoData, new();
     }

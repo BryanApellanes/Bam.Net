@@ -31,6 +31,20 @@ namespace Bam.Net.Analytics.Classification
 
         public abstract string Classify(string documentString, string defaultCategory = "None");
 
+        IFeatureExtractor _featureExtractor;
+        object _featureExtractorLock = new object();
+        public IFeatureExtractor FeatureExtractor
+        {
+            get
+            {
+                return _featureExtractorLock.DoubleCheckLock(ref _featureExtractor, () => new WordFeatureExtractor());
+            }
+            set
+            {
+                _featureExtractor = value;
+            }
+        }
+
         /// <summary>
         /// Train the classifier assigning the specified doc to the 
         /// specified category
@@ -39,7 +53,7 @@ namespace Bam.Net.Analytics.Classification
         /// <param name="category"></param>
         public void Train(string doc, string category)
         {
-            string[] features = FeatureExtractor(doc);
+            string[] features = ExtractFeatures(doc);
             for (int i = 0; i < features.Length; i++)
             {
                 IncreaseFeature(features[i], category);
@@ -191,33 +205,22 @@ namespace Bam.Net.Analytics.Classification
             return f;
         }
 
-        object _featureExtractorLock = new object();
-        Func<string, string[]> _getFeatures;
+        object _extractFeaturesLock = new object();
+        Func<string, string[]> _extractFeatures;
         /// <summary>
         /// The delegate used for extracting features from a
         /// given string.  Default is ExtractWords.
         /// </summary>
-        public Func<string, string[]> FeatureExtractor
+        public Func<string, string[]> ExtractFeatures
         {
             get
             {
-                return _featureExtractorLock.DoubleCheckLock(ref _getFeatures, () => ExtractWords);
+                return _extractFeaturesLock.DoubleCheckLock(ref _extractFeatures, () => FeatureExtractor.ExtractFeatures);
             }
             set
             {
-                _getFeatures = value;
+                _extractFeatures = value;
             }
-        }
-
-        /// <summary>
-        /// The default implementation of GetFeatures
-        /// </summary>
-        /// <param name="docContent"></param>
-        /// <returns></returns>
-        public virtual string[] ExtractWords(string docContent)
-        {
-            string[] words = docContent.Split(new string[] { " ", "\r", "\n", "\t", ".", ",", ":", ";", "=", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ">", "<", "?", "@", "[", "]", "{", "}", "|", "`", "^", "~" }, StringSplitOptions.RemoveEmptyEntries);
-            return words.Where(s=> s.Length > 2 && s.Length < 20).Distinct().ToArray();
         }
     }
 }

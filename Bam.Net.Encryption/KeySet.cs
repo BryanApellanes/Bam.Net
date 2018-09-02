@@ -87,6 +87,11 @@ namespace Bam.Net.Encryption
             }
         }
 
+        public string GetAesKey()
+        {
+            return AesKey;
+        }
+
         AsymmetricCipherKeyPair _asymmetricKeys;
         string _asymmetricPemString;
         public string AsymmetricKey

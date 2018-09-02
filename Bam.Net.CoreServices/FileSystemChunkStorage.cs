@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CoreServices.Files;
+using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 using System;
@@ -28,7 +29,7 @@ namespace Bam.Net.CoreServices
             Logger = logger;
         }
 
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public ILogger Logger { get; set; }
         public void SetChunk(IChunk chunk)
         {

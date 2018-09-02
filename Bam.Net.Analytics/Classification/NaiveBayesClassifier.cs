@@ -89,7 +89,7 @@ namespace Bam.Net.Analytics.Classification
 
         protected float DocumentProbability(string documentString, string category)
         {
-            string[] features = FeatureExtractor(documentString);
+            string[] features = ExtractFeatures(documentString);
             float probablity = 1F;
             features.Each(feature => probablity *= WeightedProbability(feature, category));
             return probablity;

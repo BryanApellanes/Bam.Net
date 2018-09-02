@@ -97,7 +97,7 @@ namespace Bam.Net.Caching.File
         /// Ensures the file is loaded.
         /// </summary>
         /// <param name="file">The file.</param>
-        protected void EnsureFileIsLoaded(FileInfo file)
+        public void EnsureFileIsLoaded(FileInfo file)
         {
             if (!_cachedFiles.ContainsKey(file.FullName) || HashChanged(file))
             {

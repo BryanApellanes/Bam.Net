@@ -26,6 +26,13 @@ namespace Bam.Net.Services.DataReplication.Data
         public int DestinationPort { get; set; }
 
         public int BatchSize { get; set; }
+
+        /// <summary>
+        /// Used to batch operations in order by Cuid.
+        /// </summary>
+        /// <value>
+        /// From cuid.
+        /// </value>
         public string FromCuid { get; set; }
         
         public override object Execute(IDistributedRepository destination)

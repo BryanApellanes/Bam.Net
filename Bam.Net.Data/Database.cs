@@ -12,6 +12,7 @@ using Bam.Net.Logging;
 using System.Threading;
 using System.Reflection;
 using System.IO;
+using System.Diagnostics;
 
 namespace Bam.Net.Data
 {
@@ -972,8 +973,16 @@ namespace Bam.Net.Data
 			}
 		}
 
-        object connectionLock = new object();
-        public void ReleaseConnection(DbConnection conn)
+        protected List<DbConnection> Connections
+        {
+            get
+            {
+                return _connections.ToList();
+            }
+        }
+
+        protected readonly object connectionLock = new object();
+        public virtual void ReleaseConnection(DbConnection conn)
         {
             try
             {
@@ -989,9 +998,9 @@ namespace Bam.Net.Data
                     conn = null;
                 }
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
-                // do nothing
+                Trace.WriteLine($"Exception releasing database connection: {ex.Message}");
             }
 
             _resetEvent.Set();
@@ -1005,7 +1014,7 @@ namespace Bam.Net.Data
 			return query;
 		}
 
-		static object initEnumLock = new object();
+		static readonly object initEnumLock = new object();
 		private void InitEnumValues<EnumType, T>(string valueColumn, string nameColumn) where T : Dao, new()
 		{
 			FieldInfo[] fields = typeof(EnumType).GetFields(BindingFlags.Public | BindingFlags.Static);

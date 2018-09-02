@@ -34,11 +34,13 @@ namespace Bam.Net.Services.DataReplication
         public virtual string ReadFile(string filePath)
         {
             string result = string.Empty;
+            bool readFromFile = false;
             if (!Values.ContainsKey(filePath))
             {
                 if (File.Exists(filePath))
                 {
                     result = SetValue(filePath, File.ReadAllText(filePath));
+                    readFromFile = true;
                 }
                 else
                 {
@@ -46,7 +48,7 @@ namespace Bam.Net.Services.DataReplication
                 }
             }
 
-            if (Reload)
+            if (Reload && !readFromFile)
             {
                 if (File.Exists(filePath))
                 {

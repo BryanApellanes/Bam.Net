@@ -263,6 +263,7 @@
     <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordPagedQuery.cs" />
     <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordQuery.cs" />
     <Compile Include="HtmlTableDiffReportFormatter.cs" />
+    <Compile Include="IFeatureExtractor.cs" />
     <Compile Include="InsertedDiffReportToken.cs" />
     <Compile Include="Classification\NaiveBayesClassifier.cs" />
     <Compile Include="BaseCrawler.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Partials\UrlTag.cs" />
     <Compile Include="Partials\UserIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordFeatureExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Analytics.db.js" />

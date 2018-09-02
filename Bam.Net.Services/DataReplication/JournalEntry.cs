@@ -55,6 +55,11 @@ namespace Bam.Net.Services.DataReplication
         /// </value>
         public long PropertyId { get; set; }
 
+        public string GetKey()
+        {
+            return $"{TypeId}.{InstanceId}.{PropertyId}.{Seq}";
+        }
+
         /// <summary>
         /// Gets or sets the value.
         /// </summary>

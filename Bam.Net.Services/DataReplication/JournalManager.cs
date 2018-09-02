@@ -25,9 +25,16 @@ namespace Bam.Net.Services.DataReplication
         public Journal Journal { get; protected set; }
         public JournalGroomer Groomer { get; set; }
 
-        public void Enqueue(IEnumerable<JournalEntry> journalEntries)
+        public void Enqueue(KeyHashAuditRepoData data, Action<JournalEntry[]> onFlushed = null)
         {
-            Journal.EnqueueEntriesForWrite(journalEntries.ToArray());
+            onFlushed = onFlushed ?? ((j) => { });
+            Journal.Enqueue(data, onFlushed);
+        }
+
+        public void Enqueue(IEnumerable<JournalEntry> journalEntries, Action<JournalEntry[]> onFlushed = null)
+        {
+            onFlushed = onFlushed ?? ((j) => { });
+            Journal.Enqueue(journalEntries.ToArray(), onFlushed);
         }
 
         public T Load<T>(ulong id) where T : KeyHashAuditRepoData, new()

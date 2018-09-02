@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.DataReplication
 {
+    /// <summary>
+    /// A journal entry value flusher that encrypts values prior to 
+    /// flushing to disk.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Services.DataReplication.IJournalEntryValueFlusher" />
     public class EncryptedJournalEntryValueFlusher : IJournalEntryValueFlusher
     {
         public EncryptedJournalEntryValueFlusher() : this(KeySet.ForApplication)
