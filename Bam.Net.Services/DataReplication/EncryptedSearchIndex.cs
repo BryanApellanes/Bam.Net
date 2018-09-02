@@ -12,6 +12,10 @@ namespace Bam.Net.Services.DataReplication
 {
     public class EncryptedSearchIndex
     {
+        public EncryptedSearchIndex(string hostName, int port, KeySet keyset = null, ILogger logger = null, Encoding encoding = null)
+            : this(new ChunkClientKeyValueStore(hostName, port, encoding, logger), keyset, logger)
+        { }
+
         public EncryptedSearchIndex(IKeyValueStore publicKeyValueStore, KeySet keySet = null, ILogger logger = null)
            : this(publicKeyValueStore, new FileSystemKeyValueStore(logger), keySet, logger)
         { }
