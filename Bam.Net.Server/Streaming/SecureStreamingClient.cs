@@ -2,6 +2,7 @@
 using Bam.Net.ServiceProxy.Secure;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,12 @@ namespace Bam.Net.Server.Streaming
             SetSessionKeyRequest sessionKeyInfo = SecureSession.CreateSetSessionKeyInfo(PublicKey, out AesKeyVectorPair aesKey);
             TResponse setKeyResponse = base.SendRequest(new TRequest { RequestType = SecureRequestTypes.SetKey, SessionKeyInfo = sessionKeyInfo }).Data;
             AesKeyVectorPair = aesKey;
+        }
+
+        protected override T ReceiveResponse<T>(Stream stream)
+        {
+            // TODO: decrypt server response
+            return base.ReceiveResponse<T>(stream);
         }
     }
 }

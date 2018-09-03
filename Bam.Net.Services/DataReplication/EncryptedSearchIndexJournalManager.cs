@@ -10,10 +10,6 @@ namespace Bam.Net.Services.DataReplication
 {
     public class EncryptedSearchIndexJournalManager: JournalManager
     {
-        public EncryptedSearchIndexJournalManager(string hostName, int port, Journal journal, Encoding encoding = null, ILogger logger = null)
-            : this(new ChunkClientKeyValueStore(hostName, port, encoding, logger), journal, journal.SequenceProvider, journal.TypeConverter, logger)
-        { }
-
         public EncryptedSearchIndexJournalManager(IKeyValueStore publicKeyValueStore, Journal journal, ISequenceProvider sequenceProvider, ITypeConverter typeConverter, ILogger logger = null)
             : this(publicKeyValueStore, journal, KeySet.ForApplication, sequenceProvider, typeConverter, logger)
         {

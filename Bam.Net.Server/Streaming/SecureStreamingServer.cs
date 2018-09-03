@@ -55,6 +55,12 @@ namespace Bam.Net.Server.Streaming
 
         public abstract TResponse ProcessSecureRequest(TRequest request);
 
+        public override void WriteResponse(StreamingContext context, TResponse message)
+        {
+            // TODO: encrypte the message
+            base.WriteResponse(context, message);
+        }
+
         protected virtual TResponse StartSession()
         {
             try

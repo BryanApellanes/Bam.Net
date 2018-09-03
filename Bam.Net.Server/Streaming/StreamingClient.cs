@@ -48,7 +48,7 @@ namespace Bam.Net.Server.Streaming
             return ReceiveResponse<StreamingResponse>(NetworkStream);
         }
 
-        protected T ReceiveResponse<T>(Stream stream)
+        protected virtual T ReceiveResponse<T>(Stream stream)
         {
             byte[] first = new byte[4];
             stream.Read(first, 0, 4);

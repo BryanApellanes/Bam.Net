@@ -134,7 +134,6 @@
     <Compile Include="Catalog\CatalogRepository.cs" />
     <Compile Include="Catalog\Data\CatalogItem.cs" />
     <Compile Include="Catalog\Data\ItemProperty.cs" />
-    <Compile Include="ChunkClientKeyValueStore.cs" />
     <Compile Include="Chunking\Chunk.cs" />
     <Compile Include="Chunking\ChunkClient.cs" />
     <Compile Include="Chunking\ChunkException.cs" />
@@ -321,6 +320,11 @@
     <Compile Include="Hosts\Data\HostEntryData.cs" />
     <Compile Include="Hosts\HostEntry.cs" />
     <Compile Include="Hosts\HostsService.cs" />
+    <Compile Include="KeyValueRequest.cs" />
+    <Compile Include="KeyValueRequestTypes.cs" />
+    <Compile Include="KeyValueResponse.cs" />
+    <Compile Include="KeyValueStoreClient.cs" />
+    <Compile Include="KeyValueStoreServer.cs" />
     <Compile Include="KeyValueStore_Generated\KeyValuePair.cs" />
     <Compile Include="KeyValueStore_Generated\KeyValuePairCollection.cs" />
     <Compile Include="KeyValueStore_Generated\KeyValuePairColumns.cs" />

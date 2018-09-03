@@ -12,10 +12,6 @@ namespace Bam.Net.Services.DataReplication
 {
     public class EncryptedSearchIndex
     {
-        public EncryptedSearchIndex(string hostName, int port, KeySet keyset = null, ILogger logger = null, Encoding encoding = null)
-            : this(new ChunkClientKeyValueStore(hostName, port, encoding, logger), keyset, logger)
-        { }
-
         public EncryptedSearchIndex(IKeyValueStore publicKeyValueStore, KeySet keySet = null, ILogger logger = null)
            : this(publicKeyValueStore, new FileSystemKeyValueStore(logger), keySet, logger)
         { }
@@ -59,7 +55,7 @@ namespace Bam.Net.Services.DataReplication
 
         /// <summary>
         /// Gets or sets the private key value store.  This should be a local secure
-        /// key value store.  Used to store lookups key lookups.
+        /// key value store.  Used to store key lookups.
         /// </summary>
         /// <value>
         /// The private key value store.
