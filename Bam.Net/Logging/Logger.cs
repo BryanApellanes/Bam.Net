@@ -90,28 +90,39 @@ namespace Bam.Net.Logging
             }
             return this;
         }
+        
         /// <summary>
         /// The number of milliseconds to wait after a LogEvent
         /// is queued before beginning the
         /// commit loop.
         /// </summary>
         public int CommitCycleDelay { get; set; }
+
+        bool _loggingThreadStarted;
         /// <summary>
         /// Start the background logger commit thread.
         /// </summary>
         public virtual ILogger StartLoggingThread()
         {
-            lock (_threadLock)
+            if (!_loggingThreadStarted)
             {
-                _loggingThread = new Thread(LoggingThread) {IsBackground = true};
-                _keepLogging = true;
-                _loggingThread.Start();
+                lock (_threadLock)
+                {
+                    _loggingThreadStarted = true;
+                    _loggingThread = new Thread(LoggingThread) { IsBackground = true };
+                    _keepLogging = true;
+                    _loggingThread.Start();
+                }
             }
             return this;
         }
 
         protected virtual void QueueLogEvent(LogEvent logEvent)
         {
+            if (!_loggingThreadStarted)
+            {
+                StartLoggingThread();
+            }
             _logEventQueue.Enqueue(logEvent);
             _waitForEnqueueLogEvent.Set();
         }

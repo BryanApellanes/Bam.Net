@@ -2,6 +2,7 @@
 using Bam.Net.Server.Streaming;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +11,22 @@ namespace Bam.Net.Services
 {
     public class KeyValueStoreServer : SecureStreamingServer<KeyValueRequest, KeyValueResponse>
     {
-        public KeyValueStoreServer(ILogger logger = null)
+        public KeyValueStoreServer(string name, int port, ILogger logger = null)
         {
             Logger = logger ?? Log.Default;
             KeyValueStore = new FileSystemKeyValueStore(Logger);
+        }
+
+        public KeyValueStoreServer(DirectoryInfo localStorage, ILogger logger = null)
+        {
+            Logger = logger ?? Log.Default;
+            KeyValueStore = new FileSystemKeyValueStore(localStorage, logger);
+        }
+
+        public KeyValueStoreServer(FileSystemKeyValueStore localStorage, ILogger logger = null)
+        {
+            Logger = logger ?? Log.Default;
+            KeyValueStore = localStorage;
         }
 
         public FileSystemKeyValueStore KeyValueStore { get; set; }

@@ -21,7 +21,7 @@ namespace Bam.Net.Services
         {
             try
             {
-                StreamingResponse<KeyValueResponse> response = SendRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Get, Key = key });
+                StreamingResponse<KeyValueResponse> response = SendEncryptedRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Get, Key = key });
                 if (!response.Data.Success)
                 {
                     throw new Exception(response.Data.Message);
@@ -39,7 +39,7 @@ namespace Bam.Net.Services
         {
             try
             {
-                StreamingResponse<KeyValueResponse> response = SendRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Set, Key = key, Value = value });
+                StreamingResponse<KeyValueResponse> response = SendEncryptedRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Set, Key = key, Value = value });
                 if (!response.Data.Success)
                 {
                     throw new Exception(response.Data.Message);

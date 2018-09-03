@@ -15,6 +15,7 @@ namespace Bam.Net.Server.Streaming
     {
         public SecureStreamingClient(string hostName, int port) : base(hostName, port)
         {
+            HmacAlgorithm = HashAlgorithms.SHA256;
         }
 
         Encoding _encoding;
@@ -34,34 +35,61 @@ namespace Bam.Net.Server.Streaming
         public HashAlgorithms HmacAlgorithm { get; set; }
         public string PublicKey { get; set; }
         public string SessionId { get; set; }
-        protected AesKeyVectorPair AesKeyVectorPair { get; set; }        
+        protected AesKeyVectorPair AesKeyVectorPair { get; set; }
 
-        public override StreamingResponse SendRequest(object message)
+        public StreamingResponse<TResponse> SendEncryptedRequest(TRequest message)
         {
-            if(string.IsNullOrEmpty(PublicKey) || string.IsNullOrEmpty(SessionId))
+            if(string.IsNullOrEmpty(PublicKey) ||
+                string.IsNullOrEmpty(SessionId))
             {
                 StartSession();
             }
             byte[] messageBytes = message.ToBinaryBytes();
-            TRequest request = new TRequest { Hmac = messageBytes.ToBase64().Hmac(AesKeyVectorPair.Key, HmacAlgorithm, Encoding), RequestType = SecureRequestTypes.Message };
-            request.Message = Aes.Encrypt(messageBytes.ToBase64(), AesKeyVectorPair.Key, AesKeyVectorPair.IV).FromBase64();
-            return base.SendRequest(request);
+            string messageBase64 = messageBytes.ToBase64();
+            string hmac = messageBase64.Hmac(AesKeyVectorPair.Key, HmacAlgorithm, Encoding);
+
+            string encryptedBase64Message = AesKeyVectorPair.Encrypt(messageBase64);
+            byte[] encryptedMessageBytes = Encoding.GetBytes(encryptedBase64Message);
+
+            TRequest request = new TRequest
+            {
+                Hmac = hmac,
+                RequestType = SecureRequestTypes.Message,
+                Message = encryptedMessageBytes,
+                SessionId = SessionId
+            };
+            StreamingResponse<TResponse> response = SendRequest<TRequest, TResponse>(request);
+            return response;
         }
 
-        protected virtual void StartSession()
+        public virtual void StartSession()
         {
-            TResponse startSessionResponse = base.SendRequest(new TRequest { RequestType = SecureRequestTypes.StartSession }).Data;
+            StreamingResponse<TResponse> response = SendRequest<TRequest, TResponse>(new TRequest { RequestType = SecureRequestTypes.StartSession });
+            if (!response.Data.Success)
+            {
+                throw new InvalidOperationException(string.Format("Failed to start secure stream session: {0}", response.Data.Message));
+            }
+            TResponse startSessionResponse = response.Data;
             PublicKey = startSessionResponse.PublicKey;
             SessionId = startSessionResponse.SessionId;
-            SetSessionKeyRequest sessionKeyInfo = SecureSession.CreateSetSessionKeyInfo(PublicKey, out AesKeyVectorPair aesKey);
-            TResponse setKeyResponse = base.SendRequest(new TRequest { RequestType = SecureRequestTypes.SetKey, SessionKeyInfo = sessionKeyInfo }).Data;
-            AesKeyVectorPair = aesKey;
+            SetSessionKey(response);
         }
 
         protected override T ReceiveResponse<T>(Stream stream)
         {
             // TODO: decrypt server response
             return base.ReceiveResponse<T>(stream);
+        }
+
+        private void SetSessionKey(StreamingResponse<TResponse> response)
+        {
+            SetSessionKeyRequest sessionKeyInfo = SecureSession.CreateSetSessionKeyInfo(PublicKey, out AesKeyVectorPair aesKey);
+            AesKeyVectorPair = aesKey;
+            StreamingResponse<TResponse> setKeyResponse = SendRequest<TRequest, TResponse>(new TRequest { SessionId = SessionId, RequestType = SecureRequestTypes.SetKey, SessionKeyInfo = sessionKeyInfo });
+            if (!response.Data.Success)
+            {
+                throw new InvalidOperationException(string.Format("Failed to set key for secure stream session: {0}", response.Data.Message));
+            }
         }
     }
 }

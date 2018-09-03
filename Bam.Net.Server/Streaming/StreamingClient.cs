@@ -58,6 +58,13 @@ namespace Bam.Net.Server.Streaming
             return responseBytes.FromBinaryBytes<T>();
         }
 
+        protected StreamingResponse<Rs> SendRequest<Rq, Rs>(Rq message)
+        {
+            StreamingRequest<Rq> msg = new StreamingRequest<Rq> { Message = message };
+            SendRequest(NetworkStream, msg);
+            return ReceiveResponse<StreamingResponse<Rs>>(NetworkStream);
+        }
+
         private void SendRequest(Stream stream, object message)
         {
             StreamingRequest msg = new StreamingRequest { Message = message };

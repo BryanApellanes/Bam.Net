@@ -16,6 +16,7 @@ namespace Bam.Net.Server.Streaming
     public class SecureStreamingResponse: StreamingResponse
     {
         public bool Success { get; set; }
+        public string Cipher { get; set; }
         public string SessionId { get; set; }    
         public string PublicKey { get; set; }
     }

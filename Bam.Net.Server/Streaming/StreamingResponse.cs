@@ -15,6 +15,7 @@ namespace Bam.Net.Server.Streaming
     [Serializable]
     public class StreamingResponse
     {
+        public string Message { get; set; }
         public object Data { get; set; }
     }
 }

@@ -20,6 +20,7 @@ using Org.BouncyCastle.Crypto.Engines;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
+    [Serializable]
     public class SetSessionKeyRequest
     {
         public SetSessionKeyRequest(string passwordCipher, string passwordHashCipher, string ivCipher, string ivHashCipher, bool? usePkcsPadding = false)

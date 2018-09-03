@@ -19,13 +19,18 @@ namespace Bam.Net.Services
         public FileSystemKeyValueStore(ILogger logger = null)
         {
             _loadedFiles = new HashSet<string>();
-            Directory = new DirectoryInfo(Path.Combine(DefaultDataDirectoryProvider.Current.GetAppFilesDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName, DirectoryName));
+            LocalStorage = new DirectoryInfo(Path.Combine(DefaultDataDirectoryProvider.Current.GetAppFilesDirectory(DefaultConfigurationApplicationNameProvider.Instance).FullName, DirectoryName));
             FileCache = new TextFileCache();
             Logger = logger;
         }
 
+        public FileSystemKeyValueStore(DirectoryInfo localStorage, ILogger logger = null) : this(logger)
+        {
+            LocalStorage = localStorage;
+        }
+
         protected FileCache FileCache { get; set; }
-        public DirectoryInfo Directory { get; set; }
+        public DirectoryInfo LocalStorage { get; set; }
         public ILogger Logger { get; set; }
 
         public string Get(string key)
@@ -56,7 +61,7 @@ namespace Bam.Net.Services
 
         public string GetFilePath(string key)
         {
-            return Path.Combine(Directory.FullName, $"{key}.txt");
+            return Path.Combine(LocalStorage.FullName, $"{key}.txt");
         }
 
         private void EnsureFileIsLoaded(string filePath)

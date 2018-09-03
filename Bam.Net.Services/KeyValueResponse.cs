@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services
 {
+    [Serializable]
     public class KeyValueResponse: SecureStreamingResponse
     {
-        public string Message { get; set; }
         public string Value { get; set; }
     }
 }
