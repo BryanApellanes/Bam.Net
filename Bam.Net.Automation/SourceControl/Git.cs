@@ -102,16 +102,35 @@ namespace Bam.Net.Automation.SourceControl
 
         public string LatestRelease()
         {
-            string currentDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _configStack.Repository;
-            ProcessOutput output = "git describe --abbrev=0".Run();
-            Environment.CurrentDirectory = currentDirectory;
-            return output.StandardOutput.Trim();
+            return CallGit("describe --abbrev=0");
+        }
+
+        /// <summary>
+        /// Gets the latest commit hash for the specified branch.
+        /// </summary>
+        /// <param name="branchName">Name of the branch.</param>
+        /// <returns></returns>
+        public string LatestBranchCommit(string branchName)
+        {
+            return CallGit($"rev-parse {branchName}");
         }
 
         public ProcessOutput LastOutput()
         {
             return _configStack.LastOutput;
+        }
+
+        private string CallGit(string args)
+        {
+            string currentDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.Repository;
+            ProcessOutput output = $"git {args}".Run();
+            Environment.CurrentDirectory = currentDirectory;
+            if(output.ExitCode != 0)
+            {
+                throw new Exception(output.StandardError);
+            }
+            return output.StandardOutput.Trim();
         }
 
         private DirectoryInfo GitBin

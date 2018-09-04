@@ -119,7 +119,7 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test GitLog")]
         public void TestGitLog()
         {
-            HashSet<GitLog> logs = GitLog.SinceVersion("c:\\src\\Bam.Net", 1, 4, 2);
+            HashSet<GitLog> logs = GitLog.SinceVersion("c:\\bam\\src\\Bam.Net", 1, 4, 2);
             foreach(GitLog log in logs)
             {
                 OutLine(log.PropertiesToString(), ConsoleColor.Cyan);
@@ -129,7 +129,7 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test GitReleaseNotes")]
         public void TestGitReleaseNotes()
         {
-            GitReleaseNotes notes = GitReleaseNotes.SinceLatestRelease("Bam.Net.CommandLine", "C:\\src\\Bam.Net");
+            GitReleaseNotes notes = GitReleaseNotes.SinceLatestRelease("Bam.Net.CommandLine", "C:\\bam\\src\\Bam.Net");
             notes.Summary = "Put a nice summary here";
             OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
         }
@@ -137,9 +137,17 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test Misc GitReleaseNotes")]
         public void TestGitMiscReleaseNotes()
         {
-            GitReleaseNotes notes = GitReleaseNotes.MiscSinceLatestRelease("C:\\src\\Bam.Net");
+            GitReleaseNotes notes = GitReleaseNotes.MiscSinceLatestRelease("C:\\bam\\src\\Bam.Net");
             notes.Summary = "Misc";
             OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
+        }
+
+        [ConsoleAction("Test latest branch commit")]
+        public void TestGitLatestBranchCommit()
+        {
+            Git git = new Git("C:\\bam\\src\\Bam.Net");
+            OutLine(git.LatestBranchCommit("master"));
+            Expect.Throws(() => git.LatestBranchCommit("badBranch"), (ex)=> OutLineFormat(ex.Message, ConsoleColor.Cyan), "Should have thrown exception");
         }
     }
 }
