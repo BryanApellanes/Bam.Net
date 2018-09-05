@@ -12,6 +12,7 @@ using Bam.Net.Logging;
 using System.Threading;
 using System.Reflection;
 using System.IO;
+using System.Diagnostics;
 
 namespace Bam.Net.Data
 {
@@ -989,9 +990,9 @@ namespace Bam.Net.Data
                     conn = null;
                 }
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
-                // do nothing
+                Trace.WriteLine($"Exception releasing connection: {ex.Message}");
             }
 
             _resetEvent.Set();
@@ -1022,7 +1023,10 @@ namespace Bam.Net.Data
 		{
 			if (_connections.Count >= max)
 			{
-				_resetEvent.WaitOne();
+                if (!_resetEvent.WaitOne(3500))
+                {
+                    _connections.BackwardsEach(connection => ReleaseConnection(connection));
+                }
 			}
 
 			DbConnection conn = ServiceProvider.Get<DbProviderFactory>().CreateConnection();
