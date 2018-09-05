@@ -155,6 +155,7 @@
     <Compile Include="IPostServerInitializationHandler.cs" />
     <Compile Include="Streaming\SecureRequestTypes.cs" />
     <Compile Include="Streaming\SecureStreamingClient.cs" />
+    <Compile Include="Streaming\SecureStreamingContext.cs" />
     <Compile Include="Streaming\SecureStreamingRequest.cs" />
     <Compile Include="Streaming\SecureStreamingResponse.cs" />
     <Compile Include="Streaming\SecureStreamingServer.cs" />

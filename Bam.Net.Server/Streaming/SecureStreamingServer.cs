@@ -4,25 +4,51 @@ using Org.BouncyCastle.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Streaming
 {
     public abstract class SecureStreamingServer<TRequest, TResponse> : StreamingServer<TRequest, TResponse>
-        where TRequest : SecureStreamingRequest, new()
-        where TResponse : SecureStreamingResponse, new()
+        //where TRequest : new()
+        where TResponse : new()
     {
         public SecureStreamingServer()
         {
             HmacAlgorithm = HashAlgorithms.SHA256;
         }
 
-        public override TResponse ProcessRequest(StreamingContext<TRequest> context)
+        protected internal override void ReadRequest(TcpClient client)
+        {
+            while (client.Connected)
+            {
+                try
+                {
+                    GetStreamData(client, out NetworkStream stream, out byte[] requestData);
+
+                    SecureStreamingRequest<TRequest> request = requestData.FromBinaryBytes<SecureStreamingRequest<TRequest>>();
+                    SecureStreamingContext<TRequest> ctx = new SecureStreamingContext<TRequest>
+                    {
+                        Request = request,
+                        ResponseStream = stream,
+                        Encoding = Encoding
+                    };
+                    SecureStreamingResponse<TResponse> response = ProcessSecureRequest(ctx);
+                    WriteSecureResponse(ctx, response, request.RequestType == SecureRequestTypes.Message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Error reading request: {0}", ex, ex.Message);
+                }
+            }
+        }
+
+        public SecureStreamingResponse<TResponse> ProcessSecureRequest(SecureStreamingContext<TRequest> context)
         {
             try
             {
-                TRequest request = context.Request.Message;
+                SecureStreamingRequest<TRequest> request = context.Request;
                 switch (request.RequestType)
                 {
                     case SecureRequestTypes.Invalid:
@@ -34,12 +60,10 @@ namespace Bam.Net.Server.Streaming
                     case SecureRequestTypes.Message:
                         if (!IsValid(request, out TRequest decrypted))
                         {
-                            return new TResponse { Success = false, SessionId = request.SessionId };
+                            return new SecureStreamingResponse<TResponse> { Body = new TResponse(), Success = false, SessionId = request.SessionId };
                         }
-                        TResponse response = ProcessSecureRequest(decrypted);
-                        response.SessionId = request.SessionId;
-                        response.PublicKey = SecureSession.Get(request.SessionId).PublicKey;
-                        return response;
+                        TResponse response = ProcessDecryptedRequest(decrypted);
+                        return new SecureStreamingResponse<TResponse> { Success = true, Body = response, SessionId = request.SessionId, PublicKey = SecureSession.Get(request.SessionId).PublicKey };
                     default:
                         break;
                 }
@@ -48,58 +72,58 @@ namespace Bam.Net.Server.Streaming
             {
                 Logger.AddEntry("Exception processing request: {0}", ex, ex.Message);
             }
-            return new TResponse();
+            return new SecureStreamingResponse<TResponse> { Body = new TResponse() };
         }
-
+        
         public HashAlgorithms HmacAlgorithm { get; set; }
 
-        public abstract TResponse ProcessSecureRequest(TRequest request);
+        public abstract TResponse ProcessDecryptedRequest(TRequest request);
 
-        public override void WriteResponse(StreamingContext context, TResponse message)
+        public void WriteSecureResponse(StreamingContext context, SecureStreamingResponse<TResponse> response, bool encrypt = false)
         {
-            // TODO: encrypt the message
-            
-            // Get SecureSession using request.SessionId
-            // create AesKeyVectorPair from SecureSession
-            // message.Cipher = AesEncrypt(message.ToBinaryBytes())
-            // WriteResponse(context, message)
-            
-            // Replace below
+            if (encrypt)
+            {
+                SecureSession secureSession = SecureSession.Get(response.SessionId);
+                AesKeyVectorPair aes = new AesKeyVectorPair { Key = secureSession.PlainSymmetricKey, IV = secureSession.PlainSymmetricIV };
+                byte[] messageBytes = response.Body.ToBinaryBytes();
+                string messageBase64 = messageBytes.ToBase64();
+                string hmac = messageBase64.Hmac(aes.Key, HmacAlgorithm, Encoding);
+                string encryptedBase64Message = aes.Encrypt(messageBase64);
 
-            // base implementation  
-            StreamingResponse<TResponse> msg = new StreamingResponse<TResponse> { Data = message };
-            WriteResponse(context, msg);
-            // end base
+                response.Cipher = encryptedBase64Message;
+                response.Body = default(TResponse);
+                response.Hmac = hmac;
+            }
 
-            //base.WriteResponse(context, message);
+            SerializeToResponseStream(context, response);            
         }
 
-        protected virtual TResponse StartSession()
+        protected virtual SecureStreamingResponse<TResponse> StartSession()
         {
             try
             {
                 string sessionId = SecureSession.GenerateId();
                 SecureSession session = SecureSession.Get(sessionId);
-                return new TResponse { Success = true, SessionId = sessionId, PublicKey = session.PublicKey, Data = new { SessionId = sessionId, session.PublicKey }.ToJson() };
+                return new SecureStreamingResponse<TResponse> { Body = new TResponse(), Success = true, SessionId = sessionId, PublicKey = session.PublicKey };
             }
             catch (Exception ex)
             {
-                return new TResponse { Success = false, Message = $"Failed to start session: {ex.Message}" };
+                return new SecureStreamingResponse<TResponse> { Success = false, Body = new TResponse(), Message = $"Failed to start session: {ex.Message}" };
             }
         }
 
-        protected virtual TResponse SetKey(TRequest request)
+        protected virtual SecureStreamingResponse<TResponse> SetKey(SecureStreamingRequest<TRequest> request)
         {
             try
             {
                 SecureSession session = SecureSession.Get(request.SessionId);
                 session.SetSymmetricKey(request.SessionKeyInfo);
-                return new TResponse { Success = true, PublicKey = session.PublicKey, SessionId = session.Identifier, Data = new { SessionId = session.Identifier, session.PublicKey }.ToJson() };
+                return new SecureStreamingResponse<TResponse> { Body = new TResponse(), Success = true, PublicKey = session.PublicKey, SessionId = session.Identifier };
             }
             catch (Exception ex)
             {
                 Logger.AddEntry("Error setting session key: {0}", ex, ex.Message);
-                return new TResponse { Success = false, Message = $"Failed to set key: {ex.Message}", SessionId = request.SessionId };
+                return new SecureStreamingResponse<TResponse> { Body = new TResponse(), Success = false, Message = $"Failed to set key: {ex.Message}", SessionId = request.SessionId };
             }
         }
 
@@ -112,7 +136,7 @@ namespace Bam.Net.Server.Streaming
         /// <returns>
         ///   <c>true</c> if the specified request is valid; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool IsValid(TRequest request, out TRequest decrypted)
+        protected virtual bool IsValid(SecureStreamingRequest request, out TRequest decrypted)
         {
             decrypted = default(TRequest);
             SecureSession session = SecureSession.Get(request.SessionId);
@@ -121,13 +145,13 @@ namespace Bam.Net.Server.Streaming
                 Logger.AddEntry("No valid session found for request: {0}", request.TryToJson());
                 return false;
             }
-            if(request.Message == null)
+            if(request.Body == null)
             {
                 Logger.AddEntry("No message specified for request: {0}", request.TryToJson());
                 return false;
             }
             AesKeyVectorPair aesKey = new AesKeyVectorPair { Key = session.PlainSymmetricKey, IV = session.PlainSymmetricIV };
-            string encryptedBase64Message = Encoding.GetString(request.Message);
+            string encryptedBase64Message = Encoding.GetString(request.Body);
             string messageBase64 = aesKey.Decrypt(encryptedBase64Message);
             string hmac = messageBase64.Hmac(aesKey.Key, HmacAlgorithm, Encoding);
             byte[] messageBytes = messageBase64.FromBase64();                       

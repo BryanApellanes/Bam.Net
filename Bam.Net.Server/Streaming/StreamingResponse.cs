@@ -9,13 +9,13 @@ namespace Bam.Net.Server.Streaming
     [Serializable]
     public class StreamingResponse<T>: StreamingResponse
     {
-        public new T Data { get; set; }
+        public new T Body { get; set; }
     }
 
     [Serializable]
     public class StreamingResponse
     {
         public string Message { get; set; }
-        public object Data { get; set; }
+        public object Body { get; set; }
     }
 }

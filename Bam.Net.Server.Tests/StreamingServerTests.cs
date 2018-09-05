@@ -20,7 +20,7 @@ namespace Bam.Net.Server.Tests
         
         public override void ProcessRequest(StreamingContext context)
         {
-            WriteResponse(context, "Mine: yay!, Yours: " + context.Request.Message);
+            WriteResponse(context, "Mine: yay!, Yours: " + context.Request.Body);
         }
     }
 
@@ -38,10 +38,10 @@ namespace Bam.Net.Server.Tests
             server.Start();
 
             StreamingClient client = new StreamingClient("localhost", port);
-            StreamingResponse response = client.SendRequest((object)"this is a test");
-            Console.WriteLine("Response: " + response.Data);
-            response = client.SendRequest((object)"second message");
-            Console.WriteLine("Second resposne: " + response.Data);
+            StreamingResponse response = client.SendWrappedMessage((object)"this is a test");
+            Console.WriteLine("Response: " + response.Body);
+            response = client.SendWrappedMessage((object)"second message");
+            Console.WriteLine("Second resposne: " + response.Body);
             Thread.Sleep(1000);
         }
         

@@ -10,7 +10,7 @@ namespace Bam.Net.Server.Streaming
     [Serializable]
     public class SecureStreamingRequest<T> : SecureStreamingRequest
     {
-        public new T Data { get; set; }
+        public new T Body { get; set; }
     }
 
     [Serializable]
@@ -28,15 +28,13 @@ namespace Bam.Net.Server.Streaming
         public string SessionId { get; set; }
         public string Hmac { get; set; }
         public bool Validated { get; set; }
-
-        public object Data { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the encrypted bytes.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        public byte[] Message { get; set; }
+        public byte[] Body { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Services
 {
     [Serializable]
-    public class KeyValueRequest: SecureStreamingRequest
+    public class KeyValueRequest
     {
         public KeyValueRequestTypes Type { get; set; }
         public string Key { get; set; }

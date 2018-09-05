@@ -24,8 +24,8 @@ namespace Bam.Net.Services.Chunking
         {
             try
             {
-                Args.ThrowIfNull(context?.Request.Message, "context.Request.Message");
-                ChunkRequest msg = context.Request.Message;
+                Args.ThrowIfNull(context?.Request.Body, "context.Request.Message");
+                ChunkRequest msg = context.Request.Body;
                 IChunk chunk = null;
                 switch (msg.Operation)
                 {

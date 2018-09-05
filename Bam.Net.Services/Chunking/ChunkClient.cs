@@ -27,12 +27,12 @@ namespace Bam.Net.Services.Chunking
                 Hash = hash
             });
 
-            if (!response.Data.Success)
+            if (!response.Body.Success)
             {
                 HandleException(GetChunkException, hash, response);
             }
 
-            return response.Data.Chunk;            
+            return response.Body.Chunk;            
         }
 
         public void SetChunk(IChunk chunkData)
@@ -47,7 +47,7 @@ namespace Bam.Net.Services.Chunking
                 }
             });
 
-            if (!response.Data.Success)
+            if (!response.Body.Success)
             {
                 HandleException(SetChunkException, chunkData.Hash, response);
             }
@@ -58,7 +58,7 @@ namespace Bam.Net.Services.Chunking
             switch (ExceptionMode)
             {
                 case ChunkExceptionMode.Throw:
-                    throw new ChunkException(response.Data);
+                    throw new ChunkException(response.Body);
                 case ChunkExceptionMode.EmitEvents:
                     FireEvent(toFire, new ChunkExceptionEventArgs { Hash = hash });
                     break;

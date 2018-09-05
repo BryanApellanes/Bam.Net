@@ -21,12 +21,12 @@ namespace Bam.Net.Services
         {
             try
             {
-                StreamingResponse<KeyValueResponse> response = SendEncryptedRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Get, Key = key });
-                if (!response.Data.Success)
+                SecureStreamingResponse<KeyValueResponse> response = SendEncryptedMessage(new KeyValueRequest { Type = KeyValueRequestTypes.Get, Key = key });
+                if (!response.Success)
                 {
-                    throw new Exception(response.Data.Message);
+                    throw new Exception(response.Message);
                 }
-                return response.Data.Value;
+                return response.Body.Value;
             }
             catch (Exception ex)
             {
@@ -39,10 +39,10 @@ namespace Bam.Net.Services
         {
             try
             {
-                StreamingResponse<KeyValueResponse> response = SendEncryptedRequest(new KeyValueRequest { Type = KeyValueRequestTypes.Set, Key = key, Value = value });
-                if (!response.Data.Success)
+                SecureStreamingResponse<KeyValueResponse> response = SendEncryptedMessage(new KeyValueRequest { Type = KeyValueRequestTypes.Set, Key = key, Value = value });
+                if (!response.Success)
                 {
-                    throw new Exception(response.Data.Message);
+                    throw new Exception(response.Message);
                 }
                 return true;
             }

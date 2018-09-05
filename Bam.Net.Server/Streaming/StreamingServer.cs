@@ -34,7 +34,7 @@ namespace Bam.Net.Server.Streaming
                         Encoding = Encoding
                     };
                     TResponse response = ProcessRequest(ctx);
-                    WriteResponse(ctx, response);
+                    SendStreamingResponse(ctx, response);
                 }
                 catch (Exception ex)
                 {
@@ -43,10 +43,10 @@ namespace Bam.Net.Server.Streaming
             }
         }
 
-        public virtual void WriteResponse(StreamingContext context, TResponse message)
+        public virtual void SendStreamingResponse(StreamingContext context, TResponse message)
         {
-            StreamingResponse<TResponse> msg = new StreamingResponse<TResponse> { Data = message };
-            WriteResponse(context, msg);
+            StreamingResponse<TResponse> msg = new StreamingResponse<TResponse> { Body = message };
+            SerializeToResponseStream(context, msg);
         }
 
         public override void ProcessRequest(StreamingContext context)
@@ -231,13 +231,13 @@ namespace Bam.Net.Server.Streaming
         
         protected virtual void WriteResponse(StreamingContext context, object message)
         {
-            StreamingResponse msg = new StreamingResponse { Data = message };
-            WriteResponse(context, msg);
+            StreamingResponse msg = new StreamingResponse { Body = message };
+            SerializeToResponseStream(context, msg);
         }
 
-        protected static void WriteResponse(StreamingContext context, StreamingResponse msg)
+        protected static void SerializeToResponseStream(StreamingContext context, StreamingResponse response)
         {
-            byte[] binMsg = msg.ToBinaryBytes();
+            byte[] binMsg = response.ToBinaryBytes();
             List<byte> sendMsg = new List<byte>();
             sendMsg.AddRange(BitConverter.GetBytes(binMsg.Length)); // put the total length of the stream in the first 4 bytes of the response
             sendMsg.AddRange(binMsg);

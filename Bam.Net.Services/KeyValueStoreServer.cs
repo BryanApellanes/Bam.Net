@@ -31,7 +31,7 @@ namespace Bam.Net.Services
 
         public FileSystemKeyValueStore KeyValueStore { get; set; }
 
-        public override KeyValueResponse ProcessSecureRequest(KeyValueRequest request)
+        public override KeyValueResponse ProcessDecryptedRequest(KeyValueRequest request)
         {
             try
             {
@@ -40,11 +40,11 @@ namespace Bam.Net.Services
                     case KeyValueRequestTypes.Invalid:
                         throw new InvalidOperationException("Invalid KeyValueRequestType specified");
                     case KeyValueRequestTypes.Get:
-                        return new KeyValueResponse { Success = true, Data = KeyValueStore.Get(request.Key) };
+                        return new KeyValueResponse { Success = true, Value = KeyValueStore.Get(request.Key) };
                     case KeyValueRequestTypes.Set:
                         if (KeyValueStore.Set(request.Key, request.Value))
                         {
-                            return new KeyValueResponse { Success = true };
+                            return new KeyValueResponse { Success = true, Value = request.Value};
                         }
                         break;
                     default:
@@ -58,6 +58,11 @@ namespace Bam.Net.Services
                 Logger.AddEntry("Exception processing keyvalue request: {0}", ex, ex.Message);
                 return new KeyValueResponse { Success = false, Message = ex.Message };
             }
+        }
+
+        public override KeyValueResponse ProcessRequest(StreamingContext<KeyValueRequest> context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

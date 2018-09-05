@@ -19,9 +19,14 @@ namespace Bam.Net.Services.DataReplication
 
         public IJournalManager JournalManager { get; set; }
 
-        public override JournalResponse ProcessSecureRequest(JournalRequest<JournalEntry[]> request)
+        public override JournalResponse ProcessRequest(StreamingContext<JournalRequest<JournalEntry[]>> context)
         {
-            JournalManager.Enqueue(request.Data);
+            throw new NotImplementedException();
+        }
+
+        public override JournalResponse ProcessDecryptedRequest(JournalRequest<JournalEntry[]> request)
+        {
+            JournalManager.Enqueue(request.Body);
             return new JournalResponse { Success = true };
         }
     }
