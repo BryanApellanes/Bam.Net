@@ -65,7 +65,6 @@ namespace Bam.Net.Server.Streaming
             SecureStreamingRequest<TRequest> msg = new SecureStreamingRequest<TRequest>();
             configure?.Invoke(msg);
             SerializeToRequestStream(NetworkStream, msg);
-            //return ReceiveResponse<SecureStreamingResponse<TResponse>>(NetworkStream);
             SecureStreamingResponse<TResponse> response = ReceiveResponse<SecureStreamingResponse<TResponse>>(NetworkStream);
             if (!string.IsNullOrEmpty(response.Cipher))
             {
@@ -87,12 +86,6 @@ namespace Bam.Net.Server.Streaming
             PublicKey = response.PublicKey;
             SessionId = response.SessionId;
             SetSessionKey();
-        }
-
-        protected override T ReceiveResponse<T>(Stream stream)
-        {
-            // TODO: decrypt server response
-            return base.ReceiveResponse<T>(stream);
         }
 
         private void SetSessionKey()
