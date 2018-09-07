@@ -105,6 +105,47 @@ namespace Bam.Net.Automation.SourceControl
             return CallGit("describe --abbrev=0");
         }
 
+        public bool LocalBranchExists(string branchName)
+        {
+            return LocalBranchExists(branchName, out string ignore);
+        }
+
+        public bool LocalBranchExists(string branchName, out string commitHash)
+        {
+            string output = CallGit($"rev-parse --verify {branchName}");
+            if (!output.StartsWith("fatal:"))
+            {
+                commitHash = output;
+                return true;
+            }
+            commitHash = string.Empty;
+            return false;
+        }
+
+        public bool RemoteBranchExists(string branchName)
+        {
+            return RemoteBranchExists(branchName, out string ignore);
+        }
+
+        public bool RemoteBranchExists(string branchName, out string commitHash)
+        {
+            string output = CallGit($"ls-remote --heads");
+            string[] lines = output.DelimitSplit("\r\n");
+            commitHash = string.Empty;
+            if(lines.Length >= 2)
+            {
+                for(int i = 1; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().EndsWith($"refs/heads/{branchName}"))
+                    {
+                        commitHash = lines[i].DelimitSplit(" ")[0];
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Gets the latest commit hash for the specified branch.
         /// </summary>
