@@ -156,6 +156,11 @@ namespace Bam.Net.Automation.SourceControl
             return CallGit($"rev-parse {branchName}");
         }
 
+        public string CurrentCommitHash()
+        {
+            return CallGit("rev-parse HEAD");
+        }
+
         public ProcessOutput LastOutput()
         {
             return _configStack.LastOutput;
