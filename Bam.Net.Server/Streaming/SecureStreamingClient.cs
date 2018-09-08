@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 namespace Bam.Net.Server.Streaming
 {
     public class SecureStreamingClient<TRequest, TResponse> : StreamingClient<TRequest, TResponse>
-        //where TRequest : SecureStreamingRequest, new()
-        //where TResponse : SecureStreamingResponse, new()
     {
         public SecureStreamingClient(string hostName, int port) : base(hostName, port)
         {

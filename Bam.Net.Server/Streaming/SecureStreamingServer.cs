@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Streaming
 {
-    public abstract class SecureStreamingServer<TRequest, TResponse> : StreamingServer<TRequest, TResponse>
-        //where TRequest : new()
-        where TResponse : new()
+    public abstract class SecureStreamingServer<TRequest, TResponse> : StreamingServer<TRequest, TResponse> where TResponse : new()
     {
         public SecureStreamingServer()
         {
