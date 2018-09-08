@@ -35,9 +35,7 @@ namespace Bam.Net.Data
                 Connections = new List<DbConnection>(_maxConnections);
             }
         }
-
-        public int LifetimeMilliseconds { get; set; }
-
+        
         public DbConnection GetDbConnection()
         {
             if(_next >= MaxConnections)
@@ -51,7 +49,7 @@ namespace Bam.Net.Data
             }
 
             DbConnection conn = Database.ServiceProvider.Get<DbProviderFactory>().CreateConnection();
-            conn.ConnectionString = Database.ConnectionString;
+            conn.ConnectionString = Database.ConnectionString;            
             Connections[_next] = conn;
 
             return Connections[_next++];
