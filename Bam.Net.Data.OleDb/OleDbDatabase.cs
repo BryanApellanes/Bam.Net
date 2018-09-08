@@ -12,6 +12,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Data;
 using System.Text.RegularExpressions;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data.OleDb
 {

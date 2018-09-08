@@ -34,14 +34,22 @@ namespace Bam.Net.Data
 
         public override string GetColumnDefinition(ColumnAttribute column)
         {
+            if(column is ForeignKeyAttribute)
+            {
+                return string.Format("[{0}] Integer {1}", column.Name, column.AllowNull ? "" : " NOT NULL");
+            }
             string type = TranslateDataType(column.DbDataType.ToLowerInvariant()).ToString();
-            if (type.Equals("Decimal"))
+            if (type.Equals("ULong"))
             {
                 type = "Number";
             }
             else if (type.Equals("Boolean"))
             {
                 type = "Bit";
+            }
+            else if (type.Equals("Decimal"))
+            {
+                type = "Number";
             }
             else if (type.Equals("ByteArray"))
             {
@@ -53,22 +61,22 @@ namespace Bam.Net.Data
             }
             return string.Format("[{0}] {1}{2}", column.Name, type, column.AllowNull ? "" : " NOT NULL");
         }
+
         public override SchemaWriter WriteDropTable(string tableName)
         {
             Builder.AppendFormat("DROP TABLE [{0}]", tableName);
             Go();
             return this;
         }
+
         protected override void WriteDropForeignKeys(Type daoType)
         {
-            TableAttribute table = null;
-            if (daoType.HasCustomAttributeOfType<TableAttribute>(out table))
+            if (daoType.HasCustomAttributeOfType(out TableAttribute table))
             {
                 PropertyInfo[] properties = daoType.GetProperties();
                 foreach (PropertyInfo prop in properties)
                 {
-                    ForeignKeyAttribute fk = null;
-                    if (prop.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
+                    if (prop.HasCustomAttributeOfType(out ForeignKeyAttribute fk))
                     {
                         Builder.AppendFormat("ALTER TABLE [{0}] DROP CONSTRAINT {1}", table.TableName, fk.ForeignKeyName);
                         Go();

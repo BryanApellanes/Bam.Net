@@ -112,7 +112,7 @@ namespace Bam.Net.Data
 		/// </summary>
         public string ConnectionName { get; set; }
 
-		HashSet<string> _schemaNames;
+		protected HashSet<string> _schemaNames;
 		public string[] SchemaNames
 		{
 			get

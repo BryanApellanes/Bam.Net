@@ -11,6 +11,7 @@ using Bam.Net.Incubation;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data;
+using System.Data;
 
 namespace Bam.Net.Data
 {
@@ -22,7 +23,18 @@ namespace Bam.Net.Data
         }
         public override DbParameter BuildParameter(IParameterInfo c)
         {
-            return new SqlParameter(string.Format("@{0}{1}", c.ColumnName, c.Number), c.Value ?? DBNull.Value);
+            SqlParameter result = new SqlParameter(string.Format("@{0}{1}", c.ColumnName, c.Number), c.Value ?? DBNull.Value);
+            if(c.Value is UInt32)
+            {
+                result.SqlDbType = SqlDbType.Int;
+                result.SqlValue = Convert.ToInt32(c.Value);
+            }
+            if(c.Value is UInt64)
+            {
+                result.SqlDbType = SqlDbType.BigInt;
+                result.SqlValue = Convert.ToInt64(c.Value);
+            }
+            return result;
         }
     }
 }

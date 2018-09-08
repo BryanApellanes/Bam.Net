@@ -15,7 +15,7 @@ namespace Bam.Net.Data
         public MaxCountDbConnectionManager(Database database)
         {
             Database = database;
-            MaxConnections = 20;
+            MaxConnections = 5;
             LifetimeMilliseconds = 3100;
             _next = 0;
         }

@@ -142,6 +142,7 @@
     <None Include="deploy-test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="docs\build-dot-json.md" />
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="packages.config" />
     <None Include="README.md" />
