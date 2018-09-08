@@ -100,6 +100,12 @@ namespace Bam.Net.Automation.SourceControl
             return this;
         }
 
+        public Git Pull()
+        {
+            CallGit("pull");
+            return this;
+        }
+
         public string LatestRelease()
         {
             return CallGit("describe --abbrev=0");
