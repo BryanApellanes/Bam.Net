@@ -10,27 +10,27 @@ namespace Bam.Net.Data
     {
         public void Register(Database database)
         {
-            CacheRegistrar.Register(database);
+            InterSystemsRegistrar.Register(database);
         }
 
         public void Register(string connectionName)
         {
-            CacheRegistrar.Register(connectionName);
+            InterSystemsRegistrar.Register(connectionName);
         }
 
         public void Register(Type daoType)
         {
-            CacheRegistrar.Register(daoType);
+            InterSystemsRegistrar.Register(daoType);
         }
 
         public void Register<T>() where T : Dao
         {
-            CacheRegistrar.Register<T>();
+            InterSystemsRegistrar.Register<T>();
         }
 
         public void Register(Incubator incubator)
         {
-            CacheRegistrar.Register(incubator);
+            InterSystemsRegistrar.Register(incubator);
         }
     }
 }

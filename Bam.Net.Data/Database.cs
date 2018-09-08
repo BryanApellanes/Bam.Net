@@ -18,24 +18,24 @@ namespace Bam.Net.Data
 {
     public class Database: Loggable
     {
-        AutoResetEvent _resetEvent;
         List<DbConnection> _connections;
         public Database()
         {
-			this._resetEvent = new AutoResetEvent(false);
-			this._connections = new List<DbConnection>();
-			this._schemaNames = new HashSet<string>();
-            this.ServiceProvider = Incubator.Default;           
-            this.MaxConnections = 200;
+			_resetEvent = new AutoResetEvent(false);
+			_connections = new List<DbConnection>();
+			_schemaNames = new HashSet<string>();
+            ServiceProvider = Incubator.Default;           
+            MaxConnections = 20;
+            ConnectionManager = new DefaultDbConnectionManager(this);
         }
 
         public Database(Incubator serviceProvider, string connectionString, string connectionName = null)
             : this()
         {
-            this.ServiceProvider = serviceProvider;
-            this.ConnectionString = connectionString;
-            this.ConnectionName = connectionName;
-			this.ParameterPrefix = "@";
+            ServiceProvider = serviceProvider;
+            ConnectionString = connectionString;
+            ConnectionName = connectionName;
+			ParameterPrefix = "@";
             if (!string.IsNullOrEmpty(ConnectionName))
             {
                 Db.For(ConnectionName, this);
@@ -56,6 +56,7 @@ namespace Bam.Net.Data
                 return _infosLock.DoubleCheckLock(ref _infos, () => new HashSet<DatabaseInfo>());
             }
         }
+
         public static ColumnNameListProvider Star
         {
             get
@@ -90,6 +91,12 @@ namespace Bam.Net.Data
         public DaoTransaction BeginTransaction()
         {
             return Db.BeginTransaction(this);
+        }
+
+        public IDbConnectionManager ConnectionManager
+        {
+            get;
+            set;
         }
 
         public int MaxConnections { get; set; }
@@ -282,6 +289,7 @@ namespace Bam.Net.Data
         {
             ExecuteSql(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), releaseConnection);
         }
+
         public virtual void ExecuteSql(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool releaseConnection = true)
         {
             ExecuteSql(sqlStatement, commandType, dbParameters, conn, (ex) => { }, releaseConnection);
@@ -749,6 +757,7 @@ namespace Bam.Net.Data
         {
             return ServiceProvider.Get<DbProviderFactory>().CreateCommand();
         }
+
         public virtual T CreateConnectionStringBuilder<T>() where T : DbConnectionStringBuilder, new()
         {
             return (T)CreateConnectionStringBuilder();
@@ -758,6 +767,7 @@ namespace Bam.Net.Data
         {
             return ServiceProvider.Get<IParameterBuilder>().BuildParameter(name, value);
         }
+
         public virtual DbConnectionStringBuilder CreateConnectionStringBuilder()
         {
             return ServiceProvider.Get<DbProviderFactory>().CreateConnectionStringBuilder();
@@ -892,7 +902,14 @@ namespace Bam.Net.Data
 
         public DbConnection GetDbConnection()
         {
-            return GetDbConnection(this.MaxConnections);
+            return ConnectionManager.GetDbConnection();
+        }
+        
+        AutoResetEvent _resetEvent;
+        protected readonly object connectionLock = new object();
+        public virtual void ReleaseConnection(DbConnection conn)
+        {
+            ConnectionManager.ReleaseConnection(conn);
         }
 
         public EnsureSchemaStatus TryEnsureSchema(Assembly assembly, ILogger logger = null)
@@ -980,31 +997,6 @@ namespace Bam.Net.Data
                 return _connections.ToList();
             }
         }
-
-        protected readonly object connectionLock = new object();
-        public virtual void ReleaseConnection(DbConnection conn)
-        {
-            try
-            {
-                lock (connectionLock)
-                {
-                    if (_connections.Contains(conn))
-                    {
-                        _connections.Remove(conn);
-                    }
-
-                    conn.Close();
-                    conn.Dispose();
-                    conn = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine($"Exception releasing database connection: {ex.Message}");
-            }
-
-            _resetEvent.Set();
-        }
 		
 		private QuerySet ExecuteQuery<T>() where T : Dao, new()
 		{
@@ -1025,25 +1017,6 @@ namespace Bam.Net.Data
 				entry.SetValue(nameColumn, field.Name);
 				entry.Save();
 			}
-		}
-
-		private DbConnection GetDbConnection(int max)
-		{
-			if (_connections.Count >= max)
-			{
-                if (!_resetEvent.WaitOne(3500))
-                {
-                    _connections.BackwardsEach(connection => ReleaseConnection(connection));
-                }
-			}
-
-			DbConnection conn = ServiceProvider.Get<DbProviderFactory>().CreateConnection();
-			conn.ConnectionString = this.ConnectionString;
-			lock (connectionLock)
-			{
-				_connections.Add(conn);
-			}
-			return conn;
 		}
 
         private static List<string> GetColumnNames(DbDataReader reader)

@@ -131,6 +131,7 @@
     <Compile Include="DataTypes.cs" />
     <Compile Include="DataTypeTranslator.cs" />
     <Compile Include="Db.cs" />
+    <Compile Include="DefaultDbConnectionManager.cs" />
     <Compile Include="Delete.cs" />
     <Compile Include="DoesntContainComparison.cs" />
     <Compile Include="DoesntEndWithComparison.cs" />
@@ -149,9 +150,11 @@
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IDataTypeTranslator.cs" />
+    <Compile Include="IDbConnectionManager.cs" />
     <Compile Include="IHasConnectionStringResolver.cs" />
     <Compile Include="ILoadable.cs" />
     <Compile Include="IRegistrarCaller.cs" />
+    <Compile Include="MaxCountDbConnectionManager.cs" />
     <Compile Include="NullConnectionStringResolver.cs" />
     <Compile Include="PagedQuery.cs" />
     <Compile Include="Query.cs" />
