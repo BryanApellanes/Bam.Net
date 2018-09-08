@@ -59,9 +59,9 @@ namespace Bam.Net.Data.Tests.Integration
             initializer(mySqlDatabase);
             _testDatabases.Add(mySqlDatabase);
 
-            //NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", databaseName, new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
-            //initializer(npgsqlDatabase);
-            //_testDatabases.Add(npgsqlDatabase);
+            NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", databaseName, new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
+            initializer(npgsqlDatabase);
+            _testDatabases.Add(npgsqlDatabase);
 
             return _testDatabases;
 		}
