@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Bam.Net.Data
@@ -15,6 +16,7 @@ namespace Bam.Net.Data
         {
             Database = database;
             MaxConnections = 20;
+            LifetimeMilliseconds = 3100;
             _next = 0;
         }
 
@@ -35,7 +37,9 @@ namespace Bam.Net.Data
                 Connections = new List<DbConnection>(_maxConnections);
             }
         }
-        
+
+        public int LifetimeMilliseconds { get; set; }
+
         public DbConnection GetDbConnection()
         {
             if(_next >= MaxConnections)
@@ -45,7 +49,12 @@ namespace Bam.Net.Data
 
             if (Connections[_next] != null)
             {
-                ReleaseConnection(Connections[_next]);                
+                DbConnection c = Connections[_next];
+                Task.Run(() =>
+                {
+                    Thread.Sleep(LifetimeMilliseconds);
+                    ReleaseConnection(c);
+                });
             }
 
             DbConnection conn = Database.ServiceProvider.Get<DbProviderFactory>().CreateConnection();
