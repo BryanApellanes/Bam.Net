@@ -17,15 +17,17 @@ namespace Bam.Net.Data.MySql
 	{
 		public MySqlConnectionStringResolver(string serverName, string databaseName, MySqlCredentials credentials = null)
 		{
-			this.ServerName = serverName;
-			this.DatabaseName = databaseName;
-			this.Credentials = credentials ?? new MySqlCredentials();
-			this.TrustedConnection = credentials == null;
+			ServerName = serverName;
+			DatabaseName = databaseName;
+			Credentials = credentials ?? new MySqlCredentials();
+			TrustedConnection = credentials == null;
+            Ssl = true;
 		}
 
 		public string ServerName { get; set; }
 		public string DatabaseName { get; set; }
         public int Port { get; set; }
+        public bool Ssl { get; set; }
 		public bool TrustedConnection { get; set; }
 
 		public MySqlCredentials Credentials { get; set; }
@@ -56,7 +58,10 @@ namespace Bam.Net.Data.MySql
             {
                 connectionStringBuilder.Add("Port", Port.ToString());
             }
-
+            if(!Ssl)
+            {
+                connectionStringBuilder.Add("SslMode", "none");
+            }
             return connectionStringBuilder;
         }
 

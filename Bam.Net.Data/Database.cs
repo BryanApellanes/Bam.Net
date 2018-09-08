@@ -856,7 +856,8 @@ namespace Bam.Net.Data
 
         protected void FillDataSet(DataSet dataSet, DbCommand command)
         {
-            DbDataAdapter adapter = ServiceProvider.Get<DbProviderFactory>().CreateDataAdapter();
+            DbProviderFactory factory = ServiceProvider.Get<DbProviderFactory>();
+            DbDataAdapter adapter = factory.CreateDataAdapter();
             adapter.SelectCommand = command;
             adapter.Fill(dataSet);
         }

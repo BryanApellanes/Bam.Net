@@ -21,15 +21,15 @@ namespace Bam.Net.Data.MySql
             ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
             Register();
         }
-        public MySqlDatabase(string serverName, string databaseName, MySqlCredentials credentials = null)
-            : this(serverName, databaseName, databaseName, credentials)
+        public MySqlDatabase(string serverName, string databaseName, MySqlCredentials credentials = null, bool ssl = true)
+            : this(serverName, databaseName, databaseName, credentials, ssl)
         {
         }
 
-        public MySqlDatabase(string serverName, string databaseName, string connectionName, MySqlCredentials credentials = null)
+        public MySqlDatabase(string serverName, string databaseName, string connectionName, MySqlCredentials credentials = null, bool ssl = true)
         {
             ColumnNameProvider = (c) => c.Name;
-            ConnectionStringResolver = new MySqlConnectionStringResolver(serverName, databaseName, credentials);
+            ConnectionStringResolver = new MySqlConnectionStringResolver(serverName, databaseName, credentials) { Ssl = ssl };            
             ConnectionName = connectionName;
             Register();
         }

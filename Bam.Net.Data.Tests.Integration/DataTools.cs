@@ -26,11 +26,12 @@ namespace Bam.Net.Data.Tests.Integration
 {
 	public static class DataTools
 	{
-		/// <summary>
-		/// Create a set of test databases
-		/// </summary>
-		/// <returns></returns>
-		[ConsoleAction]
+        static HashSet<Database> _testDatabases = new HashSet<Database>();
+        /// <summary>
+        /// Create a set of test databases
+        /// </summary>
+        /// <returns></returns>
+        [ConsoleAction]
 		public static HashSet<Database> Setup(Action<Database> initializer = null, string databaseName = "DaoRef")
 		{
             if(initializer == null)
@@ -38,39 +39,42 @@ namespace Bam.Net.Data.Tests.Integration
                 initializer = db => Db.TryEnsureSchema<TestTable>(db);
             }
 
-			HashSet<Database> testDatabases = new HashSet<Database>();
-
             MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", databaseName, new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
             initializer(msDatabase);
-            testDatabases.Add(msDatabase);
+            _testDatabases.Add(msDatabase);
 
             SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\Chumsql2", databaseName);
             initializer(sqliteDatabase);
-            testDatabases.Add(sqliteDatabase);
+            _testDatabases.Add(sqliteDatabase);
 
             OleDbDatabase oleDatabase = new OleDbDatabase("Microsoft.ACE.OLEDB.12.0", databaseName.RandomLetters(4));
             initializer(oleDatabase);
-            testDatabases.Add(oleDatabase);
+            _testDatabases.Add(oleDatabase);
 
             OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", databaseName, new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
             initializer(oracleDatabase);
-            testDatabases.Add(oracleDatabase);
+            _testDatabases.Add(oracleDatabase);
 
-            MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", databaseName, new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" });
+            MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", databaseName, new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" }, false);
             initializer(mySqlDatabase);
-            testDatabases.Add(mySqlDatabase);
+            _testDatabases.Add(mySqlDatabase);
 
-            NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", databaseName, new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
-            initializer(npgsqlDatabase);
-            testDatabases.Add(npgsqlDatabase);
+            //NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", databaseName, new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
+            //initializer(npgsqlDatabase);
+            //_testDatabases.Add(npgsqlDatabase);
 
-            return testDatabases;
+            return _testDatabases;
 		}
 
 		[ConsoleAction]
-		public static void Cleanup(HashSet<Database> testDatabases)
+        public static void Cleanup()
+        {
+            Cleanup(_testDatabases);
+        }
+
+		public static void Cleanup(IEnumerable<Database> dbs)
 		{
-			testDatabases.Each(db =>
+			dbs.Each(db =>
 			{
 				SchemaWriter dropper = db.ServiceProvider.Get<SchemaWriter>();
 				dropper.EnableDrop = true;

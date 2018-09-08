@@ -1269,11 +1269,7 @@ namespace Bam.Net.Data
                 {
                     try
                     {
-                        if (value.IsNumber())
-                        {
-                            _idValue = new ulong?(Convert.ToUInt64(value));
-                        }
-                        else if(value is string)
+                        if (value.IsNumber() || value is string)
                         {
                             _idValue = new ulong?(Convert.ToUInt64(value));
                         }                        
