@@ -1031,7 +1031,10 @@ namespace Bam.Net.Data
 		{
 			if (_connections.Count >= max)
 			{
-				_resetEvent.WaitOne();
+                if (!_resetEvent.WaitOne(3500))
+                {
+                    _connections.BackwardsEach(connection => ReleaseConnection(connection));
+                }
 			}
 
 			DbConnection conn = ServiceProvider.Get<DbProviderFactory>().CreateConnection();
