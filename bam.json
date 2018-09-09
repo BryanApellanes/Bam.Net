@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.15.1\r\n -  msbuild path handling (ad15c516)\r\n -  $ (020fb7cf)\r\n -  fix builactions to allow for spaces (9010cc6c)\r\n -  silly stuff (035db168)\r\n -  minor refactor for readability (555995b9)\r\n -  add log.trace (2a45d705)\r\n -  formatting (21051098)\r\n -  update msbuild path (c74f30d0)\r\n -  build stuff (d48663ab)\r\n -  fix tests (d087eb05)\r\n -  fix npgsql (ebdbf11b)\r\n -  update configs (3d0249f0)\r\n -  lifetimemilliseconds (db75f8b0)\r\n -  remove property from interface (da01cce9)\r\n -  fix merge conflict (c6caf291)\r\n -  remove unecessary generic constraints (6f47e12e)\r\n -  remove unnecessary override (f35c0938)\r\n -  add git commands (60af26aa)\r\n -  add EncryptedSearchIndex ctor (73faf384)\r\n -  Merge branch 'work2' into next (da519a49)\r\n -  intersystems drivers (9550b10c)\r\n -  account for null in bake (fc2bebca)\r\n -  minor refactorings and doc updates (b57ecba4)\r\n -  Merge branch 'work2' into next (af62ef2e)\r\n -  add test (995066ea)\r\n -  try catch in logging commit thread (2ddb5a64)\r\n -  Merge remote-tracking branch 'origin/work2' into next (4c96c376)\r\n -  extract interfaces for journal, simplify names (0f1c9e49)\r\n -  check for null (66848d7e)\r\n -  delete commented code (175ece43)\r\n -  refactor datareplication journal for composition (db6628f0)\r\n -  Merge pull request #94 from BryanApellanes/next (42d81f1b)\r\n -  intersystems id (a96ca25e)\r\n",
+  "ReleaseNotes": "Version 1.16.0\r\n -  Merge pull request #96 from BryanApellanes/next (41895653)\r\n",
   "MajorVersion": 1,
-  "MinorVersion": 15,
-  "PatchVersion": 1,
+  "MinorVersion": 16,
+  "PatchVersion": 0,
   "BuildNumber": "",
-  "VersionString": "1.15.1"
+  "VersionString": "1.16.0"
 }
