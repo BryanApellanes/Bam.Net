@@ -498,6 +498,10 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
+            if(query is QueryFilter casted)
+            {
+                return Query<T>(casted);
+            }
             return Query<T>((QueryFilter)QueryFilter.FromDynamic(query));
 		}
 

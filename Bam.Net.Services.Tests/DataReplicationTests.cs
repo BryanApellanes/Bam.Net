@@ -168,7 +168,10 @@ namespace Bam.Net.Services.Tests
                 {
                     entries.AddRange(journal.Enqueue(entry));
                 }
-                blocker.WaitOne();
+                if (!blocker.WaitOne(5000))
+                {
+                    Warn("blocker didn't get set");
+                }
                 Expect.AreEqual(3, retrieved.Count);
                 string newAddress = "Updated " + 8.RandomLetters();
                 value2.Address = newAddress;

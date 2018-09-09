@@ -34,7 +34,7 @@ namespace Bam.Net.Services.Tests
             {
                 ChunkLength = 111299
             };
-            FileInfo testDataFile = new FileInfo("C:\\Bam\\Data\\Test\\TestDataFile.dll");
+            FileInfo testDataFile = new FileInfo("C:\\bam\\tmp\\DaoRef.pdb");
             ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunks(testDataFile);
             FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceRestoreTest)}_restored");
             DateTime start = DateTime.UtcNow;
@@ -49,12 +49,16 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreAsyncTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreAsyncTest));
-            FileService fmSvc = new FileService(new DaoRepository(db));
-            fmSvc.ChunkLength = 111299;
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
+            FileService fmSvc = new FileService(new DaoRepository(db))
+            {
+                ChunkLength = 111299
+            };
+            ConsoleLogger logger = new ConsoleLogger
+            {
+                AddDetails = false
+            };
             logger.StartLoggingThread();
-            FileInfo testDataFile = new FileInfo("C:\\Bam\\Data\\Test\\TestDataFile.dll");
+            FileInfo testDataFile = new FileInfo("C:\\bam\\tmp\\DaoRef.pdb");
             ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunks(testDataFile);
             FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceRestoreAsyncTest)}_restored.dat");
             DateTime start = DateTime.UtcNow;
