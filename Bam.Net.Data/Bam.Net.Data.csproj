@@ -157,6 +157,7 @@
     <Compile Include="MaxCountDbConnectionManager.cs" />
     <Compile Include="NullConnectionStringResolver.cs" />
     <Compile Include="PagedQuery.cs" />
+    <Compile Include="PerThreadDbConnectionManager.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="IHasDataRow.cs" />
     <Compile Include="InComparison.cs" />

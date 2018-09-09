@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace Bam.Net.Data
         public DefaultDbConnectionManager(Database database)
         {
             Database = database;
-            MaxConnections = 20;
+            MaxConnections = 10;
             LifetimeMilliseconds = 3100;
             _connections = new HashSet<DbConnection>();
             _resetEvent = new AutoResetEvent(false);
@@ -65,7 +66,7 @@ namespace Bam.Net.Data
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"Exception releasing database connection: {ex.Message}");
+                Log.Trace("{0}: Exception releasing database connection: {1}", ex, nameof(DefaultDbConnectionManager), ex.Message);
             }
 
             _resetEvent.Set();
