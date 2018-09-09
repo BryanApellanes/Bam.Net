@@ -2,11 +2,11 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.15.1</version>
+    <version>1.16.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.15.1
+    <releaseNotes>Version 1.16.0
 Updates since v1.15.0:
  -   add logger doc comments (983eb154)
  -   add Instant.ToString for simpler datetime format handling (2e818e08)

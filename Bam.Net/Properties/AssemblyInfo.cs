@@ -41,5 +41,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Data.Schema")]
 [assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
 
-[assembly: AssemblyVersion("1.15.1")]
-[assembly: AssemblyFileVersion("1.15.1")]
+[assembly: AssemblyVersion("1.16.0")]
+[assembly: AssemblyFileVersion("1.16.0")]
