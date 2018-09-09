@@ -3,6 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,13 +20,56 @@ namespace Bam.Net
             _threads = new Dictionary<string, Thread>(500);
         }
 
-        public static void SleepUntil(Func<bool> checkCondition, int sleep = 300)
+        public static Thread GetThread(int managedThreadId)
         {
+            Process currentProcess = Process.GetCurrentProcess();
+            foreach(Thread thread in currentProcess.Threads)
+            {
+                if(thread.ManagedThreadId == managedThreadId)
+                {
+                    return thread;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Sleeps until the specified checkCondition is true.
+        /// </summary>
+        /// <param name="checkCondition">The check condition.</param>
+        /// <param name="sleep">The number of milliseconds to sleep between condition checks.</param>
+        /// <param name="timeout">The amount of time after which the condition is no longer checked and 
+        /// the method returns.</param>
+        /// <returns>The time slept, not completely acurate as this value is the result of sleep * number of cycles</returns>
+        public static int SleepUntil(Func<bool> checkCondition, int sleep = 300, int timeout = 5000)
+        {
+            SleepUntil(checkCondition, out int returnValue, sleep, timeout);
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Sleeps until the specified checkCondition is true.
+        /// </summary>
+        /// <param name="checkCondition">The check condition.</param>
+        /// <param name="slept">The time slept.</param>
+        /// <param name="sleep">The number of milliseconds to sleep between condition checks.</param>
+        /// <param name="timeout">The amount of time after which the condition is no longer checked and 
+        /// the method returns.</param>
+        /// <returns>True if the condition was met, false otherwise.</returns>
+        public static bool SleepUntil(Func<bool> checkCondition, out int slept, int sleep = 300, int timeout = 5000)
+        {
+            slept = 0;
             Thread.Sleep(sleep);
             while (!checkCondition())
             {
                 Thread.Sleep(sleep);
+                slept += sleep;
+                if(slept >= timeout)
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         public static NamedThread GetThread(string name)
@@ -84,6 +128,21 @@ namespace Bam.Net
             return thread;
         }
 
+        /// <summary>
+        /// Execute the specified action after sleeping for the specified milliseconds.
+        /// </summary>
+        /// <param name="millisecondsBeforeStarting">The milliseconds before starting.</param>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public static NamedThread After(int millisecondsBeforeStarting, Action action)
+        {
+            if(millisecondsBeforeStarting > 0)
+            {
+                Thread.Sleep(millisecondsBeforeStarting);
+            }
+            return Start(action);
+        }
+
         public static NamedThread Start(Action action)
         {
             return Start(Guid.NewGuid().ToString(), action);
@@ -119,7 +178,7 @@ namespace Bam.Net
             if (_threads.ContainsKey(name))
             {
                 Thread victim = _threads[name];
-                if (victim.ThreadState == ThreadState.Running)
+                if (victim.ThreadState == System.Threading.ThreadState.Running)
                 {
                     try
                     {

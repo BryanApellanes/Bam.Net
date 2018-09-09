@@ -55,6 +55,19 @@ namespace Bam.Net.Logging
         {
             Default.AddEntry(messageSignature, ex, args.Select(a => a.ToString()).ToArray());
         }
+
+        public static void Trace(string messageSignature, params object[] args)
+        {
+            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
+            Info(messageSignature, args);
+        }
+
+        public static void Trace(string messageSignature, Exception ex, params object[] args)
+        {
+            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
+            Error(messageSignature, ex, args);
+        }
+
         /// <summary>
         /// Reset Log.Current to null.  Used primarily for testing.
         /// </summary>
