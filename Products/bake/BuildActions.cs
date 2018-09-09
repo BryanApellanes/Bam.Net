@@ -676,7 +676,7 @@ namespace Bam.Net.Automation
         private static bool Build(BakeSettings bakeSettings)
         {
             FileInfo msbuild = new FileInfo(bakeSettings.MsBuild);
-            string args = "/t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
+            string args = $"/t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
             ProcessOutput output = msbuild.FullName.Run(args, (o, a) => { }, (line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), false, 600000);
             return output.ExitCode == 0;
         }
