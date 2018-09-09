@@ -540,12 +540,12 @@ namespace Bam.Net.Automation
             wixDoc.SetTargetContents(releaseFolder);
 
             // build the merge module
-            BakeSettings settings = GetSettings();            
-            ProcessOutput mergeModuleBuildOutput = $"{settings.MsBuild} {wixMergeModuleProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000);
-            if(mergeModuleBuildOutput.ExitCode == 0)
+            BakeSettings settings = GetSettings();
+            ProcessOutput mergeModuleBuildOutput = RunMsBuild(settings, $"{wixMergeModuleProject} /p:OutputPath={wixOutput}");
+            if (mergeModuleBuildOutput.ExitCode == 0)
             {
                 // build the msi
-                ProcessOutput msiBuildOutput = $"{settings.MsBuild} {wixMsiProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err=> OutLineFormat(err, ConsoleColor.Magenta), 600000);
+                ProcessOutput msiBuildOutput = RunMsBuild(settings, $"{wixMsiProject} /p:OutputPath={wixOutput}");
                 return msiBuildOutput.ExitCode == 0;
             }
             return false;
@@ -675,10 +675,15 @@ namespace Bam.Net.Automation
 
         private static bool Build(BakeSettings bakeSettings)
         {
-            FileInfo msbuild = new FileInfo(bakeSettings.MsBuild);
             string args = $"/t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
-            ProcessOutput output = msbuild.FullName.Run(args, (o, a) => { }, (line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), false, 600000);
+            ProcessOutput output = RunMsBuild(bakeSettings, args);
             return output.ExitCode == 0;
+        }
+
+        private static ProcessOutput RunMsBuild(BakeSettings bakeSettings, string args)
+        {
+            FileInfo msbuild = new FileInfo(bakeSettings.MsBuild);            
+            return msbuild.FullName.Run(args, (o, a) => { }, (line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), false, 600000);            
         }
 
         protected static void SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)
