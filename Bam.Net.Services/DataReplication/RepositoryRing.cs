@@ -52,6 +52,7 @@ namespace Bam.Net.Services.DataReplication
 
             return result;
         }        
+
         public UniversalIdentifier UniversalIdentifier { get; set; }
         public ITypeResolver TypeResolver { get; set; }
 

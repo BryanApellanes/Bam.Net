@@ -36,11 +36,9 @@ namespace Bam.Net.Data
             List<DbParameter> parameters = new List<DbParameter>();
             foreach (IFilterToken token in filter.Filters)
             {
-                IParameterInfo c = token as IParameterInfo;
-                if (c != null)
+                if (token is IParameterInfo c)
                 {
-                    InComparison inC = c as InComparison;
-                    if (inC != null)
+                    if (c is InComparison inC)
                     {
                         parameters.AddRange(BuildParamters(inC));
                     }

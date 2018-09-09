@@ -2,36 +2,36 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Services</id>
-    <version>1.15.0</version>
+    <version>1.15.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Supplemental Bam.Net services
 	</description>
-    <releaseNotes>Version 1.15.0
-Updates since v1.14.3:
- -   datareplication implementation (0dcd738a)
- -   change ids to ulong (dacc81fc)
- -   add datareplication components (cc4584ed)
- -   consolidate settings into BamPaths; update ApplicationManager (15b7e8a3)
- -   add administrationservice (393c337e)
+    <releaseNotes>Version 1.15.1
+Updates since v1.15.0:
+ -   SecureStreamingClient/..Server; encrypt and decrypt responses and requests (05a5d99f)
+ -   add keyvalue store server and client (bce58862)
+ -   encrypted search index (e0e14aa3)
+ -   refactor data replication loaders (eff28722)
+ -   add refactor journal flusher and loader to manager (e59c0ba6)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.15.0" />
-      <dependency id="Bam.Net.Analytics" version="1.15.0" />
-      <dependency id="Bam.Net.CommandLine" version="1.15.0" />
-      <dependency id="Bam.Net.CoreServices" version="1.15.0" />
-      <dependency id="Bam.Net.Data" version="1.15.0" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.15.0" />
-      <dependency id="Bam.Net.Data.Schema" version="1.15.0" />
-      <dependency id="Bam.Net.Encryption" version="1.15.0" />
-      <dependency id="Bam.Net.Incubation" version="1.15.0" />
-      <dependency id="Bam.Net.Messaging" version="1.15.0" />
-      <dependency id="Bam.Net.Server" version="1.15.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.15.0" />
-      <dependency id="Bam.Net.Translation" version="1.15.0" />
-      <dependency id="Bam.Net.UserAccounts" version="1.15.0" />
+      <dependency id="Bam.Net" version="1.15.1" />
+      <dependency id="Bam.Net.Analytics" version="1.15.1" />
+      <dependency id="Bam.Net.CommandLine" version="1.15.1" />
+      <dependency id="Bam.Net.CoreServices" version="1.15.1" />
+      <dependency id="Bam.Net.Data" version="1.15.1" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.15.1" />
+      <dependency id="Bam.Net.Data.Schema" version="1.15.1" />
+      <dependency id="Bam.Net.Encryption" version="1.15.1" />
+      <dependency id="Bam.Net.Incubation" version="1.15.1" />
+      <dependency id="Bam.Net.Messaging" version="1.15.1" />
+      <dependency id="Bam.Net.Server" version="1.15.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.15.1" />
+      <dependency id="Bam.Net.Translation" version="1.15.1" />
+      <dependency id="Bam.Net.UserAccounts" version="1.15.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.6" />
@@ -39,6 +39,7 @@ Updates since v1.14.3:
       <dependency id="Mono.Security" version="5.4.0.201" />
       <dependency id="NCuid" version="1.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="System.IO.Compression" version="4.3.0" />
     </dependencies>
   </metadata>
 </package>

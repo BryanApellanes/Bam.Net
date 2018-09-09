@@ -15,8 +15,10 @@ namespace Bam.Net.Data.Repositories.Tests.TestDtos
         public string Uuid { get; set; }
         public string Name { get; set; }
         public DateTime Created { get; set; }
-        public virtual House[] Houses { get; set; } // many to many
+        
         public virtual Daughter[] Daughters { get; set; } //one to many
         public virtual List<Son> Sons { get; set; }
+
+        public virtual House[] Houses { get; set; } // many to many
     }
 }

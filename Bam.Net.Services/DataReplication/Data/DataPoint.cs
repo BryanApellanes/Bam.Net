@@ -7,6 +7,10 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Services.DataReplication.Data
 {
+    /// <summary>
+    /// Represents a point of data.  May have multiple data properties.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Data.Repositories.AuditRepoData" />
     [Serializable]
     public class DataPoint: AuditRepoData
     {

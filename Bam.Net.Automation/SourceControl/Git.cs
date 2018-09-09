@@ -100,18 +100,89 @@ namespace Bam.Net.Automation.SourceControl
             return this;
         }
 
+        public Git Pull()
+        {
+            CallGit("pull");
+            return this;
+        }
+
         public string LatestRelease()
         {
-            string currentDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _configStack.Repository;
-            ProcessOutput output = "git describe --abbrev=0".Run();
-            Environment.CurrentDirectory = currentDirectory;
-            return output.StandardOutput.Trim();
+            return CallGit("describe --abbrev=0");
+        }
+
+        public bool LocalBranchExists(string branchName)
+        {
+            return LocalBranchExists(branchName, out string ignore);
+        }
+
+        public bool LocalBranchExists(string branchName, out string commitHash)
+        {
+            string output = CallGit($"rev-parse --verify {branchName}");
+            if (!output.StartsWith("fatal:"))
+            {
+                commitHash = output;
+                return true;
+            }
+            commitHash = string.Empty;
+            return false;
+        }
+
+        public bool RemoteBranchExists(string branchName)
+        {
+            return RemoteBranchExists(branchName, out string ignore);
+        }
+
+        public bool RemoteBranchExists(string branchName, out string commitHash)
+        {
+            string output = CallGit($"ls-remote --heads");
+            string[] lines = output.DelimitSplit("\r\n");
+            commitHash = string.Empty;
+            if(lines.Length >= 2)
+            {
+                for(int i = 1; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().EndsWith($"refs/heads/{branchName}"))
+                    {
+                        commitHash = lines[i].DelimitSplit(" ")[0];
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the latest commit hash for the specified branch.
+        /// </summary>
+        /// <param name="branchName">Name of the branch.</param>
+        /// <returns></returns>
+        public string LatestBranchCommit(string branchName)
+        {
+            return CallGit($"rev-parse {branchName}");
+        }
+
+        public string CurrentCommitHash()
+        {
+            return CallGit("rev-parse HEAD");
         }
 
         public ProcessOutput LastOutput()
         {
             return _configStack.LastOutput;
+        }
+
+        private string CallGit(string args)
+        {
+            string currentDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.Repository;
+            ProcessOutput output = $"git {args}".Run();
+            Environment.CurrentDirectory = currentDirectory;
+            if(output.ExitCode != 0)
+            {
+                throw new Exception(output.StandardError);
+            }
+            return output.StandardOutput.Trim();
         }
 
         private DirectoryInfo GitBin

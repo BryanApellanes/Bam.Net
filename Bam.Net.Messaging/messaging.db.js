@@ -2,7 +2,6 @@ var database = {
     nameSpace: "Bam.Net.Messaging.Data",
     schemaName: "Messaging",
     xrefs: [
-        //["User", "Role"]
     ],
     tables: [
         {

@@ -50,7 +50,7 @@ namespace Bam.Net.Data.Intersystems
             SelectStar = true;
             ServiceProvider = new Incubator();
             ServiceProvider.Set<DbProviderFactory>(CacheFactory.Instance);
-            CacheRegistrar.Register(this);
+            InterSystemsRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }
 

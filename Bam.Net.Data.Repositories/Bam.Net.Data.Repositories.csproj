@@ -127,14 +127,20 @@
     <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
-    <Compile Include="DefaultDataSettingsProvider.cs" />
+    <Compile Include="DefaultDataDirectoryProvider.cs" />
     <Compile Include="DefaultDatabaseProviderRepositoryResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
+    <Compile Include="ObjectPersisterDirectoryProvider.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
     <Compile Include="IDataSettingsResolver.cs" />
+    <Compile Include="IObjectPersisterDirectoryProvider.cs" />
+    <Compile Include="IHashedObjectReader.cs" />
     <Compile Include="InvalidIdPropertyTypeException.cs" />
+    <Compile Include="IObjectQueryer.cs" />
+    <Compile Include="IObjectReader.cs" />
+    <Compile Include="IObjectWriter.cs" />
     <Compile Include="IReflectionCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
@@ -147,6 +153,7 @@
     <Compile Include="KeyHashProvider.cs" />
     <Compile Include="KeyHashRepoData.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
+    <Compile Include="ObjectReader.cs" />
     <Compile Include="ProcessModeResolver.cs" />
     <Compile Include="RepoData.cs" />
     <Compile Include="RepositoryResolver.cs" />
@@ -190,7 +197,7 @@
     <Compile Include="WrapperTemplate.cs" />
     <Compile Include="IHasUpdatedXrefCollectionProperties.cs" />
     <Compile Include="IMetaProvider.cs" />
-    <Compile Include="IObjectReaderWriter.cs" />
+    <Compile Include="IObjectPersister.cs" />
     <Compile Include="KeyAttribute.cs" />
     <Compile Include="Meta.cs" />
     <Compile Include="MetaId.cs" />
@@ -203,7 +210,7 @@
     <Compile Include="DaoRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ObjectRepository.cs" />
-    <Compile Include="ObjectReaderWriter.cs" />
+    <Compile Include="ObjectPersister.cs" />
     <Compile Include="DtoModel.cs" />
     <Compile Include="AuditRepoData.cs" />
     <Compile Include="TypeDaoGenerator.cs" />

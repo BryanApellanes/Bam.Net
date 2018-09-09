@@ -188,18 +188,20 @@ namespace Bam.Net.Data.Repositories.Tests
 		public void ShouldBeAbleToRestore()
 		{
 			SQLiteDatabase toBackup = GetTestDatabase(MethodBase.GetCurrentMethod().Name);
-			toBackup.MaxConnections = 500;
+			toBackup.MaxConnections = 20;
 			FillDatabaseWithTestData(toBackup);
 
 			MainObjectCollection main = MainObject.LoadAll(toBackup);
 			SecondaryObjectCollection secondary = SecondaryObject.LoadAll(toBackup);
 			TernaryObjectCollection ternary = TernaryObject.LoadAll(toBackup);
 
-			List<IRepository> repos = new List<IRepository>();
-			repos.Add(new DaoRepository(new SQLiteDatabase("BackupRepo_{0}"._Format(MethodBase.GetCurrentMethod().Name), "BackupRepoDb")));
-			repos.Add(new ObjectRepository("ObjectRepo_{0}"._Format(MethodBase.GetCurrentMethod().Name)));
+            List<IRepository> repos = new List<IRepository>
+            {
+                new DaoRepository(new SQLiteDatabase("BackupRepo_{0}"._Format(MethodBase.GetCurrentMethod().Name), "BackupRepoDb")),
+                new ObjectRepository("ObjectRepo_{0}"._Format(MethodBase.GetCurrentMethod().Name))
+            };
 
-			foreach (IRepository repo in repos)
+            foreach (IRepository repo in repos)
 			{
 				DaoBackup backup = new DaoBackup(typeof(MainObject).Assembly, toBackup, repo);
 				backup.Backup();

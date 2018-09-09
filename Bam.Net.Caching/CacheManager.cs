@@ -15,7 +15,7 @@ namespace Bam.Net.Caching
 	public class CacheManager : Loggable, ICacheManager
     {
 		ConcurrentDictionary<Type, Cache> _cacheDictionary;
-		public CacheManager(uint maxCacheSizeBytes = 524288) // 512 kilobytes
+		public CacheManager(uint maxCacheSizeBytes = 524288000) // 500 megabytes
         {
 			_cacheDictionary = new ConcurrentDictionary<Type, Cache>();
             MaxCacheSizeBytes = maxCacheSizeBytes;

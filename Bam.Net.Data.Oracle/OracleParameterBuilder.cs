@@ -24,13 +24,16 @@ namespace Bam.Net.Data
         {
             string parameterName = string.Format(":{0}{1}", c.ColumnName, c.Number);
 			object value = c.Value;
-			if (c.Value is bool)
-			{
-				bool b = (bool)c.Value;
-				char val = b ? '1' : '0';
-				value = val;
-			}
-			OracleParameter result = new OracleParameter(parameterName, value);
+            if (c.Value is bool b)
+            {
+                char val = b ? '1' : '0';
+                value = val;
+            }
+            else if(c.Value is ulong || c.Value is uint)
+            {
+                value = Convert.ToDecimal(c.Value);
+            }
+            OracleParameter result = new OracleParameter(parameterName, value);
 			if (c.Value is string)
 			{				
 				result.DbType = DbType.String;

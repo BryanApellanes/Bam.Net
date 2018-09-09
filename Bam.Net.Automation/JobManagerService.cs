@@ -33,12 +33,12 @@ namespace Bam.Net.Automation
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
         Thread _runnerThread;
-        protected internal JobManagerService() : this(DefaultConfigurationApplicationNameProvider.Instance, DefaultDataSettingsProvider.Current)
+        protected internal JobManagerService() : this(DefaultConfigurationApplicationNameProvider.Instance, DefaultDataDirectoryProvider.Current)
         {
         }
 
         public JobManagerService(IApplicationNameProvider appNameProvider, 
-            DefaultDataSettingsProvider dataSettings,
+            DefaultDataDirectoryProvider dataSettings,
             IWorkerTypeProvider workerTypeProvider,
             ITypeResolver typeResolver,
             IIpcMessageStore suspendedJobStore) : this(appNameProvider, dataSettings)
@@ -48,7 +48,7 @@ namespace Bam.Net.Automation
             SuspendedJobIpcMessageStore = suspendedJobStore;
         }
 
-        public JobManagerService(IApplicationNameProvider appNameProvider, DefaultDataSettingsProvider dataSettings, ProfigurationSet profiguration = null)
+        public JobManagerService(IApplicationNameProvider appNameProvider, DefaultDataDirectoryProvider dataSettings, ProfigurationSet profiguration = null)
         {
             TypeResolver = new TypeResolver();
             DataSettings = dataSettings;
@@ -68,7 +68,7 @@ namespace Bam.Net.Automation
             return clone;
         }
 
-        public DefaultDataSettingsProvider DataSettings { get; }        
+        public DefaultDataDirectoryProvider DataSettings { get; }        
         public IWorkerTypeProvider WorkerTypeProvider { get; }
         public ITypeResolver TypeResolver { get; set; }
         public int MaxConcurrentJobs

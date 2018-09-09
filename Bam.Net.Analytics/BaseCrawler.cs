@@ -130,10 +130,7 @@ namespace Bam.Net.Analytics
 
         protected void OnActionChanged(CrawlerState.Action oldAction, CrawlerState.Action newAction)
         {
-            if (ActionChanged != null)
-            {
-                ActionChanged(this, new ActionChangedEventArgs(oldAction, newAction));
-            }
+            ActionChanged?.Invoke(this, new ActionChangedEventArgs(oldAction, newAction));
         }
 
         public CrawlerState GetState()
@@ -160,8 +157,7 @@ namespace Bam.Net.Analytics
                 _processed = new HashSet<string>();
 
                 TargetQueue.Enqueue(Root);
-                string current;
-                while (TargetQueue.TryDequeue(out current))
+                while (TargetQueue.TryDequeue(out string current))
                 {
                     Current = current;
                     CurrentAction = CrawlerState.Action.Extracting;

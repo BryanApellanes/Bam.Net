@@ -11,6 +11,7 @@ namespace Bam.Net.Presentation
         public string ApplicationName { get; set; }
 
         public IViewModelProvider ViewModelProvider { get; set; }
+
         public IPersistenceModelProvider PersistenceModelProvider { get; set; }
 
         public PersistenceModel GetPersistenceModel(string persistenceModelName)

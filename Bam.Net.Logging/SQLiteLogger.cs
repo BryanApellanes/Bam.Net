@@ -11,11 +11,19 @@ namespace Bam.Net.Logging
 {
     public class SQLiteLogger : DaoLogger
     {
-        public SQLiteLogger() : this(new SQLiteDatabase(RuntimeSettings.AppDataFolder, $"{DefaultConfiguration.GetAppSetting("ApplicationName", StaticApplicationNameProvider.DefaultApplicationName)}_Logs"))
+        public SQLiteLogger() : this(DefaultDatabase)
         { }
 
         public SQLiteLogger(SQLiteDatabase database):base(database)
         {
+        }
+
+        public static SQLiteDatabase DefaultDatabase
+        {
+            get
+            {
+                return new SQLiteDatabase(RuntimeSettings.AppDataFolder, $"{DefaultConfiguration.GetAppSetting("ApplicationName", StaticApplicationNameProvider.DefaultApplicationName)}_Logs");
+            }
         }
     }
 }

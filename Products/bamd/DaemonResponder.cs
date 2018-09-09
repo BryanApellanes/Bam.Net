@@ -23,7 +23,7 @@ namespace Bam.Net.Application
             ServiceProxyResponder = new ServiceProxyResponder(conf, logger);
             ServiceProxyResponder.AddCommonService(new CommandService());
             ServiceProxyResponder.AddCommonService(monitorService);
-            DefaultDataSettingsProvider.Current.SetRuntimeAppDataDirectory();
+            DefaultDataDirectoryProvider.Current.SetRuntimeAppDataDirectory();
             if (verbose)
             {
                 WireResponseLogging(ServiceProxyResponder, logger);

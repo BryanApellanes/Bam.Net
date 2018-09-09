@@ -30,10 +30,12 @@ bake /build:[path_to_build_json_file]
 ```
 
 When build mode is selected, a build is run using the specified build config.  The build config is
-a json serialized BakeBuildConfig object.  The BakeBuildConfig definition has the same properties
-defined as the bambot configs.  Bambot configs will properly deserialize as BakeBuildConfig instances.
+a json serialized BuildConfig object.  The BuildConfig definition has the same properties
+defined as the bambot configs.  Bambot configs will properly deserialize as BuildConfig instances.
 
 You may also override the branch defined in the config file by specifying the /branch:**branch_name** switch.
+
+For more information, see [Understanding BuildConfig Properties (build.json)](docs/buld-dot-json.md)
 
 ## Deploy
 

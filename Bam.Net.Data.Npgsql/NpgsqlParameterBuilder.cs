@@ -20,6 +20,7 @@ namespace Bam.Net.Data
         {
             return new NpgsqlParameter($"@{name}", value);
         }
+
         public override DbParameter BuildParameter(IParameterInfo c)
         {
             string parameterName = string.Format("@{0}{1}", c.ColumnName, c.Number);
@@ -28,6 +29,11 @@ namespace Bam.Net.Data
             {
                 value = new Instant((DateTime)value).ToDateTime();
             }
+            else if (value is ulong || value is uint)
+            {
+                value = Convert.ToDecimal(value);
+            }
+
             return new NpgsqlParameter(parameterName, value);
         }
     }

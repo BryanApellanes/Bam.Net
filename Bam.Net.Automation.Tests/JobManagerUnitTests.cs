@@ -32,7 +32,7 @@ namespace Bam.Net.Automation.Tests
         public void JobsDirectoryShouldBeInAppDataFolder()
         {
             JobManagerService jobConductor = new JobManagerService();
-            string expected = DefaultDataSettingsProvider.Current.GetAppDataDirectory(DefaultConfigurationApplicationNameProvider.Instance, "Jobs").FullName;
+            string expected = DefaultDataDirectoryProvider.Current.GetAppDataDirectory(DefaultConfigurationApplicationNameProvider.Instance, "Jobs").FullName;
             Expect.AreEqual(expected, jobConductor.JobsDirectory);
         }
 

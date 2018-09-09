@@ -31,6 +31,20 @@ namespace Bam.Net.Analytics.Classification
 
         public abstract string Classify(string documentString, string defaultCategory = "None");
 
+        IFeatureExtractor _featureExtractor;
+        object _featureExtractorLock = new object();
+        public IFeatureExtractor FeatureExtractor
+        {
+            get
+            {
+                return _featureExtractorLock.DoubleCheckLock(ref _featureExtractor, () => new WordFeatureExtractor());
+            }
+            set
+            {
+                _featureExtractor = value;
+            }
+        }
+
         /// <summary>
         /// Train the classifier assigning the specified doc to the 
         /// specified category
@@ -39,7 +53,7 @@ namespace Bam.Net.Analytics.Classification
         /// <param name="category"></param>
         public void Train(string doc, string category)
         {
-            string[] features = FeatureExtractor(doc);
+            string[] features = ExtractFeatures(doc);
             for (int i = 0; i < features.Length; i++)
             {
                 IncreaseFeature(features[i], category);
@@ -158,9 +172,11 @@ namespace Bam.Net.Analytics.Classification
             Category c = Category.OneWhere(col => col.Value == category);
             if (c == null)
             {
-                c = new Category();
-                c.Value = category;
-                c.DocumentCount = 0;
+                c = new Category
+                {
+                    Value = category,
+                    DocumentCount = 0
+                };
                 c.Save();
             }
             return c;
@@ -177,43 +193,34 @@ namespace Bam.Net.Analytics.Classification
             Feature f = Feature.OneWhere(col => col.Value == feature && col.CategoryId == cat.Id);
             if (f == null)
             {
-                f = new Feature();
-                f.Value = feature;
-                f.CategoryId = cat.Id;
-                f.FeatureToCategoryCount = 0;
+                f = new Feature
+                {
+                    Value = feature,
+                    CategoryId = cat.Id,
+                    FeatureToCategoryCount = 0
+                };
                 f.Save();
             }
 
             return f;
         }
 
-        object _featureExtractorLock = new object();
-        Func<string, string[]> _getFeatures;
+        object _extractFeaturesLock = new object();
+        Func<string, string[]> _extractFeatures;
         /// <summary>
         /// The delegate used for extracting features from a
         /// given string.  Default is ExtractWords.
         /// </summary>
-        public Func<string, string[]> FeatureExtractor
+        public Func<string, string[]> ExtractFeatures
         {
             get
             {
-                return _featureExtractorLock.DoubleCheckLock(ref _getFeatures, () => ExtractWords);
+                return _extractFeaturesLock.DoubleCheckLock(ref _extractFeatures, () => FeatureExtractor.ExtractFeatures);
             }
             set
             {
-                _getFeatures = value;
+                _extractFeatures = value;
             }
-        }
-
-        /// <summary>
-        /// The default implementation of GetFeatures
-        /// </summary>
-        /// <param name="docContent"></param>
-        /// <returns></returns>
-        public virtual string[] ExtractWords(string docContent)
-        {
-            string[] words = docContent.Split(new string[] { " ", "\r", "\n", "\t", ".", ",", ":", ";", "=", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ">", "<", "?", "@", "[", "]", "{", "}", "|", "`", "^", "~" }, StringSplitOptions.RemoveEmptyEntries);
-            return words.Where(s=> s.Length > 2 && s.Length < 20).Distinct().ToArray();
         }
     }
 }

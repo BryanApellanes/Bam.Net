@@ -1265,11 +1265,14 @@ namespace Bam.Net.Data
             get
             {
                 object value = PrimaryKey;
-                if (value != null && value != DBNull.Value && value.IsNumber())
+                if (value != null && value != DBNull.Value)
                 {
                     try
                     {
-                        _idValue = new ulong?(Convert.ToUInt64(value));
+                        if (value.IsNumber() || value is string)
+                        {
+                            _idValue = new ulong?(Convert.ToUInt64(value));
+                        }                        
                     }
                     catch (Exception ex)
                     {

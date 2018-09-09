@@ -13,7 +13,7 @@ namespace Bam.Net.Services.DataReplication
         {
             get
             {
-                return $"{nameof(DataReplicationJournal)}_{nameof(SequenceFile)}"; ;
+                return $"{nameof(Journal)}_{nameof(SequenceFile)}"; ;
             }
         }
 
@@ -21,7 +21,7 @@ namespace Bam.Net.Services.DataReplication
 
         public SequenceFile(SystemPaths paths)
         {
-            IpcMessage = IpcMessage.Create(Name, typeof(ulong), Path.Combine(paths.Data.AppData, $"{nameof(DataReplicationJournal)}_Sequence"), true);
+            IpcMessage = IpcMessage.Create(Name, typeof(ulong), Path.Combine(paths.Data.AppData, $"{nameof(Journal)}_Sequence"), true);
         }
 
         public static implicit operator IpcMessage(SequenceFile file)

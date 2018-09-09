@@ -2,29 +2,21 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.15.0</version>
+    <version>1.15.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.15.0
-Updates since v1.14.3:
- -   check for null in xrefdaocollection and dao (4e713fd6)
- -   add dynamic reader wrappers (27d7001b)
- -   account for ulong ids (59a4524a)
- -   (Breaking change) refactor to properly handle change of ids from long to ulong (62c7a460)
- -   correctly pass dbparameters (43e76a80)
- -   rename DataSettings to DefaultDataSettingsProvider (fe0985d6)
- -   add sql script file and Intersystems support (0f435543)
- -   add sql script handling (44c373ad)
- -   add sql script file and Intersystems support (86af885d)
- -   add sql script handling (6b66931d)
- -   account for null entries in the dao data row (aa4b1a17)
- -   add dictionary handling (58bc9e5d)
+    <releaseNotes>Version 1.15.1
+Updates since v1.15.0:
+ -   better connection handling (75806a80)
+ -   correct data type handling for mssql and access (2e6c31e7)
+ -   define IDbConnectionManager and two implementations (365b663f)
+ -   release all connections after 3.5 seconds (3f0ddda1)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.15.0" />
-      <dependency id="Bam.Net.Incubation" version="1.15.0" />
+      <dependency id="Bam.Net" version="1.15.1" />
+      <dependency id="Bam.Net.Incubation" version="1.15.1" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />

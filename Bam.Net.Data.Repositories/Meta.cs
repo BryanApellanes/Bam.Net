@@ -35,7 +35,7 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="objectReaderWriter">The object reader writer.</param>
-        public Meta(T data, IObjectReaderWriter objectReaderWriter) : base(data, objectReaderWriter)
+        public Meta(T data, IObjectPersister objectReaderWriter) : base(data, objectReaderWriter)
         {
             Type = typeof(T);
         }
@@ -72,7 +72,7 @@ namespace Bam.Net.Data.Repositories
 	}
 
     /// <summary>
-    /// 
+    /// Provides meta data about peristed or persistable objects.
     /// </summary>
     /// <seealso cref="Bam.Net.Data.Repositories.Meta" />
     [Serializable]
@@ -92,33 +92,33 @@ namespace Bam.Net.Data.Repositories
         /// <param name="data">The data.</param>
         /// <param name="objectReaderWriter">The object reader writer.</param>
         /// <param name="setMeta">if set to <c>true</c> [set meta].</param>
-        public Meta(object data, IObjectReaderWriter objectReaderWriter, bool setMeta = true)
+        public Meta(object data, IObjectPersister objectReaderWriter, bool setMeta = true)
 		{
 			RequireIdProperty = true;
-			ObjectReaderWriter = objectReaderWriter;
+			ObjectPersister = objectReaderWriter;
 			if(setMeta)
 			{
 				SetMeta(data);
 			}
 		}
 
-		IObjectReaderWriter _objectReaderWriter;
-		object _objectReaderWriterLock = new object();
+		IObjectPersister _objectPersister;
+		object _objectPersisterLock = new object();
         /// <summary>
         /// Gets or sets the object reader writer.
         /// </summary>
         /// <value>
         /// The object reader writer.
         /// </value>
-        public IObjectReaderWriter ObjectReaderWriter
+        public IObjectPersister ObjectPersister
 		{
 			get
 			{
-				return _objectReaderWriterLock.DoubleCheckLock(ref _objectReaderWriter, () => new ObjectReaderWriter(".\\"));
+				return _objectPersisterLock.DoubleCheckLock(ref _objectPersister, () => new ObjectPersister(Path.Combine(DefaultDataDirectoryProvider.Current.AppDataDirectory, nameof(ObjectPersister))));
 			}
 			set
 			{
-				_objectReaderWriter = value;
+				_objectPersister = value;
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			if (propInfo != null)
 			{
-				T result = ObjectReaderWriter.ReadProperty<T>(propInfo, Uuid);
+				T result = ObjectPersister.ReadProperty<T>(propInfo, Uuid);
 				return result;
 			}
 
@@ -165,7 +165,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			if (propInfo != null)
 			{
-				T result = ObjectReaderWriter.ReadPropertyVersion<T>(propInfo, Hash, version);
+				T result = ObjectPersister.ReadPropertyVersion<T>(propInfo, Hash, version);
 				return result;
 			}
 
@@ -177,7 +177,7 @@ namespace Bam.Net.Data.Repositories
 			if (propInfo != null)
 			{
 				propInfo.SetValue(Data, propertyValue);
-				ObjectReaderWriter.Write(Type, Data);
+				ObjectPersister.Write(Type, Data);
 			}
 		}
 
@@ -358,6 +358,25 @@ namespace Bam.Net.Data.Repositories
             return "{0}::{1}"._Format(uuid, type.FullName).Md5();
         }
 
+        public static string GetUuidHash(object value, Type type)
+        {
+            string result = GetUuidHash("", Type.Missing.GetType());
+            if (value != null)
+            {
+                result = GetUuidHash("", type);
+                PropertyInfo uuidProp = value.GetType().GetProperty("Uuid");
+                if (uuidProp != null)
+                {
+                    string uuid = (string)uuidProp.GetValue(value);
+                    if (!string.IsNullOrEmpty(uuid))
+                    {
+                        result = GetUuidHash(uuid, type);
+                    }
+                }
+            }
+            return result;
+        }
+
         public static string GetIdHash(object value, Type type = null)
         {
             type = type ?? value.GetType();
@@ -479,9 +498,9 @@ namespace Bam.Net.Data.Repositories
 		/// </summary>
 		/// <param name="value"></param>
 		/// <param name="objectReaderWriter"></param>
-		internal void SetId(object value, IObjectReaderWriter objectReaderWriter = null)
+		internal void SetId(object value, IObjectPersister objectReaderWriter = null)
 		{
-			objectReaderWriter = objectReaderWriter ?? this.ObjectReaderWriter;
+			objectReaderWriter = objectReaderWriter ?? this.ObjectPersister;
 			Type type = value.GetType();
 			PropertyInfo idProp = type.GetProperty("Id");
 			if (idProp != null)
@@ -496,9 +515,9 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-        protected internal ulong GetNextId(Type type, IObjectReaderWriter objectReaderWriter = null)
+        protected internal ulong GetNextId(Type type, IObjectPersister objectReaderWriter = null)
         {
-            objectReaderWriter = objectReaderWriter ?? this.ObjectReaderWriter;
+            objectReaderWriter = objectReaderWriter ?? this.ObjectPersister;
             DirectoryInfo dir = new DirectoryInfo(Path.Combine(objectReaderWriter.RootDirectory, type.Name));
             IpcMessage msg = IpcMessage.Get("meta.id", typeof(MetaId), dir.FullName);
             MetaId metaId = msg.Read<MetaId>();
@@ -565,7 +584,7 @@ namespace Bam.Net.Data.Repositories
 
 		protected internal int GetHighestVersionNumber(PropertyInfo prop, string hash)
 		{
-			return GetHighestVersionNumber(this.ObjectReaderWriter.GetPropertyDirectory(prop), prop, hash);
+			return GetHighestVersionNumber(this.ObjectPersister.GetPropertyDirectory(prop), prop, hash);
 		}
 
 		protected internal static int GetHighestVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
@@ -586,7 +605,7 @@ namespace Bam.Net.Data.Repositories
 		
 		protected internal int[] GetVersions(PropertyInfo prop, string hash)
 		{
-			return GetVersions(this.ObjectReaderWriter.GetPropertyDirectory(prop), prop, hash);
+			return GetVersions(this.ObjectPersister.GetPropertyDirectory(prop), prop, hash);
 		}
 
 		protected internal static int[] GetVersions(DirectoryInfo propertyDirectory, PropertyInfo prop, string hash)
@@ -607,7 +626,7 @@ namespace Bam.Net.Data.Repositories
 
 		protected internal List<FileInfo> GetPropertyFiles(PropertyInfo prop, string hash)
 		{
-			return GetPropertyFiles(this.ObjectReaderWriter.GetPropertyDirectory(prop), prop, hash);
+			return GetPropertyFiles(this.ObjectPersister.GetPropertyDirectory(prop), prop, hash);
 		}
 
 		protected internal static List<FileInfo> GetPropertyFiles(DirectoryInfo propertyDirectory, PropertyInfo prop, string hash)

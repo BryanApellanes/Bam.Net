@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CoreServices.Files;
+using Bam.Net.Server.Streaming;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Chunking
 {
-    public class ChunkResponse
+    public class ChunkResponse: StreamingResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }

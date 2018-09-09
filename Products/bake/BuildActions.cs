@@ -123,7 +123,7 @@ namespace Bam.Net.Automation
             {
                 if (string.IsNullOrEmpty(_defaultLib))
                 {
-                    _defaultLib = DefaultConfiguration.GetAppSetting("NugetLib", "net462");
+                    _defaultLib = DefaultConfiguration.GetAppSetting("NugetLib", "net472");
                 }
                 return _defaultLib;
             }
@@ -284,21 +284,26 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
-            
+
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory(out string commit);
             OutLineFormat("Deploying commit: {0}", ConsoleColor.Green, commit);
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
             foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
             {
-                if(string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
+                if (string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
                 {
                     DeployWindowsService(latestBinaries, svcInfo);
                 }
             }
 
-            Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices.ToDictionary(d => d.Host);
-            foreach(DaemonInfo daemon in deployInfo.Daemons)
+            DeployDaemons(targetHost, latestBinaries, deployInfo);
+        }
+
+        private static void DeployDaemons(string targetHost, DirectoryInfo latestBinaries, DeployInfo deployInfo)
+        {
+            Dictionary<string, DaemonServiceInfo> hostDaemonServiceInfos = deployInfo.DaemonServices?.ToDictionary(d => d.Host) ?? new Dictionary<string, DaemonServiceInfo>();
+            foreach (DaemonInfo daemon in deployInfo.Daemons)
             {
                 if (!hostDaemonServiceInfos.ContainsKey(daemon.Host))
                 {
@@ -314,16 +319,16 @@ namespace Bam.Net.Automation
             {
                 string host = daemonInfo.Host;
                 if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
-                {                    
+                {
                     InstallDaemon(daemonInfo, latestBinaries);
                     SetDaemonAppSettings(daemonInfo);
                 }
             }
 
             // install the bamd monitor service on each host
-            foreach(string host in hostDaemonServiceInfos.Keys)
+            foreach (string host in hostDaemonServiceInfos.Keys)
             {
-                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                if (string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                 {
                     UninstallBamDaemonService(host);
                     InstallBamDaemonService(host, latestBinaries, deployInfo.Daemons.Where(d => d.Host.Equals(host)).Select(d => d.CopyAs<DaemonProcessInfo>()).ToList());
@@ -333,7 +338,7 @@ namespace Bam.Net.Automation
                 }
             }
         }
-        
+
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
         public static void Test()
         {
@@ -535,12 +540,12 @@ namespace Bam.Net.Automation
             wixDoc.SetTargetContents(releaseFolder);
 
             // build the merge module
-            BakeSettings settings = GetSettings();            
-            ProcessOutput mergeModuleBuildOutput = $"{settings.MsBuild} {wixMergeModuleProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000);
-            if(mergeModuleBuildOutput.ExitCode == 0)
+            BakeSettings settings = GetSettings();
+            ProcessOutput mergeModuleBuildOutput = RunMsBuild(settings, $"{wixMergeModuleProject} /p:OutputPath={wixOutput}");
+            if (mergeModuleBuildOutput.ExitCode == 0)
             {
                 // build the msi
-                ProcessOutput msiBuildOutput = $"{settings.MsBuild} {wixMsiProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err=> OutLineFormat(err, ConsoleColor.Magenta), 600000);
+                ProcessOutput msiBuildOutput = RunMsBuild(settings, $"{wixMsiProject} /p:OutputPath={wixOutput}");
                 return msiBuildOutput.ExitCode == 0;
             }
             return false;
@@ -670,10 +675,15 @@ namespace Bam.Net.Automation
 
         private static bool Build(BakeSettings bakeSettings)
         {
-            string command = $"{bakeSettings.MsBuild} /t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
-
-            ProcessOutput output = command.Run((line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), 600000);
+            string args = $"/t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
+            ProcessOutput output = RunMsBuild(bakeSettings, args);
             return output.ExitCode == 0;
+        }
+
+        private static ProcessOutput RunMsBuild(BakeSettings bakeSettings, string args)
+        {
+            FileInfo msbuild = new FileInfo(bakeSettings.MsBuild);            
+            return msbuild.FullName.Run(args, (o, a) => { }, (line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), false, 600000);            
         }
 
         protected static void SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)

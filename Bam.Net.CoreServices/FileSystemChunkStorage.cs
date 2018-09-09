@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CoreServices.Files;
+using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 using System;
@@ -18,17 +19,17 @@ namespace Bam.Net.CoreServices
     {
         public FileSystemChunkStorage()
         {
-            DataSettings = DefaultDataSettingsProvider.Current;
+            DataSettings = DefaultDataDirectoryProvider.Current;
             Logger = Log.Default;
         }
 
-        public FileSystemChunkStorage(DefaultDataSettingsProvider dataSettings, ILogger logger = null)
+        public FileSystemChunkStorage(DefaultDataDirectoryProvider dataSettings, ILogger logger = null)
         {
             DataSettings = dataSettings;
             Logger = logger;
         }
 
-        public DefaultDataSettingsProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public ILogger Logger { get; set; }
         public void SetChunk(IChunk chunk)
         {

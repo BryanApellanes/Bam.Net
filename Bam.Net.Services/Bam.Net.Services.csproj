@@ -65,6 +65,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -140,16 +144,39 @@
     <Compile Include="Chunking\ChunkResponse.cs" />
     <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="ClientServiceRegistryContainer.cs" />
+    <Compile Include="DatabaseKeyValueStore.cs" />
     <Compile Include="DataReplication\Arc.cs" />
-    <Compile Include="DataReplication\DataReplicationJournal.cs" />
-    <Compile Include="DataReplication\DataReplicationJournalEntry.cs" />
-    <Compile Include="DataReplication\DataReplicationJournalEntryInfo.cs" />
-    <Compile Include="DataReplication\DataReplicationJournalEntryWrittenEventArgs.cs" />
-    <Compile Include="DataReplication\DataReplicationRequest.cs" />
-    <Compile Include="DataReplication\DataReplicationResponse.cs" />
-    <Compile Include="DataReplication\DataReplicationServer.cs" />
-    <Compile Include="DataReplication\DataReplicationServiceContainer.cs" />
-    <Compile Include="DataReplication\DataReplicationTypeMap.cs" />
+    <Compile Include="DataReplication\CompressedJournal.cs" />
+    <Compile Include="DataReplication\CompressedJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\CompressedJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\EncryptedJournal.cs" />
+    <Compile Include="DataReplication\EncryptedJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\EncryptedJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\EncryptedJournalManager.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndexJournalManager.cs" />
+    <Compile Include="DataReplication\JournalClient.cs" />
+    <Compile Include="DataReplication\JournaledRepository.cs" />
+    <Compile Include="DataReplication\JournalRequestTypes.cs" />
+    <Compile Include="FileSystemKeyValueStore.cs" />
+    <Compile Include="IKeyValueStore.cs" />
+    <Compile Include="DataReplication\EncryptedSearchIndex.cs" />
+    <Compile Include="DataReplication\JournalEntryValueLoader.cs" />
+    <Compile Include="DataReplication\IJournalManager.cs" />
+    <Compile Include="DataReplication\Journal.cs" />
+    <Compile Include="DataReplication\JournalEntriesEnqueuedEventArgs.cs" />
+    <Compile Include="DataReplication\JournalEntry.cs" />
+    <Compile Include="DataReplication\JournalEntryInfo.cs" />
+    <Compile Include="DataReplication\JournalEntryWrittenEventArgs.cs" />
+    <Compile Include="DataReplication\JournalExceptionThresholdReachedEventArgs.cs" />
+    <Compile Include="DataReplication\JournalGroomer.cs" />
+    <Compile Include="DataReplication\JournalManager.cs" />
+    <Compile Include="DataReplication\JournalRequest.cs" />
+    <Compile Include="DataReplication\JournalResponse.cs" />
+    <Compile Include="DataReplication\JournalServer.cs" />
+    <Compile Include="DataReplication\JournalRegistryContainer.cs" />
+    <Compile Include="DataReplication\JournalTypeMap.cs" />
     <Compile Include="DataReplication\Data\CreateOperation.cs" />
     <Compile Include="DataReplication\Data\DataPoint.cs" />
     <Compile Include="DataReplication\Data\DataProperty.cs" />
@@ -245,8 +272,11 @@
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventQuery.cs" />
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventWrapper.cs" />
     <Compile Include="DataReplication\Data\Operation.cs" />
+    <Compile Include="DataReplication\JournalEntryValueFlusher.cs" />
     <Compile Include="DataReplication\DefaultTypeConverter.cs" />
     <Compile Include="DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="DataReplication\IJournalEntryValueFlusher.cs" />
+    <Compile Include="DataReplication\IJournalEntryValueLoader.cs" />
     <Compile Include="DataReplication\ISequenceProvider.cs" />
     <Compile Include="DataReplication\ITypeConverter.cs" />
     <Compile Include="DataReplication\ObjectIdentifier.cs" />
@@ -290,6 +320,18 @@
     <Compile Include="Hosts\Data\HostEntryData.cs" />
     <Compile Include="Hosts\HostEntry.cs" />
     <Compile Include="Hosts\HostsService.cs" />
+    <Compile Include="KeyValueRequest.cs" />
+    <Compile Include="KeyValueRequestTypes.cs" />
+    <Compile Include="KeyValueResponse.cs" />
+    <Compile Include="KeyValueStoreClient.cs" />
+    <Compile Include="KeyValueStoreServer.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePair.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairCollection.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairColumns.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairPagedQuery.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValuePairQuery.cs" />
+    <Compile Include="KeyValueStore_Generated\KeyValueStoreContext.cs" />
+    <Compile Include="KeyValueStore_Generated\Qi\KeyValuePair.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
     <Compile Include="OpenApi\Objects\ContactObject.cs" />
@@ -461,6 +503,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="KeyValueStore.db.js" />
     <Content Include="OpenApi\OpenApi.db.js" />
   </ItemGroup>
   <ItemGroup>

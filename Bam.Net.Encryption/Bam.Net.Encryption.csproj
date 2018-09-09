@@ -124,6 +124,7 @@
     <Compile Include="Encryption_Generated\VaultPagedQuery.cs" />
     <Compile Include="Encryption_Generated\VaultQuery.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="KeySet.cs" />
     <Compile Include="Partials\Vault.cs" />
     <Compile Include="Partials\VaultItem.cs" />
     <Compile Include="Partials\VaultKey.cs" />

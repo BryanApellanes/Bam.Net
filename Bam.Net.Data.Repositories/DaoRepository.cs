@@ -27,7 +27,7 @@ namespace Bam.Net.Data.Repositories
         public DaoRepository()
         {
             CtorInit();
-            Database = DefaultDataSettingsProvider.Current.GetSysDatabaseFor(this);
+            Database = DefaultDataDirectoryProvider.Current.GetSysDatabaseFor(this);
             Logger = Log.Default;
         }
         /// <summary>
@@ -38,7 +38,7 @@ namespace Bam.Net.Data.Repositories
         public DaoRepository(ITypeTableNameProvider tableNameProvider, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider)
         {
             CtorInit(tableNameProvider, schemaTempPathProvider);
-            Database = DefaultDataSettingsProvider.Current.GetSysDatabaseFor(this);
+            Database = DefaultDataDirectoryProvider.Current.GetSysDatabaseFor(this);
             Logger = Log.Default;
         }
 
@@ -498,6 +498,10 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
+            if(query is QueryFilter casted)
+            {
+                return Query<T>(casted);
+            }
             return Query<T>((QueryFilter)QueryFilter.FromDynamic(query));
 		}
 
@@ -860,7 +864,7 @@ namespace Bam.Net.Data.Repositories
 			if (xrefPropertyProvider != null)
 			{
 				handledProperties = new HashSet<string>(xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.ToList());
-				xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.Each(daoXrefPropertyName =>
+				xrefPropertyProvider.UpdatedXrefCollectionProperties.Keys.BackwardsEach(daoXrefPropertyName =>
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
 					PropertyInfo pocoProperty = xrefPropertyProvider.UpdatedXrefCollectionProperties[daoXrefPropertyName];

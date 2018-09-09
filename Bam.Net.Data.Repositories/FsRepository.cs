@@ -20,7 +20,7 @@ namespace Bam.Net.Data.Repositories
             DynamicSearchResultTypeName = $"{nameof(Repositories)}.{GetType().Name}SearchResult";            
         }
 
-        public FsRepository(DefaultDataSettingsProvider settings) : this(settings.GetFilesDirectory().FullName)
+        public FsRepository(DefaultDataDirectoryProvider settings) : this(settings.GetFilesDirectory().FullName)
         { }
 
         protected abstract string DataDirectoryName { get; set; }

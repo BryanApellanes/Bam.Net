@@ -11,9 +11,9 @@ using Bam.Net.Data;
 
 namespace Bam.Net.Data
 {
-    public static class CacheRegistrar
+    public static class InterSystemsRegistrar
     {
-        static CacheRegistrar()
+        static InterSystemsRegistrar()
         {
 
         }

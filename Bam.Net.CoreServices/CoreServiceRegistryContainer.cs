@@ -73,7 +73,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            DefaultDataSettingsProvider dataSettings = DefaultDataSettingsProvider.Current;
+            DefaultDataDirectoryProvider dataSettings = DefaultDataDirectoryProvider.Current;
             string databasesPath = dataSettings.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
@@ -140,7 +140,7 @@ namespace Bam.Net.CoreServices
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<SystemLoggerService>().Use(loggerSvc)
-                .For<DefaultDataSettingsProvider>().Use(DefaultDataSettingsProvider.Current)
+                .For<DefaultDataDirectoryProvider>().Use(DefaultDataDirectoryProvider.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)

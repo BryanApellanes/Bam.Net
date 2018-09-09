@@ -77,7 +77,7 @@ namespace Bam.Net.Analytics.Classification
         public override float Probability(string documentString, string category)
         {
             float prob = 1F;
-            string[] features = FeatureExtractor(documentString);
+            string[] features = ExtractFeatures(documentString);
             features.Each(feature =>
             {
                 prob *= (WeightedProbability(feature, category, CategoryProbability));

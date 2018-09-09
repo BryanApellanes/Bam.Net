@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using Bam.Net.Configuration;
+using Bam.Net.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -1747,6 +1748,19 @@ namespace Bam.Net
             writer.Write(value.ToJson());
             writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
+        }
+
+        public static string TryToJson(this object value)
+        {
+            try
+            {
+                return value.ToJson();
+            }
+            catch (Exception ex)
+            {
+                Log.Default.AddEntry("Failed to json serialize object: {0}", ex, ex.Message);
+                return string.Empty;
+            }
         }
 
         public static string ToJson(this object value)
@@ -3933,6 +3947,18 @@ namespace Bam.Net
                                 Nullable.GetUnderlyingType(sourceProp.PropertyType) == destProp.PropertyType)
                                 && destProp.CanWrite;
         }
+        
+        public static bool IsCompatibleWith(this Type type, Type otherType)
+        {
+            return AreCompatibleTypes(type, otherType);
+        }
+
+        public static bool AreCompatibleTypes(this Type type, Type otherType)
+        {
+            return (type == otherType ||
+                otherType == Nullable.GetUnderlyingType(type) ||
+                Nullable.GetUnderlyingType(otherType) == type);
+        }
 
         public static DateTime WithoutMilliseconds(this DateTime dateTime)
         {
@@ -4391,7 +4417,7 @@ namespace Bam.Net
             }
             return result;
         }
-
+        
         public static Type MergeToDynamicType(this Type type, params Type[] types)
         {
             List<object> instances = new List<object>();

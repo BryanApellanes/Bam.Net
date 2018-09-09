@@ -14,6 +14,7 @@ namespace Bam.Net.Data.Repositories.Tests.TestDtos
         public ulong Id { get; set; }
         public string Uuid { get; set; }
         public string Name { get; set; }
+
         public virtual List<Parent> Parents { get; set; } // many to many
     }
 }

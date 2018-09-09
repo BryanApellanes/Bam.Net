@@ -31,7 +31,7 @@ namespace Bam.Net.Data.Intersystems
         public override Database GetDatabase(ConnectionStringSettings conn, DbProviderFactory factory)
         {
             Database db = base.GetDatabase(conn, factory);
-            CacheRegistrar.Register(db.ServiceProvider);
+            InterSystemsRegistrar.Register(db.ServiceProvider);
             return db;
         }
     }

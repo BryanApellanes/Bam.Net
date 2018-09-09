@@ -13,10 +13,10 @@ namespace Bam.Net.Server.Streaming
     {
         public StreamingClient(string hostName, int port) : base(hostName, port) { }
 
-        public StreamingResponse<TResponse> SendRequest(TRequest message)
+        public virtual StreamingResponse<TResponse> SendRequest(TRequest message)
         {
-            StreamingRequest<TRequest> request = new StreamingRequest<TRequest> { Message = message };
-            SendRequest(request);
+            StreamingRequest<TRequest> request = new StreamingRequest<TRequest> { Body = message };
+            SendWrappedMessage(request);
             return ReceiveResponse<StreamingResponse<TResponse>>(NetworkStream);
         }
     }
@@ -42,13 +42,13 @@ namespace Bam.Net.Server.Streaming
 
         protected NetworkStream NetworkStream { get; set; }
 
-        public StreamingResponse SendRequest(object message)
+        public virtual StreamingResponse SendWrappedMessage(object message)
         {
-            SendRequest(NetworkStream, message);
+            WriteRequestStream(NetworkStream, message);
             return ReceiveResponse<StreamingResponse>(NetworkStream);
         }
 
-        protected T ReceiveResponse<T>(Stream stream)
+        protected virtual T ReceiveResponse<T>(Stream stream)
         {
             byte[] first = new byte[4];
             stream.Read(first, 0, 4);
@@ -58,13 +58,42 @@ namespace Bam.Net.Server.Streaming
             return responseBytes.FromBinaryBytes<T>();
         }
 
-        private void SendRequest(Stream stream, object message)
+        protected virtual StreamingResponse<Rs> SendRequest<Rq, Rs>(Rq message)
         {
-            StreamingRequest msg = new StreamingRequest { Message = message };
-            SendRequest(stream, msg);
+            StreamingRequest<Rq> msg = new StreamingRequest<Rq> { Body = message };
+            WriteRequestStream(NetworkStream, msg);
+            return ReceiveResponse<StreamingResponse<Rs>>(NetworkStream);
         }
 
-        private static void SendRequest(Stream stream, StreamingRequest msg)
+        protected void WriteRequestStream(Stream stream, object message)
+        {
+            StreamingRequest msg = new StreamingRequest { Body = message };
+            WriteRequestStream(stream, msg);
+        }
+
+        protected static void SerializeToRequestStream(Stream stream, object msg)
+        {
+            byte[] binMsg = msg.ToBinaryBytes();
+            List<byte> sendMsg = new List<byte>();
+            sendMsg.AddRange(BitConverter.GetBytes(binMsg.Length));
+            sendMsg.AddRange(binMsg);
+            byte[] sendBytes = sendMsg.ToArray();
+            stream.Write(sendBytes, 0, sendBytes.Length);
+        }
+
+        // TODO: replace all calls to this with calls to SerializeToRequestStream
+        protected static void WriteSecureRequestStream(Stream stream, SecureStreamingRequest msg)
+        {
+            byte[] binMsg = msg.ToBinaryBytes();
+            List<byte> sendMsg = new List<byte>();
+            sendMsg.AddRange(BitConverter.GetBytes(binMsg.Length));
+            sendMsg.AddRange(binMsg);
+            byte[] sendBytes = sendMsg.ToArray();
+            stream.Write(sendBytes, 0, sendBytes.Length);
+        }
+
+        // TODO: replace all calls to this with calls to SerializeToRequestStream
+        protected static void WriteRequestStream(Stream stream, StreamingRequest msg)
         {
             byte[] binMsg = msg.ToBinaryBytes();
             List<byte> sendMsg = new List<byte>();

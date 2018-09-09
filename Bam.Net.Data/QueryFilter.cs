@@ -465,7 +465,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Adds an InComparison only if the specified object array is not empty
+        /// Adds an InComparison only if the specified string array is not empty
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>

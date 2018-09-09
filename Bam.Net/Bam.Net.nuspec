@@ -2,18 +2,15 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.15.0</version>
+    <version>1.15.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.15.0
-Updates since v1.14.3:
- -   regenerated all dao components so ids are now ulong (b842cdb1)
- -   change ids to ulong, plus additional refactorings (d6cdcaa0)
- -   add TryParseValuePairs method (7526e551)
- -   trim keys when parsing key value pairs (2b1e642d)
- -   add yaml extension method deserializing from file path (204cbaaa)
- -   add yaml extension method deserializing from file path (a3cf9cc3)
+    <releaseNotes>Version 1.15.1
+Updates since v1.15.0:
+ -   add logger doc comments (983eb154)
+ -   add Instant.ToString for simpler datetime format handling (2e818e08)
+ -   renamed DefaultDataSettingsProvider to DefaultDataDirectoryProvider (2a016f82)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

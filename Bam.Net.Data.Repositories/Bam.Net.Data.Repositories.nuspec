@@ -2,19 +2,21 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Repositories</id>
-    <version>1.15.0</version>
+    <version>1.15.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Repository pattern providers for the Bam framework</description>
-    <releaseNotes>Version 1.15.0
-Updates since v1.14.3:
- -   rename DataSettings to DefaultDatabaseProvider (652d8597)
+    <releaseNotes>Version 1.15.1
+Updates since v1.15.0:
+ -   fix enumeration bug in daorepository (8e595af9)
+ -   refactor; rename ObjectReaderWriter to ObjectPersister, consolidate common methods (05539b51)
+ -   refactor ObjectReaderWriter into smaller interfaces, IObjectReader, IObjectWriter, IObjectQueryer.  Rename ObjectReaderWriter to ObjectPersister. (c48570dd)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.15.0" />
-      <dependency id="Bam.Net.Data" version="1.15.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.15.0" />
+      <dependency id="Bam.Net" version="1.15.1" />
+      <dependency id="Bam.Net.Data" version="1.15.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.15.1" />
       <dependency id="DnsClient" version="1.1.1" />
       <dependency id="Lucene.Net" version="3.0.3" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />

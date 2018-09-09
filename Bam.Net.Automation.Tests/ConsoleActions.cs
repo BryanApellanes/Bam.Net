@@ -120,6 +120,7 @@ namespace Bam.Net.Automation.Tests
         public void TestGitLog()
         {
             HashSet<GitLog> logs = GitLog.SinceVersion("c:\\bam\\src\\Bam.Net", 1, 14, 0);
+
             foreach(GitLog log in logs)
             {
                 OutLine(log.PropertiesToString(), ConsoleColor.Cyan);
@@ -148,6 +149,14 @@ namespace Bam.Net.Automation.Tests
             GitReleaseNotes notes = GitReleaseNotes.MiscSinceLatestRelease("C:\\bam\\src\\Bam.Net");
             notes.Summary = "Misc";
             OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
+        }
+
+        [ConsoleAction("Test latest branch commit")]
+        public void TestGitLatestBranchCommit()
+        {
+            Git git = new Git("C:\\bam\\src\\Bam.Net");
+            OutLine(git.LatestBranchCommit("master"));
+            Expect.Throws(() => git.LatestBranchCommit("badBranch"), (ex)=> OutLineFormat(ex.Message, ConsoleColor.Cyan), "Should have thrown exception");
         }
     }
 }

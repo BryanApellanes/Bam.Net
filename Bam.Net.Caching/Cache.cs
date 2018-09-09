@@ -10,6 +10,7 @@ using System.Threading;
 using Bam.Net.Logging;
 using Bam.Net.Data.Repositories;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Bam.Net.Caching
 {
@@ -439,7 +440,7 @@ namespace Bam.Net.Caching
 				ctx.Cache.Groomer();
 			};
 			
-			if(_groomerThread != null && _groomerThread.ThreadState == ThreadState.Running)
+			if(_groomerThread != null && _groomerThread.ThreadState == System.Threading.ThreadState.Running)
 			{
 				StopGrooming();
 			}
@@ -448,7 +449,7 @@ namespace Bam.Net.Caching
 
 			AppDomain.CurrentDomain.DomainUnload += (o, e) =>
 			{
-				if (_groomerThread.ThreadState == ThreadState.Running)
+				if (_groomerThread.ThreadState == System.Threading.ThreadState.Running)
 				{
 					StopGrooming();
 				}
@@ -628,8 +629,15 @@ namespace Bam.Net.Caching
 		{
 			while(_keepGrooming)
 			{
-				GroomerSignal.WaitOne();
-				Groom();
+                try
+                {
+                    GroomerSignal.WaitOne();
+                    Groom();
+                }
+                catch (Exception ex)
+                {
+                    Trace.Write($"Exception in cache groomer thread: {ex.Message}");
+                }
 			}
 		}
 		

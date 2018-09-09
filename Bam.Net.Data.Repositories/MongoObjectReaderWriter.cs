@@ -16,7 +16,7 @@ using MongoDB.Driver.Linq;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class MongoObjectReaderWriter: ObjectReaderWriter
+	public class MongoObjectReaderWriter: ObjectPersister
 	{
 		private string _connectionString;
 		private string _databaseName;
@@ -62,7 +62,7 @@ namespace Bam.Net.Data.Repositories
 
 		public WriteConcernResult LastWriteConcernResult { get; private set; }
 
-		#region ObjectReaderWriter
+		#region ObjectPersister
 		public override T ReadByHash<T>(string hash)
 		{
 			return base.ReadByHash<T>(hash);			
