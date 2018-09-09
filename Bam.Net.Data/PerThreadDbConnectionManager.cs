@@ -31,18 +31,10 @@ namespace Bam.Net.Data
             int threadId = Thread.CurrentThread.ManagedThreadId;            
             if (_connections.ContainsKey(threadId))
             {
-                if (_connections.TryGetValue(threadId, out DbConnection dbConnection))
-                {
-                    Thread thread = Exec.GetThread(threadId);
-                    if(thread != null)
-                    {
-                        int slept = Exec.SleepUntil(() => thread.ThreadState == System.Threading.ThreadState.Stopped || thread.ThreadState == System.Threading.ThreadState.Aborted, LifetimeMilliseconds * 2);
-                        Exec.After(LifetimeMilliseconds - slept, () => ReleaseConnection(dbConnection));
-                    }
-                }                
+                GiveThreadAChanceToCompleteBeforeReleasingConnection(threadId);
             }
 
-            if(_connections.Count >= MaxConnections)
+            if (_connections.Count >= MaxConnections)
             {
                 if (!Exec.SleepUntil(() => _connections.Count < MaxConnections, out int slept, LifetimeMilliseconds))
                 {
@@ -73,14 +65,34 @@ namespace Bam.Net.Data
         {
             try
             {
-                foreach (DbConnection connection in _connections.Values)
+                foreach(int threadId in _connections.Keys)
                 {
-                    ReleaseConnection(connection);
+                    GiveThreadAChanceToCompleteBeforeReleasingConnection(threadId);
                 }
             }
             catch (Exception ex)
             {
                 Log.Trace("{0}: Exception releasing all connections: {1}", ex, nameof(PerThreadDbConnectionManager), ex.Message);
+            }
+        }
+
+        private void GiveThreadAChanceToCompleteBeforeReleasingConnection(int threadId)
+        {
+            if (_connections.TryRemove(threadId, out DbConnection dbConnection))
+            {
+                Task.Run(() =>
+                {
+                    Thread thread = Exec.GetThread(threadId);
+                    if (thread != null)
+                    {
+                        int slept = Exec.SleepUntil(() => thread.ThreadState == System.Threading.ThreadState.Stopped || thread.ThreadState == System.Threading.ThreadState.Aborted, LifetimeMilliseconds * 2);
+                        Exec.After(LifetimeMilliseconds - slept, () => ReleaseConnection(dbConnection));
+                    }
+                    else
+                    {
+                        Exec.After(LifetimeMilliseconds, () => ReleaseConnection(dbConnection));
+                    }
+                });
             }
         }
 

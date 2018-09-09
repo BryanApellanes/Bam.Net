@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
@@ -73,7 +74,7 @@ namespace Bam.Net.Data
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"Exception releasing database connection: {ex.Message}");
+                Log.Trace("Exception releasing database connection: {0}", ex, ex.Message);
             }
         }
     }
