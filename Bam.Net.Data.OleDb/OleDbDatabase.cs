@@ -99,12 +99,12 @@ namespace Bam.Net.Data.OleDb
             }
         }
 
-        public override DataSet GetDataSetFromSql<T>(string sqlStatement, CommandType commandType, bool releaseConnection, DbConnection conn, DbTransaction tx, params DbParameter[] dbParamaters)
+        public override DataSet GetDataSetFromSql<T>(string sqlStatement, CommandType commandType, bool releaseConnection, DbConnection conn, DbTransaction tx, params DbParameter[] dbParameters)
         {
             DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
 
             DataSet result = new DataSet(Dao.ConnectionName<T>().Or(8.RandomLetters()));
-            List<DbParameter> parameterList = new List<DbParameter>(dbParamaters);         
+            List<DbParameter> parameterList = new List<DbParameter>(dbParameters);         
             try
             {
                 foreach (string sql in sqlStatement.DelimitSplit("\r", "\n"))

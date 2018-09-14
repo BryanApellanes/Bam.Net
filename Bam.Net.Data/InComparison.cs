@@ -75,10 +75,13 @@ namespace Bam.Net.Data
         {
             Args.ThrowIf<InvalidOperationException>(values.Length == 0, "At least one value must be specified");
             ThrowIfNullOrEmpty(values, "values");
-            this.Values = values;
-			this.ParameterPrefix = parameterPrefix;
-
-			this.numbers = new int[] { };			
+            Values = new object[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Values[i] = values[i];
+            }
+            ParameterPrefix = parameterPrefix;
+			numbers = new int[] { };			
         }
 
         public InComparison(string columnName, long[] values, string parameterPrefix = "@")
@@ -86,14 +89,27 @@ namespace Bam.Net.Data
         {
             Args.ThrowIf<InvalidOperationException>(values.Length == 0, "At least one value must be specified for 'InComparison'");
             ThrowIfNullOrEmpty(values, "values");
-            this.Values = new object[values.Length];
+            Values = new object[values.Length];
             for (int i = 0; i < values.Length; i++)
             {
-                this.Values[i] = values[i];
+                Values[i] = values[i];
             }
-			this.ParameterPrefix = parameterPrefix;
+            ParameterPrefix = parameterPrefix;
+            numbers = new int[] { };
+        }
 
-            this.numbers = new int[] { };
+        public InComparison(string columnName, ulong[] values, string parameterPrefix = "@")
+           : base(columnName, " IN ", values)
+        {
+            Args.ThrowIf<InvalidOperationException>(values.Length == 0, "At least one value must be specified for 'InComparison'");
+            ThrowIfNullOrEmpty(values, "values");
+            Values = new object[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Values[i] = values[i];
+            }
+            ParameterPrefix = parameterPrefix;
+            numbers = new int[] { };
         }
 
         public InComparison(string columnName, string[] values, string parameterPrefix = "@")
@@ -101,10 +117,14 @@ namespace Bam.Net.Data
         {
             Args.ThrowIf<InvalidOperationException>(values.Length == 0, "At least one value must be specified for 'InComparison'");
             ThrowIfNullOrEmpty(values, "values");
-            this.Values = values;
-			this.ParameterPrefix = parameterPrefix;
+            Values = new object[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Values[i] = values[i];
+            }
+            ParameterPrefix = parameterPrefix;
 
-            this.numbers = new int[] { };
+            numbers = new int[] { };
         }
         
         public object[] Values { get; set; }

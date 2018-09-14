@@ -62,11 +62,7 @@ namespace Bam.Net.Data.Tests.Integration
 
 		[IntegrationTest]
 		public void TopQueryTest()
-		{
-			Setup();
-			CleanUp();
-			Setup();
-		
+		{		
 			Expect.IsTrue(_testDatabases.Count > 0);
 			string startsWith = 8.RandomLetters();
 			string methodName = MethodBase.GetCurrentMethod().Name;
@@ -234,11 +230,7 @@ namespace Bam.Net.Data.Tests.Integration
 
 		[IntegrationTest]
 		public void PagedQueryTest()
-		{
-			Setup();
-			CleanUp();
-			Setup();
-		
+		{		
 			Expect.IsTrue(_testDatabases.Count > 0);
 			string name = MethodBase.GetCurrentMethod().Name;
 			_testDatabases.Each(db =>

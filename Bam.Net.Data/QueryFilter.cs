@@ -438,7 +438,7 @@ namespace Bam.Net.Data
 
         public QueryFilter<C> In(params object[] values)
         {
-            this.Add(new InComparison(this.ColumnName, values));
+            Add(new InComparison(ColumnName, values));
             return this;
         }
 
@@ -458,9 +458,16 @@ namespace Bam.Net.Data
                 return this;
             }
         }
+
+        public QueryFilter<C> In(ulong[] values)
+        {
+            Add(new InComparison(ColumnName, values));
+            return this;
+        }
+
         public QueryFilter<C> In(long[] values)
         {
-            this.Add(new InComparison(this.ColumnName, values));
+            Add(new InComparison(ColumnName, values));
             return this;
         }
 
@@ -483,19 +490,19 @@ namespace Bam.Net.Data
 
         public QueryFilter<C> In(string[] values)
         {
-            this.Add(new InComparison(this.ColumnName, values));
+            Add(new InComparison(ColumnName, values));
             return this;
         }
 
         public QueryFilter<C> And(QueryFilter<C> c)
         {
-            return this.Add(new LiteralFilterToken(" AND "))
+            return Add(new LiteralFilterToken(" AND "))
                 .AddRange(c);            
         }
 
         public QueryFilter<C> Or(QueryFilter<C> c)
         {
-            return this.Add(new LiteralFilterToken(" OR "))
+            return Add(new LiteralFilterToken(" OR "))
                 .AddRange(c);
         }        
 
