@@ -16,14 +16,14 @@ namespace Bam.Net.Automation.SourceControl
     public class Git
     {
         GitConfigStack _configStack;
-        public Git(string repository)
+        public Git(string remoteRepository)
         {
-            this._configStack = new GitConfigStack { Repository = repository };
+            this._configStack = new GitConfigStack { RemoteRepository = remoteRepository };
         }
 
-        public static Git Repository(string repository)
+        public static Git RemoteRepository(string remoteRepository)
         {
-            return new Git(repository);
+            return new Git(remoteRepository);
         }
         
         public static string LatestRelease(string repository)
@@ -31,23 +31,15 @@ namespace Bam.Net.Automation.SourceControl
             return new Git(repository).LatestRelease();
         }
 
-        public Git CloneTo(string directory, int timeout = 1800000)
+        public Git CloneTo(string localDirectory, int timeout = 1800000)
         {
-            return CloneTo(new DirectoryInfo(directory), timeout);
+            return CloneTo(new DirectoryInfo(localDirectory), timeout);
         }
 
-        public Git CloneTo(DirectoryInfo cloneTo, int timeout = 1800000)
+        public Git CloneTo(DirectoryInfo localDirectory, int timeout = 1800000)
         {
-            if (string.IsNullOrEmpty(_configStack.UserName))
-            {
-                throw new UnableToInitializeGitToolsException("Git UserName must be specified");
-            }
+            EnsureUserInfo();
 
-            if (string.IsNullOrEmpty(_configStack.UserEmail))
-            {
-                throw new UnableToInitializeGitToolsException("Git UserEmail must be specified");
-            }
-            
             if (!EnsureEnvironmentPath())
             {
                 throw new UnableToInitializeGitToolsException("Couldn't update environment path");
@@ -70,7 +62,7 @@ namespace Bam.Net.Automation.SourceControl
             }
             else
             {
-                ProcessOutput output = "git clone {0} \"{1}\""._Format(_configStack.Repository, cloneTo.FullName).Run(timeout);
+                ProcessOutput output = "git clone {0} \"{1}\""._Format(_configStack.RemoteRepository, localDirectory.FullName).Run(timeout);
                 _configStack.LastOutput = output;
             }
             return this;
@@ -97,6 +89,12 @@ namespace Bam.Net.Automation.SourceControl
         public Git Bin(string gitBinPath)
         {
             _configStack.GitPath = gitBinPath;
+            return this;
+        }
+
+        public Git Checkout(string branchName)
+        {
+            CallGit($"checkout {branchName}");
             return this;
         }
 
@@ -172,12 +170,38 @@ namespace Bam.Net.Automation.SourceControl
             return _configStack.LastOutput;
         }
 
+        private void EnsureUserInfo()
+        {
+            if (string.IsNullOrEmpty(_configStack.UserName))
+            {
+                string userName = CallGit("config user.name");
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    UserName(userName);
+                }
+                if (string.IsNullOrEmpty(_configStack.UserName))
+                {
+                    throw new UnableToInitializeGitToolsException("Git UserName must be specified");
+                }
+            }
+
+            if (string.IsNullOrEmpty(_configStack.UserEmail))
+            {
+                string userEmail = CallGit("config user.email");
+                if (!string.IsNullOrEmpty(userEmail))
+                {
+                    UserEmail(userEmail);
+                }
+                if (string.IsNullOrEmpty(_configStack.UserEmail))
+                {
+                    throw new UnableToInitializeGitToolsException("Git UserEmail must be specified");
+                }
+            }
+        }
+
         private string CallGit(string args)
         {
-            string currentDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _configStack.Repository;
-            ProcessOutput output = $"git {args}".Run();
-            Environment.CurrentDirectory = currentDirectory;
+            ProcessOutput output = $"{Path.Combine(_configStack.GitPath, "git.exe")} {args}".ToStartInfo().Run();
             if(output.ExitCode != 0)
             {
                 throw new Exception(output.StandardError);

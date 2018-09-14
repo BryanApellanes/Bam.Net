@@ -20,7 +20,7 @@ namespace Bam.Net.Automation.SourceControl
             this.GitPath = DefaultConfiguration.GetAppSetting("GitPath",  "C:\\Program Files (x86)\\Git\\bin");
         }
 
-        public string Repository { get; set; }
+        public string RemoteRepository { get; set; }
 
         public string UserName { get; set; }
         public string UserEmail { get; set; }

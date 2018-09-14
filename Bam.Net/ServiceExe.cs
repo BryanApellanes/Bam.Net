@@ -270,6 +270,11 @@ namespace Bam.Net
             }
         }
 
+        public static void SetInfo(string svcName, string display, string desc)
+        {
+            SetInfo(new ServiceInfo(svcName, display, desc));
+        }
+
         /// <summary>
         /// Set the ServiceName, DisplayName and Description for the current 
         /// service.
