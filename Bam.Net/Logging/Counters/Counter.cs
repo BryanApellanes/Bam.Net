@@ -8,6 +8,14 @@ namespace Bam.Net.Logging.Counters
 {
     public class Counter: Stats
     {
+        public Counter()
+        {
+            DefaultCountReader = () => _count;
+            CountReader = DefaultCountReader;
+        }
+
+        protected Func<long> DefaultCountReader { get; }
+
         public override object Value
         {
             get
@@ -20,18 +28,44 @@ namespace Bam.Net.Logging.Counters
             }
         }
 
-        public long Count { get; set; }
+        long _count;
+        public long Count
+        {
+            get
+            {
+                return CountReader();
+            }
+            set
+            {
+                _count = value;
+            }
+        }
+
+        public Func<long> CountReader { get; set; }
 
         public Counter Increment()
         {
-            ++Count;
+            ++_count;
+            if(CountReader != DefaultCountReader)
+            {
+                Log.TraceInfo("Increment called on counter ({0}) with custom CountReader; this may not behave as expected.", Name);
+            }
             return this;
         }
 
         public Counter Decrement()
         {
-            --Count;
+            --_count;
+            if (CountReader != DefaultCountReader)
+            {
+                Log.Warn("Decrement called on counter ({0}) with custom CountReader; this may not behave as expected.", Name);
+            }
             return this;
+        }
+
+        public Counter Diff(Counter counter)
+        {
+            return new Counter() { Name = Name, Value = Count - counter.Count };
         }
     }
 }

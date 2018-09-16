@@ -249,6 +249,7 @@ namespace Bam.Net.Data.Tests.Integration
 		}
 
         [ConsoleAction]
+        [IntegrationTest]
         public void AsyncQueryManualTest()
         {
             _testDatabases = DataTools.Setup();
@@ -256,26 +257,53 @@ namespace Bam.Net.Data.Tests.Integration
             string methodName = MethodBase.GetCurrentMethod().Name;
             string one = 4.RandomLetters();
             string two = 4.RandomLetters();
-            NpgsqlDatabase db = _testDatabases.First(d => d.GetType() == typeof(NpgsqlDatabase)).Cast<NpgsqlDatabase>();
-            db.ConnectionManager = new MaxCountDbConnectionManager(db);
-            Expect.IsNotNull(db);
-            List<TestTable> entries = new List<TestTable>();
-            string name = $"{nameof(AsyncQueryManualTest)}.CreateTestData";
-            Timer timer = Stats.Start(name);
-            100.Times((i) => entries.Add(DataTools.CreateTestTable("{0}_{1}"._Format(one, 4.RandomLetters()), db)));
-            timer.End();
-            OutLineFormat("Writes took {0}", ConsoleColor.Cyan, timer.Duration);
-            Pause("Check netstat now");
-            name = $"{nameof(AsyncQueryManualTest)}.ReadTestData";
-            timer = Stats.Start(name);
-            Parallel.ForEach(entries, (tt) =>
+            foreach(Database db in _testDatabases)
             {
-                TestTable val = TestTable.FirstOneWhere(c => c.Name == tt.Name, db);
-                OutLineFormat("{0}", ConsoleColor.Cyan, val.Name);
-            });
-            timer.End();
-            OutLineFormat("Parallel reads took {0}", ConsoleColor.Cyan, timer.Duration);
-            Pause("Check netstat now");
+                Counter connectionCounter = Stats.Count("ConnectionCount", GetConnectionCount);
+                long initialCount = connectionCounter.Count;
+                foreach (IDbConnectionManager conMan in new IDbConnectionManager[] { new PerThreadDbConnectionManager(db), new MaxCountDbConnectionManager(db) })
+                {
+                    db.ConnectionManager = conMan;
+                    Expect.IsNotNull(db);
+                    
+                    OutLineFormat("{0} Connection Count before write {1}", ConsoleColor.Yellow, db.GetType().Name, connectionCounter.Count);
+
+                    List<TestTable> entries = new List<TestTable>();
+                    string name = $"{nameof(AsyncQueryManualTest)}.CreateTestData";
+                    Timer timer = Stats.Start(name);
+                    100.Times((i) => entries.Add(DataTools.CreateTestTable("{0}_{1}"._Format(one, 4.RandomLetters()), db)));
+                    timer = Stats.End(name);
+                    OutLineFormat("{0} Writes took {1}", ConsoleColor.Cyan, db.GetType().Name, timer.Duration);
+
+                    OutLineFormat("Count after write {0}", ConsoleColor.Yellow, connectionCounter.Count);
+
+                    Console.WriteLine(connectionCounter.Count);                    
+
+                    OutLineFormat("Count before read {0}", ConsoleColor.Yellow, connectionCounter.Count);
+                    name = $"{nameof(AsyncQueryManualTest)}.ReadTestData";
+                    timer = Stats.Start(name);
+                    Parallel.ForEach(entries, (tt) =>
+                    {
+                        TestTable val = TestTable.FirstOneWhere(c => c.Name == tt.Name, db);
+                        OutLineFormat("{0}", ConsoleColor.Cyan, val.Name);
+                    });
+                    timer = Stats.End(name);
+                    OutLineFormat("Parallel reads took {0}", ConsoleColor.Cyan, timer.Duration);
+                    OutLineFormat("Count after read {0}", ConsoleColor.Yellow, connectionCounter.Count);
+                    Console.WriteLine("{0}: {1}", db.GetType().Name, connectionCounter.Count);
+                    
+                    Stats.Start("Deleting");
+                    Expect.IsTrue(connectionCounter.Count <= initialCount + (conMan.MaxConnections * 2));
+
+                    TestTable.LoadAll(db).ToList().ForEach(tt => tt.Delete(db));
+                    OutLineFormat("{0}: Deletes took {1} milliseconds", ConsoleColor.Yellow, db.GetType().Name, Stats.End("Deleting").Value);
+                }
+            }            
+        }
+
+        private long GetConnectionCount()
+        {
+            return "netstat".ToStartInfo("-an", "C:\\Windows\\System32").Run().StandardOutput.DelimitSplit("\r\n").Length;
         }
 
 		public class TestTableQuery : Query<TestTableColumns, TestTable>

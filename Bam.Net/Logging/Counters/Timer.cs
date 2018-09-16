@@ -47,6 +47,24 @@ namespace Bam.Net.Logging.Counters
             }
         }
 
+        public static int Time(Action action)
+        {
+            return Time(8.RandomLetters(), action);
+        }
+
+        public static int Time(string name, Action action)
+        {
+            Timer timer = Start(name);
+            action();
+            return timer.End();
+        }
+
+        public Timer Start()
+        {
+            StartTime = new Instant();
+            return this;
+        }
+
         public int End()
         {
             if(EndTime == null)

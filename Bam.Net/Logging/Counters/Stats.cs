@@ -38,7 +38,7 @@ namespace Bam.Net.Logging.Counters
             timer.End();
             if(!_stats.TryRemove(name, out Stats value))
             {
-                Log.Trace("Failed to remove timer {0}", name);
+                Log.TraceInfo("Failed to remove timer {0}", name);
             }
             return timer;
         }
@@ -51,6 +51,36 @@ namespace Bam.Net.Logging.Counters
         public static Counter Decrement(string name)
         {
             return GetCounter(name).Decrement();
+        }
+
+        public static Counter Count(string name)
+        {
+            return GetCounter(name, 0);
+        }
+
+        public static Counter Count(string name, long setValueTo)
+        {
+            Counter counter = GetCounter(name);
+            counter.Value = setValueTo;
+            return counter;
+        }
+        
+        public static Counter Count(string name, Func<long> countReader)
+        {
+            Counter counter = GetCounter(name);
+            counter.CountReader = countReader;
+            return counter;
+        }
+
+        public static Counter Diff(string name, Func<Counter> counter)
+        {
+            return Diff(name, counter());
+        }
+
+        public static Counter Diff(string name, Counter counter)
+        {
+            Counter named = GetCounter(name);
+            return named.Diff(counter);
         }
 
         public static Counter GetCounter(string name, long initialValue = 1)
@@ -73,7 +103,7 @@ namespace Bam.Net.Logging.Counters
             }
             else
             {
-                Log.Trace("Failed to get stats instance of type {0} named {1}", typeof(T).Name, name);
+                Log.TraceInfo("Failed to get stats instance of type {0} named {1}", typeof(T).Name, name);
                 return new T { Value = initialValue };
             }
         }

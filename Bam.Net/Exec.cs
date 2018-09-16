@@ -20,12 +20,13 @@ namespace Bam.Net
             _threads = new Dictionary<string, Thread>(500);
         }
 
-        public static Thread GetThread(int managedThreadId)
+        public static ProcessThread GetThread(int managedThreadId)
         {
+            
             Process currentProcess = Process.GetCurrentProcess();
-            foreach(Thread thread in currentProcess.Threads)
+            foreach(ProcessThread thread in currentProcess.Threads)
             {
-                if(thread.ManagedThreadId == managedThreadId)
+                if(thread.Id == managedThreadId)
                 {
                     return thread;
                 }

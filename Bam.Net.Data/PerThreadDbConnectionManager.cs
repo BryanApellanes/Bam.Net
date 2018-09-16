@@ -78,10 +78,10 @@ namespace Bam.Net.Data
             {
                 Task.Run(() =>
                 {
-                    Thread thread = Exec.GetThread(threadId);
+                    ProcessThread thread = Exec.GetThread(threadId);
                     if (thread != null)
                     {
-                        int slept = Exec.SleepUntil(() => thread.ThreadState == System.Threading.ThreadState.Stopped || thread.ThreadState == System.Threading.ThreadState.Aborted, LifetimeMilliseconds * 2);
+                        int slept = Exec.SleepUntil(() => thread.ThreadState == System.Diagnostics.ThreadState.Terminated || thread.ThreadState == System.Diagnostics.ThreadState.Unknown, LifetimeMilliseconds * 2);
                         Exec.After(LifetimeMilliseconds - slept, () => ReleaseConnection(dbConnection));
                     }
                     else
@@ -99,7 +99,7 @@ namespace Bam.Net.Data
             if(!_connections.TryAdd(threadId, connection))
             {
                 DbConnection c = connection;                
-                Log.Trace("{0}: Failed to add DbConnection to inner tracking dictionary", nameof(PerThreadDbConnectionManager));
+                Log.TraceInfo("{0}: Failed to add DbConnection to inner tracking dictionary", nameof(PerThreadDbConnectionManager));
                 Exec.After(LifetimeMilliseconds, () => ReleaseConnection(c));
             }
         }
