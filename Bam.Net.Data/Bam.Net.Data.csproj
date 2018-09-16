@@ -131,6 +131,7 @@
     <Compile Include="DataTypes.cs" />
     <Compile Include="DataTypeTranslator.cs" />
     <Compile Include="Db.cs" />
+    <Compile Include="DbConnectionManager.cs" />
     <Compile Include="DefaultDbConnectionManager.cs" />
     <Compile Include="Delete.cs" />
     <Compile Include="DoesntContainComparison.cs" />

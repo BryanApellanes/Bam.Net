@@ -2425,7 +2425,7 @@ namespace Bam.Net
         /// </summary>
         /// <returns></returns>
         public static bool RandomBool()
-        {
+        {            
             return RandomHelper.Next(2) == 1;
         }
 

@@ -16,6 +16,8 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.MsSql;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Data.Npgsql;
+using Bam.Net.Logging.Counters;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -230,7 +232,7 @@ namespace Bam.Net.Data.Tests.Integration
 
 		[IntegrationTest]
 		public void PagedQueryTest()
-		{		
+		{
 			Expect.IsTrue(_testDatabases.Count > 0);
 			string name = MethodBase.GetCurrentMethod().Name;
 			_testDatabases.Each(db =>
@@ -246,12 +248,41 @@ namespace Bam.Net.Data.Tests.Integration
 			});
 		}
 
+        [ConsoleAction]
+        public void AsyncQueryManualTest()
+        {
+            _testDatabases = DataTools.Setup();
+            Expect.IsTrue(_testDatabases.Count > 0);
+            string methodName = MethodBase.GetCurrentMethod().Name;
+            string one = 4.RandomLetters();
+            string two = 4.RandomLetters();
+            NpgsqlDatabase db = _testDatabases.First(d => d.GetType() == typeof(NpgsqlDatabase)).Cast<NpgsqlDatabase>();
+            db.ConnectionManager = new MaxCountDbConnectionManager(db);
+            Expect.IsNotNull(db);
+            List<TestTable> entries = new List<TestTable>();
+            string name = $"{nameof(AsyncQueryManualTest)}.CreateTestData";
+            Timer timer = Stats.Start(name);
+            100.Times((i) => entries.Add(DataTools.CreateTestTable("{0}_{1}"._Format(one, 4.RandomLetters()), db)));
+            timer.End();
+            OutLineFormat("Writes took {0}", ConsoleColor.Cyan, timer.Duration);
+            Pause("Check netstat now");
+            name = $"{nameof(AsyncQueryManualTest)}.ReadTestData";
+            timer = Stats.Start(name);
+            Parallel.ForEach(entries, (tt) =>
+            {
+                TestTable val = TestTable.FirstOneWhere(c => c.Name == tt.Name, db);
+                OutLineFormat("{0}", ConsoleColor.Cyan, val.Name);
+            });
+            timer.End();
+            OutLineFormat("Parallel reads took {0}", ConsoleColor.Cyan, timer.Duration);
+            Pause("Check netstat now");
+        }
+
 		public class TestTableQuery : Query<TestTableColumns, TestTable>
 		{
 			public TestTableQuery(WhereDelegate<TestTableColumns> where, OrderBy<TestTableColumns> orderBy = null, Database db = null)
 				: base(where, orderBy, db)
 			{ }
-
 		}
         
 		private static TestTableCollection CreateTestTableEntries(string name, Database db)
@@ -272,9 +303,8 @@ namespace Bam.Net.Data.Tests.Integration
 
 		private static void CheckExpectations(PagedQuery<TestTableColumns, TestTable> q)
 		{
-			IEnumerable<TestTable> results;
-			Expect.IsTrue(q.NextPage(out results));
-			Expect.AreEqual(q.PageSize, results.ToArray().Length);
+            Expect.IsTrue(q.NextPage(out IEnumerable<TestTable> results));
+            Expect.AreEqual(q.PageSize, results.ToArray().Length);
 			OutLine("**** First Page: ", ConsoleColor.Yellow);
 			results.Each(r =>
 			{

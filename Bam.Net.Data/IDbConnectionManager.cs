@@ -12,6 +12,7 @@ namespace Bam.Net.Data
         Database Database { get; set; }
         int MaxConnections { get; set; }
         int LifetimeMilliseconds { get; set; }
+        bool BlockOnRelease { get; set; }
         DbConnection GetDbConnection();
         void ReleaseConnection(DbConnection dbConnection);
     }

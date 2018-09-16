@@ -56,15 +56,35 @@ namespace Bam.Net.Logging
             Default.AddEntry(messageSignature, ex, args.Select(a => a.ToString()).ToArray());
         }
 
+        public static void Debug(string messageSignature, params object[] args)
+        {
+            string message = string.Format(messageSignature, args);
+            Console.WriteLine($"DEBUG: {message}");
+            System.Diagnostics.Debug.WriteLine(message);
+            Info(messageSignature, args);
+        }
+
+        public static void Debug(string messageSignature, Exception ex, params object[] args)
+        {
+            string message = string.Format(messageSignature, args);
+            Console.WriteLine($"DEBUG: {message}");
+            System.Diagnostics.Debug.WriteLine(message);
+            Error(messageSignature, ex, args);
+        }
+
         public static void Trace(string messageSignature, params object[] args)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
+            string message = string.Format(messageSignature, args);
+            Console.WriteLine($"TRACE: {message}");
+            System.Diagnostics.Trace.WriteLine(message);
             Info(messageSignature, args);
         }
 
         public static void Trace(string messageSignature, Exception ex, params object[] args)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
+            string message = string.Format(messageSignature, args);
+            Console.WriteLine($"TRACE: {message}");
+            System.Diagnostics.Trace.WriteLine(message);
             Error(messageSignature, ex, args);
         }
 

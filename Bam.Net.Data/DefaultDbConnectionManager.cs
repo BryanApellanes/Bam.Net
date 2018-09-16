@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public class DefaultDbConnectionManager : IDbConnectionManager
+    public class DefaultDbConnectionManager : DbConnectionManager
     {
         HashSet<DbConnection> _connections;
         AutoResetEvent _resetEvent;
@@ -22,14 +22,9 @@ namespace Bam.Net.Data
             _connections = new HashSet<DbConnection>();
             _resetEvent = new AutoResetEvent(false);
         }
-
-        public Database Database { get; set; }
-
-        public int MaxConnections { get; set; }
-        public int LifetimeMilliseconds { get; set; }
-
+        
         object _connectionLock = new object();
-        public DbConnection GetDbConnection()
+        public override DbConnection GetDbConnection()
         {
             if (_connections.Count >= MaxConnections)
             {
@@ -48,7 +43,7 @@ namespace Bam.Net.Data
             return conn;
         }
 
-        public void ReleaseConnection(DbConnection conn)
+        public override void ReleaseConnection(DbConnection conn)
         {
             try
             {

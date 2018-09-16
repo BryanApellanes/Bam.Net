@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public class PerThreadDbConnectionManager : IDbConnectionManager
+    public class PerThreadDbConnectionManager : DbConnectionManager
     {
         ConcurrentDictionary<int, DbConnection> _connections;
         public PerThreadDbConnectionManager(Database database)
@@ -21,12 +21,8 @@ namespace Bam.Net.Data
             LifetimeMilliseconds = 3100;
             _connections = new ConcurrentDictionary<int, DbConnection>();
         }
-
-        public Database Database { get; set; }
-        public int MaxConnections { get; set; }
-        public int LifetimeMilliseconds { get; set; }
-
-        public DbConnection GetDbConnection()
+        
+        public override DbConnection GetDbConnection()
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;            
             if (_connections.ContainsKey(threadId))
@@ -47,7 +43,7 @@ namespace Bam.Net.Data
             return connection;
         }
 
-        public void ReleaseConnection(DbConnection connection)
+        public override void ReleaseConnection(DbConnection connection)
         {
             try
             {

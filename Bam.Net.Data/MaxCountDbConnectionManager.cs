@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Logging;
+using Bam.Net.Logging.Counters;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public class MaxCountDbConnectionManager : IDbConnectionManager
+    public class MaxCountDbConnectionManager : DbConnectionManager
     {
         int _next;
         public MaxCountDbConnectionManager(Database database)
@@ -18,15 +19,13 @@ namespace Bam.Net.Data
             Database = database;
             MaxConnections = 10;
             LifetimeMilliseconds = 3100;
-            _next = 0;
+            _next = -1;
         }
 
         protected List<DbConnection> Connections { get; set; }
-
-        public Database Database { get; set; }
-
+        
         int _maxConnections;
-        public int MaxConnections
+        public override int MaxConnections
         {
             get
             {
@@ -35,37 +34,45 @@ namespace Bam.Net.Data
             set
             {
                 _maxConnections = value;
-                Connections = new List<DbConnection>(_maxConnections);
+                SetConnections();
             }
         }
 
-        public int LifetimeMilliseconds { get; set; }
-
-        public DbConnection GetDbConnection()
+        public override DbConnection GetDbConnection()
         {
-            if(_next >= MaxConnections)
+            int returnIndex = ++_next;
+            if(returnIndex >= MaxConnections)
             {
-                _next = 0;
+                _next = -1;
+                returnIndex = 0;
             }
 
-            if (Connections[_next] != null)
+            if (Connections[returnIndex] != null)
             {
-                DbConnection c = Connections[_next];
-                Task.Run(() =>
+                Log.Debug($"Releasing connection at index {returnIndex}.");
+                DbConnection c = Connections[returnIndex];
+                Task releaseTask = Task.Run(() =>
                 {
-                    Thread.Sleep(LifetimeMilliseconds);
+                    Thread.Sleep(LifetimeMilliseconds); // give the consumer of the connection a chance to use it and complete
+                    string timerName = $"{GetType().Name}.ConnectionReleaseTimer_{6.RandomLetters()}";
+                    Bam.Net.Logging.Counters.Timer releaseTimer = Stats.Start(timerName);
+                    Log.Debug($"Waiting for connection to release");
                     ReleaseConnection(c);
+                    Stats.End(releaseTimer, (timer) => Log.Debug("{0}", timer));
                 });
+                if (BlockOnRelease)
+                {                    
+                    releaseTask.Wait();                    
+                }
             }
+            
+            DbConnection conn = Database.CreateConnection();
+            Connections[returnIndex] = conn;
 
-            DbConnection conn = Database.ServiceProvider.Get<DbProviderFactory>().CreateConnection();
-            conn.ConnectionString = Database.ConnectionString;            
-            Connections[_next] = conn;
-
-            return Connections[_next++];
+            return conn;
         }
-
-        public void ReleaseConnection(DbConnection dbConnection)
+        
+        public override void ReleaseConnection(DbConnection dbConnection)
         {
             try
             {
@@ -75,6 +82,28 @@ namespace Bam.Net.Data
             catch (Exception ex)
             {
                 Log.Trace("Exception releasing database connection: {0}", ex, ex.Message);
+            }
+        }
+
+        protected void SetConnections()
+        {
+            Connections = new List<DbConnection>(MaxConnections);
+            foreach (DbConnection connection in Connections)
+            {
+                try
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Log.Trace("Exception disposing connection: {0}", ex, ex.Message);
+                }
+            }
+
+            for(int i = 0; i < MaxConnections; i++)
+            {
+                Connections.Add(Database.CreateConnection());
             }
         }
     }
