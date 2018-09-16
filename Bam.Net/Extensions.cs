@@ -1915,6 +1915,12 @@ namespace Bam.Net
             return hashBytes.ToHexString();
         }
 
+        public static int ToInt(this string number, int valueIfZero)
+        {
+            int result = ToInt(number);
+            return result == 0 ? valueIfZero : result;
+        }
+
         /// <summary>
         /// Use int.TryParse to try to convert the specified
         /// number to an integer; returns 0 on failure

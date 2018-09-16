@@ -16,38 +16,45 @@ namespace Bam.Net.Automation.SourceControl
     public class Git
     {
         GitConfigStack _configStack;
-        public Git(string repository)
+        public Git(string remoteRepository)
         {
-            this._configStack = new GitConfigStack { Repository = repository };
+            _configStack = new GitConfigStack { RemoteRepository = remoteRepository };
         }
 
-        public static Git Repository(string repository)
+        public Git(string remoteRepository, string localRepository): this(remoteRepository)
         {
-            return new Git(repository);
+            _configStack.LocalRepository = localRepository;
+        }
+
+        public static Git RemoteRepository(string remoteRepository)
+        {
+            return new Git(remoteRepository);
         }
         
-        public static string LatestRelease(string repository)
+        public static string LatestRelease(string remoteRepository)
         {
-            return new Git(repository).LatestRelease();
+            return new Git(remoteRepository).LatestRelease();
         }
 
-        public Git CloneTo(string directory, int timeout = 1800000)
+        public Git Clone()
         {
-            return CloneTo(new DirectoryInfo(directory), timeout);
+            if (!string.IsNullOrEmpty(_configStack.LocalRepository))
+            {
+                return CloneTo(_configStack.LocalRepository);
+            }
+            throw new InvalidOperationException("Local repository not set");
         }
 
-        public Git CloneTo(DirectoryInfo cloneTo, int timeout = 1800000)
+        public Git CloneTo(string localDirectory, int timeout = 1800000)
         {
-            if (string.IsNullOrEmpty(_configStack.UserName))
-            {
-                throw new UnableToInitializeGitToolsException("Git UserName must be specified");
-            }
+            LocalRepository(localDirectory);
+            return CloneTo(new DirectoryInfo(localDirectory), timeout);
+        }
 
-            if (string.IsNullOrEmpty(_configStack.UserEmail))
-            {
-                throw new UnableToInitializeGitToolsException("Git UserEmail must be specified");
-            }
-            
+        public Git CloneTo(DirectoryInfo localDirectory, int timeout = 1800000)
+        {
+            EnsureUserInfo();
+
             if (!EnsureEnvironmentPath())
             {
                 throw new UnableToInitializeGitToolsException("Couldn't update environment path");
@@ -70,7 +77,7 @@ namespace Bam.Net.Automation.SourceControl
             }
             else
             {
-                ProcessOutput output = "git clone {0} \"{1}\""._Format(_configStack.Repository, cloneTo.FullName).Run(timeout);
+                ProcessOutput output = "git clone {0} \"{1}\""._Format(_configStack.RemoteRepository, localDirectory.FullName).Run(timeout);
                 _configStack.LastOutput = output;
             }
             return this;
@@ -100,9 +107,21 @@ namespace Bam.Net.Automation.SourceControl
             return this;
         }
 
+        public Git Checkout(string branchName)
+        {
+            CallGit($"checkout {branchName}");
+            return this;
+        }
+
         public Git Pull()
         {
             CallGit("pull");
+            return this;
+        }
+
+        public Git LocalRepository(string localRepository)
+        {
+            _configStack.LocalRepository = localRepository;
             return this;
         }
 
@@ -172,13 +191,42 @@ namespace Bam.Net.Automation.SourceControl
             return _configStack.LastOutput;
         }
 
+        private void EnsureUserInfo()
+        {
+            if (string.IsNullOrEmpty(_configStack.UserName))
+            {
+                string userName = CallGit("config user.name");
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    UserName(userName);
+                }
+                if (string.IsNullOrEmpty(_configStack.UserName))
+                {
+                    throw new UnableToInitializeGitToolsException("Git UserName must be specified");
+                }
+            }
+
+            if (string.IsNullOrEmpty(_configStack.UserEmail))
+            {
+                string userEmail = CallGit("config user.email");
+                if (!string.IsNullOrEmpty(userEmail))
+                {
+                    UserEmail(userEmail);
+                }
+                if (string.IsNullOrEmpty(_configStack.UserEmail))
+                {
+                    throw new UnableToInitializeGitToolsException("Git UserEmail must be specified");
+                }
+            }
+        }
+
         private string CallGit(string args)
         {
-            string currentDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _configStack.Repository;
-            ProcessOutput output = $"git {args}".Run();
-            Environment.CurrentDirectory = currentDirectory;
-            if(output.ExitCode != 0)
+            string startDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.LocalRepository ?? ".";
+            ProcessOutput output = Path.Combine(_configStack.GitPath, "git.exe").ToStartInfo(args).Run();
+            Environment.CurrentDirectory = startDir;
+            if (output.ExitCode != 0)
             {
                 throw new Exception(output.StandardError);
             }

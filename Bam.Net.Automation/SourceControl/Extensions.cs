@@ -26,7 +26,7 @@ namespace Bam.Net.Automation.SourceControl
             Environment.CurrentDirectory = curDir;
             return currentBranch;
         }
-
+        
         public static bool IsInGitRepo(this FileInfo file)
         {
             return IsInGitRepo(file, out DirectoryInfo ignore);

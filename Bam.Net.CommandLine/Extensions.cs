@@ -8,6 +8,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Bam.Net.CommandLine
 {
@@ -95,22 +96,6 @@ namespace Bam.Net.CommandLine
             startInfo.FileName = command;
             startInfo.Arguments = arguments;
             return Run(startInfo, outputCollector, timeout);
-        }
-
-        public static ProcessStartInfo ToStartInfo(this string command, string workingDirectory, bool promptForAdmin = false)
-        {
-            ValidateCommand(command);
-            GetExeAndArguments(command, out string exe, out string arguments);
-            return ToStartInfo(exe, arguments, workingDirectory, promptForAdmin);
-        }
-
-        public static ProcessStartInfo ToStartInfo(this string exe, string arguments, string workingDirectory, bool promptForAdmin = false)
-        {
-            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
-            startInfo.FileName = exe;
-            startInfo.Arguments = arguments;
-            startInfo.WorkingDirectory = workingDirectory;
-            return startInfo;
         }
 
         /// <summary>
@@ -213,6 +198,39 @@ namespace Bam.Net.CommandLine
             return Run(info, output, timeOut);
         }
 
+        public static ProcessStartInfo ToStartInfo(this string filePath, string arguments = null)
+        {
+            return ToStartInfo(filePath, new DirectoryInfo("."), arguments);
+        }
+
+        public static ProcessStartInfo ToStartInfo(this string filePath, DirectoryInfo workingDirectory, string arguments = null)
+        {
+            return ToStartInfo(new FileInfo(filePath), workingDirectory, arguments);
+        }
+
+        public static ProcessStartInfo ToStartInfo(this FileInfo fileInfo, DirectoryInfo workingDirectory, string arguments = null)
+        {
+            return new ProcessStartInfo
+            {
+                FileName = fileInfo.FullName,
+                Arguments = arguments,
+                WorkingDirectory = workingDirectory.FullName,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                ErrorDialog = false,
+                CreateNoWindow = true
+            };
+        }
+
+        public static ProcessStartInfo ToStartInfo(this string exe, string arguments, string workingDirectory, bool promptForAdmin = false)
+        {
+            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
+            startInfo.FileName = exe;
+            startInfo.Arguments = arguments;
+            startInfo.WorkingDirectory = workingDirectory;
+            return startInfo;
+        }
         /// <summary>
         /// Runs the command and waits for it to complete.
         /// </summary>

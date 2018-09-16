@@ -262,6 +262,11 @@
     <Compile Include="Meta\WebBookEventArgs.cs" />
     <Compile Include="Meta\AppMetaInitializer.cs" />
     <Compile Include="Meta\WebBookPage.cs" />
+    <Compile Include="WindowsServices\PollingService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsServices\PollRequest.cs" />
+    <Compile Include="WindowsServices\PollResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content.root" />
