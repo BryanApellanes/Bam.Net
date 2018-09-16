@@ -198,7 +198,7 @@ namespace Bam.Net.CommandLine
             return Run(info, output, timeOut);
         }
 
-        public static ProcessStartInfo ToStartInfo(this string filePath, string arguments)
+        public static ProcessStartInfo ToStartInfo(this string filePath, string arguments = null)
         {
             return ToStartInfo(filePath, new DirectoryInfo("."), arguments);
         }

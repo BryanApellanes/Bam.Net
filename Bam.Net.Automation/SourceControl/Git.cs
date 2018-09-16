@@ -18,7 +18,12 @@ namespace Bam.Net.Automation.SourceControl
         GitConfigStack _configStack;
         public Git(string remoteRepository)
         {
-            this._configStack = new GitConfigStack { RemoteRepository = remoteRepository };
+            _configStack = new GitConfigStack { RemoteRepository = remoteRepository };
+        }
+
+        public Git(string remoteRepository, string localRepository): this(remoteRepository)
+        {
+            _configStack.LocalRepository = localRepository;
         }
 
         public static Git RemoteRepository(string remoteRepository)
@@ -26,13 +31,23 @@ namespace Bam.Net.Automation.SourceControl
             return new Git(remoteRepository);
         }
         
-        public static string LatestRelease(string repository)
+        public static string LatestRelease(string remoteRepository)
         {
-            return new Git(repository).LatestRelease();
+            return new Git(remoteRepository).LatestRelease();
+        }
+
+        public Git Clone()
+        {
+            if (!string.IsNullOrEmpty(_configStack.LocalRepository))
+            {
+                return CloneTo(_configStack.LocalRepository);
+            }
+            throw new InvalidOperationException("Local repository not set");
         }
 
         public Git CloneTo(string localDirectory, int timeout = 1800000)
         {
+            LocalRepository(localDirectory);
             return CloneTo(new DirectoryInfo(localDirectory), timeout);
         }
 
@@ -101,6 +116,12 @@ namespace Bam.Net.Automation.SourceControl
         public Git Pull()
         {
             CallGit("pull");
+            return this;
+        }
+
+        public Git LocalRepository(string localRepository)
+        {
+            _configStack.LocalRepository = localRepository;
             return this;
         }
 
@@ -201,8 +222,11 @@ namespace Bam.Net.Automation.SourceControl
 
         private string CallGit(string args)
         {
-            ProcessOutput output = $"{Path.Combine(_configStack.GitPath, "git.exe")} {args}".ToStartInfo().Run();
-            if(output.ExitCode != 0)
+            string startDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.LocalRepository ?? ".";
+            ProcessOutput output = Path.Combine(_configStack.GitPath, "git.exe").ToStartInfo(args).Run();
+            Environment.CurrentDirectory = startDir;
+            if (output.ExitCode != 0)
             {
                 throw new Exception(output.StandardError);
             }
