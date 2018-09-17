@@ -87,7 +87,7 @@ namespace Bam.Net.Logging.Counters
         {
             return GetStats<Counter>(name, initialValue);
         }
-
+        
         private static T GetStats<T>(string name, object initialValue) where T : Stats, new()
         { 
             if (!_stats.ContainsKey(name))

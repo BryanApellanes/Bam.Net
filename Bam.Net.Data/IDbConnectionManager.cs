@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Bam.Net.Data
         int MaxConnections { get; set; }
         int LifetimeMilliseconds { get; set; }
         bool BlockOnRelease { get; set; }
+        StateChangeEventHandler StateChangeEventHandler { get; set; }
         DbConnection GetDbConnection();
         void ReleaseConnection(DbConnection dbConnection);
     }

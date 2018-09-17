@@ -40,12 +40,7 @@ namespace Bam.Net.Data
 
         public override DbConnection GetDbConnection()
         {
-            int returnIndex = ++_next;
-            if(returnIndex >= MaxConnections)
-            {
-                _next = -1;
-                returnIndex = 0;
-            }
+            int returnIndex = GetNext();
 
             if (Connections[returnIndex] != null)
             {
@@ -65,8 +60,8 @@ namespace Bam.Net.Data
                     releaseTask.Wait();                    
                 }
             }
-            
-            DbConnection conn = Database.CreateConnection();
+
+            DbConnection conn = CreateConnection();
             Connections[returnIndex] = conn;
 
             return conn;
@@ -81,7 +76,22 @@ namespace Bam.Net.Data
             }
             catch (Exception ex)
             {
-                Log.Trace("Exception releasing database connection: {0}", ex, ex.Message);
+                Log.Trace("{0}: Exception releasing database connection: {1}", ex, nameof(MaxCountDbConnectionManager), ex.Message);
+            }
+        }
+
+        object _nextLock = new object();
+        protected int GetNext()
+        {
+            lock (_nextLock)
+            {
+                _next++;
+                if(_next >= MaxConnections)
+                {
+                    _next = 0;
+                }
+
+                return _next;
             }
         }
 
@@ -103,7 +113,7 @@ namespace Bam.Net.Data
 
             for(int i = 0; i < MaxConnections; i++)
             {
-                Connections.Add(Database.CreateConnection());
+                Connections.Add(CreateConnection());
             }
         }
     }

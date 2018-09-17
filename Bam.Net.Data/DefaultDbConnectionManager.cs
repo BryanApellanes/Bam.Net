@@ -34,8 +34,7 @@ namespace Bam.Net.Data
                 }
             }
 
-            DbConnection conn = Database.ServiceProvider.Get<DbProviderFactory>().CreateConnection();
-            conn.ConnectionString = Database.ConnectionString;
+            DbConnection conn = CreateConnection();
             lock (_connectionLock)
             {
                 _connections.Add(conn);

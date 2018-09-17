@@ -261,9 +261,15 @@ namespace Bam.Net.Data.Tests.Integration
             {
                 Counter connectionCounter = Stats.Count("ConnectionCount", GetConnectionCount);
                 long initialCount = connectionCounter.Count;
-                foreach (IDbConnectionManager conMan in new IDbConnectionManager[] { new PerThreadDbConnectionManager(db), new MaxCountDbConnectionManager(db) })
+                foreach (IDbConnectionManager conMan in new IDbConnectionManager[] 
+                    {
+                        new PerThreadDbConnectionManager(db),
+                        new MaxCountDbConnectionManager(db)
+                    }
+                )
                 {
                     db.ConnectionManager = conMan;
+                    conMan.StateChangeEventHandler = (o, sce) => OutLineFormat("***** {0} Current state {1}, Original state {2} *****", ConsoleColor.DarkYellow, o.GetType().Name, sce.CurrentState.ToString(), sce.OriginalState.ToString());
                     Expect.IsNotNull(db);
                     
                     OutLineFormat("{0} Connection Count before write {1}", ConsoleColor.Yellow, db.GetType().Name, connectionCounter.Count);
@@ -293,10 +299,9 @@ namespace Bam.Net.Data.Tests.Integration
                     Console.WriteLine("{0}: {1}", db.GetType().Name, connectionCounter.Count);
                     
                     Stats.Start("Deleting");
-                    Expect.IsTrue(connectionCounter.Count <= initialCount + (conMan.MaxConnections * 2));
-
                     TestTable.LoadAll(db).ToList().ForEach(tt => tt.Delete(db));
                     OutLineFormat("{0}: Deletes took {1} milliseconds", ConsoleColor.Yellow, db.GetType().Name, Stats.End("Deleting").Value);
+                    Expect.IsTrue(connectionCounter.Count <= initialCount + (conMan.MaxConnections * 2), "Connection count higher than expected");
                 }
             }            
         }

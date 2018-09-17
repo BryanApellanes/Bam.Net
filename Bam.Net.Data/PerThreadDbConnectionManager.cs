@@ -34,7 +34,7 @@ namespace Bam.Net.Data
             {
                 if (!Exec.SleepUntil(() => _connections.Count < MaxConnections, out int slept, LifetimeMilliseconds))
                 {
-                    Log.Warn("Waited {0} milliseconds for connection count to drop but they were never below {1}, releasing all connections", slept, MaxConnections);
+                    Log.TraceWarn("Waited {0} milliseconds for connection count to drop but they were never below {1}, releasing all connections", slept, MaxConnections);
                     ReleaseAllConnections();
                 }
             }
@@ -94,8 +94,7 @@ namespace Bam.Net.Data
 
         private void SetConnection(int threadId, out DbConnection connection)
         {
-            connection = Database.ServiceProvider.Get<DbProviderFactory>().CreateConnection();
-            connection.ConnectionString = Database.ConnectionString;
+            connection = CreateConnection();
             if(!_connections.TryAdd(threadId, connection))
             {
                 DbConnection c = connection;                
