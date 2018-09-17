@@ -38,20 +38,35 @@ namespace Bam.Net.Automation.SourceControl
 
         public Git Clone()
         {
+            return Clone(string.Empty);
+        }
+
+        public Git Clone(string gitArguments)
+        {
             if (!string.IsNullOrEmpty(_configStack.LocalRepository))
             {
-                return CloneTo(_configStack.LocalRepository);
+                return CloneTo(_configStack.LocalRepository, gitArguments);
             }
             throw new InvalidOperationException("Local repository not set");
         }
 
         public Git CloneTo(string localDirectory, int timeout = 1800000)
         {
+            return CloneTo(localDirectory, string.Empty, timeout);
+        }
+
+        public Git CloneTo(string localDirectory, string gitArguments, int timeout = 1800000)
+        {
             LocalRepository(localDirectory);
-            return CloneTo(new DirectoryInfo(localDirectory), timeout);
+            return CloneTo(new DirectoryInfo(localDirectory), gitArguments, timeout);
         }
 
         public Git CloneTo(DirectoryInfo localDirectory, int timeout = 1800000)
+        {
+            return CloneTo(localDirectory, string.Empty, timeout);
+        }
+
+        public Git CloneTo(DirectoryInfo localDirectory, string gitArguments, int timeout = 1800000)
         {
             EnsureUserInfo();
 
@@ -60,6 +75,7 @@ namespace Bam.Net.Automation.SourceControl
                 throw new UnableToInitializeGitToolsException("Couldn't update environment path");
             }
 
+            string gitArgs = string.IsNullOrEmpty(gitArguments) ? " " : $" {gitArguments} ";
             bool configured = ConfigGit();
             if (!configured)
             {
@@ -77,7 +93,7 @@ namespace Bam.Net.Automation.SourceControl
             }
             else
             {
-                ProcessOutput output = "git clone {0} \"{1}\""._Format(_configStack.RemoteRepository, localDirectory.FullName).Run(timeout);
+                ProcessOutput output = "git clone {0}{1}\"{2}\""._Format(_configStack.RemoteRepository, gitArgs, localDirectory.FullName).Run(timeout);
                 _configStack.LastOutput = output;
             }
             return this;
@@ -109,13 +125,33 @@ namespace Bam.Net.Automation.SourceControl
 
         public Git Checkout(string branchName)
         {
-            CallGit($"checkout {branchName}");
+            return Checkout(branchName, out string ignore);
+        }
+
+        public Git Checkout(string branchName, out string output)
+        {
+            output = CallGit($"checkout {branchName}");
             return this;
         }
 
         public Git Pull()
         {
-            CallGit("pull");
+            return Pull(out string ignore);
+        }
+
+        public Git Pull(out string output)
+        {
+            return Pull(string.Empty, out output);
+        }
+
+        public Git Pull(string pullArguments)
+        {
+            return Pull(pullArguments, out string ignore);
+        }
+
+        public Git Pull(string pullArguments, out string output)
+        {
+            output = CallGit($"pull {pullArguments}");
             return this;
         }
 
