@@ -41,16 +41,19 @@ namespace Bam.Net.Incubation
             inc.Set(typeof(I), inc.Construct(typeof(T)));
             return inc;
         }
+
         public Incubator Use<T>(Func<T> instanciator)
         {
             return Returns<T>(instanciator);
         }
+
         public Incubator Returns<T>(Func<T> instanciator)
         {
             Incubator inc = Incubator ?? new Incubator();
-            inc.Set(instanciator, false);
+            inc.Set(typeof(I), instanciator, false);
             return inc;
         }
+
         public Incubator Use<T>(Func<Incubator, T> instanciator)
         {
             return Returns<T>(instanciator);
