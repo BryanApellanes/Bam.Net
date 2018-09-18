@@ -93,7 +93,8 @@ namespace Bam.Net.Automation.SourceControl
             }
             else
             {
-                ProcessOutput output = "git clone {0}{1}\"{2}\""._Format(_configStack.RemoteRepository, gitArgs, localDirectory.FullName).Run(timeout);
+                string cloneCommand = "git clone {0}{1} \"{2}\""._Format(gitArgs, _configStack.RemoteRepository, localDirectory.FullName);
+                ProcessOutput output = cloneCommand.Run(timeout);
                 _configStack.LastOutput = output;
             }
             return this;
