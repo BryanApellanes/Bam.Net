@@ -84,9 +84,12 @@ namespace Bam.Net.Logging
         
         private static void WriteDebug(string messageSignature, object[] args)
         {
-            string message = string.Format(messageSignature, args);
-            Console.WriteLine($"DEBUG: {message}");
-            System.Diagnostics.Debug.WriteLine(message);
+            if(ProcessMode.Current.Mode == ProcessModes.Dev)
+            {
+                string message = string.Format(messageSignature, args);
+                Console.WriteLine($"DEBUG: {message}");
+                System.Diagnostics.Debug.WriteLine(message);
+            }
         }
 
         public static void Trace(string messageSignature, params object[] args)
@@ -113,9 +116,12 @@ namespace Bam.Net.Logging
 
         private static void WriteTrace(string messageSignature, object[] args)
         {
-            string message = string.Format(messageSignature, args);
-            Console.WriteLine($"TRACE: {message}");
-            System.Diagnostics.Trace.WriteLine(message);
+            if (ProcessMode.Current.Mode == ProcessModes.Dev || ProcessMode.Current.Mode == ProcessModes.Test)
+            {
+                string message = string.Format(messageSignature, args);
+                Console.WriteLine($"TRACE: {message}");
+                System.Diagnostics.Trace.WriteLine(message);
+            }
         }
         
         private static void TraceError(string messageSignature, Exception ex, params object[] args)

@@ -11,6 +11,9 @@ using Bam.Net.CoreServices;
 
 namespace Bam.Net.Automation
 {
+    /// <summary>
+    /// A serializable Job configuration.
+    /// </summary>
     public class JobConf
     {
         public JobConf()

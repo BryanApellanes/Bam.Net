@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿# Testing markdown job definition
 
-namespace Bam.Net.Presentation.Tests
-{
-    class TestMarkdownJob
-    {
-    }
-}
+This is a test file describing a test job which is defined as a markdown file.  Code sections in triple tick (```) gates should be executed by the
+bam job runner.

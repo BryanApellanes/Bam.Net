@@ -67,7 +67,7 @@ namespace Bam.Net.Incubation
         public Incubator Returns<T>(Func<Incubator, T> instanciator)
         {
             Incubator inc = Incubator ?? new Incubator();
-            inc.Set<T>(() => instanciator(inc));
+            inc.Set(typeof(I), () => instanciator(inc));
             return inc;
         }
 
@@ -81,6 +81,7 @@ namespace Bam.Net.Incubation
         {
             return Returns<T>();
         }
+
         protected Incubator Incubator
         {
             get;

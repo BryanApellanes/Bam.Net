@@ -79,6 +79,9 @@
     <Reference Include="Handlebars, Version=1.9.5.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Handlebars.Net.1.9.5\lib\net452\Handlebars.dll</HintPath>
     </Reference>
+    <Reference Include="Markdig, Version=0.15.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.15.2\lib\net40\Markdig.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>

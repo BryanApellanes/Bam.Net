@@ -232,6 +232,14 @@ namespace Bam.Net.Automation
             WorkerException?.Invoke(this, new WorkStateEventArgs(state));
         }
 
+        [Verbosity(LogEventType.Error, MessageFormat = "EXCEPTION:{LastMessage}:Exception running job")]
+        public event EventHandler JobRunException;
+
+        protected void OnJobRunException(Exception ex)
+        {
+            JobRunException?.Invoke(this, new WorkStateEventArgs(new WorkState(null, ex)));
+        }
+
         [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name}")]
         public event EventHandler JobFinished;
 
@@ -396,32 +404,42 @@ namespace Bam.Net.Automation
             {
                 _enqueueSignal.WaitOne();
 
-                while (JobQueue.Count > 0)
+                try
                 {
-                    Job job = null;
-                    lock (_jobQueueLock)
+                    while (JobQueue.Count > 0)
                     {
-                        if (JobQueue.Count > 0)
+                        Job job = null;
+                        lock (_jobQueueLock)
                         {
-                            job = JobQueue.Dequeue();
+                            if (JobQueue.Count > 0)
+                            {
+                                job = JobQueue.Dequeue();
+                            }
+                        }
+
+                        if (job != null)
+                        {
+                            job.JobFinished += (o, a) =>
+                            {
+                                Job j = (Job)o;
+                                lock (_runningLock)
+                                {
+                                    if (Running.Contains(j))
+                                    {
+                                        Running.Remove(j);
+                                    }
+                                }
+
+                                _runCompleteSignal.Set();
+                            };
+
+                            RunJob(job);
                         }
                     }
-
-                    if (job != null)
-                    {
-                        job.JobFinished += (o, a) =>
-                        {
-                            Job j = (Job)o;
-                            if (Running.Contains(j))
-                            {
-                                Running.Remove(j);
-                            }
-
-                            _runCompleteSignal.Set();
-                        };
-
-                        RunJob(job);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.TraceWarn("Exception running jobs: {0}", ex.Message);
                 }
             }
         }
@@ -442,8 +460,29 @@ namespace Bam.Net.Automation
                 Running.Add(job);
             }
 
-            job.StepNumber = stepNumber;
-            job.Run();
+            try
+            {
+                job.StepNumber = stepNumber;
+                job.Run();
+            }
+            catch (Exception ex)
+            {
+                OnJobRunException(ex);
+                lock (_runningLock)
+                {
+                    try
+                    {
+                        if (Running.Contains(job))
+                        {
+                            Running.Remove(job);
+                        }
+                    }
+                    catch (Exception inner)
+                    {
+                        Log.TraceWarn("Exception untracking running job: {0}", inner.Message);
+                    }
+                }
+            }
         }
 
         protected string GetJobDirectoryPath(string name)

@@ -39,12 +39,16 @@ namespace Bam.Net.Data
             set
             {
                 _maxConnections = value;
-                SetConnections();
             }
         }
 
         public override DbConnection GetDbConnection()
         {
+            if(Connections == null || Connections.Count == 0)
+            {
+                InitConnections();
+            }
+
             int returnIndex = GetNext();
 
             if (Connections[returnIndex] != null)
@@ -100,7 +104,7 @@ namespace Bam.Net.Data
             }
         }
 
-        protected void SetConnections()
+        protected void InitConnections()
         {
             Connections = new List<DbConnection>(MaxConnections);
             foreach (DbConnection connection in Connections)
