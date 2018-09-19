@@ -261,6 +261,8 @@
     <Compile Include="Files\IChunk.cs" />
     <Compile Include="Files\IChunkable.cs" />
     <Compile Include="Files\IChunkStorage.cs" />
+    <Compile Include="FluentServiceRegistryContext.cs" />
+    <Compile Include="For.cs" />
     <Compile Include="HostDomainRequestFilter.cs" />
     <Compile Include="ApplicationRepositoryResolver.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />

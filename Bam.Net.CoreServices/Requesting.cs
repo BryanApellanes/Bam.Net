@@ -7,9 +7,9 @@ namespace Bam.Net.CoreServices
     /// </summary>
     public static class Requesting
     {
-        public static FluentIncubationContext<I> A<I>()
+        public static FluentServiceRegistryContext<I> A<I>()
         {
-            return new FluentIncubationContext<I>();
+            return new FluentServiceRegistryContext<I>();
         }
 
         /// <summary>
@@ -18,14 +18,14 @@ namespace Bam.Net.CoreServices
         /// <typeparam name="I"></typeparam>
         /// <param name="serviceRestry"></param>
         /// <returns></returns>
-        public static FluentIncubationContext<I> AskingFor<I>(this ServiceRegistry serviceRestry)
+        public static FluentServiceRegistryContext<I> AskingFor<I>(this ServiceRegistry serviceRestry)
         {
-            return new FluentIncubationContext<I>(serviceRestry);
+            return new FluentServiceRegistryContext<I>(serviceRestry);
         }
 
-        public static FluentIncubationContext<I> For<I>(this ServiceRegistry serviceRegistry)
+        public static FluentServiceRegistryContext<I> For<I>(this ServiceRegistry serviceRegistry)
         {
-            return new FluentIncubationContext<I>(serviceRegistry);
+            return new FluentServiceRegistryContext<I>(serviceRegistry);
         }
 
         public static FluentCtorContext<I> ForCtor<I>(this ServiceRegistry serviceRegistry, string parameterName)
@@ -39,9 +39,9 @@ namespace Bam.Net.CoreServices
         /// <typeparam name="I"></typeparam>
         /// <param name="serviceRegistry"></param>
         /// <returns></returns>
-        public static FluentIncubationContext<I> Bind<I>(this ServiceRegistry serviceRegistry)
+        public static FluentServiceRegistryContext<I> Bind<I>(this ServiceRegistry serviceRegistry)
         {
-            return new FluentIncubationContext<I>(serviceRegistry);
+            return new FluentServiceRegistryContext<I>(serviceRegistry);
         }
     }
 }
