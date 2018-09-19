@@ -264,7 +264,7 @@ namespace Bam.Net.Data.Tests.Integration
                 foreach (IDbConnectionManager conMan in new IDbConnectionManager[] 
                     {
                         new PerThreadDbConnectionManager(db),
-                        new MaxCountDbConnectionManager(db)
+                        new DefaultDbConnectionManager(db)
                     }
                 )
                 {
