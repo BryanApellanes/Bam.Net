@@ -1,0 +1,70 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using Bam.Net;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
+using Newtonsoft.Json;
+using @Model.TypeNamespace;
+using @Model.DaoNamespace;
+
+namespace @Model.WrapperNamespace
+{
+	// generated
+	[Serializable]
+	public class @(Model.WrapperTypeName): @(Model.TypeNamespace).@(Model.BaseTypeName), IHasUpdatedXrefCollectionProperties
+	{
+		public @(Model.TypeName)Wrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public @(Model.TypeName)Wrapper(DaoRepository repository) : this()
+		{
+			this.Repository = repository;
+		}
+
+		[JsonIgnore]
+		public DaoRepository Repository { get; set; }
+
+		[JsonIgnore]
+		public Dictionary<string, PropertyInfo> UpdatedXrefCollectionProperties { get; set; }
+
+		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
+		{
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			{
+				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+			}
+			else if(UpdatedXrefCollectionProperties != null)
+			{
+				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
+			}
+		}
+
+		@foreach(TypeFk fk in Model.ForeignKeys)
+		{
+			WriteForeignKeyProperty(fk);
+		}
+
+		@foreach(TypeFk fk in Model.ChildPrimaryKeys)
+		{
+			WriteChildPrimaryKeyProperty(fk);
+		}
+
+		@foreach(TypeXrefModel xref in Model.LeftXrefs)
+		{
+			WriteLeftXrefProperty(xref);
+		}
+
+		@foreach(TypeXrefModel xref in Model.RightXrefs)
+		{
+			WriteRightXrefProperty(xref);
+		}
+	}
+	// -- generated
+}																								

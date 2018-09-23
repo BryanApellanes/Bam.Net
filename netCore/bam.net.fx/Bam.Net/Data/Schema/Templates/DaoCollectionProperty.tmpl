@@ -1,0 +1,25 @@
+
+	[Bam.Net.Exclude]	
+	public @(Model.ReferencingClass)Collection @(Model.ReferencingClass.Pluralize())By@(Model.Name)
+	{
+		get
+		{
+			if (this.IsNew)
+			{
+				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
+			}
+
+			if(!this.ChildCollections.ContainsKey("@(Model.TableName)_@(Model.Name)"))
+			{
+				SetChildren();
+			}
+
+			var c = (@(Model.ReferencingClass)Collection)this.ChildCollections["@(Model.TableName)_@(Model.Name)"];
+			if(!c.Loaded)
+			{
+				c.Load(Database);
+			}
+			return c;
+		}
+	}
+	

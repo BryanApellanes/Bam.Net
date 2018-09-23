@@ -1,0 +1,38 @@
+/*
+	This file was generated and should not be modified directly
+*/
+// model is SchemaDefinition
+using System;
+using System.Data;
+using System.Data.Common;
+using Bam.Net;
+using Bam.Net.Data;
+using Bam.Net.Data.Qi;
+
+namespace @Namespace
+{
+	// schema = @Model.Name 
+    public static class @(Model.Name)Context
+    {
+		public static string ConnectionName
+		{
+			get
+			{
+				return "@(Model.Name)";
+			}
+		}
+
+		public static Database Db
+		{
+			get
+			{
+				return Bam.Net.Data.Db.For(ConnectionName);
+			}
+		}
+
+		@foreach(Table table in Model.Tables)
+		{
+			WriteContextMethods(table, Namespace);
+		}
+    }
+}																								

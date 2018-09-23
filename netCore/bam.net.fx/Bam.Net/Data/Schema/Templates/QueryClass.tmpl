@@ -1,0 +1,35 @@
+/*
+	This file was generated and should not be modified directly
+*/
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using Bam.Net.Data;
+
+namespace @Namespace
+{
+    public class @(Model.ClassName)Query: Query<@(Model.ClassName)Columns, @(Model.ClassName)>
+    { 
+		public @(Model.ClassName)Query(){}
+		public @(Model.ClassName)Query(WhereDelegate<@(Model.ClassName)Columns> where, OrderBy<@(Model.ClassName)Columns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
+		public @(Model.ClassName)Query(Func<@(Model.ClassName)Columns, QueryFilter<@(Model.ClassName)Columns>> where, OrderBy<@(Model.ClassName)Columns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
+		public @(Model.ClassName)Query(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static @(Model.ClassName)Query Where(WhereDelegate<@(Model.ClassName)Columns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static @(Model.ClassName)Query Where(WhereDelegate<@(Model.ClassName)Columns> where, OrderBy<@(Model.ClassName)Columns> orderBy = null, Database db = null)
+        {
+            return new @(Model.ClassName)Query(where, orderBy, db);
+        }
+
+		public @(Model.ClassName)Collection Execute()
+		{
+			return new @(Model.ClassName)Collection(this, true);
+		}
+    }
+}

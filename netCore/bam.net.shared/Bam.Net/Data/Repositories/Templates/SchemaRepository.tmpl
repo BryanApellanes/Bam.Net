@@ -1,0 +1,50 @@
+﻿/*
+This file was generated and should not be modified directly
+*/
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
+using Bam.Net;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
+using @(Model.BaseNamespace);
+
+namespace @(Model.SchemaRepositoryNamespace)
+{
+	[Serializable]
+	public class @(Model.SchemaName)Repository: @(Model.BaseRepositoryType)
+	{
+		public @(Model.SchemaName)Repository()
+		{
+			SchemaName = "@(Model.SchemaName)";
+			BaseNamespace = "@(Model.BaseNamespace)";			
+			@foreach(SchemaTypeModel model in Model.Types)
+			{
+				WriteAddType(model.Type);
+			}
+
+			DaoAssembly = typeof(@(Model.SchemaName)Repository).Assembly;
+		}
+
+		object _addLock = new object();
+        public override void AddType(Type type)
+        {
+            lock (_addLock)
+            {
+                base.AddType(type);
+                DaoAssembly = typeof(@(Model.SchemaName)Repository).Assembly;
+            }
+        }
+
+		@foreach(SchemaTypeModel type in Model.Types)
+		{
+			WriteMethods(type);
+		}
+
+	}
+}																								

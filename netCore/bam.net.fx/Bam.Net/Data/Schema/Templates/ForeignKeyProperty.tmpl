@@ -1,0 +1,35 @@
+	// start @Model.PropertyName -> @Model.Name
+	[Bam.Net.Data.ForeignKey(
+        Table="@(Model.TableName)",
+		Name="@(Model.Name)", 
+		DbDataType="@(Model.DbDataType)", 
+		MaxLength="@(Model.MaxLength)",
+		AllowNull=@(Model.AllowNull.ToString().ToLower()), 
+		ReferencedKey="@(Model.ReferencedKey)",
+		ReferencedTable="@(Model.ReferencedTable)",
+		Suffix="@(Model.ReferenceNameSuffix)")]
+	public @(Model.NativeType) @Model.PropertyName
+	{
+		get
+		{
+			return Get@(Model.DataType)Value("@Model.Name");
+		}
+		set
+		{
+			SetValue("@Model.Name", value);
+		}
+	}
+
+	@(Model.ReferencedClass) _@(Model.ReferencedClass.CamelCase())Of@(Model.PropertyName);
+	public @(Model.ReferencedClass) @(Model.ReferencedClass)Of@(Model.PropertyName)
+	{
+		get
+		{
+			if(_@(Model.ReferencedClass.CamelCase())Of@(Model.PropertyName) == null)
+			{
+				_@(Model.ReferencedClass.CamelCase())Of@(Model.PropertyName) = @(Namespace).@(Model.ReferencedClass).OneWhere(c => c.KeyColumn == this.@(Model.PropertyName), this.Database);
+			}
+			return _@(Model.ReferencedClass.CamelCase())Of@(Model.PropertyName);
+		}
+	}
+	

@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Bam.Net.Data;
+
+namespace @Namespace
+{
+    public class @(Model.ClassName)Columns: QueryFilter<@(Model.ClassName)Columns>, IFilterToken
+    {
+        public @(Model.ClassName)Columns() { }
+        public @(Model.ClassName)Columns(string columnName)
+            : base(columnName)
+        { }
+		
+		public @(Model.ClassName)Columns KeyColumn
+		{
+			get
+			{
+				return new @(Model.ClassName)Columns("@(Model.Key.Name)");
+			}
+		}	
+
+				
+		@foreach(Column column in Model.Columns)
+		{
+			if(!(column is ForeignKeyColumn))
+			{
+				WriteColumnsClassProperty(column);
+			}
+		}
+
+		@foreach(Column column in Model.ForeignKeys)
+		{
+			WriteColumnsClassProperty(column);
+		}
+
+		protected internal Type TableType
+		{
+			get
+			{
+				return typeof(@Model.ClassName);
+			}
+		}
+
+		public string Operator { get; set; }
+
+        public override string ToString()
+        {
+            return base.ColumnName;
+        }
+	}
+}

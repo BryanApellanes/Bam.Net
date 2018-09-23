@@ -1,0 +1,15 @@
+	// property:@Model.PropertyName, columnName:@Model.Name	
+	[Bam.Net.Exclude]
+	[Bam.Net.Data.KeyColumn(Name="@Model.Name", DbDataType="@Model.DbDataType", MaxLength="@Model.MaxLength")]
+	public @(Model.NativeType) @Model.PropertyName
+	{
+		get
+		{
+			return Get@(Model.DataType)Value("@Model.Name");
+		}
+		set
+		{
+			SetValue("@Model.Name", value);
+		}
+	}
+
