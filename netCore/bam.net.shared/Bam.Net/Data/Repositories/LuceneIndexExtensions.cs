@@ -38,11 +38,14 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+
+#if NET472
         public static object ToDynamicInstance(this Document doc, string typeName)
         {
             Type type;
             return ToDynamicInstance(doc, typeName, out type);
         }
+
         public static object ToDynamicInstance(this Document doc, string typeName, out Type dynamicType)
         {
             Dictionary<object, object> dictionary;
@@ -71,6 +74,7 @@ namespace Bam.Net.Data.Repositories
             Type dynamicType = typeDefinition.ToDynamicType(typeName);
             return dynamicType;
         }
+#endif
 
         public static T ToInstance<T>(this Document doc)
         {

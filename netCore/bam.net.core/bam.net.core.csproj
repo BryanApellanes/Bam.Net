@@ -5,9 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BouncyCastle" Version="1.8.3" />
+    <PackageReference Include="Lucene.Net" Version="3.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="mongocsharpdriver" Version="2.7.0" />
+    <PackageReference Include="NCuid" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NLog" Version="4.5.10" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.1" />
+    <PackageReference Include="YamlSerializer" Version="1.0.0" />
+    <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
   </ItemGroup>
 
   <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />

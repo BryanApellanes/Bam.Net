@@ -8,8 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Web;
-using System.Web.WebPages;
-using System.Web.Script.Serialization;
 using System.IO;
 using System.Net;
 using Bam.Net.Logging;
