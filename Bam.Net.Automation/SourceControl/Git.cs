@@ -200,12 +200,21 @@ namespace Bam.Net.Automation.SourceControl
                 {
                     if (lines[i].Trim().EndsWith($"refs/heads/{branchName}"))
                     {
-                        commitHash = lines[i].DelimitSplit(" ")[0];
+                        commitHash = lines[i].DelimitSplit(" ", "\t")[0];
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        public string LatestRemoteBranchCommit(string branchName)
+        {
+            if(RemoteBranchExists(branchName, out string commitHash))
+            {
+                return commitHash;
+            }
+            return string.Empty;
         }
 
         /// <summary>
