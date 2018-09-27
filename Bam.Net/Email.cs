@@ -155,6 +155,14 @@ namespace Bam.Net
             return this;
         }
 
+        public Email AppendBody(string append)
+        {
+            StringBuilder body = new StringBuilder(Config.Body);
+            body.Append(append);
+            Config.Body = body.ToString();
+            return this;
+        }
+
         public Email IsBodyHtml(bool isHtml)
         {
             Config.IsBodyHtml = isHtml;

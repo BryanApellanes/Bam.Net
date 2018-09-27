@@ -833,7 +833,7 @@ namespace Bam.Net.Automation
 
         private static string GetVersion(DirectoryInfo referenceDirectory)
         {
-            string lastRelease = Git.LatestRelease(referenceDirectory.UpToGitRoot().FullName);
+            string lastRelease = Git.LatestTag(referenceDirectory.UpToGitRoot().FullName);
             string version = lastRelease.TruncateFront(1);
 
             if (Arguments.Contains("v"))

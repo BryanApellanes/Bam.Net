@@ -77,9 +77,9 @@ namespace Bam.Net.Automation.SourceControl
 
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
         static object _logCacheLock = new object();
-        public static HashSet<GitLog> SinceLatestRelease(string gitRepoPath, bool useCache = true)
+        public static HashSet<GitLog> SinceLatestTag(string gitRepoPath, bool useCache = true)
         {
-            string latestRelease = Git.LatestRelease(gitRepoPath);
+            string latestRelease = Git.LatestTag(gitRepoPath);
             if (!useCache)
             {
                 return SinceTag(gitRepoPath, latestRelease);
@@ -113,14 +113,36 @@ namespace Bam.Net.Automation.SourceControl
         {
             string startDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = gitRepoPath;
-            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";            
-            HashSet<GitLog> results = new HashSet<GitLog>();            
+            string command = $"{GetBaseGitLogCommand()} {commitIdentifier}..{toCommit}";
+            HashSet<GitLog> gitLogs = ExecuteGitLogCommand(command);
+            Environment.CurrentDirectory = startDirectory;
+            return gitLogs;
+        }
+
+        public static HashSet<GitLog> Get(string gitRepoPath, int count = 1)
+        {
+            string startDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = gitRepoPath;
+            string command = $"{GetBaseGitLogCommand()} -{count}";
+            HashSet<GitLog> gitLogs = ExecuteGitLogCommand(command);
+            Environment.CurrentDirectory = startDirectory;
+            return gitLogs;
+        }
+
+        private static string GetBaseGitLogCommand()
+        {
+            return $"git --no-pager log --pretty=format:{GetPrettyFormatArg()}";
+        }
+
+        private static HashSet<GitLog> ExecuteGitLogCommand(string command)
+        {
+            HashSet<GitLog> results = new HashSet<GitLog>();
             ProcessOutput output = command.Run();
             int num = 0;
-            output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
+            output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
             {
                 Dictionary<string, string> replacements = new Dictionary<string, string>() { { "\"", "\'" }, { "\\", "\\\\" } };
-                string line = log.DelimitedReplace(replacements);                
+                string line = log.DelimitedReplace(replacements);
                 LineReader(++num, line);
                 results.Add(line.FromJson<GitLog>());
             });

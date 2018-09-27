@@ -16,6 +16,11 @@ namespace Bam.Net.Automation.SourceControl
     public class Git
     {
         GitConfigStack _configStack;
+        internal Git()
+        {
+            _configStack = new GitConfigStack();
+        }
+
         public Git(string remoteRepository)
         {
             _configStack = new GitConfigStack { RemoteRepository = remoteRepository };
@@ -31,9 +36,11 @@ namespace Bam.Net.Automation.SourceControl
             return new Git(remoteRepository);
         }
         
-        public static string LatestRelease(string remoteRepository)
+        public static string LatestTag(string localRepository)
         {
-            return new Git(remoteRepository).LatestRelease();
+            Git git = new Git();
+            git._configStack.LocalRepository = localRepository;
+            return git.LatestTag();
         }
 
         public Git Clone()
@@ -162,7 +169,7 @@ namespace Bam.Net.Automation.SourceControl
             return this;
         }
 
-        public string LatestRelease()
+        public string LatestTag()
         {
             return CallGit("describe --abbrev=0");
         }
@@ -237,6 +244,26 @@ namespace Bam.Net.Automation.SourceControl
             return _configStack.LastOutput;
         }
 
+        public IEnumerable<GitLog> LogsSinceLatestTag()
+        {
+            return GitLog.SinceLatestTag(_configStack.LocalRepository);
+        }
+
+        public IEnumerable<GitLog> Logs(int count = 1)
+        {
+            return GitLog.Get(_configStack.LocalRepository, count);
+        }
+        
+        public IEnumerable<GitLog> LogsSinceTag(string tag)
+        {
+            return GitLog.SinceTag(_configStack.LocalRepository, tag);
+        }
+
+        public IEnumerable<GitLog> LogsSinceCommit(string commitIdentifier)
+        {
+            return GitLog.SinceCommit(_configStack.LocalRepository, commitIdentifier);
+        }
+
         private void EnsureUserInfo()
         {
             if (string.IsNullOrEmpty(_configStack.UserName))
@@ -265,7 +292,7 @@ namespace Bam.Net.Automation.SourceControl
                 }
             }
         }
-
+        
         private string CallGit(string args)
         {
             string startDir = Environment.CurrentDirectory;

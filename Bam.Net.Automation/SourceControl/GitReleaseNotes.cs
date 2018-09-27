@@ -39,8 +39,8 @@ namespace Bam.Net.Automation.SourceControl
         static object _logCacheLock = new object();
         public static GitReleaseNotes MiscSinceLatestRelease(string gitRepoPath)
         {
-            string version = Git.LatestRelease(gitRepoPath);
-            HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
+            string version = Git.LatestTag(gitRepoPath);
+            HashSet<GitLog> logsSinceLast = GitLog.SinceLatestTag(gitRepoPath);
             if(!_logCache.ContainsKey("Misc") || !_logCache["Misc"].ContainsKey(version))
             {
                 lock (_logCacheLock)
@@ -67,13 +67,13 @@ namespace Bam.Net.Automation.SourceControl
 
         public static GitReleaseNotes SinceLatestRelease(string packageId, string gitRepoPath, out string latestRelease)
         {
-            latestRelease = Git.LatestRelease(gitRepoPath);
+            latestRelease = Git.LatestTag(gitRepoPath);
 
             if (!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(latestRelease))
             {
                 lock (_logCacheLock)
                 {
-                    HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
+                    HashSet<GitLog> logsSinceLast = GitLog.SinceLatestTag(gitRepoPath);
                     GitReleaseNotes result = new GitReleaseNotes(latestRelease, packageId);
                     logsSinceLast.Each(gl =>
                     {
