@@ -863,9 +863,10 @@ namespace Bam.Net.Automation
 
         private static string GetVersion(DirectoryInfo referenceDirectory)
         {
-            DirectoryInfo gitRoot = referenceDirectory.UpToGitRoot();
-            string version = string.Empty;
-            if (gitRoot == null || Arguments.Contains("v"))
+            string lastRelease = Git.LatestTag(referenceDirectory.UpToGitRoot().FullName);
+            string version = lastRelease.TruncateFront(1);
+
+            if (Arguments.Contains("v"))
             {
                 string argVersion = Arguments["v"];
                 if (!argVersion.Equals("latest"))
@@ -875,7 +876,7 @@ namespace Bam.Net.Automation
             }
             else if(gitRoot != null)
             {
-                string lastRelease = Git.LatestRelease(gitRoot.FullName);
+                string lastRelease = Git.LatestTag(gitRoot.FullName);
                 version = lastRelease.TruncateFront(1);
             }
             if (string.IsNullOrEmpty(version))

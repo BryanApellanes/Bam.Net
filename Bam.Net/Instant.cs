@@ -228,9 +228,14 @@ namespace Bam.Net
         /// Return a DateTime object representing the current Instant instance
         /// </summary>
         /// <returns></returns>
-        public DateTime ToDateTime()
+        public DateTime ToDateTime(DateTimeKind kind = DateTimeKind.Unspecified)
         {
             return new DateTime(this.Year, this.Month, this.Day, this.Hour, this.Minute, this.Second, this.Millisecond, DateTimeKind.Unspecified);
+        }
+
+        public DateTime ToLocalTime()
+        {
+            return ToDateTime(DateTimeKind.Utc).ToLocalTime();
         }
 
         public string ToJavascriptDate()
