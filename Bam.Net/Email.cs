@@ -155,6 +155,11 @@ namespace Bam.Net
             return this;
         }
 
+        public Email AppendBodyFormat(string format, params object[] args)
+        {
+            return AppendBody(string.Format(format, args));
+        }
+
         public Email AppendBody(string append)
         {
             StringBuilder body = new StringBuilder(Config.Body);
