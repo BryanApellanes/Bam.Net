@@ -169,6 +169,13 @@ namespace Bam.Net.Automation.SourceControl
             return this;
         }
 
+        public static string LatestRelease(string localRepository)
+        {
+            Git git = new Git();
+            git._configStack.LocalRepository = localRepository;
+            return git.LatestTag();
+        }
+
         public string LatestTag()
         {
             return CallGit("describe --abbrev=0");

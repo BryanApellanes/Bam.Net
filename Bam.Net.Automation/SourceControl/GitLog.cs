@@ -77,6 +77,12 @@ namespace Bam.Net.Automation.SourceControl
 
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
         static object _logCacheLock = new object();
+
+        public static HashSet<GitLog> SinceLatestRelease(string gitRepoPath, bool useCache = true)
+        {
+            return SinceLatestTag(gitRepoPath, useCache);
+        }
+
         public static HashSet<GitLog> SinceLatestTag(string gitRepoPath, bool useCache = true)
         {
             string latestRelease = Git.LatestTag(gitRepoPath);
