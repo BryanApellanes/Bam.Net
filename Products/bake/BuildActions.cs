@@ -874,11 +874,6 @@ namespace Bam.Net.Automation
                     version = argVersion;
                 }
             }
-            else if(gitRoot != null)
-            {
-                string lastRelease = Git.LatestTag(gitRoot.FullName);
-                version = lastRelease.TruncateFront(1);
-            }
             if (string.IsNullOrEmpty(version))
             {
                 OutLine("Couldn't determine version", ConsoleColor.Magenta);

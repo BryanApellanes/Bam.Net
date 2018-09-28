@@ -91,6 +91,31 @@ namespace Bam.Net.Automation.SourceControl
             return _logCache[packageId][latestRelease];
         }
 
+        public static GitReleaseNotes SinceVersion(string packageId, string gitRepoPath, int major, int minor, int patch, bool useCache = true)
+        {
+            string sinceVersion = $"v{major}.{minor}.{patch}";
+            if (!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(sinceVersion))
+            {
+                lock (_logCacheLock)
+                {
+                    HashSet<GitLog> logsSinceLast = GitLog.SinceVersion(gitRepoPath, major, minor, patch, useCache);
+                    GitReleaseNotes result = new GitReleaseNotes(sinceVersion, packageId);
+                    logsSinceLast.Each(gl =>
+                    {
+                        string prefix = $"{packageId}:";
+                        if (gl.Subject.StartsWith(prefix))
+                        {
+                            result.AddBullet(gl.Subject.TruncateFront(prefix.Length), gl.AbbreviatedCommitHash);
+                        }
+                    });
+
+                    _logCache.AddMissing(packageId, new Dictionary<string, GitReleaseNotes>());
+                    _logCache[packageId].AddMissing(sinceVersion, result);
+                }
+            }
+            return _logCache[packageId][sinceVersion];
+        }
+
         protected internal static bool HasPossibleProjectPrefix(string message)
         {
             string[] split = message.Split(':');
