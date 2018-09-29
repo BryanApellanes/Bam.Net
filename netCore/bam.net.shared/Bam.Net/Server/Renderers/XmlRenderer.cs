@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Yaml;
 using System.IO;
 using Bam.Net;
-using Bam.Net.Yaml;
 
 namespace Bam.Net.Server.Renderers
 {

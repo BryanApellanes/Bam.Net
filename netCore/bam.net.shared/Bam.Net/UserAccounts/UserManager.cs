@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Security;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
 using Bam.Net.UserAccounts.Data;

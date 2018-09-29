@@ -18,7 +18,7 @@ namespace Bam.Net.ServiceProxy.Secure
     /// A class used to provide the functionality
     /// of both an ApiKeyProvider and an ApplicationNameProvider
     /// </summary>
-    public class ApiKeyResolver : IApiKeyProvider, IApplicationNameProvider, IApiKeyResolver
+    public partial class ApiKeyResolver : IApiKeyProvider, IApplicationNameProvider, IApiKeyResolver
     {
         static ApiKeyResolver()
         {
@@ -113,6 +113,11 @@ namespace Bam.Net.ServiceProxy.Secure
         }
 
         public string CreateKeyToken(string stringToHash)
+        {
+            return CreateKeyTokenFx(stringToHash);
+        }
+
+        protected string CreateKeyTokenFx(string stringToHash)
         {
             ApiKeyInfo apiKey = this.GetApiKeyInfo(this);
             return "{0}:{1}"._Format(apiKey.ApiKey, stringToHash).Hash(HashAlgorithm);

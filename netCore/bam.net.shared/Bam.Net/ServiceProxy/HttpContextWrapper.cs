@@ -13,12 +13,9 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class HttpContextWrapper: HttpContextBase, IHttpContext
+    public partial class HttpContextWrapper
     {
         public HttpContextWrapper() { }
-        public HttpContextWrapper(HttpContext context)
-            : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
-        { }
 
         public HttpContextWrapper(HttpListenerContext context)
             : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
@@ -29,21 +26,10 @@ namespace Bam.Net.ServiceProxy
 			this.User = context.User;
 		}
 
-        public HttpContextWrapper(HttpContextBase context)
-            : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
-        {
-            this.User = context.User;
-        }
-
         public HttpContextWrapper(HttpContextWrapper context)
             : this(new RequestWrapper(context.Request), new ResponseWrapper(context.Response))
         {
             this.User = context.User;
-        }
-
-        public HttpContextWrapper(ControllerContext context)
-            : this(new HttpContextWrapper(context))
-        {
         }
 
         public HttpContextWrapper(IRequest request, IResponse response)

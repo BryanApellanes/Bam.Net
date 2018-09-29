@@ -22,23 +22,6 @@ namespace Bam.Net.Data
     {
         string[] metaProperties = new string[] { "Uuid", "Cuid" };
 
-        /// <summary>
-        /// Initialize the inner registration container and 
-        /// registers the mvc route for query interface (qi.js; pronounced "chi") 
-        /// calls.
-        /// </summary>
-        internal static void Initialize()
-        {
-            _registrations = new Dictionary<string, DaoProxyRegistration>();
-            
-            RouteTable.Routes.MapRoute(
-                name: "Qi",
-                url: "Qi/{controller}/{action}",
-                defaults: new { controller = "Dao", action = "Default" },
-                namespaces: new string[] { "Qi" }
-            );
-        }
-
         public DaoProxyRegistration(Type daoType)
         {
             Args.ThrowIfNull(daoType, "daoType");

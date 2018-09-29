@@ -492,18 +492,12 @@
     <Compile Include="Bam.Net\Automation\MSBuild\MSBuildExtensions.cs" />
     <Compile Include="Bam.Net\Automation\MSBuild\Project.cs" />
     <Compile Include="Bam.Net\CoreServices\Configuration\ConfigurationService.cs" />
-    <Compile Include="Bam.Net\CoreServices\Configuration\ICoreConfigurationService.cs" />
-    <Compile Include="Bam.Net\CoreServices\Configuration\SettingSource.cs" />
-    <Compile Include="Bam.Net\CoreServices\Configuration\SourcedConfigurationSetting.cs" />
     <Compile Include="Bam.Net\CoreServices\CoreServiceRegistryContainer.cs" />
     <Compile Include="Bam.Net\CoreServices\Credentials\CredentialManagementService.cs" />
-    <Compile Include="Bam.Net\CoreServices\Diagnostic\DiagnosticInfo.cs" />
-    <Compile Include="Bam.Net\CoreServices\Diagnostic\DiagnosticService.cs" />
-    <Compile Include="Bam.Net\CoreServices\Diagnostic\IDiagnosable.cs" />
     <Compile Include="Bam.Net\CoreServices\Files\FileService.cs" />
+    <Compile Include="Bam.Net\CoreServices\FxProxyableService.cs" />
     <Compile Include="Bam.Net\CoreServices\Notification\INotificationService.cs" />
     <Compile Include="Bam.Net\CoreServices\Notification\NotificationService.cs" />
-    <Compile Include="Bam.Net\CoreServices\OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="Bam.Net\CoreServices\OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="Bam.Net\CoreServices\OAuth\Data\Generated_Dao\OAuthSettingsContext.cs" />
     <Compile Include="Bam.Net\CoreServices\OAuth\Data\Generated_Dao\OAuthSettingsData.cs" />
@@ -583,16 +577,20 @@
     <Compile Include="Bam.Net\CoreServices\ServiceRegistration\ServiceRegistryBuilder.cs" />
     <Compile Include="Bam.Net\CoreServices\ServiceRegistration\ServiceRegistryContainerRegistrationResult.cs" />
     <Compile Include="Bam.Net\CoreServices\ServiceRegistration\ServiceRegistryService.cs" />
-    <Compile Include="Bam.Net\Data\DaoProxyRegistration.cs" />
     <Compile Include="Bam.Net\Data\DaoProxyRegistrationInfo.cs" />
     <Compile Include="Bam.Net\Data\DaoProxyResult.cs" />
     <Compile Include="Bam.Net\Data\DaoProxySystem.cs" />
     <Compile Include="Bam.Net\Data\Database.cs" />
+    <Compile Include="Bam.Net\Data\fx\DaoProxyRegistration.cs" />
     <Compile Include="Bam.Net\Data\Repositories\DaoToDtoGenerator.cs" />
     <Compile Include="Bam.Net\Data\Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="Bam.Net\Data\Repositories\DtoModel.cs" />
+    <Compile Include="Bam.Net\Data\Repositories\fx\FsRepository.cs" />
+    <Compile Include="Bam.Net\Data\Repositories\fx\LuceneIndexExtensions.cs" />
     <Compile Include="Bam.Net\Data\Repositories\SchemaRepositoryTemplate.cs" />
     <Compile Include="Bam.Net\Extensions.cs" />
+    <Compile Include="Bam.Net\HashExtensions.cs" />
+    <Compile Include="Bam.Net\IJsonable - Copy.cs" />
     <Compile Include="Bam.Net\Incubation\Mvc\BamControllerFactory.cs" />
     <Compile Include="Bam.Net\Incubation\Mvc\BamDepencyResolver.cs" />
     <Compile Include="Bam.Net\Presentation\ApplicationModel.cs" />
@@ -757,10 +755,6 @@
     <Compile Include="Bam.Net\Breve\JavaClassicFormat.cs" />
     <Compile Include="Bam.Net\Breve\JavaFormat.cs" />
     <Compile Include="Bam.Net\Breve\Languages.cs" />
-    <Compile Include="Bam.Net\CodeAnalysis\CSharpDocumentationSyntaxWalker.cs" />
-    <Compile Include="Bam.Net\CodeAnalysis\MethodComment.cs" />
-    <Compile Include="Bam.Net\CodeAnalysis\NamespaceComment.cs" />
-    <Compile Include="Bam.Net\CodeAnalysis\PropertyComment.cs" />
     <Compile Include="Bam.Net\CommandLine\ArgumentInfo.cs" />
     <Compile Include="Bam.Net\CommandLine\ArgumentInfoHash.cs" />
     <Compile Include="Bam.Net\CommandLine\CommandLineArgumentConfigurer.cs" />
@@ -950,32 +944,9 @@
     <Compile Include="Bam.Net\Data\Protobuf\ProtocolBufferTypeModel.cs" />
     <Compile Include="Bam.Net\Data\Protobuf\ProtoFileGenerator.cs" />
     <Compile Include="Bam.Net\Date.cs" />
-    <Compile Include="Bam.Net\Documentation\ClassMemberType.cs" />
-    <Compile Include="Bam.Net\Documentation\CodeInfo.cs" />
-    <Compile Include="Bam.Net\Documentation\doc.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfo.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoAttribute.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoDescriptionProvider.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoFrom.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoInferredDescriptionProvider.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoMemberType.cs" />
-    <Compile Include="Bam.Net\Documentation\DocInfoResult.cs" />
-    <Compile Include="Bam.Net\Documentation\DocumentationAttributeRenderDelegate.cs" />
-    <Compile Include="Bam.Net\Documentation\DocumentationPrecedence.cs" />
-    <Compile Include="Bam.Net\Documentation\Example\DocumentationExampleClass.cs" />
-    <Compile Include="Bam.Net\Documentation\Example\DocumentationExampleClass2.cs" />
-    <Compile Include="Bam.Net\Documentation\IDescriptionProvider.cs" />
-    <Compile Include="Bam.Net\Documentation\Markdown\MethodReferenceDocumentation.cs" />
-    <Compile Include="Bam.Net\Documentation\Markdown\ReferenceDocumentation.cs" />
-    <Compile Include="Bam.Net\Documentation\Markdown\TypeReferenceDocumentation.cs" />
-    <Compile Include="Bam.Net\Documentation\ParamInfo.cs" />
-    <Compile Include="Bam.Net\Documentation\PermissionInfo.cs" />
-    <Compile Include="Bam.Net\Documentation\SeeAlsoInfo.cs" />
-    <Compile Include="Bam.Net\Documentation\TypeParamInfo.cs" />
     <Compile Include="Bam.Net\DynamicTypeInfo.cs" />
     <Compile Include="Bam.Net\DynamicTypeRecursionLimitReachedException.cs" />
     <Compile Include="Bam.Net\DynamicTypeStore.cs" />
-    <Compile Include="Bam.Net\Email.cs" />
     <Compile Include="Bam.Net\Presentation\Drawing\ColorPalette.cs" />
     <Compile Include="Bam.Net\Presentation\Drawing\Dimensions.cs" />
     <Compile Include="Bam.Net\Presentation\Drawing\Extensions.cs" />
@@ -997,7 +968,6 @@
     <Compile Include="Bam.Net\ExceptionHandling\ExceptionHandler.cs" />
     <Compile Include="Bam.Net\ExceptionHandling\IArbitrateExceptions.cs" />
     <Compile Include="Bam.Net\ExceptionHandling\ReflectionTypeLoadAggregateException.cs" />
-    <Compile Include="Bam.Net\Expect.cs" />
     <Compile Include="Bam.Net\ExpectFailedException.cs" />
     <Compile Include="Bam.Net\FileSystemWatchingExtensions.cs" />
     <Compile Include="Bam.Net\GeneratedAssemblies.cs" />
@@ -1022,7 +992,6 @@
     <Compile Include="Bam.Net\Presentation\Emoji_Generated\Qi\Code.cs" />
     <Compile Include="Bam.Net\Presentation\Emoji_Generated\Qi\Emoji.cs" />
     <Compile Include="Bam.Net\Presentation\GoogleHelper.cs" />
-    <Compile Include="Bam.Net\HashAlgorithms.cs" />
     <Compile Include="Bam.Net\IAssemblyGenerator.cs" />
     <Compile Include="Bam.Net\Presentation\Handlebars\HandlebarsDirectory.cs" />
     <Compile Include="Bam.Net\Presentation\Html\Attributes\DropDown.cs" />
@@ -1056,35 +1025,12 @@
     <Compile Include="Bam.Net\Presentation\Html\TagBuilderExtensions.cs" />
     <Compile Include="Bam.Net\Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="Bam.Net\Presentation\Html\UrlHelperExtensions.cs" />
-    <Compile Include="Bam.Net\Presentation\ICompiledTemplate.cs" />
-    <Compile Include="Bam.Net\IIpcMessageStore.cs" />
-    <Compile Include="Bam.Net\IJsonable.cs" />
     <Compile Include="Bam.Net\Presentation\ImageMagick.cs" />
     <Compile Include="Bam.Net\Presentation\Inkscape.cs" />
-    <Compile Include="Bam.Net\IOrganizationNameProvider.cs" />
     <Compile Include="Bam.Net\IpcMessage.cs" />
     <Compile Include="Bam.Net\IpcMessageLockInfo.cs" />
-    <Compile Include="Bam.Net\Presentation\IPersistenceModelProvider.cs" />
-    <Compile Include="Bam.Net\Presentation\IRenderer.cs" />
-    <Compile Include="Bam.Net\ITypeResolver.cs" />
-    <Compile Include="Bam.Net\Presentation\IViewModelProvider.cs" />
-    <Compile Include="Bam.Net\IWriteSource.cs" />
-    <Compile Include="Bam.Net\Javascript\CliProvider.cs" />
-    <Compile Include="Bam.Net\Javascript\EncryptionAlgorithm.cs" />
-    <Compile Include="Bam.Net\Javascript\Extensions.cs" />
-    <Compile Include="Bam.Net\Javascript\JsContext.cs" />
-    <Compile Include="Bam.Net\Javascript\MinifyResult.cs" />
-    <Compile Include="Bam.Net\Javascript\NodeJs\NodeScriptRunner.cs" />
-    <Compile Include="Bam.Net\Javascript\ResourceScripts.cs" />
-    <Compile Include="Bam.Net\Javascript\ScriptsController.cs" />
-    <Compile Include="Bam.Net\Javascript\Sql\JavascriptSqlProvider.cs" />
-    <Compile Include="Bam.Net\Javascript\Sql\OracleJavascriptSqlProvider.cs" />
-    <Compile Include="Bam.Net\Javascript\Sql\SQLiteJavascriptSqlProvider.cs" />
-    <Compile Include="Bam.Net\Javascript\Sql\SqlResponse.cs" />
     <Compile Include="Bam.Net\JulianDate.cs" />
-    <Compile Include="Bam.Net\Presentation\LayoutModel.cs" />
     <Compile Include="Bam.Net\LocalIpcMessageStore.cs" />
-    <Compile Include="Bam.Net\MethodCase.cs" />
     <Compile Include="Bam.Net\Month.cs" />
     <Compile Include="Bam.Net\NamedFormatter.cs" />
     <Compile Include="Bam.Net\NamedThread.cs" />
@@ -1105,7 +1051,9 @@
     <Compile Include="Bam.Net\Net\Ping\IcmpPacket.cs" />
     <Compile Include="Bam.Net\Net\Ping\InternetConnectionStateType.cs" />
     <Compile Include="Bam.Net\Net\Ping\NetworkUtilities.cs" />
-    <Compile Include="Bam.Net\Net\Ping\Ping.cs" />
+    <Compile Include="Bam.Net\Net\Ping\Ping.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Bam.Net\Net\Ping\PingCompletedEventArgs.cs" />
     <Compile Include="Bam.Net\Net\Ping\PingErrorEventArgs.cs" />
     <Compile Include="Bam.Net\Net\Ping\PingResponse.cs" />
@@ -1929,7 +1877,6 @@
     <Compile Include="Bam.Net\Server\ContentHandlerAttribute.cs" />
     <Compile Include="Bam.Net\Server\ContentLocator.cs" />
     <Compile Include="Bam.Net\Server\ContentLocatorEventArgs.cs" />
-    <Compile Include="Bam.Net\Server\ContentResponder.cs" />
     <Compile Include="Bam.Net\Server\DaoConf.cs" />
     <Compile Include="Bam.Net\Server\DaoResponder.cs" />
     <Compile Include="Bam.Net\Server\DesignController.cs" />
@@ -1984,39 +1931,12 @@
     <Compile Include="Bam.Net\Server\Listeners\BamServerEventListener.cs" />
     <Compile Include="Bam.Net\Server\Listeners\BamServerEventListenerBinder.cs" />
     <Compile Include="Bam.Net\Server\Listeners\ServerEventListenerAttribute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\ApiTypeRoute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\AppMetaInitializer.cs" />
-    <Compile Include="Bam.Net\Server\Meta\AppMetaManager.cs" />
-    <Compile Include="Bam.Net\Server\Meta\AppMetaResult.cs" />
-    <Compile Include="Bam.Net\Server\Meta\BamTypeRoute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\DataRoute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\MethodRoute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\RoutePrefixAttribute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\TypeRoute.cs" />
-    <Compile Include="Bam.Net\Server\Meta\WebBook.cs" />
-    <Compile Include="Bam.Net\Server\Meta\WebBookEventArgs.cs" />
-    <Compile Include="Bam.Net\Server\Meta\WebBookPage.cs" />
     <Compile Include="Bam.Net\Server\NotRespondedHandlerAttribute.cs" />
     <Compile Include="Bam.Net\Server\PageResult.cs" />
     <Compile Include="Bam.Net\Server\PostServerInitializationHandler.cs" />
     <Compile Include="Bam.Net\Server\ReflectionLoader.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\AppDustRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\AppTemplateRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\Base64Renderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\CommonDustRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\CommonTemplateRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\CompiledDustTemplate.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\ContentRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\CsvRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\DustScript.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\HtmlRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\JsonRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\Renderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\RendererFactory.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\ScriptRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\TxtRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\XmlRenderer.cs" />
-    <Compile Include="Bam.Net\Server\Renderers\YamlRenderer.cs" />
+    <Compile Include="Bam.Net\Server\Renderers\fx\RendererFactory.cs" />
+    <Compile Include="Bam.Net\Server\Renderers\fx\YamlRenderer.cs" />
     <Compile Include="Bam.Net\Server\RespondedHandlerAttribute.cs" />
     <Compile Include="Bam.Net\Server\Responder.cs" />
     <Compile Include="Bam.Net\Server\ResponderEventHandler.cs" />
@@ -2033,22 +1953,38 @@
     <Compile Include="Bam.Net\Server\Streaming\SecureStreamingServer.cs" />
     <Compile Include="Bam.Net\Server\TemplateInitializer.cs" />
     <Compile Include="Bam.Net\Server\UriApplicationNameResolver.cs" />
-    <Compile Include="Bam.Net\Server\WindowsServices\PollingService.cs" />
+    <Compile Include="Bam.Net\Server\WindowsServices\PollingService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Bam.Net\Server\WindowsServices\PollRequest.cs" />
     <Compile Include="Bam.Net\Server\WindowsServices\PollResponse.cs" />
-    <Compile Include="Bam.Net\ServiceExe.cs" />
+    <Compile Include="Bam.Net\ServiceExe.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Bam.Net\ServiceInfo.cs" />
     <Compile Include="Bam.Net\ServiceInstallHandler.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\BaseController.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\ExecutionResultDelegate.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\fx\ServiceProxySystem.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\HttpContextWrapper.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\JsProxyResult.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\RequestWrapper.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\ResponseWrapper.cs" />
     <Compile Include="Bam.Net\ServiceProxy\CSharpProxyResult.cs" />
     <Compile Include="Bam.Net\ServiceProxy\CsvResult.cs" />
-    <Compile Include="Bam.Net\ServiceProxy\DefaultRoleResolver.cs" />
     <Compile Include="Bam.Net\ServiceProxy\JsonpResult.cs" />
     <Compile Include="Bam.Net\ServiceProxy\RolesController.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\ApiKeyResolver.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\SecureServiceProxy_Generated\Qi\ApiKey.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\SecureServiceProxy_Generated\Qi\Application.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\SecureServiceProxy_Generated\Qi\ConfigSetting.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\SecureServiceProxy_Generated\Qi\Configuration.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\Secure\SecureServiceProxy_Generated\Qi\SecureSession.cs" />
     <Compile Include="Bam.Net\ServiceProxy\ServiceProxyController.cs" />
-    <Compile Include="Bam.Net\ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="Bam.Net\ServiceProxy\ServiceProxyWebViewPage.cs" />
     <Compile Include="Bam.Net\ServiceProxy\UrlHelperExtensions.cs" />
     <Compile Include="Bam.Net\ServiceProxy\ValidationResult.cs" />
+    <Compile Include="Bam.Net\ServiceProxy\XmlResult.cs" />
     <Compile Include="Bam.Net\Services\Administration\AdministrationService.cs" />
     <Compile Include="Bam.Net\Services\Administration\AdministrationServiceRegistryContainer.cs" />
     <Compile Include="Bam.Net\Services\ApiKeyVaultInfo.cs" />
@@ -2493,9 +2429,38 @@
     <Compile Include="Bam.Net\UserAccounts\DaoMembershipUser.cs" />
     <Compile Include="Bam.Net\UserAccounts\DaoPrincipal.cs" />
     <Compile Include="Bam.Net\UserAccounts\DaoRoleProvider.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ActiveDirectoryAuthenticator.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ActiveDirectoryCredentials.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ActiveDirectoryEventArgs.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ActiveDirectoryReader.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ActiveDirectoryRoleReader.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\DomainControllerInfo.cs" />
     <Compile Include="Bam.Net\UserAccounts\DirectoryServices\Extensions.cs" />
+    <Compile Include="Bam.Net\UserAccounts\DirectoryServices\ResultantGroupMemberResolver.cs" />
+    <Compile Include="Bam.Net\UserAccounts\IWebUserResolver.cs" />
     <Compile Include="Bam.Net\UserAccounts\User.cs" />
-    <Compile Include="Bam.Net\UserAccounts\UserManager.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Account.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Group.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\GroupPermission.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\LockOut.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Login.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Password.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\PasswordFailure.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\PasswordQuestion.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\PasswordReset.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Permission.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Role.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Session.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\SessionState.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\Setting.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\TreeNode.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\User.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\UserBehavior.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\UserGroup.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\UserPermission.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserAccounts_Generated\Qi\UserRole.cs" />
+    <Compile Include="Bam.Net\UserAccounts\UserInfo.cs" />
+    <Compile Include="Bam.Net\UserAccounts\fx\UserNameInUseException.cs" />
     <Compile Include="Bam.Net\UserUtil.cs" />
     <Compile Include="Bam.Net\Validate.cs" />
     <Compile Include="Bam.Net\Presentation\ViewModel.cs" />
@@ -2801,9 +2766,6 @@
     <None Include="Bam.Net\CoreServices\OAuth\regen_oauth_dao.cmd" />
     <None Include="Bam.Net\CoreServices\ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
     <None Include="Bam.Net\Data\Dynamic\regen_data_dynamic_dao.cmd" />
-    <None Include="Bam.Net\Documentation\XmlDocumentation.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Bam.Net\Presentation\Dust\test.dust" />
     <None Include="Bam.Net\Presentation\Emojis.sqlite" />
     <None Include="Bam.Net\Presentation\README.md" />
@@ -2840,9 +2802,6 @@
     <Content Include="Bam.Net\Presentation\Html\Js\spin.js" />
     <Content Include="Bam.Net\Presentation\Markdown\TODO.txt" />
     <Content Include="Bam.Net\Schema.Org\Js\Sdo.js" />
-    <Content Include="Bam.Net\Server\Renderers\dust-full-0.3.0.js" />
-    <Content Include="Bam.Net\Server\Renderers\dust.custom.js" />
-    <Content Include="Bam.Net\Server\Renderers\json2.js" />
     <Content Include="Bam.Net\Services\OpenApi\OpenApi.db.js" />
     <Content Include="Bam.Net\Translation\Translation.db.js" />
   </ItemGroup>
@@ -2864,7 +2823,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Bam.Net\ServiceProxy\Secure\fx\" />
+  </ItemGroup>
   <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\..\..\..\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\..\..\..\..\..\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />

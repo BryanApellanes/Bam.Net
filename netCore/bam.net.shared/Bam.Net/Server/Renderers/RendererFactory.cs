@@ -20,7 +20,7 @@ namespace Bam.Net.Server.Renderers
     /// <summary>
     /// Factory for creating renderers based on file extension.
     /// </summary>
-    public class RendererFactory: Renderer
+    public partial class RendererFactory: Renderer
     {
         Dictionary<string, Func<IRenderer>> _renderers;
         public RendererFactory(ILogger logger)
@@ -125,32 +125,6 @@ namespace Bam.Net.Server.Renderers
             return contentType;
         }
 
-        public override void Render(object toRender, Stream output)
-        {
-            // if there is no extension ensure the result is a string
-            // use our own Render method
-            string msg = "No renderer was found and the specified object to render was not a string or byte array: ({0}):: ({1})"._Format(toRender.GetType().Name, toRender.ToString());
-            if (toRender == null)
-            {
-                msg = "toRender was null";
-            }
-
-            string toRenderAsString = toRender as string;
-            byte[] toRenderAsByteArray = toRender as byte[];            
-            if (toRenderAsString == null && toRenderAsByteArray == null)
-            {
-                Tag div = new Tag("div").Class("error").Text(msg);
-                toRenderAsString = div.ToHtmlString();
-                toRenderAsByteArray = Encoding.UTF8.GetBytes(toRenderAsString);
-            }
-            else if(toRenderAsString != null)
-            {
-                toRenderAsByteArray = Encoding.UTF8.GetBytes(toRenderAsString);
-            }
-
-            output.Write(toRenderAsByteArray, 0, toRenderAsByteArray.Length);
-        }
-
         /// <summary>
         /// Adds the renderer.
         /// </summary>
@@ -171,9 +145,8 @@ namespace Bam.Net.Server.Renderers
                 else
                 {
                     IRenderer alreadySet = _renderers[ext]();
-                    Logger.AddEntry("{0}::Renderer of type ({1}) for extension ({2}) has already been added, Renderer of type ({3}) will not be added",
-                        LogEventType.Warning,
-                        typeof(ServiceProxyResponder).Name,
+                    Logger.AddEntry("Renderer of type ({0}) for extension ({1}) has already been added, Renderer of type ({2}) will not be added",
+                        LogEventType.Warning,                        
                         alreadySet.GetType().Name,
                         ext,
                         renderer.GetType().Name
@@ -181,14 +154,6 @@ namespace Bam.Net.Server.Renderers
                 }
             });
         }
-        
-        private void AddBaseRenderers()
-        {
-            AddRenderer(() => new JsonRenderer());
-            AddRenderer(() => new XmlRenderer());
-            AddRenderer(() => new YamlRenderer());
-            AddRenderer(() => new CsvRenderer());
-            AddRenderer(() => new TxtRenderer());            
-        }
+
     }
 }

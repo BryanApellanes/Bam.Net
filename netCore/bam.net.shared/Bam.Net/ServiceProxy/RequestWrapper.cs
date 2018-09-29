@@ -15,12 +15,8 @@ using System.Diagnostics;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class RequestWrapper: IRequest
+    public partial class RequestWrapper: IRequest
     {
-        public static implicit operator HttpRequestBase(RequestWrapper wrapper)
-        {
-            return (HttpRequestBase)wrapper.Wrapped;
-        }
 
         public static implicit operator HttpListenerRequest(RequestWrapper wrapper)
         {
@@ -28,12 +24,6 @@ namespace Bam.Net.ServiceProxy
         }
 
         public RequestWrapper(HttpListenerRequest request)
-        {
-            DefaultConfiguration.CopyProperties(request, this);
-            this.Wrapped = request;
-        }
-
-        public RequestWrapper(HttpRequestBase request)
         {
             DefaultConfiguration.CopyProperties(request, this);
             this.Wrapped = request;

@@ -14,18 +14,12 @@ using System.Reflection;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class ResponseWrapper: IResponse
+    public partial class ResponseWrapper: IResponse
     {
         public ResponseWrapper(HttpListenerResponse response)
         {
             DefaultConfiguration.CopyProperties(response, this);
             this.Wrapped = response;            
-        }
-
-        public ResponseWrapper(HttpResponseBase response)
-        {
-            DefaultConfiguration.CopyProperties(response, this);
-            this.Wrapped = response;
         }
 
         internal ResponseWrapper(object responseToBeWrapped)

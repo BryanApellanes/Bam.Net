@@ -20,7 +20,7 @@ using Org.BouncyCastle.Security;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class ServiceProxySystem
+    public partial class ServiceProxySystem
     {
         public const string ServiceProxyPartialFormat = "~/Views/ServiceProxy/{0}/{1}";
 
@@ -38,50 +38,6 @@ namespace Bam.Net.ServiceProxy
             return random.GenerateSeed(64).ToBase64().Sha256();            
         }
 
-        static bool initialized;
-        static object initLock = new object();
-        /// <summary>
-        /// Initialize the underlying ServiceProxySystem, including registering the 
-        /// necessary ServiceProxy routes in System.Web.Routing.RouteTable.Routes.
-        /// </summary>
-        public static void Initialize()
-        {
-            if (!initialized)
-            {
-                lock (initLock)
-                {
-                    initialized = true;
-                    RegisterRoutes();
-                    ServiceProxyController.Init();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Maps the ServiceProxy routes in the default Mvc RouteTable.
-        /// This should be called from Global before setting the default
-        /// action route.
-        /// </summary>
-        public static void RegisterRoutes()
-        {
-            RegisterRoutes(RouteTable.Routes);
-        }
-
-        /// <summary>
-        /// Maps the ServiceProxy routes in the specified RouteCollection.
-        /// This should be called from Global before setting the default
-        /// action route.
-        /// </summary>
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.MapRoute(
-                "ServiceProxy",
-                "{action}/{className}/{methodName}.{ext}",
-                new { controller = "ServiceProxy", action = "Get", ext = "json" },
-                new string[] { "Bam.Net.ServiceProxy" }
-            );
-        }
 
         static string _proxySearchPattern;
         static object _proxySearchPatternLock = new object();
@@ -111,18 +67,6 @@ namespace Bam.Net.ServiceProxy
             private set;
         }
 
-        /// <summary>
-        /// Analyzes all the files in the bin directory of the current app that match the
-        /// ProxySearchPattern and registers as services any class found addorned with the 
-        /// ProxyAttribute
-        /// </summary>
-        /// <see cref="ServiceProxySystem.ProxySearchPattern" />
-        public static void RegisterBinProviders()
-        {
-            HttpServerUtility server = HttpContext.Current.Server;
-            DirectoryInfo bin = new DirectoryInfo(server.MapPath("~/bin"));
-            RegisterTypesWithAttributeFrom<ProxyAttribute>(bin);
-        }
 
         /// <summary>
         /// Searches the specified folder for assemblies that contain types 
@@ -222,17 +166,6 @@ namespace Bam.Net.ServiceProxy
         public static void Unregister<T>()
         {
             Incubator.Remove<T>();
-        }
-
-        /// <summary>
-        /// Register the specified handler to handle the specified file extension.
-        /// </summary>
-        /// <param name="extension"></param>
-        /// <param name="handler"></param>
-        /// <param name="reset"></param>
-        public static void RegisterServiceProxyRequestDelegate(string extension, ExecutionResultDelegate handler, bool reset = false)
-        {
-            ServiceProxyController.RegisterServiceProxyRequestDelegate(extension, handler, reset);
         }
 
         public static ServiceProxyClient<T> CreateClient<T>(string baseAddress)
@@ -674,54 +607,7 @@ namespace {0}
 
             return varName;
         }
-
-        internal static bool ServiceProxyPartialExists(Type type, string viewName)
-        {
-            return ServiceProxyPartialExists(type.Name, viewName);
-        }
-
-        internal static bool ServiceProxyPartialExists(string typeName, string viewName)
-        {
-            List<string> fileExtensions = new List<string>
-            {
-                ".cshtml",
-                ".vbhtml",
-                ".aspx",
-                ".ascx"
-            };
-            string path = System.Web.HttpContext.Current.Server.MapPath(string.Format(ServiceProxyPartialFormat, typeName, viewName));
-
-            bool exists = false;
-            foreach (string ext in fileExtensions)
-            {
-                if (System.IO.File.Exists(string.Format("{0}{1}", path, ext)))
-                {
-                    exists = true;
-                    break;
-                }
-            }
-            return exists;
-        }
-
-
-        internal static void WriteServiceProxyPartial(Type type, string viewName)
-        {
-            string path = System.Web.HttpContext.Current.Server.MapPath(string.Format(ServiceProxyPartialFormat, type.Name, viewName));
-            path = string.Format("{0}.cshtml", path);
-            StringBuilder source = BuildPartialView(type);
-
-            WriteServiceProxyPartial(path, source);
-        }
-
-        internal static void WriteVoidServiceProxyPartial(string viewName)
-        {
-            string path = System.Web.HttpContext.Current.Server.MapPath(string.Format(ServiceProxyPartialFormat, "Void", viewName));
-            path = string.Format("{0}.cshtml", path);
-            StringBuilder builder = new StringBuilder();
-            builder.Append("@* place holder *@\r\n\r\n<h1>Void place holder</h1>");
-            WriteServiceProxyPartial(path, builder);
-        }
-
+        
         private static void WriteServiceProxyPartial(string path, StringBuilder source)
         {
             FileInfo file = new FileInfo(path);
