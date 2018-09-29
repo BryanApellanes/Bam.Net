@@ -1105,9 +1105,7 @@
     <Compile Include="Bam.Net\Net\Ping\IcmpPacket.cs" />
     <Compile Include="Bam.Net\Net\Ping\InternetConnectionStateType.cs" />
     <Compile Include="Bam.Net\Net\Ping\NetworkUtilities.cs" />
-    <Compile Include="Bam.Net\Net\Ping\Ping.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Bam.Net\Net\Ping\Ping.cs" />
     <Compile Include="Bam.Net\Net\Ping\PingCompletedEventArgs.cs" />
     <Compile Include="Bam.Net\Net\Ping\PingErrorEventArgs.cs" />
     <Compile Include="Bam.Net\Net\Ping\PingResponse.cs" />
@@ -2035,14 +2033,10 @@
     <Compile Include="Bam.Net\Server\Streaming\SecureStreamingServer.cs" />
     <Compile Include="Bam.Net\Server\TemplateInitializer.cs" />
     <Compile Include="Bam.Net\Server\UriApplicationNameResolver.cs" />
-    <Compile Include="Bam.Net\Server\WindowsServices\PollingService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Bam.Net\Server\WindowsServices\PollingService.cs" />
     <Compile Include="Bam.Net\Server\WindowsServices\PollRequest.cs" />
     <Compile Include="Bam.Net\Server\WindowsServices\PollResponse.cs" />
-    <Compile Include="Bam.Net\ServiceExe.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Bam.Net\ServiceExe.cs" />
     <Compile Include="Bam.Net\ServiceInfo.cs" />
     <Compile Include="Bam.Net\ServiceInstallHandler.cs" />
     <Compile Include="Bam.Net\ServiceProxy\CSharpProxyResult.cs" />
