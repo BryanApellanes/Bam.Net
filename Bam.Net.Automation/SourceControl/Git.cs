@@ -50,9 +50,9 @@ namespace Bam.Net.Automation.SourceControl
 
         public Git Clone(string gitArguments)
         {
-            if (!string.IsNullOrEmpty(_configStack.LocalRepository))
+            if (!string.IsNullOrEmpty(_configStack?.LocalRepository))
             {
-                return CloneTo(_configStack.LocalRepository, gitArguments);
+                return CloneTo(_configStack?.LocalRepository, gitArguments);
             }
             throw new InvalidOperationException("Local repository not set");
         }
