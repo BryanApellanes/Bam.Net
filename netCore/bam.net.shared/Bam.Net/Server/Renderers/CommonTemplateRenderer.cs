@@ -14,7 +14,7 @@ namespace Bam.Net.Server.Renderers
     /// a given object.  In other words writes
     /// the default template for an object.
     /// </summary>
-    public class CommonTemplateRenderer: Renderer
+    public partial class CommonTemplateRenderer: Renderer
     {
 		public const string ViewFolderName = "views";
         public CommonTemplateRenderer(ContentResponder content)
@@ -71,26 +71,5 @@ namespace Bam.Net.Server.Renderers
             byte[] data = Encoding.UTF8.GetBytes(fieldSet);
             output.Write(data, 0, data.Length);
         }
-
-        protected internal static MvcHtmlString FieldSetFor(string json, string legendText = null, object wrapperAttrs = null , bool setValues = false)
-        {
-            return HtmlHelperExtensions.FieldsetFor(null, json, legendText, wrapperAttrs, setValues);
-        }
-
-        protected internal static MvcHtmlString FieldSetFor(dynamic obj, string legendText, object wrapperAttrs = null, bool setValues = false)
-        {
-            return HtmlHelperExtensions.FieldsetFor(null, obj, legendText, wrapperAttrs, setValues);
-        }
-
-        public static MvcHtmlString FieldSetFor(Type type, object defaults = null, string legendText = null, object wrapperAttrs = null)
-        {
-            return HtmlHelperExtensions.FieldSetFor(null, type, defaults, legendText, wrapperAttrs);
-        }
-
-        protected internal static MvcHtmlString InputsFor(Type type, object defaults = null, object wrapperAttrs = null)
-        {
-            return HtmlHelperExtensions.InputsFor(null, type, defaults, wrapperAttrs);
-        }
-
     }
 }

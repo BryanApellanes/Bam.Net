@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.fx", "bam.net.fx\ba
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "bam.net.shared", "bam.net.shared\bam.net.shared.shproj", "{8F2CB78E-8C2E-45C6-97A0-C38F60A85E98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.core", "bam.net.core\bam.net.core.csproj", "{45A5ACB1-7091-43C6-AAB5-77963CCDCB23}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		bam.net.shared\bam.net.shared.projitems*{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}*SharedItemsImports = 4
@@ -29,10 +27,6 @@ Global
 		{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45A5ACB1-7091-43C6-AAB5-77963CCDCB23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45A5ACB1-7091-43C6-AAB5-77963CCDCB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45A5ACB1-7091-43C6-AAB5-77963CCDCB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45A5ACB1-7091-43C6-AAB5-77963CCDCB23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

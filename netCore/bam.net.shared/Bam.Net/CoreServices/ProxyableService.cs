@@ -26,7 +26,7 @@ namespace Bam.Net.CoreServices
     /// and Data tracking.
     /// </summary>
     [Encrypt]
-    public abstract class ProxyableService: Loggable, IRequiresHttpContext, IDiagnosable
+    public abstract partial class ProxyableService: Loggable, IRequiresHttpContext, IDiagnosable
     {
         protected ProxyableService()
         {
@@ -343,7 +343,5 @@ namespace Bam.Net.CoreServices
         {
             get;set;
         }
-
-        public abstract Dictionary<string, string> GetSettings();
     }
 }
