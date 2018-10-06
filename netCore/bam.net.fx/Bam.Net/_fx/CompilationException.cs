@@ -11,14 +11,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net
 {
+    [Serializable]
 	public partial class CompilationException: Exception
 	{
-		public CompilationException(CompilerResults compilerResults)
-			: base(AdHocCSharpCompiler.GetMessage(compilerResults))
-		{
-			this.Results = compilerResults;
-		}
-
-		public CompilerResults Results { get; set; }
+        public CompilationException(SerializationInfo info, StreamingContext context) { }
 	}
 }

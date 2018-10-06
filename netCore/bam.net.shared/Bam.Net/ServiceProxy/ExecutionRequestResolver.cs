@@ -31,8 +31,8 @@ namespace Bam.Net.ServiceProxy
         public virtual ExecutionRequest ResolveExecutionRequest()
         {
             Args.ThrowIfNull(ServiceProvider, $"{nameof(ExecutionRequestResolver)}.{nameof(ServiceProvider)}");
-            Args.ThrowIfNull(ServiceProvider, $"{nameof(ExecutionRequestResolver)}.{nameof(HttpContext)}");
-            Args.ThrowIfNull(ServiceProvider, $"{nameof(ExecutionRequestResolver)}.{nameof(ProxyAliases)}");
+            Args.ThrowIfNull(HttpContext, $"{nameof(ExecutionRequestResolver)}.{nameof(HttpContext)}");
+            Args.ThrowIfNull(ProxyAliases, $"{nameof(ExecutionRequestResolver)}.{nameof(ProxyAliases)}");
             return ResolveExecutionRequest(HttpContext, ServiceProvider, ProxyAliases);
         }
 

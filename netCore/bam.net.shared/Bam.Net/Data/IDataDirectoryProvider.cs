@@ -13,6 +13,8 @@ namespace Bam.Net.Data
         DirectoryInfo GetAppEmailTemplatesDirectory(IApplicationNameProvider applicationNameProvider);
         DirectoryInfo GetRootDataDirectory();
         DirectoryInfo GetSysDataDirectory();
+        DirectoryInfo GetSysAssemblyDirectory();
         DirectoryInfo GetChunksDirectory();
+        DirectoryInfo GetFilesDirectory();
     }
 }

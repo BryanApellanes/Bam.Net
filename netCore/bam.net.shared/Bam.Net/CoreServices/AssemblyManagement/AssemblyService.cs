@@ -9,6 +9,7 @@ using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data;
 using System.Collections.Generic;
 using Bam.Net.Data.Repositories;
+using Bam.Net.Data;
 
 namespace Bam.Net.CoreServices
 {
@@ -19,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Proxy("assemblySvc")]
     public class AssemblyService : ApplicationProxyableService, IAssemblyService
     {
-        public AssemblyService(DefaultDataDirectoryProvider dataSettings, IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
+        public AssemblyService(IDataDirectoryProvider dataSettings, IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
         {
             DataSettings = dataSettings;
             FileService = fileService;
@@ -38,7 +39,7 @@ namespace Bam.Net.CoreServices
         public event EventHandler CurrentRuntimePersisted;
         public event EventHandler ExceptionPersistingCurrentRuntime;
         public event EventHandler RuntimeRestored;
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public string AssemblyDirectory
         {
             get
