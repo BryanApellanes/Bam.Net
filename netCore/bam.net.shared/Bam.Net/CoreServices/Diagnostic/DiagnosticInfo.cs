@@ -8,26 +8,8 @@ using Bam.Net.CoreServices.Diagnostic;
 
 namespace Bam.Net.CoreServices
 {
-    [Serializable]
-    public class DiagnosticInfo
+    public partial class DiagnosticInfo
     {
-        public DiagnosticInfo(ServiceRegistry registry = null)
-        {
-            ServiceRegistry = registry;
-
-            SetAssemblies();
-
-            SetDatabases();
-
-            SetDaoProxies();
-
-            SetServiceProxies();
-
-            SetDiagnosableSettings();
-
-            AppDiagInfo = new ApplicationDiagnosticInfo();
-        }
-
         protected ServiceRegistry ServiceRegistry { get; set; }
 
         public ProcessDescriptor ProcessDescriptor
@@ -51,12 +33,6 @@ namespace Bam.Net.CoreServices
         }
 
         public DatabaseInfo[] Databases
-        {
-            get;
-            set;
-        }
-
-        public DaoProxyRegistrationInfo[] DaoProxies
         {
             get;
             set;
@@ -98,16 +74,6 @@ namespace Bam.Net.CoreServices
                 serviceProxies.Add(new ServiceProxyInfo(ServiceProxySystem.Incubator[cn]));
             });
             this.ServiceProxies = serviceProxies.ToArray();
-        }
-
-        private void SetDaoProxies()
-        {
-            List<DaoProxyRegistrationInfo> daoProxies = new List<DaoProxyRegistrationInfo>();
-            DaoProxyRegistration.Registrations.Keys.Each(ctx =>
-            {
-                daoProxies.Add(new DaoProxyRegistrationInfo(DaoProxyRegistration.Registrations[ctx]));
-            });
-            this.DaoProxies = daoProxies.ToArray();
         }
 
         private void SetDatabases()

@@ -28,8 +28,7 @@ namespace Bam.Net.Web
 
 		public override string ToString()
 		{
-			string format = "{Alias}.{ClassName}";
-			return format.NamedFormat(this);
+			return $"{Alias}.{ClassName}";
 		}
 
 		public override int GetHashCode()

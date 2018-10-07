@@ -24,8 +24,9 @@ namespace Bam.Net.Data.Repositories
         void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor);        
 		IEnumerable<object> Query(string propertyName, object propertyValue);
         IEnumerable<T> Query<T>(Dictionary<string, object> queryParams) where T: class, new();
-        IEnumerable<object> Query(Type type, dynamic queryParams);        
-		IEnumerable<T> Query<T>(dynamic query) where T : class, new();
+        IEnumerable<object> Query(Type type, dynamic queryParams);
+        new IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters);
+        IEnumerable<T> Query<T>(dynamic query) where T : class, new();
         IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
         IEnumerable<object> Query(Type type, Func<object, bool> predicate);        
         object Create(Type type, object toCreate);        

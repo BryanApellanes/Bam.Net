@@ -16,5 +16,15 @@ namespace Bam.Net.Data
         DirectoryInfo GetSysAssemblyDirectory();
         DirectoryInfo GetChunksDirectory();
         DirectoryInfo GetFilesDirectory();
+
+        DirectoryInfo GetWorkspaceDirectory(Type type);
+
+        /// <summary>
+        /// Whem implemented, returns the path to the specified directory at the root 
+        /// of the SysData directory (as returned by GetSysDataDirectory).
+        /// </summary>
+        /// <param name="directoryName">Name of the directory.</param>
+        /// <returns></returns>
+        DirectoryInfo GetSysDataDirectory(string directoryName);
     }
 }

@@ -73,7 +73,27 @@ namespace Bam.Net.Server
                 FileCachesByExtension.AddMissing(ext, CreateCache(ext));
             }
         }
-    
+
+        ConcurrentDictionary<string, byte[]> _pageMinCache;
+        object _pageMinCacheLock = new object();
+        protected ConcurrentDictionary<string, byte[]> MinCache
+        {
+            get
+            {
+                return _pageMinCacheLock.DoubleCheckLock(ref _pageMinCache, () => new ConcurrentDictionary<string, byte[]>());
+            }
+        }
+
+        ConcurrentDictionary<string, byte[]> _zippedPageMinCache;
+        object _zippedPageMinCacheLock = new object();
+        protected ConcurrentDictionary<string, byte[]> ZippedMinCache
+        {
+            get
+            {
+                return _zippedPageMinCacheLock.DoubleCheckLock(ref _zippedPageMinCache, () => new ConcurrentDictionary<string, byte[]>());
+            }
+        }
+
         /// <summary>
         /// Uncache the specified file forcing it to be reloaded the next time it is 
         /// requested.
@@ -94,8 +114,6 @@ namespace Bam.Net.Server
                 }
             });
         }
-
-
 
         /// <summary>
         /// The server content root path, not to be confused with the 

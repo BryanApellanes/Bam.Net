@@ -13,41 +13,8 @@ namespace Bam.Net
     /// <summary>
     /// Utility for getting information about the current user.
     /// </summary>
-    public class UserUtil
+    public partial class UserUtil
     {
-        /// <summary>
-        /// Get the username of the current user if HttpContext.Current
-        /// is not null and contains user information.
-        /// </summary>
-        /// <returns></returns>
-        public static string GetCurrentWebUserName()
-        {
-            return GetCurrentWebUserName(false);
-        }
-
-        /// <summary>
-        /// Get the username of the current user if HttpContext.Current
-        /// is not null and contains user information.
-        /// </summary>
-        /// <param name="includeDomain"></param>
-        /// <returns></returns>
-        public static string GetCurrentWebUserName(bool includeDomain)
-        {
-            string ret = "";
-            if (HttpContext.Current != null &&
-                HttpContext.Current.User != null &&
-                HttpContext.Current.User.Identity != null &&
-                !string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
-            {
-                ret = HttpContext.Current.User.Identity.Name;
-            }
-
-            if (!includeDomain && !string.IsNullOrEmpty(ret))
-                ret = StripDomain(ret);
-
-            return ret;
-        }
-
         /// <summary>
         /// Returns the value at index 1 after splitting the specified name
         /// at the backslash character (\).  If there are no backslash characters the 
@@ -69,37 +36,6 @@ namespace Bam.Net
             {
                 return "";
             }
-        }
-
-        /// <summary>
-        /// Returns the current user of the application.  If this 
-        /// method is called from a web application the current web
-        /// user is returned, otherwise the name of the owner of the
-        /// current process is returned.
-        /// </summary>
-        /// <returns></returns>
-        public static string GetCurrentUser()
-        {
-            return GetCurrentUser(false);
-        }
-
-        /// <summary>
-        /// Returns the current user of the application.  If this 
-        /// method is called from a web application the current web
-        /// user is returned, otherwise the name of the owner of the
-        /// current process is returned.
-        /// </summary>
-        /// <param name="includeDomain"></param>
-        /// <returns></returns>
-        public static string GetCurrentUser(bool includeDomain)
-        {
-            string user = GetCurrentWebUserName(includeDomain);
-            if (string.IsNullOrEmpty(user))
-            {
-                user = GetCurrentWindowsUser(includeDomain);
-            }
-
-            return user;
         }
 
         /// <summary>
@@ -148,18 +84,6 @@ namespace Bam.Net
         public static string GetCurrentWindowsUserDomain()
         {
             string userWithDomain = GetCurrentWindowsUser(true);
-            return GetDomain(userWithDomain);
-        }
-
-        /// <summary>
-        /// Gets the domain of the current user.  If running in a web app the 
-        /// web user's domain is returned otherwise the domain of the current
-        /// windows user is returned.
-        /// </summary>
-        /// <returns></returns>
-        public static string GetCurrentUserDomain()
-        {
-            string userWithDomain = GetCurrentUser(true);
             return GetDomain(userWithDomain);
         }
 

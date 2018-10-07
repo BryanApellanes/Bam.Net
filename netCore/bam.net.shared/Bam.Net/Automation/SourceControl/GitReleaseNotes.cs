@@ -4,19 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
-using Bam.Net.Automation.Nuget;
 
 namespace Bam.Net.Automation.SourceControl
 {
-    public class GitReleaseNotes
+    public partial class GitReleaseNotes
     {
-        public GitReleaseNotes(string sinceVersion, string packageId = "")
-        {
-            PackageId = packageId;
-            Bullet = " - ";
-            Since = new PackageVersion(sinceVersion);
-            Bullets = new StringBuilder();
-        }
         public string PackageId { get; set; }
         public string Value
         {
@@ -25,9 +17,10 @@ namespace Bam.Net.Automation.SourceControl
                 return $"{Summary}\r\n{Bullets.ToString()}";
             }
         }
+
         public string Summary { get; set; }
         public string Bullet { get; set; }
-        public PackageVersion Since { get; set; }
+        
         public int CommitCount { get; set; }
         protected StringBuilder Bullets { get; set; }
         protected void AddBullet(string value, string commitHash)

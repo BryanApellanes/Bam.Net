@@ -283,6 +283,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bam.Net\_fx\CompilationException.cs" />
+    <Compile Include="Bam.Net\_fx\IIpcMessageStore.cs" />
+    <Compile Include="Bam.Net\_fx\Providers.cs" />
+    <Compile Include="Bam.Net\_fx\UserUtil.cs" />
     <Compile Include="Bam.Net\_fx\_Analytics\_Analytics_Generated\_Qi\Category.cs" />
     <Compile Include="Bam.Net\_fx\_Analytics\_Analytics_Generated\_Qi\ClickCounter.cs" />
     <Compile Include="Bam.Net\_fx\_Analytics\_Analytics_Generated\_Qi\Counter.cs" />
@@ -309,7 +312,53 @@
     <Compile Include="Bam.Net\_fx\_Analytics\_Analytics_Generated\_Qi\UserIdentifier.cs" />
     <Compile Include="Bam.Net\_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Definition.cs" />
     <Compile Include="Bam.Net\_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Word.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\AssemblyAttributeInfo.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\JobManagerService.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\SuspendedJob.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\SuspendJobWorker.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\conventionbasedpackage.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\NugetPackageIdentifier.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\NuspecFile.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\package.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\packages.cs">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\packages.Designer.cs">
+      <DependentUpon>packages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\packages1.Designer.cs">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Bam.Net\_fx\_Automation\_Nuget\PackageVersion.cs" />
+    <Compile Include="Bam.Net\_fx\_Automation\_SourceControl\GitReleaseNotes.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\CompositeRepository.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\ProxyableService.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ActiveApiKeyIndex.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ApiKey.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Application.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ApplicationMachine.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Client.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ClientServerConnection.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Configuration.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ConfigurationSetting.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostAddress.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostDomain.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostDomainApplication.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Machine.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Nic.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Organization.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\OrganizationUser.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ProcessDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Subscription.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\User.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\UserSetting.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptorProcessRuntimeDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyReferenceDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyRevision.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\ProcessRuntimeDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\_OAuth\_Data\_Generated_Dao\_Qi\OAuthSettingsData.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\MachineRegistries.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceDescriptor.cs" />
@@ -318,18 +367,35 @@
     <Compile Include="Bam.Net\_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceRegistryLoaderDescriptor.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceRegistryLock.cs" />
     <Compile Include="Bam.Net\_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceTypeIdentifier.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookCall.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookDescriptor.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="Bam.Net\_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookSubscriber.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\DaoController.cs" />
     <Compile Include="Bam.Net\_fx\_Data\DaoProxyRegistrationInfo.cs" />
     <Compile Include="Bam.Net\_fx\_Data\DaoProxyResult.cs" />
     <Compile Include="Bam.Net\_fx\_Data\DaoProxySystem.cs" />
     <Compile Include="Bam.Net\_fx\_Data\Database.cs" />
     <Compile Include="Bam.Net\_fx\_Data\DaoProxyRegistration.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\BackedupDatabase.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DaoToDtoGenerator.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\Dto.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoModel.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoTemplate.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\FsRepository.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\LuceneIndexExtensions.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\MongoObjectReaderWriter.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectPersister.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectPersisterDirectoryProvider.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectReader.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectRepository.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\SchemaRepositoryTemplate.cs" />
     <Compile Include="Bam.Net\_fx\Extensions.cs" />
     <Compile Include="Bam.Net\_fx\HashExtensions.cs" />
+    <Compile Include="Bam.Net\_fx\_Documentation\DocInfoResult.cs" />
+    <Compile Include="Bam.Net\_fx\_Encryption\_Encryption_Generated\_Qi\Vault.cs" />
+    <Compile Include="Bam.Net\_fx\_Encryption\_Encryption_Generated\_Qi\VaultItem.cs" />
+    <Compile Include="Bam.Net\_fx\_Encryption\_Encryption_Generated\_Qi\VaultKey.cs" />
     <Compile Include="Bam.Net\_fx\_Incubation\_Mvc\BamControllerFactory.cs" />
     <Compile Include="Bam.Net\_fx\_Incubation\_Mvc\BamDepencyResolver.cs" />
     <Compile Include="Bam.Net\_fx\_Automation\_Automation_Generated\_Qi\DeferredJobData.cs" />
@@ -373,7 +439,31 @@
     <Compile Include="Bam.Net\_fx\_Data\_OleDb\OleDbSqlStringBuilder.cs" />
     <Compile Include="Bam.Net\_fx\DynamicTypeInfo.cs" />
     <Compile Include="Bam.Net\_fx\DynamicTypeStore.cs" />
+    <Compile Include="Bam.Net\_fx\_Javascript\ScriptsController.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\Log.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\ObjectRepositoryLogger.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\ObjectRepositoryLoggerLogReader.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\WindowsEventIdProvider.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\WindowsLogger.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\CategoryName.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\ComputerName.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\Event.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\EventParam.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\Param.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\Signature.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\SourceName.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\UserName.cs" />
+    <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger_Generated\_Qi\LogEvent.cs" />
+    <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\DirectMessage.cs" />
+    <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\EmailMessage.cs" />
+    <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\Message.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\GoogleHelper.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\ImageMagick.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\Inkscape.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\_Dust\Dust.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustController.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustException.cs" />
+    <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustTemplate.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustTemplateResult.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustView.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Dust\DustViewEngine.cs" />
@@ -453,11 +543,14 @@
     <Compile Include="Bam.Net\_fx\_Presentation\_Pdf\PdfOrientation.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Pdf\PdfOutput.cs" />
     <Compile Include="Bam.Net\_fx\RoleRequiredAttribute.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\AppContentResponder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\Bam.cs" />
     <Compile Include="Bam.Net\_fx\_Server\BamController.cs" />
     <Compile Include="Bam.Net\_fx\_Server\ContentResponder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\DesignController.cs" />
     <Compile Include="Bam.Net\_fx\_Server\DocsController.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\Fs.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\IContent.cs" />
     <Compile Include="Bam.Net\_fx\_Server\IncludeOrder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\Includes.cs" />
     <Compile Include="Bam.Net\_fx\_Server\PageResult.cs" />
@@ -474,7 +567,9 @@
     </Compile>
     <Compile Include="Bam.Net\_fx\ServiceInfo.cs" />
     <Compile Include="Bam.Net\_fx\ServiceInstallHandler.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\_Rest\RestResponder.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\BaseController.cs" />
+    <Compile Include="Bam.Net\_fx\_ServiceProxy\DefaultRoleResolver.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ExecutionResultDelegate.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\HttpContextWrapper.cs" />
@@ -499,6 +594,7 @@
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionData.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionRequestData.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionResponseData.cs" />
+    <Compile Include="Bam.Net\_fx\_Services\_DataReplication\FileSequenceProvider.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\SequenceFile.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\_Generated_Dao\_Qi\CreateOperation.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DataPoint.cs" />
@@ -516,6 +612,7 @@
     <Compile Include="Bam.Net\_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\FixedField.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\ObjectDescriptor.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\PatternedField.cs" />
+    <Compile Include="Bam.Net\_fx\_Translation\Culture.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaomembershipProvider.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaoMembershipUser.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaoPrincipal.cs" />
@@ -563,16 +660,38 @@
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\ReadOnly.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\StringInput.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\TextArea.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\ServiceProxySystemYaml.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlFile.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlResult.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\_Data\YamlDataDirectory.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\_Data\YamlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="Bam.Net\_fx\_Automation\_Nuget\packages.xsc">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </None>
+    <None Include="Bam.Net\_fx\_Automation\_Nuget\packages.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>packages1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Bam.Net\_fx\_Automation\_Nuget\packages.xss">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </None>
+    <None Include="Bam.Net\_fx\_Presentation\_Dust\test.dust" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bam.Net\_fx\_Data\_OleDb\empty.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Bam.Net\_fx\_Presentation\_Dust\dust-full-0.3.0.js" />
+    <Content Include="Bam.Net\_fx\_Presentation\_Dust\dust.custom.js" />
+    <Content Include="Bam.Net\_fx\_Presentation\_Dust\feather.js" />
+    <Content Include="Bam.Net\_fx\_Presentation\_Dust\json2.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Bam.Net\_fx\_Net\_Ping\Ping.resx" />

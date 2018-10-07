@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Caching;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Web;

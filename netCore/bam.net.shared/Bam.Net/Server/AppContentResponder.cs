@@ -22,7 +22,7 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
-    public class AppContentResponder : ContentResponder
+    public partial class AppContentResponder : ContentResponder
     {
         public const string CommonFolder = "common";
 
@@ -475,11 +475,6 @@ namespace Bam.Net.Server
             return layoutModel;
         }
 
-        public Includes GetAppIncludes()
-        {
-            return GetAppIncludes(AppConf);
-        }
-
         private byte[] RenderLayout(IResponse response, string path, string queryString = null)
         {
             byte[] content;
@@ -509,28 +504,6 @@ namespace Bam.Net.Server
                         jsFile.FullName.SafeWriteFile(template.UnescapedCompiled, true);
                     });
                 });
-            }
-        }
-
-        private void LocateIncludes(HashSet<string> filePaths, Includes includes)
-        {
-            foreach (string script in includes.Scripts)
-            {
-                if (AppContentLocator.Locate(script, out string scriptPath, out string[] checkedPaths))
-                {
-                    filePaths.Add(AppContentLocator.ContentRoot.GetAbsolutePath(scriptPath));
-                }
-                else
-                {
-                    if (CommonContentLocator.Locate(script, out scriptPath, out checkedPaths))
-                    {
-                        filePaths.Add(CommonContentLocator.ContentRoot.GetAbsolutePath(scriptPath));
-                    }
-                    else
-                    {
-                        Logger.AddEntry("script specified in app include.js file was not found: {0}\r\nchecked paths:\r\n\t{1}", LogEventType.Warning, script, checkedPaths.ToDelimited(p => p, "\r\n\t"));
-                    }
-                }
             }
         }
 

@@ -19,6 +19,7 @@ namespace Bam.Net.ServiceProxy
             clone.CopyProperties(this);
             return clone;
         }
+
         public bool IsInRole(IUserResolver userResolver, string roleName)
         {
             string userName = userResolver.GetCurrentUser();

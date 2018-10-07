@@ -193,7 +193,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\AssemblyResolve.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\AssemblyAttributeInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\AssemblyReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\AutomationServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Automation_Generated\AutomationContext.cs" />
@@ -241,18 +240,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\MultiFileCopyWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\NodeScripts\Node.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\NotificationWorker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\conventionbasedpackage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\NugetPackageIdentifier.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\NuspecFile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\package.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages.Designer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages1.Designer.cs">
-      <DependentUpon>packages.xsd</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\PackageVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\ProcessWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\ProjectReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\PsExec.cs" />
@@ -270,8 +257,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\SourceControl\UnableToInitializeGitToolsException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Ssh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Status.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\SuspendedJob.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\SuspendJobWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Testing\CreateStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Testing\Data\Generated_Dao\NotificationSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Testing\Data\Generated_Dao\NotificationSubscriptionCollection.cs" />
@@ -523,25 +508,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorPagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ActiveApiKeyIndex.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ApiKey.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Application.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ApplicationMachine.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Client.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ClientServerConnection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Configuration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ConfigurationSetting.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\HostAddress.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\HostDomain.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\HostDomainApplication.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Machine.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Nic.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Organization.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\OrganizationUser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\ProcessDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\Subscription.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\User.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\Subscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\SubscriptionCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\ApplicationRegistration\Data\Generated_Dao\SubscriptionColumns.cs" />
@@ -610,12 +576,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptorPagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptorQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptorWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorProcessRuntimeDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\AssemblyReferenceDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\AssemblyRevision.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\Generated_Dao\Qi\ProcessRuntimeDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\Data\ProcessRuntimeDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\AssemblyManagement\IAssemblyService.cs" />
@@ -756,10 +716,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\TemplatePrecedence.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\Users\RoleService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\Users\UserRegistryService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\Qi\WebHookCall.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\Qi\WebHookDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\Qi\WebHookDescriptorWebHookSubscriber.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\Qi\WebHookSubscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\WebHookCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\WebHookCallCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\Data\Generated_Dao\WebHookCallColumns.cs" />
@@ -808,7 +764,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\CountResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Dao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\DaoCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\DaoController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\DaoDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\DaoExpressionFilter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\DaoProxyRegistration.cs" />
@@ -926,22 +881,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InComparison.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InsertFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InsertResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\ConcurrencyStrategy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\IntersystemsConnectionStringResolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsCredentials.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDatabase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDatabaseInitializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDataTypeTranslator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsFieldDescriptor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsFormatProvder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsJavascriptSqlProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsParameterBuilder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsQuerySet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsRegistrar.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsRegistrarCaller.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSchemaExtractor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSchemaExtractorConfig.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSqlStringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\IParameterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\IParameterInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\IParameterInfoParser.cs" />
@@ -1048,9 +987,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultDataTypeBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultRepositoryResolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\Dto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DtoPropertyModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DtoTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\EchoTypeTableNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\FsRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\GenerateDaoAssemblyEventArgs.cs" />
@@ -1092,14 +1029,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\MetaPropertyVersionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\MetaProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\MissingForeignKeyPropertyException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\MongoObjectReaderWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\MongoRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\NamespaceStorableTypesProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\NoIdPropertyException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\ObjectPersister.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\ObjectPersisterDirectoryProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\ObjectReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\ObjectRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\OldToNewIdMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\ProcessModeResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\PropertyColumn.cs" />
@@ -1206,6 +1138,22 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\WhereDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\WhereFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\XrefDaoCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\ConcurrencyStrategy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\IntersystemsConnectionStringResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsCredentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDatabaseInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsDataTypeTranslator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsFieldDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsFormatProvder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsJavascriptSqlProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsParameterBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsQuerySet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsRegistrar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsRegistrarCaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSchemaExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSchemaExtractorConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\InterSystems\InterSystemsSqlStringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Date.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\ClassMemberType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\CodeInfo.cs" />
@@ -1216,7 +1164,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocInfoFrom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocInfoInferredDescriptionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocInfoMemberType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocInfoResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocumentationAttributeRenderDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\DocumentationPrecedence.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\Example\DocumentationExampleClass.cs" />
@@ -1247,9 +1194,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Partials\Vault.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Partials\VaultItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Partials\VaultKey.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Qi\Vault.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Qi\VaultItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Qi\VaultKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\Vault.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\VaultCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Encryption\Encryption_Generated\VaultColumns.cs" />
@@ -1308,7 +1252,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\HashExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\IApplicationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\IAssemblyGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\IIpcMessageStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\IJsonable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Incubation\Asking.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Incubation\ConstructFailedException.cs" />
@@ -1335,7 +1278,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\MinifyResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\NodeJs\NodeScriptRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\ResourceScripts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\ScriptsController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\Sql\JavascriptSqlProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\Sql\OracleJavascriptSqlProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Javascript\Sql\SQLiteJavascriptSqlProvider.cs" />
@@ -1377,14 +1319,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\ParamColumns.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\ParamPagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\ParamQuery.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\CategoryName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\ComputerName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\Event.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\EventParam.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\Param.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\Signature.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\SourceName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Qi\UserName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\Signature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\SignatureCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger2_Generated\SignatureColumns.cs" />
@@ -1408,7 +1342,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger_Generated\LogEventColumns.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger_Generated\LogEventPagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger_Generated\LogEventQuery.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogger_Generated\Qi\LogEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\DaoLogProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\Debug\DebugLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\Debug\DebugViewLogger.cs" />
@@ -1442,8 +1375,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\NLog\BamNLogTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\NullLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\ObjectRepositoryLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\ObjectRepositoryLoggerLogReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\PersistingEventIdProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\RepositoryLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\Severity.cs" />
@@ -1453,8 +1384,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\TextFileLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\VerbosityAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\VerbosityLevel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\WindowsEventIdProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\WindowsLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Logging\XmlLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\EmailBody.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\EmailComposer.cs" />
@@ -1478,9 +1407,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\MessagePagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\MessageQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\MessagingContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\Qi\DirectMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\Qi\EmailMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Messaging_Generated\Qi\Message.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\NamedFormatEmailComposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\Notify.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Messaging\RequiredSettingsNotSetException.cs" />
@@ -1501,9 +1427,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Drawing\QuarterCircles.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Drawing\ResourceImages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Drawing\RoundedRectangle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\Dust.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\DustException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\DustTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji_Generated\Category.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji_Generated\CategoryCollection.cs" />
@@ -1521,7 +1444,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji_Generated\EmojiPagedQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji_Generated\EmojiQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji_Generated\EmojisContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\GoogleHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Handlebars\HandlebarsDirectory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Attributes\DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Attributes\Hidden.cs" />
@@ -1534,8 +1456,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Js\DataSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\ICompiledTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\ImageMagick.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Inkscape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\IPersistenceModelProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\ITemplateManager.cs" />
@@ -1558,7 +1478,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Profiguration\ProfigurationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Profiguration\ProfigurationSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ProviderAlreadySetException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Providers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ProxyAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\RandomHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\RandomNumber.cs" />
@@ -2373,7 +2292,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\HttpServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\HttpStatusCodeHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\IAppInitializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\IContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\IHasMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\IInitialize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Server\InitializeFailedEventArgs.cs" />
@@ -2461,7 +2379,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\ApiParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\ClientProxyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\CsClientProxyGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\DefaultRoleResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\DefaultUserResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\DefaultWebUserResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\Echo.cs" />
@@ -2571,6 +2488,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\TestObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\UnableToResolveUserException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\UserResolvers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\ServiceProxy\ValidationFailures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\Administration\AdministrationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\Administration\AdministrationServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\ApiKeyVaultInfo.cs" />
@@ -2745,7 +2663,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\EncryptedSearchIndexJournalEntryValueFlusher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\EncryptedSearchIndexJournalEntryValueLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\EncryptedSearchIndexJournalManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\FileSequenceProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IDistributedRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IHasInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IJournalEntryValueFlusher.cs" />
@@ -3167,15 +3084,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlDataDirectory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlDataFile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\PaletteExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\ServiceProxySystemYaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlDeserializationFailure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlFile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlSchemaGenerator.cs" />
   </ItemGroup>
@@ -3437,16 +3350,6 @@
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Analytics\words\variant_2-words.70" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Analytics\words\variant_2-words.80" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Analytics\words\variant_2-words.95" />
-    <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages.xsc">
-      <DependentUpon>packages.xsd</DependentUpon>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages.xsd">
-      <LastGenOutput>packages1.Designer.cs</LastGenOutput>
-      <Generator>MSDataSetGenerator</Generator>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Nuget\packages.xss">
-      <DependentUpon>packages.xsd</DependentUpon>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\nuspec.2010.7.xsd" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\nuspec.2011.8.xsd" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Automation\Testing\Data\regen_testing_dao.cmd" />
@@ -3488,7 +3391,6 @@
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Schema\Templates\QueryClass.tmpl" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Schema\Templates\XrefProperty.tmpl" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Documentation\XmlDocumentation.xsd" />
-    <None Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\test.dust" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emojis.sqlite" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\README.md" />
     <None Include="$(MSBuildThisFileDirectory)Bam.Net\Server\README.md" />
@@ -3513,10 +3415,6 @@
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Js\SHA256.js" />
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Qi\Dao.js" />
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Qi\Qi.js" />
-    <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\dust-full-0.3.0.js" />
-    <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\dust.custom.js" />
-    <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\feather.js" />
-    <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Dust\json2.js" />
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Emoji.db.js" />
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Js\DataSet.js" />
     <Content Include="$(MSBuildThisFileDirectory)Bam.Net\Presentation\Html\Js\spin.js" />

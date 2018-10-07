@@ -26,7 +26,7 @@ namespace Bam.Net.Automation
     /// The manager for all jobs.
     /// </summary>
     [Proxy("jobManagerSvc")]
-    public class JobManagerService: AsyncProxyableService
+    public partial class JobManagerService: AsyncProxyableService
     {
         static readonly string ProfigurationSetKey = $"{nameof(JobManagerService)}Settings";
 
@@ -35,17 +35,6 @@ namespace Bam.Net.Automation
         Thread _runnerThread;
         protected internal JobManagerService() : this(DefaultConfigurationApplicationNameProvider.Instance, DefaultDataDirectoryProvider.Current)
         {
-        }
-
-        public JobManagerService(IApplicationNameProvider appNameProvider, 
-            DefaultDataDirectoryProvider dataSettings,
-            IWorkerTypeProvider workerTypeProvider,
-            ITypeResolver typeResolver,
-            IIpcMessageStore suspendedJobStore) : this(appNameProvider, dataSettings)
-        {
-            WorkerTypeProvider = workerTypeProvider;
-            TypeResolver = typeResolver;
-            SuspendedJobIpcMessageStore = suspendedJobStore;
         }
 
         public JobManagerService(IApplicationNameProvider appNameProvider, DefaultDataDirectoryProvider dataSettings, ProfigurationSet profiguration = null)
@@ -106,19 +95,7 @@ namespace Bam.Net.Automation
             }
         }
 
-        IIpcMessageStore _messageStore;
-        object _messageStoreLock = new object();
-        protected internal IIpcMessageStore SuspendedJobIpcMessageStore
-        {
-            get
-            {
-                return _messageStoreLock.DoubleCheckLock(ref _messageStore, () => new LocalIpcMessageStore(System.IO.Path.Combine(JobsDirectory, "Suspended")));
-            }
-            set
-            {
-                _messageStore = value;
-            }
-        }
+
 
         ProfigurationSet _profigurationSet;
         object _profigurationSetLock = new object();
@@ -177,13 +154,6 @@ namespace Bam.Net.Automation
         public void AddWorker(JobConf conf, Type type, string name)
         {
             conf.AddWorker(type, name);
-        }
-        
-        [Local]
-        public SuspendedJob SuspendJob(Job job)
-        {
-            SuspendedJob suspended = new SuspendedJob(SuspendedJobIpcMessageStore, job);
-            return suspended;
         }
 
         [Exclude]

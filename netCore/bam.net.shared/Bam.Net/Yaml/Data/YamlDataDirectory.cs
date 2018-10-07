@@ -9,7 +9,7 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Yaml.Data
 {
-    public class YamlDataDirectory
+    public partial class YamlDataDirectory
     {
         public YamlDataDirectory(DirectoryInfo dir, ILogger logger = null)
         {
@@ -40,35 +40,27 @@ namespace Bam.Net.Yaml.Data
         {
             return Save(data.GetType(), data);
         }
+
         public YamlDataFile Save<T>(object data)
         {
             return Save(typeof(T), data);
         }
+
         public YamlDataFile Save(Type type, object data)
         {
             return Save(GetYamlFile(type, data), type, data);
         }
+
         public YamlDataFile Save(FileInfo file, object data)
         {
             return Save(file, data.GetType(), data);
         }
-        public YamlDataFile Save(FileInfo file, Type type, object data)
-        {
-            Args.ThrowIfNull(data);
-            object name = data.Property("Name");
-            Args.ThrowIfNull(name);
-            if (!file.Directory.Exists)
-            {
-                file.Directory.Create();
-            }
-            
-            data.ToDynamicData(type.Name).ToYamlFile(file);
-            return new YamlDataFile(type, file, Logger) { ArrayBehavior = ArrayBehavior };
-        }
+
         public bool Delete<T>(T data)
         {
             return Delete(typeof(T), data);
         }
+
         public bool Delete(Type type, object data)
         {
             try

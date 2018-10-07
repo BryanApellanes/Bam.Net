@@ -10,17 +10,12 @@ using Bam.Net.Logging;
 using Bam.Net.Incubation;
 using System.Reflection;
 
-namespace Bam.Net.Data.Repositories
+namespace Bam.Net.Data.Repositories // shared
 {
-	public class BackedupDatabase: Database
+	public partial class BackedupDatabase: Database
 	{
-		public BackedupDatabase(Assembly daoAssembly, Database databaseToTrack, string objectRepoPath = ".\\DbBackupRepo")
-		{
-			this.Repository = new ObjectRepository(objectRepoPath);
-			this.Backup = new DaoBackup(daoAssembly, databaseToTrack, this.Repository);
-		}
 
-		public ObjectRepository Repository { get; private set; }
+		public IRepository Repository { get; private set; }
 
 		protected Database Database
 		{

@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices
     /// types of repositories used for different purposes such
     /// as reading, writing, caching and backup
     /// </summary>
-    public class CompositeRepository : AsyncRepository, IHasTypeSchemaTempPathProvider
+    public partial class CompositeRepository : AsyncRepository, IHasTypeSchemaTempPathProvider
     {      
         public CompositeRepository(DaoRepository sourceRepository, DefaultDataDirectoryProvider dataSettings = null)
         {
@@ -48,12 +48,11 @@ namespace Bam.Net.CoreServices
 
         public Task BackupTask { get; protected set; }
 
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public DaoRepository SourceRepository { get; }
         public Database SourceDatabase { get { return SourceRepository?.Database; } }
         public CachingRepository ReadRepository { get;  }
         public HashSet<IRepository> WriteRepositories { get; }
-        public ObjectRepository BackupRepository { get; private set; }
         
         public Func<SchemaDefinition, TypeSchema, string> TypeSchemaTempPathProvider { get; set; }
 

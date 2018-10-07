@@ -86,25 +86,6 @@ namespace Bam.Net.Server
             }
         }
 
-        ConcurrentDictionary<string, byte[]> _pageMinCache;
-        object _pageMinCacheLock = new object();
-        protected ConcurrentDictionary<string, byte[]> MinCache
-        {
-            get
-            {
-                return _pageMinCacheLock.DoubleCheckLock(ref _pageMinCache, () => new ConcurrentDictionary<string, byte[]>());
-            }
-        }
-
-        ConcurrentDictionary<string, byte[]> _zippedPageMinCache;
-        object _zippedPageMinCacheLock = new object();
-        protected ConcurrentDictionary<string, byte[]> ZippedMinCache
-        {
-            get
-            {
-                return _zippedPageMinCacheLock.DoubleCheckLock(ref _zippedPageMinCache, () => new ConcurrentDictionary<string, byte[]>());
-            }
-        }
 
         protected static internal Includes GetIncludesFromIncludeJs(string includeJs)
         {

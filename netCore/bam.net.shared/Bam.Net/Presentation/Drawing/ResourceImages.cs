@@ -18,11 +18,13 @@ namespace Bam.Net.Drawing
         static Dictionary<string, Image> _images;
         static ResourceImages()
         {
-            _extensions = new List<string>();
-            _extensions.Add(".bmp");
-            _extensions.Add(".png");
-            _extensions.Add(".jpg");
-            _extensions.Add(".gif");
+            _extensions = new List<string>
+            {
+                ".bmp",
+                ".png",
+                ".jpg",
+                ".gif"
+            };
 
             _images = new Dictionary<string, Image>();
         }

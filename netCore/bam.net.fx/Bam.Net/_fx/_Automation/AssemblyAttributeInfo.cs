@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net.Automation.Nuget;
+﻿using Bam.Net.Automation.Nuget;
 using Bam.Net;
 
 namespace Bam.Net.Automation

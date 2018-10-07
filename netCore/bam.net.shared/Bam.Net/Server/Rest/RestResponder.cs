@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Routing;
 using Bam.Net;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
@@ -21,7 +20,7 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Rest
 {
-    public class RestResponder : HttpHeaderResponder
+    public partial class RestResponder : HttpHeaderResponder
     {
         public RestResponder(BamConf conf, IRepository repository, ILogger logger = null)
             : base(conf, logger)
@@ -42,47 +41,6 @@ namespace Bam.Net.Server.Rest
         protected override bool Post(IHttpContext context)
         {
             return HandleRequestWithBody(context, Repository.Create);
-        }
-
-        // ** Retrieve / GET **
-        // /{Type}.{ext}?{Query}
-        // /{Type}/{Id}.{ext}
-        // /{Type}/{Id}/{ChildListProperty}.{ext}        
-        protected override bool Get(IHttpContext context)
-        {
-            RestRequest restRequest = new RestRequest(context);
-            bool result = false;
-
-            if (restRequest.IsValid)
-            {
-                IResponse response = context.Response;
-                Type type = restRequest.GetStorableType(Repository.StorableTypes);
-                if (type != null)
-                {
-                    IRenderer renderer = RendererFactory.CreateRenderer(context.Request, restRequest.Extension);
-                    if (restRequest.Query.Count > 0)
-                    {
-                        renderer.Render(new RestResponse { Success = true, Data = Repository.Query(type, restRequest.Query.ToDynamicData(4.RandomLetters())) }, response.OutputStream);
-                        result = true;
-                    }
-                    else if (restRequest.Id > 0)
-                    {
-                        object instance = Repository.Retrieve(type, restRequest.Id);
-                        if (instance != null)
-                        {
-                            RestResponse restResponse = new RestResponse { Success = true, Data = instance };
-                            if (!string.IsNullOrEmpty(restRequest.ChildListProperty))
-                            {
-                                restResponse.Data = instance.Property(restRequest.ChildListProperty);
-                            }
-                            renderer.Render(restResponse, response.OutputStream);
-                            result = true;
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
 
         // ** Update / PUT (data in request body)**

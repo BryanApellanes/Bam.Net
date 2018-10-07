@@ -19,27 +19,14 @@ namespace Bam.Net.Server
 {
     [Proxy("fs")]
     [RoleRequired("Admin")]
-    public class Fs
+    public partial class Fs
     {
         FileCache _cache;
 		public Fs()
 		{
             _cache = new BinaryFileCache();
 		}
-        public Fs(HttpServerUtilityBase server, string appName) : this()
-        {
-            string root = server.MapPath("~/apps/{appName}/".NamedFormat(new { appName = appName }));
-            RootDir = new DirectoryInfo(root);
-            AppName = appName;
-        }
-
-        public Fs(HttpServerUtility server, string appName) : this()
-        {
-            string root = server.MapPath("~/apps/{appName}/".NamedFormat(new { appName = appName }));
-            RootDir = new DirectoryInfo(root);
-            AppName = appName;
-        }
-
+        
         public Fs(string appName): this()
         {
 			RootDir = new DirectoryInfo(appName);
@@ -51,11 +38,6 @@ namespace Bam.Net.Server
             RootDir = rootDir;
         }
 
-        public Fs(Controller controller, string appName)
-            : this(controller.Server, appName)
-        {
-        }
-     
         [Exclude]
         public static void RegisterProxy(string appName)
         {
