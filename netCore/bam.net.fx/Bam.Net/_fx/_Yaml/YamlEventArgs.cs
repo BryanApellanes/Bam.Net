@@ -10,8 +10,8 @@ using System.IO;
 
 namespace Bam.Net.Yaml
 {
-	public partial class YamlDeserializationFailure
+	public partial class YamlEventArgs: EventArgs
 	{
-		public Exception Exception { get; private set; }
+		public YamlFile CurrentFile { get; set; }	
 	}
 }

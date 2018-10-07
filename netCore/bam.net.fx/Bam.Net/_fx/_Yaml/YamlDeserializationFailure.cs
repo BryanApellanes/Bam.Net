@@ -12,6 +12,12 @@ namespace Bam.Net.Yaml
 {
 	public partial class YamlDeserializationFailure
 	{
-		public Exception Exception { get; private set; }
+		public YamlDeserializationFailure(YamlFile file, Exception ex)
+		{
+			this.File = file;
+			this.Exception = ex;
+		}
+
+		public YamlFile File { get; private set; }
 	}
 }

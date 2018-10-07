@@ -16,71 +16,11 @@ using System.Reflection;
 
 namespace Bam.Net.Yaml
 {
-	public class YamlSchema: Loggable
+	public partial class YamlSchema: Loggable
 	{
-		public YamlSchema(DirectoryInfo root, ILogger logger = null)
-			: base()
-		{
-			this.YamlFiles = new List<YamlFile>();
-			this.RootDirectory = root;
-			this.Failures = new List<YamlDeserializationFailure>();
-			if (logger != null)
-			{
-				this.Subscribe(logger);
-			}
-		}
 
-		public DirectoryInfo RootDirectory { get; private set; }
-		public List<YamlFile> YamlFiles { get; private set; }
-		
-		public FileInfo[] Files
-		{
-			get
-			{
-				return YamlFiles.Select(yf => yf.File).ToArray();
-			}
-		}
+		public DirectoryInfo RootDirectory { get; private set; }		
 
-		public void AddFile(FileInfo file)
-		{
-			AddFile(new YamlFile(file));
-		}
-
-		public void AddFile(YamlFile file)
-		{
-			YamlFiles.Add(file);
-		}
-
-		public void AddFiles(List<FileInfo> files)
-		{
-			files.Each(file => AddFile(file));
-		}
-
-		public void AddFiles(List<YamlFile> files)
-		{
-			YamlFiles.AddRange(files);
-		}
-
-		[Verbosity(VerbosityLevel.Warning)]
-		public event EventHandler YamlDeserializationFailed;
-		public List<Type> GetDynamicTypes()
-		{
-			List<Type> dynamicTypes = new List<Type>();
-			YamlFiles.Each(new { List = dynamicTypes }, (ctx, yf) =>
-			{
-				try
-				{
-					ctx.List.AddRange(yf.DynamicTypes);
-				}
-				catch (Exception ex)
-				{
-					FireEvent(YamlDeserializationFailed, new YamlEventArgs { Schema = this, Files = this.Files, CurrentFile = yf, Exception = ex });
-					Failures.Add(new YamlDeserializationFailure(yf, ex));
-				}
-			});
-
-			return dynamicTypes;
-		}
 
 		public List<YamlDeserializationFailure> Failures
 		{

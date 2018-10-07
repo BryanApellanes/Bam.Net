@@ -10,12 +10,11 @@ using System.IO;
 
 namespace Bam.Net.Yaml
 {
-	public class YamlEventArgs: EventArgs
+	public partial class YamlEventArgs: EventArgs
 	{
 		public YamlEventArgs() { }
 		public FileInfo[] Files { get; set; }
 
-		public YamlFile CurrentFile { get; set; }
 		public YamlSchema Schema { get; set; }
 
 		public Exception Exception { get; set; }

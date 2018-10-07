@@ -35,13 +35,14 @@ namespace Bam.Net.Yaml
 						string typeName = "{0}{1}"._Format(Path.GetFileNameWithoutExtension(File.Name).PascalCase(true, " "), i > 0 ? i.ToString() : "");
                         if (o is Dictionary<object, object> dict)
                         {
-                            dict.ToDynamicType(typeName, types);
+                            Type dynamicType = dict.ToDynamicType(typeName, types);
+                            types.Add(dynamicType);
                         }
                         else
                         {
                             Type dynamicType = o.ToDynamicType(typeName, (p) => p.PropertyType.IsArray || p.PropertyType.IsValueType || p.PropertyType.IsPrimitive);
                             types.Add(dynamicType);
-                        }
+                        }                        
                     }
 
 					return types;

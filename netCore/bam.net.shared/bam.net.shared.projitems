@@ -3083,7 +3083,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\ArrayBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlDataDirectory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\Data\YamlDataFile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\PaletteExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlDaoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Yaml\YamlDeserializationFailure.cs" />

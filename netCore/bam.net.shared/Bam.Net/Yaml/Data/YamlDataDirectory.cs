@@ -23,38 +23,6 @@ namespace Bam.Net.Yaml.Data
         public DirectoryInfo Root { get; set; }
         public ILogger Logger { get; set; }
         
-        public IEnumerable<YamlDataFile> Load(Type type)
-        {
-            FileInfo[] yamlFiles = GetYamlFiles(type);
-            foreach (FileInfo file in yamlFiles)
-            {
-                yield return new YamlDataFile(type, file, Logger) { ArrayBehavior = ArrayBehavior };
-            }
-        }
-        public YamlDataFile Load(Type type, string name)
-        {
-            FileInfo yamlFile = GetYamlFile(type, name);
-            return new YamlDataFile(type, yamlFile, Logger) { ArrayBehavior = ArrayBehavior };
-        }
-        public YamlDataFile Save(object data)
-        {
-            return Save(data.GetType(), data);
-        }
-
-        public YamlDataFile Save<T>(object data)
-        {
-            return Save(typeof(T), data);
-        }
-
-        public YamlDataFile Save(Type type, object data)
-        {
-            return Save(GetYamlFile(type, data), type, data);
-        }
-
-        public YamlDataFile Save(FileInfo file, object data)
-        {
-            return Save(file, data.GetType(), data);
-        }
 
         public bool Delete<T>(T data)
         {

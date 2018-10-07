@@ -661,9 +661,13 @@
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\StringInput.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\TextArea.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\ServiceProxySystemYaml.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlDeserializationFailure.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlEventArgs.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\YamlFile.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\YamlResult.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlSchema.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\_Data\YamlDataDirectory.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\_Data\YamlDataFile.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\_Data\YamlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
