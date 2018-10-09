@@ -68,6 +68,10 @@ namespace Bam.Net.Automation.SourceControl
         /// <returns></returns>
         public static DirectoryInfo UpToGitRoot(this DirectoryInfo directory)
         {
+            if(directory == null)
+            {
+                return null;
+            }
             if(System.IO.Directory.Exists(Path.Combine(directory.FullName, ".git")))
             {
                 return directory;
