@@ -570,6 +570,7 @@
     <Compile Include="Bam.Net\_fx\_Server\_Rest\RestResponder.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\BaseController.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\DefaultRoleResolver.cs" />
+    <Compile Include="Bam.Net\_fx\_ServiceProxy\ExecutionRequest.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ExecutionResultDelegate.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\HttpContextWrapper.cs" />
@@ -613,6 +614,9 @@
     <Compile Include="Bam.Net\_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\ObjectDescriptor.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\PatternedField.cs" />
     <Compile Include="Bam.Net\_fx\_Translation\Culture.cs" />
+    <Compile Include="Bam.Net\_fx\_Translation\_DetectLanguage\DetectLanguageLanguageDetector.cs" />
+    <Compile Include="Bam.Net\_fx\_Translation\_MyMemory\MyMemoryTranslationProvider.cs" />
+    <Compile Include="Bam.Net\_fx\_Translation\_Yandex\YandexTranslationProvider.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaomembershipProvider.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaoMembershipUser.cs" />
     <Compile Include="Bam.Net\_fx\_UserAccounts\DaoPrincipal.cs" />
@@ -661,6 +665,7 @@
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\StringInput.cs" />
     <Compile Include="Bam.Net\_fx\_Presentation\_Html\_Attributes\TextArea.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\ServiceProxySystemYaml.cs" />
+    <Compile Include="Bam.Net\_fx\_Yaml\YamlDaoGenerator.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\YamlDeserializationFailure.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\YamlEventArgs.cs" />
     <Compile Include="Bam.Net\_fx\_Yaml\YamlFile.cs" />

@@ -14,7 +14,7 @@ namespace Bam.Net.Translation.DetectLanguage
     /// A language detector that uses 
     /// detectlanguage.com
     /// </summary>
-    public class DetectLanguageLanguageDetector : ILanguageDetector
+    public partial class DetectLanguageLanguageDetector : ILanguageDetector
     {
         private static string ApiKeyKey = "DetectLanguageApiKey";
         private static string ApiDetectEndpointFormat = "http://ws.detectlanguage.com/0.2/detect?q={Text}&key={ApiKey}";
@@ -27,14 +27,7 @@ namespace Bam.Net.Translation.DetectLanguage
 
         public Database LanguageDatabase { get; set; }
         public ILogger Logger { get; set; }
-        public Language DetectLanguage(string text)
-        {
-            var args = new { ApiKey = ApiKey.Or("demo"), Text = text };
-            string json = Http.Get(ApiDetectEndpointFormat.NamedFormat(args));
-            Task.Run(() => Logger.AddEntry("DetectLanguageResponse: {0}", json));
-            DetectLanguageResponse response = json.FromJson<DetectLanguageResponse>();
-            return response.GetLanguage(LanguageDatabase);
-        }
+
 
         protected Vault ApiKeyVault { get; set; }
         object _apiKeyLock = new object();

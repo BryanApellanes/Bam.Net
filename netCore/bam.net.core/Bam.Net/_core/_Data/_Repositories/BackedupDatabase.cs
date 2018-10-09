@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.Incubation;
 using System.Reflection;
+using System.IO;
 
 namespace Bam.Net.Data.Repositories //core
 {
@@ -16,7 +17,8 @@ namespace Bam.Net.Data.Repositories //core
 	{
 		public BackedupDatabase(Assembly daoAssembly, Database databaseToTrack, string objectRepoPath = ".\\DbBackupRepo")
 		{
-			this.Repository = new DaoRepository(objectRepoPath);
+            DirectoryInfo backupDir = new DirectoryInfo(objectRepoPath);
+			this.Repository = new DaoRepository(databaseToTrack, Log.Default, backupDir.Name);
 			this.Backup = new DaoBackup(daoAssembly, databaseToTrack, this.Repository);
 		}
 	}

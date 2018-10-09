@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class ExecutionRequest
+    public partial class ExecutionRequest
     {
         static ExecutionRequest()
         {
@@ -35,42 +35,6 @@ namespace Bam.Net.ServiceProxy
             OnAnyInstanciated(this);
         }
 
-        public ExecutionRequest(string className, string methodName, string ext)
-        {
-            Context = new HttpContextWrapper();
-            ViewName = "Default";
-            ClassName = className;
-            MethodName = methodName;
-            Ext = ext;
-
-            IsInitialized = true;
-            OnAnyInstanciated(this);
-        }
-
-        public ExecutionRequest(RequestWrapper request, ResponseWrapper response)
-        {
-            Context = new HttpContextWrapper();
-            Request = request;
-            Response = response;
-            OnAnyInstanciated(this);
-        }
-
-        public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases)
-        {
-            Context = new HttpContextWrapper();
-            Request = request;
-            Response = response;
-            ProxyAliases = aliases;
-            OnAnyInstanciated(this);
-        }
-
-        public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases, Incubator serviceProvider)
-            : this(request, response, aliases)
-        {
-            Context = new HttpContextWrapper();
-            ServiceProvider = serviceProvider;
-            OnAnyInstanciated(this);
-        }
 
         public ExecutionRequest(IHttpContext context, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
@@ -876,14 +840,6 @@ namespace Bam.Net.ServiceProxy
         protected void OnServiceProviderSet(object target)
         {
             ServiceProviderSet?.Invoke(this, target);
-        }
-
-        public virtual ValidationResult Validate()
-        {
-            Initialize();
-            ValidationResult result = new ValidationResult(this);
-            result.Execute(Context, Decrypted);
-            return result;
         }
 
         public bool ExecuteWithoutValidation()

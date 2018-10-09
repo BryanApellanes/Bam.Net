@@ -21,7 +21,7 @@ namespace Bam.Net.Yaml
 	/// a TypeSchema and a TypeDaoGenerator to create a Dao Assembly
 	/// from the TypeSchema.  NOTE: this is not well tested
 	/// </summary>
-	public class YamlDaoGenerator : TypeDaoGenerator
+	public partial class YamlDaoGenerator : TypeDaoGenerator
 	{
 		public YamlDaoGenerator(ILogger logger = null): base()
 		{
@@ -34,21 +34,6 @@ namespace Bam.Net.Yaml
 				this.Subscribe(logger);
 				this.Subscribe(this.YamlSchemaGenerator);
 			}
-		}
-
-		public Assembly GetDaoAssembly(string directoryPath, string schemaName, string fileExtension = "*.yaml")
-		{
-			return GetDaoAssembly(new DirectoryInfo(directoryPath), schemaName, fileExtension);
-		}
-
-		public Assembly GetDaoAssembly(DirectoryInfo rootDir, string schemaName, string fileExtension = "*.yaml")
-		{
-			YamlSchema yamlSchema = YamlSchemaGenerator.GenerateYamlSchema(rootDir, fileExtension);
-			this.DeserializationFailures = yamlSchema.Failures;
-			Subscribe(yamlSchema);
-			DynamicYamlTypes = yamlSchema.GetDynamicTypes();
-			AddTypes(DynamicYamlTypes.ToArray());
-			return GetDaoAssembly();
 		}
 
 		public List<YamlDeserializationFailure> DeserializationFailures

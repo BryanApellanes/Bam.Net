@@ -221,21 +221,26 @@ namespace Bam.Net
         /// <returns></returns>
         public string ToDateString()
         {
-            return "{Month}/{Day}/{Year}".NamedFormat(this);
+            return $"{Month}/{Day}/{Year}";
         }
 
         /// <summary>
         /// Return a DateTime object representing the current Instant instance
         /// </summary>
         /// <returns></returns>
-        public DateTime ToDateTime()
+        public DateTime ToDateTime(DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return new DateTime(this.Year, this.Month, this.Day, this.Hour, this.Minute, this.Second, this.Millisecond, DateTimeKind.Unspecified);
+            return new DateTime(this.Year, this.Month, this.Day, this.Hour, this.Minute, this.Second, this.Millisecond, kind);
+        }
+
+        public DateTime ToLocalTime()
+        {
+            return ToDateTime(DateTimeKind.Utc).ToLocalTime();
         }
 
         public string ToJavascriptDate()
         {
-            return "new Date({Year}, {Month}, {Day}, {Hour}, {Minute}, {Second}, {Millisecond});".NamedFormat(this);
+            return $"new Date({Year}, {Month}, {Day}, {Hour}, {Minute}, {Second}, {Millisecond});";
         }
 
         public int Month
