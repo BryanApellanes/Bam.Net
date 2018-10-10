@@ -29,7 +29,7 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>//, IExecutionRequestResolver
+    public partial class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
@@ -527,51 +527,6 @@ namespace Bam.Net.Server
                 OnNotResponded(context);
                 return false;
             }
-        }
-
-        private bool SendMethodForm(IHttpContext context)
-        {
-            bool result = false;
-            IRequest request = context.Request;
-            string appName = ApplicationNameResolver.ResolveApplicationName(context);
-            string path = request.Url.AbsolutePath;
-            string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
-            string partsICareAbout = path.TruncateFront(prefix.Length);
-            string[] segments = partsICareAbout.DelimitSplit("/", "\\");
-
-            if (segments.Length == 2)
-            {
-                GetServiceProxies(appName, out Incubator providers, out List<ProxyAlias> aliases);
-                string className = segments[0];
-                string methodName = segments[1];
-                Type type = providers[className];
-                if (type == null)
-                {
-                    ProxyAlias alias = aliases.FirstOrDefault(a => a.Alias.Equals(className));
-                    if (alias != null)
-                    {
-                        type = providers[alias.ClassName];
-                    }
-                }
-
-                if (type != null)
-                {
-                    InputFormBuilder builder = new InputFormBuilder(type);
-                    QueryStringParameter[] parameters = request.Url.Query.DelimitSplit("?", "&").ToQueryStringParameters();
-                    Dictionary<string, object> defaults = new Dictionary<string, object>();
-                    foreach (QueryStringParameter param in parameters)
-                    {
-                        defaults.Add(param.Name, param.Value);
-                    }
-                    TagBuilder form = builder.MethodForm(methodName, defaults);
-                    LayoutModel layoutModel = GetLayoutModel(appName);
-                    layoutModel.PageContent = form.ToMvcHtml().ToString();
-                    ContentResponder.CommonTemplateManager.RenderLayout(layoutModel, context.Response.OutputStream);
-                    result = true;
-                }
-            }
-
-            return result;
         }
 
         public event Action<ServiceProxyResponder> Initializing;

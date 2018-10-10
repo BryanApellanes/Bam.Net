@@ -15,7 +15,7 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
-    public class LayoutConf
+    public partial class LayoutConf
     {
         static string ContentRootKey = "ContentRoot";
         static string DefaultContentRoot = "C:\\bam\\content";
@@ -79,17 +79,6 @@ namespace Bam.Net.Server
             }
         }
 
-        protected internal void SetIncludes(AppConf conf, LayoutModel layoutModel)
-        {
-            Includes includes = AppContentResponder.GetAppIncludes(conf);
-            if (IncludeCommon)
-            {
-                Includes commonIncludes = ContentResponder.GetCommonIncludes(ContentRoot);
-                includes = commonIncludes.Combine(includes);
-            }
-            layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
-            layoutModel.StyleSheetLinkTags = includes.GetStyleSheetLinkTags().ToHtmlString();
-        }
 
         protected internal void SetBody(LayoutModel layout, string[] pathSegments) 
         {

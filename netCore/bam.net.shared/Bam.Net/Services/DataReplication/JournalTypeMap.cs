@@ -14,7 +14,7 @@ namespace Bam.Net.Services.DataReplication
     /// <summary>
     /// A class that provides a mapping between numeric (long) id values and Types.
     /// </summary>
-    public class JournalTypeMap
+    public partial class JournalTypeMap
     {
         public JournalTypeMap(SystemPaths paths) : this()
         {
@@ -133,12 +133,6 @@ namespace Bam.Net.Services.DataReplication
         public static long GetTypeId(KeyHashAuditRepoData instance)
         {
             return GetTypeId(instance, out object ignore1, out Type ignore2);
-        }
-
-        public static long GetTypeId(KeyHashAuditRepoData instance, out object dynamicInstance, out Type dynamicType)
-        {
-            dynamicInstance = instance.ToDynamic(p => p.PropertyType.IsValueType || p.PropertyType == typeof(string), out dynamicType);
-            return GetTypeId(dynamicType, out string ignore);
         }
 
         public static long GetTypeId(Type type, out string name)

@@ -18,9 +18,9 @@ namespace Bam.Net
     /// application process and thread
     /// </summary>
     [Serializable]
-    public class ApplicationDiagnosticInfo
+    public partial class ApplicationDiagnosticInfo
     {
-        public const string DefaultMessageFormat = "Thread=#{ThreadHashCode}({ThreadId})~~App={ApplicationName}~~PID={ProcessId}~~Utc={UtcShortDate}::{UtcShortTime}~~{Message}";
+        public const string DefaultMessageFormat = "Thread=#{ThreadHashCode}({ThreadId})~~App={ApplicationName}~~PID={ProcessId}~~Utc={UtcShortDate}::{UtcShortTime}~~{Message}";        
         public const string UnknownApplication = "UNKNOWN_APPLICATION";
         public const string PublicOrganization = "PUBLIC_ORGANIZATION";
 
@@ -37,20 +37,6 @@ namespace Bam.Net
             : this()
         {
             this.Message = logEvent.Message;
-        }
-
-        public override string ToString()
-        {
-            object names = new {
-                ThreadHashCode = ThreadHashCode.ToString(),
-                ThreadId = ThreadId.ToString(),
-                ApplicationName = ApplicationName,
-                ProcessId = ProcessId.ToString(),
-                UtcShortDate = Utc.ToShortDateString(),
-                UtcShortTime = Utc.ToShortTimeString(),
-                Message = Message
-            };
-            return NamedMessageFormat.NamedFormat(names);
         }
 
         public string NamedMessageFormat

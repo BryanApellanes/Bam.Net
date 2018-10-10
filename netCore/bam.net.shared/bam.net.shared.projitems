@@ -2668,7 +2668,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IJournalEntryValueFlusher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IJournalEntryValueLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IJournalManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\InfoAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\IRepositoryTypeResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\ISequenceProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Services\DataReplication\ITypeConverter.cs" />

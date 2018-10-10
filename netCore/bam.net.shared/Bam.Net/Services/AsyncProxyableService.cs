@@ -24,7 +24,7 @@ namespace Bam.Net.Services
     /// </summary>
     /// <seealso cref="Bam.Net.CoreServices.ApplicationProxyableService" />
     /// <seealso cref="Bam.Net.ServiceProxy.IHasServiceProvider" />
-    public abstract class AsyncProxyableService : ApplicationProxyableService, IHasServiceProvider
+    public abstract partial class AsyncProxyableService : ApplicationProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;
 
@@ -152,42 +152,6 @@ namespace Bam.Net.Services
             ExecuteRemoteAsync(request);
         }
 
-        /// <summary>
-        /// The method executed server side
-        /// </summary>
-        /// <param name="request"></param>
-        public virtual void ExecuteRemoteAsync(AsyncExecutionRequest request) // this should be executing server side after encryption has been handled
-        {
-            Task.Run(() =>
-            {
-                AsyncCallbackService asyncCallback = _proxyFactory.GetProxy<AsyncCallbackService>(request.RespondToHostName, request.RespondToPort, Logger);
-                // This executes server side after the SecureChannel has decrypted and validated, need to set IsInitialized to true to 
-                // ensure the request doesn't reinitialize to a state where it believes it is an execution request
-                // targeting SecureChannel since that is what is in the HttpContext.Request.Url
-                ExecutionRequest execRequest = new ExecutionRequest(request.ClassName, request.MethodName, "json")
-                {
-                    ServiceProvider = ServiceProvider,
-                    JsonParams = request.JsonParams,
-                    IsInitialized = true,
-                    Context = HttpContext
-                };
-                bool success = execRequest.Execute();
-                AsyncExecutionResponse response = new AsyncExecutionResponse
-                {
-                    Success = success,
-                    Request = request,
-                    Result = execRequest.Result
-                };
-                if (!success)
-                {
-                    if (execRequest?.Result is ValidationResult validation && validation.Success == false)
-                    {
-                        response.ValidationFailure = new ValidationFailure { Message = validation.Message, Failures = validation.ValidationFailures };
-                        response.Result = null;
-                    }
-                }
-                asyncCallback.RecieveAsyncExecutionResponse(response);
-            });
-        }
+
     }
 }

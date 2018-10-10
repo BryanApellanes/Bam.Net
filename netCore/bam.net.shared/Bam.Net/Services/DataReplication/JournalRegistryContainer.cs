@@ -22,7 +22,7 @@ namespace Bam.Net.Services.DataReplication
     /// Service container for DataReplication services
     /// </summary>
     [ServiceRegistryContainer]
-    public static class JournalRegistryContainer
+    public static partial class JournalRegistryContainer
     {
         public const string RegistryName = "DataReplication";
         static object __DataReplicationIncubatorLock = new object();
@@ -88,20 +88,5 @@ namespace Bam.Net.Services.DataReplication
         }
         // --
 
-        public static ServiceRegistry Create()
-        {            
-            ServiceRegistry registry = ClientServiceRegistryContainer.Create();
-            registry
-                .For<SequenceFile>().Use<SequenceFile>()
-                .For<ISequenceProvider>().Use<FileSequenceProvider>()
-                .For<ITypeConverter>().Use<DefaultTypeConverter>()
-                .For<JournalTypeMap>().Use<JournalTypeMap>()
-                .For<IJournalEntryValueFlusher>().Use<JournalEntryValueFlusher>()
-                .For<IJournalEntryValueLoader>().Use<JournalEntryValueLoader>()
-                .For<Journal>().Use<Journal>()
-                .For<IJournalManager>().Use<JournalManager>();
-
-            return registry;
-        }
     }
 }

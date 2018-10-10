@@ -282,6 +282,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bam.Net\_fx\ApplicationDiagnosticInfo.cs" />
     <Compile Include="Bam.Net\_fx\CompilationException.cs" />
     <Compile Include="Bam.Net\_fx\IIpcMessageStore.cs" />
     <Compile Include="Bam.Net\_fx\Providers.cs" />
@@ -379,6 +380,7 @@
     <Compile Include="Bam.Net\_fx\_Data\DaoProxyRegistration.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\BackedupDatabase.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DaoToDtoGenerator.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\Dto.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoModel.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoTemplate.cs" />
@@ -546,6 +548,7 @@
     <Compile Include="Bam.Net\_fx\_Server\AppContentResponder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\Bam.cs" />
     <Compile Include="Bam.Net\_fx\_Server\BamController.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\BamServer.cs" />
     <Compile Include="Bam.Net\_fx\_Server\ContentResponder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\DesignController.cs" />
     <Compile Include="Bam.Net\_fx\_Server\DocsController.cs" />
@@ -553,7 +556,9 @@
     <Compile Include="Bam.Net\_fx\_Server\IContent.cs" />
     <Compile Include="Bam.Net\_fx\_Server\IncludeOrder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\Includes.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\LayoutConf.cs" />
     <Compile Include="Bam.Net\_fx\_Server\PageResult.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\ServiceProxyResponder.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\CommonTemplateRenderer.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\RendererFactory.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\YamlRenderer.cs" />
@@ -592,10 +597,14 @@
     <Compile Include="Bam.Net\_fx\_ServiceProxy\UrlHelperExtensions.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ValidationResult.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\XmlResult.cs" />
+    <Compile Include="Bam.Net\_fx\_Services\AsyncProxyableService.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionData.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionRequestData.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionResponseData.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="Bam.Net\_fx\_Services\_DataReplication\InfoAttribute.cs" />
+    <Compile Include="Bam.Net\_fx\_Services\_DataReplication\JournalRegistryContainer.cs" />
+    <Compile Include="Bam.Net\_fx\_Services\_DataReplication\JournalTypeMap.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\SequenceFile.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\_Generated_Dao\_Qi\CreateOperation.cs" />
     <Compile Include="Bam.Net\_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DataPoint.cs" />

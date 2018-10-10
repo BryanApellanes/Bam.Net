@@ -35,7 +35,6 @@ namespace Bam.Net.ServiceProxy
             OnAnyInstanciated(this);
         }
 
-
         public ExecutionRequest(IHttpContext context, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
             Context = context;
@@ -545,6 +544,7 @@ namespace Bam.Net.ServiceProxy
 				_callBack = value;
 			}
 		}
+
 		public string ViewName { get; set; }
 
         private string GetMessage(Exception ex, bool stack)

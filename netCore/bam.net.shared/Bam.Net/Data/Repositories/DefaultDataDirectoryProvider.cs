@@ -9,7 +9,7 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class DefaultDataDirectoryProvider : DatabaseProvider<SQLiteDatabase>, IDataDirectoryProvider
+    public partial class DefaultDataDirectoryProvider : DatabaseProvider<SQLiteDatabase>, IDataDirectoryProvider
     {
         public DefaultDataDirectoryProvider()
         {
@@ -179,11 +179,6 @@ namespace Bam.Net.Data.Repositories
         public DirectoryInfo GetAppRepositoryDirectory(IApplicationNameProvider appNameProvider, string subDirectory)
         {
             return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, subDirectory));
-        }
-
-        public IRepository GetSysRepository()
-        {
-            return new ObjectRepository(GetSysRepositoryDirectory().FullName);
         }
 
         public DirectoryInfo GetSysRepositoryDirectory()
