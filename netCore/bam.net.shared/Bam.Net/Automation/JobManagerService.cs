@@ -66,25 +66,6 @@ namespace Bam.Net.Automation
             set;
         }
 
-        DirectoryInfo _jobsDirectory;
-        public string JobsDirectory
-        {
-            get
-            {
-                if (_jobsDirectory == null)
-                {
-                    _jobsDirectory = new DirectoryInfo("{0}\\Jobs"._Format(RuntimeSettings.AppDataFolder));
-                }
-
-                return _jobsDirectory.FullName;
-            }
-            set
-            {
-                _jobsDirectory = new DirectoryInfo(value);
-                _messageStore = null; // forces reinit;
-            }
-        }
-
         List<Job> _running;
         object _runningLock = new object();
         public List<Job> Running

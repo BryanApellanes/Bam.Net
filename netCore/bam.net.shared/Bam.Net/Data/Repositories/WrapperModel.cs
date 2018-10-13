@@ -72,7 +72,7 @@ namespace Bam.Net.Data.Repositories
             Assembly[] assembliesToReference = new Assembly[]{typeof(WrapperTemplate).Assembly, 
 					typeof(DaoGenerator).Assembly,
 					typeof(ServiceProxySystem).Assembly, 
-					typeof(Providers).Assembly};
+					typeof(Resolver).Assembly};
             return assembliesToReference;
         }
 	}

@@ -16,7 +16,7 @@ namespace Bam.Net.Data
     /// Resolves connection string requests to a sqlite database in the
     /// directory specified by the Directory property.
     /// </summary>
-    public class SQLiteConnectionStringResolver: IConnectionStringResolver
+    public partial class SQLiteConnectionStringResolver: IConnectionStringResolver
     {
         public SQLiteConnectionStringResolver()
         {
@@ -54,28 +54,6 @@ namespace Bam.Net.Data
         {
             get;
             set;
-        }
-
-        Func<DirectoryInfo> _directoryResolver;
-        object _directoryResolverLock = new object();
-        public Func<DirectoryInfo> DirectoryResolver
-        {
-            get
-            {
-                return _directoryResolverLock.DoubleCheckLock(ref _directoryResolver, () =>
-                {
-                    return () =>
-                    {
-                        DirectoryInfo dirInfo = new DirectoryInfo(".");
-                        if (HttpContext.Current != null)
-                        {
-                            dirInfo = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/App_Data"));
-                        }
-
-                        return dirInfo;
-                    };
-                });
-            }
         }
 
         #region IConnectionStringResolver Members

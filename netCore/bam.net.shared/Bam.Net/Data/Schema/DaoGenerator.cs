@@ -752,7 +752,7 @@ namespace Bam.Net.Data.Schema
 					typeof(DaoGenerator).Assembly,
 					typeof(ServiceProxySystem).Assembly, 
                     typeof(DataTypes).Assembly,
-					typeof(Providers).Assembly};
+					typeof(Resolver).Assembly};
             return assembliesToReference;
         }
 

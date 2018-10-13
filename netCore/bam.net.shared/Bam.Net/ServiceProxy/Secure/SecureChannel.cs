@@ -30,7 +30,7 @@ namespace Bam.Net.ServiceProxy.Secure
     /// application layer encrypted communication
     /// </summary>
     [Proxy("secureChannelServer")]
-    public class SecureChannel: IRequiresHttpContext
+    public partial class SecureChannel: IRequiresHttpContext
     {
         static SecureChannel()
         {
@@ -200,47 +200,6 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             get;
             set;
-        }
-
-        public SecureChannelMessage<string> Invoke(string className, string methodName, string jsonParams)
-        {
-            SecureChannelMessage<string> result = new SecureChannelMessage<string>();
-
-            HttpArgs args = new HttpArgs();
-            args.ParseJson(jsonParams);
-            string parameters = args["jsonParams"];
-            SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters)
-            {
-                ApiKeyResolver = ApiKeyResolver,
-                ServiceProvider = ServiceProvider
-            };
-            bool success = request.Execute();
-            
-            if(request.Result is ValidationResult validationResult)
-            {
-                result.Data = "validation failed";
-                result.Message = validationResult.Message;
-                result.Success = false;
-                Logger.AddEntry("Validation failed for SecureChannel.Invoke for {0}.{1}:\r\n\tMessage={2}\r\n\tFailures: {3}:\r\n *** jsonParams were ***\r\n{4}",
-                        LogEventType.Warning,
-                        className,
-                        methodName,
-                        validationResult.Message,
-                        string.Join(",", validationResult.ValidationFailures),
-                        jsonParams);
-            }
-            else
-            {
-                string data = request.Result as string;
-                if (string.IsNullOrEmpty(data))
-                {
-                    throw new SecureChannelInvokeException(className, methodName, jsonParams);
-                }
-                result.Data = data;
-                result.Success = success;
-            }
-
-            return result;
         }
 
         static Incubator _incubator;

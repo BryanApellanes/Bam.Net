@@ -1,6 +1,7 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net.CoreServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				return _defaultLock.DoubleCheckLock(ref _default, () => new MetaProvider(Bam.Net.Data.Repositories.ObjectPersister.Default));
+				return _defaultLock.DoubleCheckLock(ref _default, () => new MetaProvider(ServiceRegistry.Default.Get<IObjectPersister>()));
 			}
 		}
 

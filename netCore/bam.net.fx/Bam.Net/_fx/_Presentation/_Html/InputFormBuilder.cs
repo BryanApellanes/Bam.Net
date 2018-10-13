@@ -458,12 +458,11 @@ namespace Bam.Net.Presentation.Html
 
         internal protected void AppendInputsForDynamic(dynamic target, TagBuilder container, bool setValues, int recursionThusFar)
         {
-            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(target);//new List<PropertyDescriptor>(target.GetProperties());
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(target);
             string paramTypeName = target.Name;
 
             foreach (PropertyDescriptor property in properties)
-            {
-                //LabelAttribute labelAttr = property.GetCustomAttributeOfType<LabelAttribute>();
+            {                
                 string labelText = string.Format(this.LabelFormat, property.Name.PascalSplit(" "));
                 string id = "{0}_{1}"._Format(paramTypeName, property.Name);
 

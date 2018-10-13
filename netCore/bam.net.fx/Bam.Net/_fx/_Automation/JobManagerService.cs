@@ -25,7 +25,7 @@ namespace Bam.Net.Automation
     /// <summary>
     /// The manager for all jobs.
     /// </summary>
-    public partial class JobManagerService: AsyncProxyableService
+    public partial class JobManagerService: AsyncProxyableService // fx
     {
         public JobManagerService(IApplicationNameProvider appNameProvider,
             DefaultDataDirectoryProvider dataSettings,
@@ -51,7 +51,26 @@ namespace Bam.Net.Automation
                 _messageStore = value;
             }
         }
-        
+
+        DirectoryInfo _jobsDirectory;
+        public string JobsDirectory
+        {
+            get
+            {
+                if (_jobsDirectory == null)
+                {
+                    _jobsDirectory = new DirectoryInfo("{0}\\Jobs"._Format(RuntimeSettings.AppDataFolder));
+                }
+
+                return _jobsDirectory.FullName;
+            }
+            set
+            {
+                _jobsDirectory = new DirectoryInfo(value);
+                _messageStore = null; // forces reinit;
+            }
+        }
+
         [Local]
         public SuspendedJob SuspendJob(Job job)
         {

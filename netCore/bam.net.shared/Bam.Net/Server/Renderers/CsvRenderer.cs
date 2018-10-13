@@ -33,7 +33,7 @@ namespace Bam.Net.Server.Renderers
 
         public override void Render(object toRender, Stream output)
         {
-            CsvResult csv = new CsvResult(toRender);
+            CsvWriter csv = new CsvWriter(toRender);
             csv.WriteCsv(output);
         }
     }

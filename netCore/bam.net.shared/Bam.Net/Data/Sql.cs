@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
-    public static class Sql
+    public static partial class Sql
     { 
         public static void ExecuteSqlFile(string path, Database db, object parameters = null)
         {
@@ -83,11 +83,6 @@ namespace Bam.Net.Data
         public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, object dbParameters = null)
         {
             return ExecuteDynamicReader(sql, db, dbParameters?.ToDbParameters(db).ToArray() ?? new DbParameter[] { });
-        }
-
-        public static IEnumerable<dynamic> ExecuteDynamicReader(this string sql, Database db, params DbParameter[] parameters)
-        {
-            return db.ExecuteDynamicReader(sql, parameters, out DbConnection ignore);
         }
     }
 }

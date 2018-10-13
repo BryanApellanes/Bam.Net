@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Schema
                 Assembly[] assembliesToReference = new Assembly[]{typeof(SchemaTemplate).Assembly, 
 					typeof(DaoGenerator).Assembly,
                     typeof(ServiceProxySystem).Assembly,
-                    typeof(Providers).Assembly};
+                    typeof(Resolver).Assembly};
                 return assembliesToReference;
             };
             Write(razorParser.ExecuteResource("ContextMethods.tmpl", "Bam.Net.Data.Schema.Templates.", typeof(SchemaTemplate).Assembly, new { Model = table, Namespace = ns }));

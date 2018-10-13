@@ -378,14 +378,18 @@
     <Compile Include="Bam.Net\_fx\_Data\DaoProxySystem.cs" />
     <Compile Include="Bam.Net\_fx\_Data\Database.cs" />
     <Compile Include="Bam.Net\_fx\_Data\DaoProxyRegistration.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\Sql.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\SqlStringBuilder.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\BackedupDatabase.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DaoToDtoGenerator.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\DatabaseFactory.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\Dto.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoModel.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\DtoTemplate.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\FsRepository.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\LuceneIndexExtensions.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Repositories\Meta.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\MongoObjectReaderWriter.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectPersister.cs" />
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\ObjectPersisterDirectoryProvider.cs" />
@@ -394,6 +398,8 @@
     <Compile Include="Bam.Net\_fx\_Data\_Repositories\SchemaRepositoryTemplate.cs" />
     <Compile Include="Bam.Net\_fx\Extensions.cs" />
     <Compile Include="Bam.Net\_fx\HashExtensions.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_Schema\SchemaManager.cs" />
+    <Compile Include="Bam.Net\_fx\_Data\_SQLite\SQLiteConnectionStringResolver.cs" />
     <Compile Include="Bam.Net\_fx\_Documentation\DocInfoResult.cs" />
     <Compile Include="Bam.Net\_fx\_Encryption\_Encryption_Generated\_Qi\Vault.cs" />
     <Compile Include="Bam.Net\_fx\_Encryption\_Encryption_Generated\_Qi\VaultItem.cs" />
@@ -441,6 +447,7 @@
     <Compile Include="Bam.Net\_fx\_Data\_OleDb\OleDbSqlStringBuilder.cs" />
     <Compile Include="Bam.Net\_fx\DynamicTypeInfo.cs" />
     <Compile Include="Bam.Net\_fx\DynamicTypeStore.cs" />
+    <Compile Include="Bam.Net\_fx\_Javascript\JavascriptSqlProvider.cs" />
     <Compile Include="Bam.Net\_fx\_Javascript\ScriptsController.cs" />
     <Compile Include="Bam.Net\_fx\_Logging\Log.cs" />
     <Compile Include="Bam.Net\_fx\_Logging\ObjectRepositoryLogger.cs" />
@@ -456,6 +463,7 @@
     <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\SourceName.cs" />
     <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger2_Generated\_Qi\UserName.cs" />
     <Compile Include="Bam.Net\_fx\_Logging\_DaoLogger_Generated\_Qi\LogEvent.cs" />
+    <Compile Include="Bam.Net\_fx\_Messaging\HandlebarsEmailComposer.cs" />
     <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\DirectMessage.cs" />
     <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\EmailMessage.cs" />
     <Compile Include="Bam.Net\_fx\_Messaging\_Messaging_Generated\_Qi\Message.cs" />
@@ -559,6 +567,9 @@
     <Compile Include="Bam.Net\_fx\_Server\LayoutConf.cs" />
     <Compile Include="Bam.Net\_fx\_Server\PageResult.cs" />
     <Compile Include="Bam.Net\_fx\_Server\ServiceProxyResponder.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\TemplateInitializer.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\_JsonRpc\JsonRpcNotification.cs" />
+    <Compile Include="Bam.Net\_fx\_Server\_Renderers\AppDustRenderer.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\CommonTemplateRenderer.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\RendererFactory.cs" />
     <Compile Include="Bam.Net\_fx\_Server\_Renderers\YamlRenderer.cs" />
@@ -577,6 +588,7 @@
     <Compile Include="Bam.Net\_fx\_ServiceProxy\DefaultRoleResolver.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ExecutionRequest.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ExecutionResultDelegate.cs" />
+    <Compile Include="Bam.Net\_fx\_ServiceProxy\SecureChannel.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\HttpContextWrapper.cs" />
     <Compile Include="Bam.Net\_fx\_ServiceProxy\JsProxyResult.cs" />

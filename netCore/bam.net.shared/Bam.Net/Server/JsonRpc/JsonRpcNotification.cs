@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.JsonRpc
 {
-    public class JsonRpcNotification : JsonRpcMessage, IJsonRpcRequest
+    public partial class JsonRpcNotification : JsonRpcMessage, IJsonRpcRequest
     {
         public JsonRpcNotification()
         {
@@ -77,46 +77,6 @@ namespace Bam.Net.Server.JsonRpc
         /// </summary>
         public JToken Params { get; set; }
         public JsonRpcParameters RpcParams { get; set; }
-
-
-        public virtual JsonRpcResponse Execute()
-        {
-            JsonRpcResponse response = new JsonRpcResponse();
-            // get the method from RpcMethods
-            MethodInfo mi = RpcMethods.FirstOrDefault(m => m.Name.Equals(Method, StringComparison.InvariantCultureIgnoreCase));
-            // if its not there get it from all methods
-            if (mi == null)
-            {
-                mi = AllMethods.FirstOrDefault(m => m.Name.Equals(Method, StringComparison.InvariantCultureIgnoreCase));
-            }
-            // if its not there set error in the response
-            if (mi == null)
-            {
-                response = GetErrorResponse(JsonRpcFaultCodes.MethodNotFound);
-            }
-            else
-            {
-                ExecutionRequest execRequest = ExecutionRequest.Create(Incubator, mi, GetInputParameters(mi));
-                ValidationResult validation = execRequest.Validate();
-                if (validation.Success)
-                {
-                    if(execRequest.ExecuteWithoutValidation())
-                    {
-                        response.Result = execRequest.Result;
-                    }
-                    else
-                    {
-                        response = GetErrorResponse(JsonRpcFaultCodes.InternalError);
-                    }                  
-                }
-                else
-                {
-                    response = GetErrorResponse(JsonRpcFaultCodes.InvalidRequest);
-                }
-            }
-
-            return response;
-        }
 
         protected virtual JsonRpcResponse GetErrorResponse(JsonRpcFaultCodes faultCode)
         {

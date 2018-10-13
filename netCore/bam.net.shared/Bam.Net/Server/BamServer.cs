@@ -966,6 +966,7 @@ namespace Bam.Net.Server
                 _exceptionHandler = value;
             }
         }
+
         public Task HandleRequestAsync(IHttpContext context)
         {
             return Task.Run(() =>
@@ -973,6 +974,7 @@ namespace Bam.Net.Server
                 HandleRequest(context);
             });
         }
+
         public void HandleRequest(IHttpContext context)
         {
             IRequest request = context.Request;
@@ -1200,40 +1202,7 @@ namespace Bam.Net.Server
             get;
             private set;
         }
-        protected void ProcessRequest(HttpListenerContext context)
-        {
-            HttpListenerRequest request = context.Request;
-            HttpListenerResponse response = context.Response;
 
-            HandleRequestAsync(new HttpContextWrapper(new RequestWrapper(request), new ResponseWrapper(response)));
-        }
-
-        private void HandleResponderNotFound(IHttpContext context)
-        {
-            IResponse response = context.Response;
-            IRequest request = context.Request;
-
-            string path = request.Url.ToString();
-            string messageFormat = "No responder was found for the path: {0}";
-            string description = "Responder not found";
-
-            using (StreamWriter sw = new StreamWriter(response.OutputStream))
-            {
-                response.StatusCode = (int)HttpStatusCode.NotFound;
-                response.StatusDescription = description;
-                sw.WriteLine("<!DOCTYPE html>");
-                Tag html = new Tag("html");
-                html.Child(new Tag("body")
-                    .Child(new Tag("h1").Text(description))
-                    .Child(new Tag("p").Text(string.Format(messageFormat, path)))
-                );
-                sw.WriteLine(html.ToHtmlString());
-                sw.Flush();
-                sw.Close();
-            }
-            string logMessageFormat = "[ClientIp: {0}] No responder found for the path: {1}";
-            MainLogger.AddEntry(logMessageFormat, LogEventType.Warning, request.GetClientIp(), path);
-        }
 
         private void HandlePostInitialization(BamServer server)
         {

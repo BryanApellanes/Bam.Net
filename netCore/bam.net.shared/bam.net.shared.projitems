@@ -747,6 +747,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\WebHookService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CoreServices\WebHooks\WebHookSubscriptionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CsvPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CsvWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CustomAttributeExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\CustomAttributeTypeDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\AssignValue.cs" />

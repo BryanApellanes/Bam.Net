@@ -17,7 +17,7 @@ using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
-    public abstract class TemplateInitializer : IInitialize<TemplateInitializer>, IPostServerInitialize
+    public abstract partial class TemplateInitializer : IInitialize<TemplateInitializer>, IPostServerInitialize
     {
         public TemplateInitializer(BamServer server)
         {
@@ -81,15 +81,6 @@ namespace Bam.Net.Server
         public abstract void RenderAppTemplates();
         public abstract void RenderCommonTemplates();
 
-        protected internal static void RenderEachTable(IRenderer renderer, DaoProxyRegistration daoProxyReg)
-        {
-            Assembly currentAssembly = daoProxyReg.Assembly;
-            Type[] tableTypes = currentAssembly.GetTypes().Where(type => type.HasCustomAttributeOfType<TableAttribute>()).ToArray();
-            tableTypes.Each(type =>
-            {
-                renderer.Render(type.ValuePropertiesToDynamicType(type.Name).Construct());
-            });
-        }
 
         List<ILogger> _subscribers;
         object _subscriberLock = new object();

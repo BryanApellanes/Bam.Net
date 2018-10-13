@@ -11,10 +11,10 @@ using Bam.Net.Data;
 using System.Data;
 using Bam.Net.Configuration;
 
-namespace Bam.Net.Javascript.Sql
+namespace Bam.Net.Javascript
 {
 	[Proxy("sql")]
-	public abstract class JavaScriptSqlProvider : IConfigurable
+	public abstract partial class JavaScriptSqlProvider : IConfigurable
 	{
 		public JavaScriptSqlProvider() { }
 
@@ -22,25 +22,6 @@ namespace Bam.Net.Javascript.Sql
 		{
 			get;
 			set;
-		}
-		public SqlResponse Execute(string sql)
-		{
-			EnsureInitialized();
-			SqlResponse result = new SqlResponse();
-			try
-			{
-				DataTable results = Database.GetDataTable(sql, CommandType.Text);
-				result.Results = results.ToDynamicList().ToArray();
-				result.Count = results.Rows.Count;
-			}
-			catch (Exception ex)
-			{
-				result.Success = false;
-				result.Message = ex.Message;
-				result.Results = new object[] { };
-			}
-
-			return result;
 		}
 
 		bool _initialized;

@@ -110,8 +110,8 @@ namespace Bam.Net.Presentation.Html
         
         public static MvcHtmlString FieldsetFor(this HtmlHelper helper, string json, string legendText = null, object wrapperAttrs = null, bool setValues = false)
         {
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            return FieldsetFor(helper, obj, legendText, wrapperAttrs);
+            object obj = JsonConvert.DeserializeObject(json);
+            return FieldsetFor(helper, obj, legendText, wrapperAttrs, setValues);
         }
 
         public static MvcHtmlString FieldsetFor(this HtmlHelper helper, dynamic obj, string legendText = null, object wrapperAttrs = null, bool setValues = false)

@@ -25,7 +25,7 @@ namespace Bam.Net.Data.Repositories
         {
             List<Assembly> referenceAssemblies = new List<Assembly>{
                     typeof(DaoGenerator).Assembly,
-                    typeof(ServiceProxyController).Assembly,
+                    typeof(ServiceProxySystem).Assembly,
                     typeof(Args).Assembly,
                     typeof(DaoRepository).Assembly};
             RazorParser<SchemaRepositoryTemplate> parser = new RazorParser<SchemaRepositoryTemplate>(RazorBaseTemplate.DefaultInspector);

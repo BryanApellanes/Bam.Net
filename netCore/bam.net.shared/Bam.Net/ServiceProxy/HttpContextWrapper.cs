@@ -13,7 +13,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.ServiceProxy
 {
-    public partial class HttpContextWrapper
+    public partial class HttpContextWrapper: IHttpContext
     {
         public HttpContextWrapper() { }
 

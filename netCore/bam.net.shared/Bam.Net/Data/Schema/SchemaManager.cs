@@ -21,7 +21,7 @@ using Bam.Net.Configuration;
 namespace Bam.Net.Data.Schema
 {
     [Proxy("dbm")]
-    public class SchemaManager : IHasSchemaTempPathProvider
+    public partial class SchemaManager : IHasSchemaTempPathProvider
     {
         public SchemaManager(bool autoSave = true)
         {
@@ -532,27 +532,6 @@ namespace Bam.Net.Data.Schema
             get
             {
                 return Path.Combine(RootDir, "bin");
-            }
-        }
-
-        string _rootDir;
-        public string RootDir
-        {
-            get
-            {
-                if (HttpContext.Current != null)
-                {
-                    return HttpContext.Current.Server.MapPath("~/");
-                }
-                else
-                {
-                    return _rootDir ?? SchemaTempPathProvider(CurrentSchema);
-                }
-            }
-
-            set
-            {
-                _rootDir = value;
             }
         }
 

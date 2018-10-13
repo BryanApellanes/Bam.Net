@@ -10,7 +10,7 @@ using System.Data.Common;
 
 namespace Bam.Net.Data
 {
-    public class SqlStringBuilder : IHasFilters
+    public partial class SqlStringBuilder : IHasFilters
     {
         const string InsertFormat = "INSERT INTO {0} ";
         StringBuilder _stringBuilder;
@@ -120,14 +120,6 @@ namespace Bam.Net.Data
             return new List<T>();
         }
 
-        public IEnumerable<dynamic> ExecuteDynamicReader(Database db)
-        {
-            if (!string.IsNullOrWhiteSpace(this))
-            {
-                return db.ExecuteDynamicReader(this, (dr) => OnExecuted(db));
-            }
-            return new List<dynamic>();
-        }
         
         public virtual DataSet GetDataSet(Database db, bool releaseConnection = true, DbConnection conn = null, DbTransaction tx = null)
         {
