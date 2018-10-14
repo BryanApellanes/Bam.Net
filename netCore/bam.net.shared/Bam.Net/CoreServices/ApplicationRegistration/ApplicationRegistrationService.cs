@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Proxy("appRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("appregistry")]
-    public class ApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
+    public partial class ApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         CacheManager _cacheManager;
         ApiKeyResolver _apiKeyResolver;
@@ -135,51 +135,6 @@ namespace Bam.Net.CoreServices
         public virtual ApiKeyInfo GetClientApiKeyInfo()
         {
             return GetApiKeyInfo(this);
-        }
-
-        /// <summary>
-        /// Establishes the means by which the client will 
-        /// communicate securely with the server.  Creates 
-        /// a machine account for the client; used primarily 
-        /// for .Net client assemblies using CoreClient
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns>A CoreServiceResponse message detailing success or failure.</returns>
-        public virtual CoreServiceResponse RegisterClient(Client client)
-        {
-            try
-            {
-                Args.ThrowIfNullOrEmpty(client?.Secret, nameof(client.Secret));
-                Args.ThrowIfNullOrEmpty(client?.ServerHost, nameof(client.ServerHost));
-                Args.ThrowIfNull(client?.Machine, nameof(client.Machine));
-                Args.ThrowIf(client.Port <= 0, "Server Port not specified");
-                IUserManager mgr = (IUserManager)UserManager.Clone();
-                mgr.HttpContext = HttpContext;
-                string clientName = client.ToString();
-                CoreServiceResponse response = new CoreServiceResponse();
-                CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(clientName);
-                if (!(bool)checkUserName.Data) // already exists
-                {
-                    response.Success = true;
-                    response.Message = "Already registered";
-                }
-                else
-                {
-                    SignUpResponse signupResponse = mgr.SignUp(client.GetPseudoEmail(), clientName, client.Secret.Sha1(), false);
-                    if (!signupResponse.Success)
-                    {
-                        throw new Exception(response.Message);
-                    }
-                    Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(m => m.Name == client.MachineName);
-                    client = ApplicationRegistrationRepository.GetOneClientWhere(c => c.MachineId == machine.Id && c.MachineName == client.MachineName && c.ApplicationName == client.ApplicationName && c.ServerHost == client.ServerHost && c.Port == client.Port);                    
-                    response = new CoreServiceResponse { Success = true, Data = client.ToDynamicData().ToJson() };
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex, nameof(ApplicationRegistrationService.RegisterClient));
-            }
         }
 
         public virtual CoreServiceResponse RegisterApplication(string applicationName)
@@ -331,6 +286,51 @@ namespace Bam.Net.CoreServices
         public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
             throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(ApplicationRegistrationService)}.{nameof(ApplicationRegistrationService.SetKeyToken)}");
+        }
+
+        /// <summary>
+        /// Establishes the means by which the client will 
+        /// communicate securely with the server.  Creates 
+        /// a machine account for the client; used primarily 
+        /// for .Net client assemblies using CoreClient
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>A CoreServiceResponse message detailing success or failure.</returns>
+        public virtual CoreServiceResponse RegisterClient(Client client)
+        {
+            try
+            {
+                Args.ThrowIfNullOrEmpty(client?.Secret, nameof(client.Secret));
+                Args.ThrowIfNullOrEmpty(client?.ServerHost, nameof(client.ServerHost));
+                Args.ThrowIfNull(client?.Machine, nameof(client.Machine));
+                Args.ThrowIf(client.Port <= 0, "Server Port not specified");
+                IUserManager mgr = (IUserManager)UserManager.Clone();
+                mgr.HttpContext = HttpContext;
+                string clientName = client.ToString();
+                CoreServiceResponse response = new CoreServiceResponse();
+                CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(clientName);
+                if (!(bool)checkUserName.Data) // already exists
+                {
+                    response.Success = true;
+                    response.Message = "Already registered";
+                }
+                else
+                {
+                    SignUpResponse signupResponse = mgr.SignUp(client.GetPseudoEmail(), clientName, client.Secret.Sha1(), false);
+                    if (!signupResponse.Success)
+                    {
+                        throw new Exception(response.Message);
+                    }
+                    Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(m => m.Name == client.MachineName);
+                    client = ApplicationRegistrationRepository.GetOneClientWhere(c => c.MachineId == machine.Id && c.MachineName == client.MachineName && c.ApplicationName == client.ApplicationName && c.ServerHost == client.ServerHost && c.Port == client.Port);
+                    response = new CoreServiceResponse { Success = true, Data = client.ToDynamicData().ToJson() };
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex, nameof(ApplicationRegistrationService.RegisterClient));
+            }
         }
 
         protected DefaultDataDirectoryProvider DataSettings { get; set; }

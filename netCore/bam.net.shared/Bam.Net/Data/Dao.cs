@@ -11,7 +11,6 @@ using Bam.Net;
 using Bam.Net.Incubation;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Diagnostics;
 using Bam.Net.Logging;
 
@@ -20,7 +19,7 @@ namespace Bam.Net.Data
     /// <summary>
     /// Data Access Object
     /// </summary>
-    public abstract class Dao : ICommittable, IHasDataRow, IComparable
+    public abstract partial class Dao : ICommittable, IHasDataRow, IComparable
     {
         static Dictionary<string, string> _proxiedConnectionNames;
 
@@ -962,7 +961,7 @@ namespace Bam.Net.Data
             Type thisType = this.GetType();
             if (db == null)
             {
-                db = Database;// Db.For(thisType);
+                db = Database;
             }
 
             this.IsNew = true;
@@ -974,59 +973,7 @@ namespace Bam.Net.Data
 
             this.Commit();
         }
-
-        static Dictionary<Type, object> _dynamicTypeLocks = new Dictionary<Type, object>();
-        /// <summary>
-        /// Creates an in memory dynamic type representing
-        /// the current Dao's Columns only.
-        /// </summary>
-        /// <returns></returns>
-        public object ToJsonSafe()
-        {
-            Type thisType = this.GetType();
-            _dynamicTypeLocks.AddMissing(thisType, new object());
-            lock (_dynamicTypeLocks[thisType])
-            {
-                Type jsonSafeType = this.BuildDynamicType<ColumnAttribute>(false);
-                ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
-                object jsonSafeInstance = ctor.Invoke(null);
-                jsonSafeInstance.CopyProperties(this);
-                return jsonSafeInstance;
-            }
-        }
-
-        /// <summary>
-        /// Creates an in memory dynamic type representing
-        /// the current Dao's Columns only.
-        /// </summary>
-        /// <param name="includeExtras">Include anything added through the Value method</param>
-        /// <returns></returns>
-        public object ToJsonSafe(bool includeExtras = false)
-        {
-            object jsonSafe = ToJsonSafe();
-            object result = jsonSafe;
-            if (includeExtras)
-            {
-                object extras = ToDynamic();
-                Type mergedType = new List<object>() { jsonSafe, extras }.MergeToDynamicType(Dao.TableName(this), 0);
-                result = mergedType.Construct();
-                result.CopyProperties(extras);
-                result.CopyProperties(jsonSafe);                
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Create an in memory dynamic type representing 
-        /// all the values in DataRow including anything 
-        /// added through the Value method
-        /// </summary>
-        /// <returns></returns>
-        public object ToDynamic()
-        {
-            return DataRow.ToDynamic();
-        }
-
+                
         /// <summary>
         /// Gets an array of AssignValue instances that represent 
         /// the names and values of columns with new values
@@ -1063,7 +1010,6 @@ namespace Bam.Net.Data
         /// </summary>
         /// <returns></returns>
         public abstract IQueryFilter GetUniqueFilter();
-
 
         public Func<Dao, IQueryFilter> UniqueFilterProvider
         {

@@ -268,23 +268,6 @@ namespace Bam.Net
             return temp;
         }
 
-        private static bool DataTypeFilter(PropertyInfo prop)
-        {
-            return prop.PropertyType == typeof(string) ||
-                        prop.PropertyType == typeof(bool) ||
-                        prop.PropertyType == typeof(long) ||
-                        prop.PropertyType == typeof(long?) ||
-                        prop.PropertyType == typeof(ulong) ||
-                        prop.PropertyType == typeof(ulong?) ||
-                        prop.PropertyType == typeof(int) ||
-                        prop.PropertyType == typeof(int?) ||
-                        prop.PropertyType == typeof(bool?) ||
-                        prop.PropertyType == typeof(decimal) ||
-                        prop.PropertyType == typeof(decimal?) ||
-                        prop.PropertyType == typeof(byte[]) ||
-                        prop.PropertyType == typeof(DateTime) ||
-                        prop.PropertyType == typeof(DateTime?);
-        }
 
         public static object ValuePropertiesToDynamicInstance(this Type type, out AssemblyBuilder assemblyBuilder)
         {

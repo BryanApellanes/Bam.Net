@@ -94,10 +94,24 @@ namespace Bam.Net.Data.Repositories
             string fileName = generator.GetDefaultFileName();
             return fileName;
         }
+
+        public static void WriteRenderedDto(string nameSpace, string writeSourceTo, Type daoType, Func<PropertyInfo, bool> propertyFilter)
+        {
+            string typeName = Dao.TableName(daoType);
+            typeName = string.IsNullOrEmpty(typeName) ? daoType.Name : typeName;
+            DtoModel dtoModel = new DtoModel(nameSpace, typeName, daoType.GetProperties().Where(propertyFilter).Select(pi=> new DtoPropertyModel(pi)).ToArray());
+            WriteRenderedDto(writeSourceTo, dtoModel);
+        }
+
         public static void WriteRenderedDto(string nameSpace, string writeSourceTo, Type dynamicDtoType)
         {
-            DtoModel pocoModel = new DtoModel(dynamicDtoType, nameSpace);
-            string csFile = "{0}.cs"._Format(pocoModel.TypeName);
+            DtoModel dtoModel = new DtoModel(dynamicDtoType, nameSpace);
+            WriteRenderedDto(writeSourceTo, dtoModel);
+        }
+
+        private static void WriteRenderedDto(string writeSourceTo, DtoModel dtoModel)
+        {
+            string csFile = "{0}.cs"._Format(dtoModel.TypeName);
             FileInfo csFileInfo = new FileInfo(Path.Combine(writeSourceTo, csFile));
             if (!csFileInfo.Directory.Exists)
             {
@@ -105,7 +119,7 @@ namespace Bam.Net.Data.Repositories
             }
             using (StreamWriter sw = new StreamWriter(csFileInfo.FullName))
             {
-                sw.Write(pocoModel.Render());
+                sw.Write(dtoModel.Render());
             }
         }
     }

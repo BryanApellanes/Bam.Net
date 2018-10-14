@@ -15,21 +15,8 @@ namespace Bam.Net.Data.Dynamic
     /// reflection extension methods in a non extension sort of way with
     /// less typing.
     /// </summary>
-    public static class Reflect
+    public static partial class Reflect
     {
-        /// <summary>
-        /// Combines the current instance with the specified toMerge values
-        /// creating a new type with all the properties of each and value 
-        /// set to the last one in
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="toMerge"></param>
-        /// <returns></returns>
-        public static object Combine(this object instance, params object[] toMerge)
-        {
-            return Extensions.Combine(instance, toMerge);
-        }
-
         /// <summary>
         /// Get the property of the current instance with the specified name
         /// </summary>

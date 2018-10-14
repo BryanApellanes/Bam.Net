@@ -981,6 +981,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DaoRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DaoRepositorySchemaWarningEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DaoSuffixTypeTableNameProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DaoToDtoGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DatabaseExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DatabaseFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DatabaseRepository.cs" />
@@ -988,7 +989,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultDataTypeBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DefaultRepositoryResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\Dto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DtoModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DtoPropertyModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\DtoTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\EchoTypeTableNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\FsRepoData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bam.Net\Data\Repositories\GenerateDaoAssemblyEventArgs.cs" />

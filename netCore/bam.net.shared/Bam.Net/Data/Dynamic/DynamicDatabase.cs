@@ -24,7 +24,7 @@ namespace Bam.Net.Data.Dynamic
     /// A dynamic crud interface to a database
     /// </summary>
     /// <typeparam name="Db"></typeparam>
-    public class DynamicDatabase: IArbitrateExceptions
+    public partial class DynamicDatabase: IArbitrateExceptions
     {  
         public DynamicDatabase(){}
         public DynamicDatabase(Database database, SchemaNameMap schemaNameMap = null)
@@ -195,47 +195,6 @@ namespace Bam.Net.Data.Dynamic
             }
         }
 
-        /// <summary>
-        /// Execute a query using the current sql buffered in CurrentSql
-        /// and returning the results as a representation of
-        /// the specified tableName
-        /// </summary>
-        /// <param name="tableName"></param>
-        /// <returns></returns>
-        public IEnumerable<dynamic> Retrieve(string tableName)
-        {
-            if (CurrentSql != null)
-            {
-                DataTable table = CurrentSql.GetDataTable(Database);
-                table = MapDataTable(tableName, table);
-                IEnumerable<dynamic> results = table.ToDynamicList();
-                CurrentSql = null;
-                return results;
-            }
-            return new List<dynamic>();
-        }
-
-        /// <summary>
-        /// Execute the specified sql using the specified parameters
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        public IEnumerable<dynamic> Query(string sql, Dictionary<string, object> parameters)
-        {
-            try
-            {
-                Database db = Database;
-                IEnumerable<DbParameter> dbParameters = parameters.ToDbParameters(db);
-                return Database.GetDataTable(sql, System.Data.CommandType.Text, dbParameters.ToArray()).ToDynamicList();
-            }
-            catch (Exception ex)
-            {
-                ExceptionArbiter.Catch(this, ex);
-            }
-
-            return new List<dynamic>();
-        }
 /*
 * new {
 *  Table = "Customer",

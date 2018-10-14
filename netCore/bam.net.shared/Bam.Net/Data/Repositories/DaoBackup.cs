@@ -17,7 +17,7 @@ namespace Bam.Net.Data.Repositories
 	/// <summary>
 	/// Represents a backup of a Dao database schema and the data therein
 	/// </summary>
-	public class DaoBackup
+	public partial class DaoBackup
 	{
 		public DaoBackup(Assembly daoAssembly, Database databaseToBackup, IRepository backupRepository)			
 		{
@@ -29,10 +29,6 @@ namespace Bam.Net.Data.Repositories
 			this.DaoTypes = daoAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<TableAttribute>()).ToArray();
 			Dao.AfterCommitAny += SaveToRepository;
 		}
-
-		public DaoBackup(Assembly daoAssembly, Database databaseToBackup)
-			: this(daoAssembly, databaseToBackup, new ObjectRepository(DefaultDataDirectoryProvider.Current.AppDataDirectory))
-		{ }
 
 		/// <summary>
 		/// The Assembly given to the constructor which "should" contain Dao types.

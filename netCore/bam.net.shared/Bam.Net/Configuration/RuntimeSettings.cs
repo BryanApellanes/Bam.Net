@@ -10,46 +10,10 @@ using System.Web;
 
 namespace Bam.Net.Configuration
 {
-    public static class RuntimeSettings
+    public static partial class RuntimeSettings
     {
         static string _appDataFolder;
         static object _appDataFolderLock = new object();
-        
-        public static string AppDataFolder
-        {
-            get
-            {
-                return _appDataFolderLock.DoubleCheckLock(ref _appDataFolder, () =>
-                {
-                    StringBuilder path = new StringBuilder();
-                    if (HttpContext.Current == null)
-                    {
-                        path.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-                        if (!path.ToString().EndsWith("\\"))
-                        {
-                            path.Append("\\");
-                        }
-
-                        path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + "\\");
-                        FileInfo fileInfo = new FileInfo(path.ToString());
-                        if (!Directory.Exists(fileInfo.Directory.FullName))
-                        {
-                            Directory.CreateDirectory(fileInfo.Directory.FullName);
-                        }
-                    }
-                    else
-                    {
-                        path.Append(HttpContext.Current.Server.MapPath("~/App_Data/"));                        
-                    }
-                    _appDataFolder = path.ToString();
-                    return _appDataFolder;
-                });
-            }
-            set
-            {
-                _appDataFolder = value;
-            }
-        }
         
         public static Func<Type, bool> ClrTypeFilter
         {

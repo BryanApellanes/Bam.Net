@@ -16,7 +16,7 @@ using System.Threading;
 namespace Bam.Net.CommandLine
 {
     [Serializable]
-    public abstract class CommandLineInterface : MarshalByRefObject
+    public abstract partial class CommandLineInterface : MarshalByRefObject
     {
         static event ExitDelegate Exiting;
         static event ExitDelegate Exited;
@@ -987,27 +987,6 @@ File Version: {1}
             parameters = ps;
 
             InvokeMethod();
-        }
-        [DebuggerStepThrough]
-        protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object[] ps = null)
-        {
-            InvokeInSeparateAppDomain(method, instance, null, ps);
-        }
-
-        [DebuggerStepThrough]
-        protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object state, object[] ps = null)
-        {
-            AppDomain isolationDomain = AppDomain.CreateDomain("TestAppDomain");
-            _methodToInvoke = method;
-            invokeOn = instance;
-            parameters = ps;
-
-            isolationDomain.SetData("Method", method);
-            isolationDomain.SetData("Instance", instance);
-            isolationDomain.SetData("Parameters", parameters);
-            isolationDomain.SetData("State", state);
-            isolationDomain.DoCallBack(InvokeMethod);
-            AppDomain.Unload(isolationDomain);
         }
 
         protected internal static T PopState<T>()

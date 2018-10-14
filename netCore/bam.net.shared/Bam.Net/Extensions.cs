@@ -1709,6 +1709,22 @@ namespace Bam.Net
             return JsonConvert.SerializeObject(value);
         }
 
+        public static string ToJson<Attr>(this object value) where Attr: Attribute
+        {
+            return ToJson(value, pi => pi.HasCustomAttributeOfType<Attr>());
+        }
+
+        public static string ToJson(this object value, Func<PropertyInfo, bool> propertyFilter)
+        {
+            Args.ThrowIfNull(value, "value");
+            JObject obj = new JObject();
+            foreach (PropertyInfo prop in value.GetType().GetProperties().Where(propertyFilter))
+            {
+                obj.Add(new JObject(prop.GetValue(value)));
+            }
+            return obj.ToString();
+        }
+
         public static string ToJson(this object value, bool pretty, NullValueHandling nullValueHandling = NullValueHandling.Ignore)
         {
             Newtonsoft.Json.Formatting formatting = pretty ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None;
@@ -3723,6 +3739,24 @@ namespace Bam.Net
             }
             return result;
         }
-        
+
+        // TODO: rename this to PropertyDataTypeFilter
+        private static bool DataTypeFilter(PropertyInfo prop)
+        {
+            return prop.PropertyType == typeof(string) ||
+                        prop.PropertyType == typeof(bool) ||
+                        prop.PropertyType == typeof(long) ||
+                        prop.PropertyType == typeof(long?) ||
+                        prop.PropertyType == typeof(ulong) ||
+                        prop.PropertyType == typeof(ulong?) ||
+                        prop.PropertyType == typeof(int) ||
+                        prop.PropertyType == typeof(int?) ||
+                        prop.PropertyType == typeof(bool?) ||
+                        prop.PropertyType == typeof(decimal) ||
+                        prop.PropertyType == typeof(decimal?) ||
+                        prop.PropertyType == typeof(byte[]) ||
+                        prop.PropertyType == typeof(DateTime) ||
+                        prop.PropertyType == typeof(DateTime?);
+        }
     }
 }

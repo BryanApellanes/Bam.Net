@@ -17,7 +17,7 @@ namespace Bam.Net.Data.Repositories
     /// Intended primarily to enable backup of
     /// Daos to an ObjectRepository
     /// </summary>
-    public partial class DaoToDtoGenerator // fx
+    public partial class DaoToDtoGenerator // core
     {
         /// <summary>
         /// Write dto source code into the specified namespace placing generated files into the specified directory
@@ -29,10 +29,9 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(DaoAssembly, "DaoAssembly");
 
             foreach (Type daoType in DaoAssembly.GetTypes()
-                .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-                .Select(t => t.BuildDynamicType<ColumnAttribute>()).ToArray())
+                .Where(t => t.HasCustomAttributeOfType<TableAttribute>()))
             {
-                Dto.WriteRenderedDto(nameSpace, writeSourceTo, daoType);
+                Dto.WriteRenderedDto(nameSpace, writeSourceTo, daoType, pi => pi.HasCustomAttributeOfType<ColumnAttribute>());
             }
         }
     }

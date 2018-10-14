@@ -15,25 +15,8 @@ using System.Collections;
 
 namespace Bam.Net.Data
 {
-    public static class DataExtensions
+    public static partial class DataExtensions
     {
-        /// <summary>
-        /// Create a json safe version of the object
-        /// by creating a dynamic type that represents
-        /// the properties on the original object
-        /// that are addorned with the ColumnAttribute
-        /// custom attribute.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static object ToJsonSafe(this object obj)
-        {
-            Type jsonSafeType = obj.BuildDynamicType<ColumnAttribute>(false);
-            ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
-            object jsonSafeInstance = ctor.Invoke(null);
-            jsonSafeInstance.CopyProperties(obj);
-            return jsonSafeInstance;
-        }
 
         public static object[] ToJsonSafe(this IEnumerable e)
         {

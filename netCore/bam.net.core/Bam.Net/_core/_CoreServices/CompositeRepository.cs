@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices
             ReadRepository = new CachingRepository(sourceRepository);
             WriteRepositories = new HashSet<IRepository>();
             WorkspacePath = DataSettings.GetWorkspaceDirectory(this.GetType()).FullName;
-            BackupRepository = new ObjectRepository(DataSettings.GetSysDataDirectory("BackupObjectRepo").FullName);
+            BackupRepository = ServiceRegistry.Default.Get<IRepository>();
             TypeSchemaTempPathProvider = (sd, ts) => Path.Combine(WorkspacePath, sd.Name, ts.Hash);
 
             WireBackup();

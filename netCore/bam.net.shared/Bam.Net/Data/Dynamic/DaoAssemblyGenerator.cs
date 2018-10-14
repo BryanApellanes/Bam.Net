@@ -14,16 +14,8 @@ using System.Reflection;
 
 namespace Bam.Net.Data.Dynamic
 {
-    public class DaoAssemblyGenerator: IAssemblyGenerator
+    public partial class DaoAssemblyGenerator: IAssemblyGenerator
     {
-        public DaoAssemblyGenerator(SchemaExtractor schemaExtractor, string workspacePath = null)
-        {
-            this.SchemaExtractor = schemaExtractor ?? new MsSqlSmoSchemaExtractor("Default");
-            this.ReferenceAssemblies = new Assembly[] { };
-            this._referenceAssemblyPaths = new List<string>(AdHocCSharpCompiler.DefaultReferenceAssemblies);
-
-            this.Workspace = workspacePath ?? ".";
-        }
 
         public DaoAssemblyGenerator(SchemaDefinition schema, SchemaNameMap nameMap, string workspacePath = null)
         {
