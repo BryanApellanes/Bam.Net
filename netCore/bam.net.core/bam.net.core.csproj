@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Bam.Net\**" />
+    <EmbeddedResource Remove="Bam.Net\**" />
+    <None Remove="Bam.Net\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BoneSoft.CSS" Version="1.0.0" />
     <PackageReference Include="BouncyCastle" Version="1.8.3" />
     <PackageReference Include="CsQuery" Version="1.3.4" />
@@ -32,10 +38,6 @@
     <PackageReference Include="System.Net.FtpClient" Version="1.0.5824.34026" />
     <PackageReference Include="YamlSerializer" Version="1.0.0" />
     <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Bam.Net\" />
   </ItemGroup>
 
   <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />

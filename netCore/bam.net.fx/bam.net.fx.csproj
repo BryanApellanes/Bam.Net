@@ -282,6 +282,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="_fx\AdHocCSharpCompiler.cs" />
     <Compile Include="_fx\ApplicationDiagnosticInfo.cs" />
     <Compile Include="_fx\CompilationException.cs" />
     <Compile Include="_fx\IIpcMessageStore.cs" />

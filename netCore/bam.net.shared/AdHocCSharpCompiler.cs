@@ -11,36 +11,9 @@ using Microsoft.CSharp;
 
 namespace Bam.Net
 {
-    public static class AdHocCSharpCompiler
-    {
+    public static partial class AdHocCSharpCompiler
+    {        
         static string[] _referenceAssemblies = new string[] { };
-        static string[] _defaultReferenceAssemblies = new string[] { };
-        public static string[] DefaultReferenceAssemblies
-        {
-            get
-            {
-                if (_defaultReferenceAssemblies.Length == 0)
-                {
-                    string folder = typeof(AdHocCSharpCompiler).Assembly.GetFileInfo().DirectoryName;
-                    List<string> defaultAssemblies = new List<string>();
-                    defaultAssemblies.Add("System.dll");
-                    defaultAssemblies.Add("System.Core.dll");
-                    defaultAssemblies.Add("System.Xml.dll");
-                    defaultAssemblies.Add("System.Data.dll");
-                    defaultAssemblies.Add(Path.Combine(folder, "System.Web.Mvc.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.ServiceProxy.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.Data.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.Data.Schema.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.Data.dll"));
-                    defaultAssemblies.Add(Path.Combine(folder, "Bam.Net.Incubation.dll"));
-                    _defaultReferenceAssemblies = defaultAssemblies.ToArray();
-                }
-
-                return _defaultReferenceAssemblies;
-            }
-        }
-
         public static void SetReferenceAssemlbies(string[] value)
         {
             _referenceAssemblies = value;
