@@ -34,6 +34,10 @@
     <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bam.Net\" />
+  </ItemGroup>
+
   <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
 
 </Project>
