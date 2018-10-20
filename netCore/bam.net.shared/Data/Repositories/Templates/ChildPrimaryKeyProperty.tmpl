@@ -1,0 +1,16 @@
+		@(Model.PrimaryKeyType.Namespace).@(Model.PrimaryKeyType.Name) _@(Model.PrimaryKeyType.Name.CamelCase());
+		public override @(Model.PrimaryKeyType.Namespace).@(Model.PrimaryKeyType.Name) @(Model.ChildParentProperty.Name)
+		{
+			get
+			{
+				if (_@(Model.PrimaryKeyType.Name.CamelCase()) == null)
+				{
+					_@(Model.PrimaryKeyType.Name.CamelCase()) = (@(Model.PrimaryKeyType.Namespace).@(Model.PrimaryKeyType.Name))Repository.GetParentPropertyOfChild(this, typeof(@(Model.PrimaryKeyType.Namespace).@(Model.PrimaryKeyType.Name)));
+				}
+				return _@(Model.PrimaryKeyType.Name.CamelCase());
+			}
+			set
+			{
+				_@(Model.PrimaryKeyType.Name.CamelCase()) = value;
+			}
+		}

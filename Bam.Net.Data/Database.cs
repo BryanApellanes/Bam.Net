@@ -753,6 +753,13 @@ namespace Bam.Net.Data
 			return this.GetLongValue(Dao.GetKeyColumnName(typeof(T)), row);
 		}
 
+        public virtual DbConnection CreateConnection()
+        {
+            DbConnection conn = ServiceProvider.Get<DbProviderFactory>().CreateConnection();
+            conn.ConnectionString = ConnectionString;
+            return conn;
+        }
+
         public virtual DbCommand CreateCommand()
         {
             return ServiceProvider.Get<DbProviderFactory>().CreateCommand();

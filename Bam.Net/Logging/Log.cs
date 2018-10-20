@@ -41,30 +41,92 @@ namespace Bam.Net.Logging
 
         public static void Info(string messageSignature, params object[] args)
         {
-            Default.AddEntry(messageSignature, LogEventType.Information, args.Select(a => a.ToString()).ToArray());
+            Default.AddEntry(messageSignature, LogEventType.Information, args?.Select(a => a.ToString())?.ToArray());
         }
+
         public static void Warn(string messageSignature, params object[] args)
         {
-            Default.AddEntry(messageSignature, LogEventType.Warning, args.Select(a => a.ToString()).ToArray());
+            Default.AddEntry(messageSignature, LogEventType.Warning, args?.Select(a => a.ToString())?.ToArray());
         }
+
         public static void Error(string messageSignature, params object[] args)
         {
             Error(messageSignature, new Exception(string.Format(messageSignature, args)), args);
         }
+
         public static void Error(string messageSignature, Exception ex, params object[] args)
         {
-            Default.AddEntry(messageSignature, ex, args.Select(a => a.ToString()).ToArray());
+            Default.AddEntry(messageSignature, ex, args?.Select(a => a.ToString())?.ToArray());
+        }
+
+        public static void Debug(string messageSignature, params object[] args)
+        {
+            DebugInfo(messageSignature, args);
+        }
+
+        public static void DebugInfo(string messageSignature, params object[] args)
+        {
+            WriteDebug(messageSignature, args);
+            Info(messageSignature, args);
+        }
+        
+        public static void DebugWarn(string messageSignature, params object[] args)
+        {
+            WriteDebug(messageSignature, args);
+            Warn(messageSignature, args);
+        }
+
+        public static void DebugError(string messageSignature, Exception ex, params object[] args)
+        {
+            WriteDebug(messageSignature, args);
+            Error(messageSignature, ex, args);
+        }
+        
+        private static void WriteDebug(string messageSignature, object[] args)
+        {
+            if(ProcessMode.Current.Mode == ProcessModes.Dev)
+            {
+                string message = string.Format(messageSignature, args);
+                Console.WriteLine($"DEBUG: {message}");
+                System.Diagnostics.Debug.WriteLine(message);
+            }
         }
 
         public static void Trace(string messageSignature, params object[] args)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
-            Info(messageSignature, args);
+            TraceInfo(messageSignature, args);
         }
 
         public static void Trace(string messageSignature, Exception ex, params object[] args)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format(messageSignature, args));
+            TraceError(messageSignature, ex, args);
+        }
+
+        public static void TraceInfo(string messageSignature, params object[] args)
+        {
+            WriteTrace(messageSignature, args);
+            Info(messageSignature, args);
+        }
+
+        public static void TraceWarn(string messageSignature, params object[] args)
+        {
+            WriteTrace(messageSignature, args);
+            Warn(messageSignature, args);
+        }
+
+        private static void WriteTrace(string messageSignature, object[] args)
+        {
+            if (ProcessMode.Current.Mode == ProcessModes.Dev || ProcessMode.Current.Mode == ProcessModes.Test)
+            {
+                string message = string.Format(messageSignature, args);
+                Console.WriteLine($"TRACE: {message}");
+                System.Diagnostics.Trace.WriteLine(message);
+            }
+        }
+        
+        private static void TraceError(string messageSignature, Exception ex, params object[] args)
+        {
+            WriteTrace(messageSignature, args);
             Error(messageSignature, ex, args);
         }
 

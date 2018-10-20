@@ -16,6 +16,8 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.MsSql;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Data.Npgsql;
+using Bam.Net.Logging.Counters;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -62,11 +64,7 @@ namespace Bam.Net.Data.Tests.Integration
 
 		[IntegrationTest]
 		public void TopQueryTest()
-		{
-			Setup();
-			CleanUp();
-			Setup();
-		
+		{		
 			Expect.IsTrue(_testDatabases.Count > 0);
 			string startsWith = 8.RandomLetters();
 			string methodName = MethodBase.GetCurrentMethod().Name;
@@ -235,10 +233,6 @@ namespace Bam.Net.Data.Tests.Integration
 		[IntegrationTest]
 		public void PagedQueryTest()
 		{
-			Setup();
-			CleanUp();
-			Setup();
-		
 			Expect.IsTrue(_testDatabases.Count > 0);
 			string name = MethodBase.GetCurrentMethod().Name;
 			_testDatabases.Each(db =>
@@ -254,12 +248,74 @@ namespace Bam.Net.Data.Tests.Integration
 			});
 		}
 
+        [ConsoleAction]
+        [IntegrationTest]
+        public void AsyncQueryManualTest()
+        {
+            _testDatabases = DataTools.Setup();
+            Expect.IsTrue(_testDatabases.Count > 0);
+            string methodName = MethodBase.GetCurrentMethod().Name;
+            string one = 4.RandomLetters();
+            string two = 4.RandomLetters();
+            foreach(Database db in _testDatabases)
+            {
+                Counter connectionCounter = Stats.Count("ConnectionCount", GetConnectionCount);
+                long initialCount = connectionCounter.Count;
+                foreach (IDbConnectionManager conMan in new IDbConnectionManager[] 
+                    {
+                        new PerThreadDbConnectionManager(db),
+                        new DefaultDbConnectionManager(db)
+                    }
+                )
+                {
+                    db.ConnectionManager = conMan;
+                    conMan.StateChangeEventHandler = (o, sce) => OutLineFormat("***** {0} Current state {1}, Original state {2} *****", ConsoleColor.DarkYellow, o.GetType().Name, sce.CurrentState.ToString(), sce.OriginalState.ToString());
+                    Expect.IsNotNull(db);
+                    
+                    OutLineFormat("{0} Connection Count before write {1}", ConsoleColor.Yellow, db.GetType().Name, connectionCounter.Count);
+
+                    List<TestTable> entries = new List<TestTable>();
+                    string name = $"{nameof(AsyncQueryManualTest)}.CreateTestData";
+                    Timer timer = Stats.Start(name);
+                    100.Times((i) => entries.Add(DataTools.CreateTestTable("{0}_{1}"._Format(one, 4.RandomLetters()), db)));
+                    timer = Stats.End(name);
+                    OutLineFormat("{0} Writes took {1}", ConsoleColor.Cyan, db.GetType().Name, timer.Duration);
+
+                    OutLineFormat("Count after write {0}", ConsoleColor.Yellow, connectionCounter.Count);
+
+                    Console.WriteLine(connectionCounter.Count);                    
+
+                    OutLineFormat("Count before read {0}", ConsoleColor.Yellow, connectionCounter.Count);
+                    name = $"{nameof(AsyncQueryManualTest)}.ReadTestData";
+                    timer = Stats.Start(name);
+                    Parallel.ForEach(entries, (tt) =>
+                    {
+                        TestTable val = TestTable.FirstOneWhere(c => c.Name == tt.Name, db);
+                        OutLineFormat("{0}", ConsoleColor.Cyan, val.Name);
+                    });
+                    timer = Stats.End(name);
+                    OutLineFormat("Parallel reads took {0}", ConsoleColor.Cyan, timer.Duration);
+                    OutLineFormat("Count after read {0}", ConsoleColor.Yellow, connectionCounter.Count);
+                    Console.WriteLine("{0}: {1}", db.GetType().Name, connectionCounter.Count);
+                    
+                    Stats.Start("Deleting");
+                    TestTable.LoadAll(db).ToList().ForEach(tt => tt.Delete(db));
+                    OutLineFormat("{0}: Deletes took {1} milliseconds", ConsoleColor.Yellow, db.GetType().Name, Stats.End("Deleting").Value);
+                    Expect.IsTrue(connectionCounter.Count <= initialCount + (conMan.MaxConnections * 2), "Connection count higher than expected");
+                }
+            }            
+        }
+
+        private long GetConnectionCount()
+        {
+            return "netstat".ToStartInfo("-an", "C:\\Windows\\System32").Run().StandardOutput.DelimitSplit("\r\n").Length;
+        }
+
 		public class TestTableQuery : Query<TestTableColumns, TestTable>
 		{
 			public TestTableQuery(WhereDelegate<TestTableColumns> where, OrderBy<TestTableColumns> orderBy = null, Database db = null)
 				: base(where, orderBy, db)
 			{ }
-
 		}
         
 		private static TestTableCollection CreateTestTableEntries(string name, Database db)
@@ -280,9 +336,8 @@ namespace Bam.Net.Data.Tests.Integration
 
 		private static void CheckExpectations(PagedQuery<TestTableColumns, TestTable> q)
 		{
-			IEnumerable<TestTable> results;
-			Expect.IsTrue(q.NextPage(out results));
-			Expect.AreEqual(q.PageSize, results.ToArray().Length);
+            Expect.IsTrue(q.NextPage(out IEnumerable<TestTable> results));
+            Expect.AreEqual(q.PageSize, results.ToArray().Length);
 			OutLine("**** First Page: ", ConsoleColor.Yellow);
 			results.Each(r =>
 			{

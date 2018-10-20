@@ -1,0 +1,2 @@
+﻿
+troo.exe /gsr /ta:.\bam.net.fx.dll /sn:ApplicationRegistration /fns:Bam.Net.CoreServices.ApplicationRegistration.Data /cfi:yes /uis:no /ws:C:\bam\src\generated\CoreServices\ApplicationRegistration\Data\Generated_Dao

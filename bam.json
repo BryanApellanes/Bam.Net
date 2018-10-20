@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.16.0\r\n -  Merge pull request #96 from BryanApellanes/next (41895653)\r\n",
+  "ReleaseNotes": "Version 1.16.1\r\n -  adjust current dir (98677797)\r\n -  fix git bits (fae1d84e)\r\n -  version (741f787f)\r\n -  minor typoe fixes (8e77f260)\r\n -  add contributing file (03dd1755)\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (e2f33813)\r\n -  add test project (6ca12420)\r\n -  rename file (05b7ec25)\r\n -  rename solution file (e9731dac)\r\n -  restructure (92a36261)\r\n -  move folders up (e685acdb)\r\n -  netcore refactor, everything compiles (57350032)\r\n -  Merge branch 'work2' into next (ab89cd10)\r\n -  use $ string concat (a11d1792)\r\n -  git updates (c8b9f50f)\r\n -  wip (e5e7624a)\r\n -  fix firebird package path (4a63dc78)\r\n -  fix git (23289c98)\r\n -  wip (8eb51976)\r\n -  Merge branch 'work2' into next (3ad738df)\r\n -  git updates (b46e83a5)\r\n -  refactoring for dotnetcore wip (819b6aeb)\r\n -  refactoring for net core (92524019)\r\n -  misc refactorings (53ce17b6)\r\n -  fix registry bug (e6fe73d4)\r\n -  Merge branch 'work2' into next (3f5d7ab2)\r\n -  git commands (96dfa502)\r\n -  wip (3578ad70)\r\n -  Source Control updates (753250ac)\r\n -  ToInt method override (9fee9a3f)\r\n -  Merge pull request #97 from BryanApellanes/next (21e23a09)\r\n",
   "MajorVersion": 1,
   "MinorVersion": 16,
-  "PatchVersion": 0,
+  "PatchVersion": 1,
   "BuildNumber": "",
-  "VersionString": "1.16.0"
+  "VersionString": "1.16.1"
 }

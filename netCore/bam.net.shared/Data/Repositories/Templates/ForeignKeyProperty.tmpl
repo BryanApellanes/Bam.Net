@@ -1,0 +1,16 @@
+		@(Model.CollectionProperty.PropertyType.ToTypeString(true)) _@(Model.CollectionProperty.Name.CamelCase());
+		public override @(Model.CollectionProperty.PropertyType.ToTypeString(true)) @(Model.CollectionProperty.Name)
+		{
+			get
+			{
+				if (_@(Model.CollectionProperty.Name.CamelCase()) == null)
+				{
+					_@(Model.CollectionProperty.Name.CamelCase()) = Repository.ForeignKeyCollectionLoader<@(Model.PrimaryKeyType.Namespace).@(Model.PrimaryKeyType.Name), @(Model.ForeignKeyType.Namespace).@(Model.ForeignKeyType.Name)>(this).To@(Model.CollectionProperty.PropertyType.IsArray ? "Array": "List")();
+				}
+				return _@(Model.CollectionProperty.Name.CamelCase());
+			}
+			set
+			{
+				_@(Model.CollectionProperty.Name.CamelCase()) = value;
+			}
+		}

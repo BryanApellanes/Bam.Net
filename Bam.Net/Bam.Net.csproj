@@ -155,6 +155,9 @@
     <Compile Include="Encryption\INamedCredentialProvider.cs" />
     <Compile Include="Encryption\ISaltProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
+    <Compile Include="Logging\Counters\Counter.cs" />
+    <Compile Include="Logging\Counters\Stats.cs" />
+    <Compile Include="Logging\Counters\Timer.cs" />
     <Compile Include="Sleep.cs" />
     <Compile Include="SystemPaths.cs" />
     <Compile Include="Logging\DefaultConfigurationLoggerProvider.cs" />

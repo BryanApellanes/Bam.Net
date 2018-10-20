@@ -13,7 +13,7 @@ namespace Bam.Net.Application
             MsBuild = "msbuild.exe";
             Config = "Release";
             Platform = "x64";
-            TargetFrameworkVersion = "v4.6.2";
+            TargetFrameworkVersion = "v4.7.2";
             AutoGenerateBindingRedirects = "true";
             GenerateDocumentation = "true";
             MaxCpuCount = 1;

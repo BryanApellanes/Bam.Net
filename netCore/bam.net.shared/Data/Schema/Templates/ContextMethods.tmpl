@@ -1,0 +1,53 @@
+
+	public class @(Model.ClassName)QueryContext
+	{
+			public @(Model.ClassName)Collection Where(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).Where(where, db);
+			}
+		   
+			public @(Model.ClassName)Collection Where(WhereDelegate<@(Model.ClassName)Columns> where, OrderBy<@(Model.ClassName)Columns> orderBy = null, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).Where(where, orderBy, db);
+			}
+
+			public @(Model.ClassName) OneWhere(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).OneWhere(where, db);
+			}
+
+			public static @(Model.ClassName) GetOneWhere(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).GetOneWhere(where, db);
+			}
+		
+			public @(Model.ClassName) FirstOneWhere(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).FirstOneWhere(where, db);
+			}
+
+			public @(Model.ClassName)Collection Top(int count, WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).Top(count, where, db);
+			}
+
+			public @(Model.ClassName)Collection Top(int count, WhereDelegate<@(Model.ClassName)Columns> where, OrderBy<@(Model.ClassName)Columns> orderBy, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).Count(where, db);
+			}
+	}
+
+	static @(Model.ClassName)QueryContext _@(Model.ClassName.Pluralize().CamelCase());
+	static object _@(Model.ClassName.Pluralize().CamelCase())Lock = new object();
+	public static @(Model.ClassName)QueryContext @(Model.ClassName.Pluralize())
+	{
+		get
+		{
+			return _@(Model.ClassName.Pluralize().CamelCase())Lock.DoubleCheckLock<@(Model.ClassName)QueryContext>(ref _@(Model.ClassName.Pluralize().CamelCase()), () => new @(Model.ClassName)QueryContext());
+		}
+	}

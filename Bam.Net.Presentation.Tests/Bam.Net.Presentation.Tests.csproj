@@ -110,6 +110,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="TestMarkdownJob.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">

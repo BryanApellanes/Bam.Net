@@ -12,6 +12,11 @@ namespace Bam.Net.CoreServices
     {
         public string Name { get; set; }
 
+        public FluentServiceRegistryContext<I> For<I>()
+        {
+            return new FluentServiceRegistryContext<I>(this);
+        }
+
         public ServiceRegistry Include(Incubator incubator)
         {
             CombineWith(incubator, true);

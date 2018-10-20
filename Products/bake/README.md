@@ -8,6 +8,7 @@ To cut a release, execute the following commands:
 ```
 cd C:\bam\src\Bam.Net
 git checkout next 
+git pull
 cd C:\bam\tools\bake
 bake /release:C:\bam\src\Bam.Net [/releaseNotesSince:[major].[minor].[patch]]
 bake /publish:public
@@ -21,6 +22,8 @@ bake /build:.\build.json
 bake /deploy:.\deploy-test.json
 bake /test:.\unit-tests.json
 ```
+
+Ensure when running the test step above, you use an administrator command prompt and the executable is on a local drive.
 
 ## Build
 

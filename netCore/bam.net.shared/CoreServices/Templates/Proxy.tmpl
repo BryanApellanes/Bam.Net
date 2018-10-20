@@ -1,0 +1,81 @@
+
+/*
+This file was generated and should not be modified directly
+*/
+
+namespace @(Model.Namespace)
+{
+    using System;
+    using Bam.Net;
+    using Bam.Net.ServiceProxy;
+    using Bam.Net.ServiceProxy.Secure;
+    using @(Model.Namespace).Contracts;
+@foreach(var u in Model.Usings)
+{
+    @(u);
+}
+
+	public class @(Model.TypeName)Proxy: @(Model.TypeName), IProxy @(Model.Interfaces)
+	{
+		@(Model.TypeName)Client _proxyClient;
+		public @(Model.TypeName)Proxy()
+		{
+			_proxyClient = new @(Model.TypeName)Client();
+		}
+
+		public @(Model.TypeName)Proxy(string baseUrl)
+		{
+			_proxyClient = new @(Model.TypeName)Client(baseUrl);
+		}
+
+		public ServiceProxyClient Client
+		{
+			get
+			{
+				return _proxyClient;
+			}		
+		}
+
+		public Type ProxiedType
+		{
+			get
+			{
+				return typeof(@(Model.TypeName));
+			}
+		}
+
+		public IApiKeyResolver ApiKeyResolver 
+		{
+			get
+			{
+				return (IApiKeyResolver)_proxyClient.Property("ApiKeyResolver", false);
+			}
+			set
+			{
+				_proxyClient.Property("ApiKeyResolver", value, false);
+			}
+		}
+
+		public IApplicationNameProvider ClientApplicationNameProvider
+		{
+			get
+			{
+				return (IApplicationNameProvider)_proxyClient.Property("ClientApplicationNameProvider", false);
+			}
+			set
+			{
+				_proxyClient.Property("ClientApplicationNameProvider", value, false);
+			}
+		}
+
+		public void SubscribeToClientEvent(string eventName, EventHandler handler)
+		{
+			_proxyClient.Subscribe(eventName, handler);
+		}
+
+		@foreach(var method in Model.Methods)
+		{
+			@(method.Render());
+		}
+	}
+}																								
