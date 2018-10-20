@@ -2,18 +2,18 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.ServiceProxy.Tests</id>
-    <version>1.16.0</version>
+    <version>1.16.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
 	Tests for System for simply and easily exposing pocos as RESTful webservices
 	with automatic generation of both .Net and Javascript clients
 	</description>
-    <releaseNotes>Version 1.16.0
+    <releaseNotes>Version 1.16.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net.ServiceProxy" version="1.16.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.16.1" />
       <dependency id="BouncyCastle" version="1.8.2" />
       <dependency id="Castle.Core" version="4.3.1" />
       <dependency id="FakeItEasy" version="4.7.1" />

@@ -2,21 +2,22 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.16.0</version>
+    <version>1.16.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.16.0
-Updates since v1.15.0:
- -   better connection handling (75806a80)
- -   correct data type handling for mssql and access (2e6c31e7)
- -   define IDbConnectionManager and two implementations (365b663f)
- -   release all connections after 3.5 seconds (3f0ddda1)
+    <releaseNotes>Version 1.16.1
+Updates since v1.16.0:
+ -   change defaultdbconnectionmanager to maxcountdbconnectionmanager (c2a1148b)
+ -   expose StateChangeHandler on DbConnectionManager (3a389e56)
+ -   updated connection managers (44c4b37d)
+ -   updated MaxCount connection manager (0495a0e3)
+ -   fix InComparison to handle ulong (0f13ae42)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.16.0" />
-      <dependency id="Bam.Net.Incubation" version="1.16.0" />
+      <dependency id="Bam.Net" version="1.16.1" />
+      <dependency id="Bam.Net.Incubation" version="1.16.1" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.6" />

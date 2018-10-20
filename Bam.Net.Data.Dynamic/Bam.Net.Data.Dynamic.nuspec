@@ -2,21 +2,21 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Dynamic</id>
-    <version>1.16.0</version>
+    <version>1.16.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Dynamic wrapper to ADO.Net</description>
-    <releaseNotes>Version 1.16.0
+    <releaseNotes>Version 1.16.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net.Data" version="1.16.0" />
-      <dependency id="Bam.Net.Data.Model" version="1.16.0" />
-      <dependency id="Bam.Net.Data.MsSql" version="1.16.0" />
-      <dependency id="Bam.Net.Data.Oracle" version="1.16.0" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.16.0" />
-      <dependency id="Bam.Net.Data.Schema" version="1.16.0" />
-      <dependency id="Bam.Net.Data.SQLite" version="1.16.0" />
+      <dependency id="Bam.Net.Data" version="1.16.1" />
+      <dependency id="Bam.Net.Data.Model" version="1.16.1" />
+      <dependency id="Bam.Net.Data.MsSql" version="1.16.1" />
+      <dependency id="Bam.Net.Data.Oracle" version="1.16.1" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.16.1" />
+      <dependency id="Bam.Net.Data.Schema" version="1.16.1" />
+      <dependency id="Bam.Net.Data.SQLite" version="1.16.1" />
       <dependency id="Bam.Net.Data.Incubation" version="1.9.1" />
       <dependency id="Bam.Net.Data.Yaml" version="1.9.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.6" />
