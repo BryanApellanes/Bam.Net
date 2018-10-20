@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.core", "bam.net.cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.tests", "bam.tests\bam.tests.csproj", "{BF948173-75C7-482A-883C-5B0DF55DCC45}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{421D4974-14D6-43AF-B00F-9AE19E11531D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		bam.net.shared\bam.net.shared.projitems*{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}*SharedItemsImports = 4
@@ -42,6 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BF948173-75C7-482A-883C-5B0DF55DCC45} = {421D4974-14D6-43AF-B00F-9AE19E11531D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0DA5E0B-6AD8-4F39-8F57-478C6AD7D4CA}

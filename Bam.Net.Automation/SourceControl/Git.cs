@@ -304,7 +304,7 @@ namespace Bam.Net.Automation.SourceControl
         {
             string startDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = _configStack.LocalRepository ?? ".";
-            ProcessOutput output = Path.Combine(_configStack.GitPath, "git.exe").ToStartInfo(args).Run();
+            ProcessOutput output = _configStack.GitPath.ToStartInfo(args).Run();
             Environment.CurrentDirectory = startDir;
             if (output.ExitCode != 0)
             {
@@ -317,7 +317,7 @@ namespace Bam.Net.Automation.SourceControl
         {
             get
             {
-                return new DirectoryInfo(_configStack.GitPath);
+                return new DirectoryInfo(_configStack.GitPath).Parent;
             }
         }
 
@@ -326,9 +326,9 @@ namespace Bam.Net.Automation.SourceControl
             bool result = true;
             try
             {
-                _configStack.LastOutput = "git.exe config --global user.name \"{0}\""._Format(_configStack.UserName).Run();
-                _configStack.LastOutput = "git.exe config --global user.email \"{0}\""._Format(_configStack.UserEmail).Run();
-                _configStack.LastOutput = "git.exe config --global credential.helper {0}"._Format(_configStack.CredentialHelper).Run();
+                _configStack.LastOutput = $"{_configStack.GitPath} config --global user.name \"{0}\""._Format(_configStack.UserName).Run();
+                _configStack.LastOutput = $"{_configStack.GitPath} config --global user.email \"{0}\""._Format(_configStack.UserEmail).Run();
+                _configStack.LastOutput = $"{_configStack.GitPath} config --global credential.helper {0}"._Format(_configStack.CredentialHelper).Run();
             }
             catch
             {

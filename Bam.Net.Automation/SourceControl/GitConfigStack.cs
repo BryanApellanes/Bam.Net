@@ -17,7 +17,7 @@ namespace Bam.Net.Automation.SourceControl
         public GitConfigStack()
         {
             this.CredentialHelper = "winstore";
-            this.GitPath = DefaultConfiguration.GetAppSetting("GitPath",  "C:\\Program Files\\Git\\bin");
+            this.GitPath = DefaultConfiguration.GetAppSetting("GitPath", "C:\\Program Files\\Git\\cmd\\git.exe");
         }
 
         public string RemoteRepository { get; set; }
