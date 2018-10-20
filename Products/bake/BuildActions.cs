@@ -440,6 +440,8 @@ namespace Bam.Net.Automation
             // update version
             string targetPath = GetTargetPath();            
             DirectoryInfo srcRoot = GetSourceRoot(targetPath);
+            string startDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = srcRoot.FullName;
             srcRoot.GetCommitHash().SafeWriteToFile(Path.Combine(srcRoot.FullName, typeof(Args).Namespace, "commit"), true);
             GitPath.ToStartInfo("reset --hard", srcRoot.FullName).RunAndWait();
             BamInfo info = GetBamInfo(srcRoot);
@@ -473,6 +475,7 @@ namespace Bam.Net.Automation
                     }
                 }
             }
+            Environment.CurrentDirectory = startDir;
         }
 
         [ConsoleAction("publish", "Publish nuget packages to the internal or public nuget source.")]
