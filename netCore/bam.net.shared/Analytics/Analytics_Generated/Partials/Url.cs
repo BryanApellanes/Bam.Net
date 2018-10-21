@@ -43,13 +43,15 @@ namespace Bam.Net.Analytics
 
                 if (check == null)
                 {
-                    check = new Url();
-                    check.ProtocolId = proto.Id;
-                    check.DomainId = domain.Id;
-                    check.PortId = port.Id;
-                    check.PathId = path.Id;
-                    check.QueryStringId = queryString.Id;
-					check.FragmentId = fragment.Id;
+                    check = new Url
+                    {
+                        ProtocolId = proto.Id,
+                        DomainId = domain.Id,
+                        PortId = port.Id,
+                        PathId = path.Id,
+                        QueryStringId = queryString.Id,
+                        FragmentId = fragment.Id
+                    };
                 }
 
                 if (save)
@@ -99,8 +101,10 @@ namespace Bam.Net.Analytics
             Path path = Path.OneWhere(c => c.Value == pathAndQuery[0]);
             if (path == null)
             {
-                path = new Path();
-                path.Value = pathAndQuery[0];
+                path = new Path
+                {
+                    Value = pathAndQuery[0]
+                };
                 path.Save();
             }
 
@@ -112,9 +116,11 @@ namespace Bam.Net.Analytics
 			Fragment f = Fragment.OneWhere(c => c.Value == uri.Fragment);
 			if (f == null)
 			{
-				f = new Fragment();
-				f.Value = uri.Fragment;
-				f.Save();
+                f = new Fragment
+                {
+                    Value = uri.Fragment
+                };
+                f.Save();
 			}
 
 			return f;
@@ -125,8 +131,10 @@ namespace Bam.Net.Analytics
             QueryString qs = QueryString.OneWhere(c => c.Value == uri.Query);
             if (qs == null)
             {
-                qs = new QueryString();
-                qs.Value = uri.Query;
+                qs = new QueryString
+                {
+                    Value = uri.Query
+                };
                 qs.Save();
             }
             return qs;
@@ -138,8 +146,10 @@ namespace Bam.Net.Analytics
             Path path = Path.OneWhere(c => c.Value == pathAndQuery[0]);
             if (path == null)
             {
-                path = new Path();
-                path.Value = pathAndQuery[0];
+                path = new Path
+                {
+                    Value = pathAndQuery[0]
+                };
                 path.Save();
             }
             this.PathId = path.Id;
@@ -156,8 +166,10 @@ namespace Bam.Net.Analytics
                     QueryString qs = QueryString.OneWhere(c => c.Value == query);
                     if (qs == null)
                     {
-                        qs = new QueryString();
-                        qs.Value = pathAndQuery[1];
+                        qs = new QueryString
+                        {
+                            Value = pathAndQuery[1]
+                        };
                         qs.Save();
                     }
                     this.QueryStringId = qs.Id;
@@ -177,8 +189,10 @@ namespace Bam.Net.Analytics
                 port = Port.OneWhere(c => c.Value == uri.Port);
                 if (port == null)
                 {
-                    port = new Port();
-                    port.Value = uri.Port;
+                    port = new Port
+                    {
+                        Value = uri.Port
+                    };
                     port.Save();
                 }
             }
@@ -190,8 +204,10 @@ namespace Bam.Net.Analytics
             Domain domain = Domain.OneWhere(c => c.Value == uri.Host);
             if (domain == null)
             {
-                domain = new Domain();
-                domain.Value = uri.Host;
+                domain = new Domain
+                {
+                    Value = uri.Host
+                };
                 domain.Save();
             }
             return domain;
@@ -202,8 +218,10 @@ namespace Bam.Net.Analytics
             Protocol proto = Protocol.OneWhere(c => c.Value == uri.Scheme);
             if (proto == null)
             {
-                proto = new Protocol();
-                proto.Value = uri.Scheme;
+                proto = new Protocol
+                {
+                    Value = uri.Scheme
+                };
                 proto.Save();
             }
             return proto;
@@ -213,8 +231,8 @@ namespace Bam.Net.Analytics
         {
             string proto = this.ProtocolOfProtocolId.Value;
             string domain = this.DomainOfDomainId.Value;
-            string port = this.PortOfPortId.Value > 0 ? string.Format(":{0}", this.PortOfPortId.Value.ToString()) : "";
-            if (this.PortOfPortId.Value == 80)
+            string port = this.PortOfPortId?.Value > 0 ? string.Format(":{0}", this.PortOfPortId.Value.ToString()) : "";
+            if (this.PortOfPortId?.Value == 80)
             {
                 port = string.Empty;
             }

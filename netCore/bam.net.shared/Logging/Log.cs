@@ -86,9 +86,12 @@ namespace Bam.Net.Logging
         {
             if(ProcessMode.Current.Mode == ProcessModes.Dev)
             {
-                string message = string.Format(messageSignature, args);
-                Console.WriteLine($"DEBUG: {message}");
-                System.Diagnostics.Debug.WriteLine(message);
+                if(DefaultConfiguration.GetAppSetting("Debug", "true").IsAffirmative())
+                {
+                    string message = string.Format(messageSignature, args);
+                    Console.WriteLine($"DEBUG: {message}");
+                    System.Diagnostics.Debug.WriteLine(message);
+                }
             }
         }
 
@@ -118,9 +121,12 @@ namespace Bam.Net.Logging
         {
             if (ProcessMode.Current.Mode == ProcessModes.Dev || ProcessMode.Current.Mode == ProcessModes.Test)
             {
-                string message = string.Format(messageSignature, args);
-                Console.WriteLine($"TRACE: {message}");
-                System.Diagnostics.Trace.WriteLine(message);
+                if(DefaultConfiguration.GetAppSetting("Trace", "true").IsAffirmative())
+                {
+                    string message = string.Format(messageSignature, args);
+                    Console.WriteLine($"TRACE: {message}");
+                    System.Diagnostics.Trace.WriteLine(message);
+                }
             }
         }
         
