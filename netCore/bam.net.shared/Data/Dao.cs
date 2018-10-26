@@ -542,6 +542,11 @@ namespace Bam.Net.Data
             }
         }
 
+        public virtual void Hydrate(Database database = null)
+        {
+            database.Hydrate(this);
+        }
+
         /// <summary>
         /// Reset the child collections for this instance forcing
         /// them to be reloaded the next time they are referenced.

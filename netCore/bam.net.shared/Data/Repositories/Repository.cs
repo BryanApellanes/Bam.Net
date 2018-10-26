@@ -20,10 +20,13 @@ namespace Bam.Net.Data.Repositories
 			_storableTypes = new HashSet<Type>();
             RequireUuid = true;
             RequireCuid = false;
+            RepoDataHydrator = Repositories.RepoDataHydrator.DefaultRepoDataHydrator;
         }
         
         public bool RequireUuid { get; set; }
         public bool RequireCuid { get; set; }
+
+        public IRepoDataHydrator RepoDataHydrator { get; set; }
 
         #region IRepository Members
 
@@ -57,6 +60,11 @@ namespace Bam.Net.Data.Repositories
 				return _storableTypes;
 			}
 		}
+
+        public virtual bool TryHydrate(RepoData data)
+        {
+            return RepoDataHydrator?.TryHydrate(data, this) ?? true;
+        }
 
         /// <summary>
         /// Add the specified type as a type that

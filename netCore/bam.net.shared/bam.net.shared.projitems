@@ -860,6 +860,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\FirebirdSql\FirebirdSqlStringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ForeignKeyAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\FormatPart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Hydrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\IAddable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ICommittable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ICommittableDelegate.cs" />
@@ -878,6 +879,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\IHasFilters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\IHasFormatParts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\IHasParameterInfos.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\IHydrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ILoadable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\InComparison.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\InsertFormat.cs" />
@@ -988,6 +990,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DefaultDatabaseProviderRepositoryResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DefaultDataDirectoryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DefaultDataTypeBehaviors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DefaultRepoDataHydrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DefaultRepositoryResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Dto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\DtoModel.cs" />
@@ -1017,6 +1020,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IObjectWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IQueryFilterable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IReflectionCrudProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IRepoDataHydrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IRepositoryPathProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\IRepositoryResolver.cs" />
@@ -1041,6 +1045,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\ProcessModeResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\PropertyColumn.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RepoData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RepoDataHydrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\Repository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RepositoryEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Repositories\RepositoryResolver.cs" />

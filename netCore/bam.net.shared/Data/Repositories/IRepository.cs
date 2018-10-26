@@ -34,5 +34,7 @@ namespace Bam.Net.Data.Repositories
         bool Delete(Type type, object toDelete);
         bool DeleteWhere<T>(dynamic filter);
         bool DeleteWhere(Type type, dynamic filter);
+
+        bool TryHydrate(RepoData data);
     }
 }

@@ -148,6 +148,16 @@ namespace Bam.Net.Data
             }
         }
 
+        public virtual void Hydrate(Dao dao)
+        {
+            GetHydrator()?.Hydrate(dao, this);
+        }
+
+        public virtual IHydrator GetHydrator()
+        {
+            return ServiceProvider?.Get<IHydrator>() ?? Hydrator.DefaultHydrator;
+        }
+
         public Dictionary<EnumType, DaoType> FillEnumDictionary<EnumType, DaoType>(Dictionary<EnumType, DaoType> dictionary, string nameColumn) where DaoType : Dao, new()
         {
             QuerySet query = ExecuteQuery<DaoType>();
