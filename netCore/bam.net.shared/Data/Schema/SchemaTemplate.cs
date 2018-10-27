@@ -26,7 +26,7 @@ namespace Bam.Net.Data.Schema
                     typeof(Resolver).Assembly};
                 return assembliesToReference;
             };
-            Write(razorParser.ExecuteResource("ContextMethods.tmpl", "Bam.Net.Data.Schema.Templates.", typeof(SchemaTemplate).Assembly, new { Model = table, Namespace = ns }));
+            Write(razorParser.ExecuteResource("ContextMethods.tmpl", SchemaTemplateResources.Path, typeof(SchemaTemplate).Assembly, new { Model = table, Namespace = ns }));
         }
     }
 }

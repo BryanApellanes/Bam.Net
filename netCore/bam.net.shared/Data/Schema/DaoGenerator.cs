@@ -716,8 +716,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforeColumnsClassParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("ColumnsClass.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("ColumnsClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterColumnsClassParse(Namespace, table);
 
             OnBeforeColumnsClassStreamResolved(Namespace, table);
@@ -735,8 +734,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforeCollectionParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("Collection.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("Collection.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterCollectionParse(Namespace, table);
 
             OnBeforeCollectionStreamResolved(Namespace, table);
@@ -763,9 +761,8 @@ namespace Bam.Net.Data.Schema
             Stream s = null;
 
             OnBeforeContextClassParse(schema);
-            Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("Context.tmpl", namespacePath, type.Assembly, new { Model = schema, Namespace = Namespace });
+            Type type = this.GetType();            
+            string result = parser.ExecuteResource("Context.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = schema, Namespace = Namespace });
             OnAfterContextClassParse(schema);
 
             OnBeforeContextStreamResolved(schema);
@@ -783,8 +780,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforeClassParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("Class.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("Class.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterClassParse(Namespace, table);
 
             OnBeforeClassStreamResolved(Namespace, table);
@@ -802,8 +798,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforePartialParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("Partial.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("Partial.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterPartialParse(Namespace, table);
 
             FileInfo partial = new FileInfo(Path.Combine(partialsDir, "{0}.cs"._Format(table.Name)));
@@ -822,8 +817,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforePagedQueryClassParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("PagedQueryClass.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("PagedQueryClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterPagedQueryClassParse(Namespace, table);
 
             OnBeforePagedQueryClassStreamResolved(Namespace, table);
@@ -841,8 +835,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforeQueryClassParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("QueryClass.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("QueryClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterQueryClassParse(Namespace, table);
 
             OnBeforeQueryClassStreamResolved(Namespace, table);
@@ -860,8 +853,7 @@ namespace Bam.Net.Data.Schema
 
             OnBeforeQiClassParse(Namespace, table);
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            string result = parser.ExecuteResource("QiClass.tmpl", namespacePath, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
+            string result = parser.ExecuteResource("QiClass.tmpl", SchemaTemplateResources.Path, type.Assembly, new { Model = table, Schema = schema, Namespace = Namespace });
             OnAfterQiClassParse(Namespace, table);
 
             OnBeforeQiClassStreamResolved(Namespace, table);

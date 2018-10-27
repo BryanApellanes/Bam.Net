@@ -264,10 +264,11 @@ namespace Bam.Net.Data.Schema
         protected string Render<T>(string templateName, string ns = "")
         {
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            RazorParser<DaoRazorTemplate<T>> razorParser = new RazorParser<DaoRazorTemplate<T>>();
-            razorParser.GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies;
-            return razorParser.ExecuteResource(templateName, namespacePath, type.Assembly, new { Model = this, Namespace = ns });
+            RazorParser<DaoRazorTemplate<T>> razorParser = new RazorParser<DaoRazorTemplate<T>>
+            {
+                GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies
+            };
+            return razorParser.ExecuteResource(templateName, SchemaTemplateResources.Path, type.Assembly, new { Model = this, Namespace = ns });
         }
     }
 }

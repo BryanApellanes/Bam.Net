@@ -340,6 +340,7 @@
     <Compile Include="_fx\_Configuration\RuntimeSettings.cs" />
     <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />
     <Compile Include="_fx\_CoreServices\ProxyableService.cs" />
+    <Compile Include="_fx\_CoreServices\ServiceRegistry.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ActiveApiKeyIndex.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ApiKey.cs" />

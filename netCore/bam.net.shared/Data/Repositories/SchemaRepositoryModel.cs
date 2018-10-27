@@ -29,7 +29,7 @@ namespace Bam.Net.Data.Repositories
                     typeof(Args).Assembly,
                     typeof(DaoRepository).Assembly};
             RazorParser<SchemaRepositoryTemplate> parser = new RazorParser<SchemaRepositoryTemplate>(RazorBaseTemplate.DefaultInspector);
-            string output = parser.ExecuteResource("SchemaRepository.tmpl", "Bam.Net.Data.Repositories.Templates.", typeof(SchemaRepositoryModel).Assembly, new { Model = this }, referenceAssemblies.ToArray());
+            string output = parser.ExecuteResource("SchemaRepository.tmpl", RepositoryTemplateResources.Path, typeof(SchemaRepositoryModel).Assembly, new { Model = this }, referenceAssemblies.ToArray());
             return output;
         }
     }

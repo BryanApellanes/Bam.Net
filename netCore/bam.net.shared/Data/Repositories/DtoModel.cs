@@ -51,7 +51,7 @@ namespace Bam.Net.Data.Repositories
                 typeof(PropertyInfo).Assembly
             };
             RazorParser<DtoTemplate> parser = new RazorParser<DtoTemplate>(RazorBaseTemplate.DefaultInspector);
-			string output = parser.ExecuteResource("Dto.tmpl", "Bam.Net.Data.Repositories.Templates.", typeof(DtoTemplate).Assembly,
+			string output = parser.ExecuteResource("Dto.tmpl", RepositoryTemplateResources.Path, typeof(DtoTemplate).Assembly,
 				new { Model = this }, references.ToArray());
 
 			return output;

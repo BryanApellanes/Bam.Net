@@ -668,7 +668,7 @@ namespace Bam.Net
             bool found = false;
             resourceNames.Each(rn =>
             {
-                bool thisIsTheOne = Path.GetFileName(rn).Equals(resourceName);
+                bool thisIsTheOne = Path.GetFileName(rn).Equals(resourceName, StringComparison.InvariantCultureIgnoreCase);
                 if (thisIsTheOne)
                 {
                     found = true;

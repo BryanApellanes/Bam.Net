@@ -5,10 +5,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Incubation;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceRegistry: Incubator
+    public partial class ServiceRegistry: Incubator
     {
         public string Name { get; set; }
 

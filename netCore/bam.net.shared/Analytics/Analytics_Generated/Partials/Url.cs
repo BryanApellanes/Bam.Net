@@ -17,6 +17,7 @@ namespace Bam.Net.Analytics
             return new Uri(url.ToString());
         }
 
+        // TODO: add database argument to static methods that use dao
         static object _saveLock = new object();
         public static Url FromUri(Uri uri, bool save = false)
         {

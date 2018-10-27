@@ -7,6 +7,7 @@ using Bam.Net.Razor;
 using System.Reflection;
 using Bam.Net.Data.Schema;
 using Bam.Net.ServiceProxy;
+using System.IO;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -30,8 +31,8 @@ namespace Bam.Net.Data.Repositories
                     typeof(Args).Assembly,
                     typeof(DaoRepository).Assembly};
 
-            RazorParser<RazorTemplate<T>> parser = new RazorParser<RazorTemplate<T>>();
-            string result = parser.ExecuteResource(templateName, "Bam.Net.Data.Repositories.Templates.", typeof(SchemaRepositoryTemplate).Assembly, options, referenceAssemblies.ToArray()).Trim();
+            RazorParser<RazorTemplate<T>> parser = new RazorParser<RazorTemplate<T>>();            
+            string result = parser.ExecuteResource(templateName, RepositoryTemplateResources.Path, typeof(SchemaRepositoryTemplate).Assembly, options, referenceAssemblies.ToArray()).Trim();
             return result;
         }
     }

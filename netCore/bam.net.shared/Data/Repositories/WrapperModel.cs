@@ -61,7 +61,7 @@ namespace Bam.Net.Data.Repositories
 			List<Assembly> references = new List<Assembly>(GetDefaultAssembliesToReference());
 			references.Add(BaseType.Assembly);
 			RazorParser<WrapperTemplate> parser = new RazorParser<WrapperTemplate>(RazorBaseTemplate.DefaultInspector);
-			string output = parser.ExecuteResource("Wrapper.tmpl", "Bam.Net.Data.Repositories.Templates.", typeof(WrapperGenerator).Assembly,
+			string output = parser.ExecuteResource("Wrapper.tmpl", RepositoryTemplateResources.Path, typeof(WrapperGenerator).Assembly,
 				new { Model = this }, references.ToArray());
 
 			return output;

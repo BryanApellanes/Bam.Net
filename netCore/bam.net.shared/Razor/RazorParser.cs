@@ -121,9 +121,10 @@ namespace Bam.Net.Razor
             return ExecuteResource(templateName, namespacePath, nameSpaceExampleAndResourceContainer.Assembly, options, assembliesToReference);
         }
 
-		public string ExecuteResource(string templateName, string namespacePath, Assembly resourceContainer, object options = null, params Assembly[] assembliesToReference)
+		public string ExecuteResource(string templateName, string resourceNamePrefix, Assembly resourceContainer, object options = null, params Assembly[] assembliesToReference)
 		{
-			string resourcePath = resourceContainer.GetManifestResourceNames().FirstOrDefault(fullPath => fullPath.Substring(namespacePath.Length, fullPath.Length - namespacePath.Length).Equals(templateName));
+            string[] manifestResourceNames = resourceContainer.GetManifestResourceNames();
+            string resourcePath = manifestResourceNames.FirstOrDefault(fullPath => fullPath.Substring(resourceNamePrefix.Length, fullPath.Length - resourceNamePrefix.Length).Equals(templateName));
 			
 			if (string.IsNullOrEmpty(resourcePath))
 			{

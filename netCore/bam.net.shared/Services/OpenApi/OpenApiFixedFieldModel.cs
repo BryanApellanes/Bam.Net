@@ -59,7 +59,7 @@ namespace Bam.Net.Services.OpenApi
             };
 
             RazorParser<RazorTemplate<OpenApiFixedFieldModel>> parser = new RazorParser<RazorTemplate<OpenApiFixedFieldModel>>();
-            string result = parser.ExecuteResource("FixedField.tmpl", "Bam.Net.Services.OpenApi.Templates.", typeof(OpenApiObjectDatabase).Assembly, new { Model = this }, referenceAssemblies.ToArray());
+            string result = parser.ExecuteResource("FixedField.tmpl", OpenApiTemplateResources.Path, typeof(OpenApiObjectDatabase).Assembly, new { Model = this }, referenceAssemblies.ToArray());
             return result;
         }
     }

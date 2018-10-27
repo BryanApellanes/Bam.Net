@@ -59,7 +59,7 @@ namespace Bam.Net.Data.Repositories
                     typeof(DaoRepository).Assembly};
             
 			RazorParser<RazorTemplate<TModel>> parser = new RazorParser<RazorTemplate<TModel>>();
-			string result = parser.ExecuteResource(templateName, "Bam.Net.Data.Repositories.Templates.", typeof(WrapperTemplate).Assembly, options, referenceAssemblies.ToArray()).Trim();
+			string result = parser.ExecuteResource(templateName, RepositoryTemplateResources.Path, typeof(WrapperTemplate).Assembly, options, referenceAssemblies.ToArray()).Trim();
 			return result;
 		}
 	}
