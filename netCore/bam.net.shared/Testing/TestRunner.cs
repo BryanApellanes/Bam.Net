@@ -51,6 +51,8 @@ namespace Bam.Net.Testing
 
         public string Tag { get; set; }
 
+        public event EventHandler TestIgnored;
+
         public event EventHandler TestPassed;
         public event EventHandler TestFailed;
 
@@ -164,6 +166,14 @@ namespace Bam.Net.Testing
         [DebuggerStepThrough]
         public void RunTest(TestMethod test)
         {
+            if(test.Attribute is UnitTestAttribute testAttribute)
+            {
+                if (testAttribute.Ignore)
+                {
+                    FireEvent(TestIgnored, new TestIgnoredEventArgs(testAttribute));
+                    return;
+                }
+            }
             TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag, Assembly = test.Method.DeclaringType.Assembly };
             FireEvent(TestStarting, args);
             try

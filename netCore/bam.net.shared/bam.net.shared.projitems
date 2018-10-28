@@ -1116,7 +1116,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TableNameToClassName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TableTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\TargetTableEventDelegate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\SchemaTemplateResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\UuidSchemaManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\XrefTable.cs" />
@@ -2853,6 +2852,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestExceptionEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Testing\TestIgnoredEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestMethodProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\TestRunListener.cs" />

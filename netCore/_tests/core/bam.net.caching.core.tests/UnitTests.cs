@@ -46,10 +46,8 @@ namespace Bam.Net.Caching.Tests
                 TextFileCache textCache = context.TextFileCache;
                 return textCache.GetText(testFile);
             };
-            string stringFromFile;
-            TimeSpan fromFileTime = readFromFile.TimeExecution<string, string>(testFilePath, out stringFromFile);
-            string stringFromCache;
-            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, string>(new { TextFileCache = cache }, out stringFromCache);
+            TimeSpan fromFileTime = readFromFile.TimeExecution<string, string>(testFilePath, out string stringFromFile);
+            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, string>(new { TextFileCache = cache }, out string stringFromCache);
 
             Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
             OutLine(stringFromFile.First(25), ConsoleColor.Cyan);
@@ -112,10 +110,8 @@ namespace Bam.Net.Caching.Tests
                 BinaryFileCache textCache = context.BinaryFileCache;
                 return textCache.GetZippedBytes(testFile);
             };
-            byte[] bytesFromFile;
-            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out bytesFromFile);
-            byte[] bytesFromCache;
-            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
+            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out byte[] bytesFromFile);
+            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out byte[] bytesFromCache);
 
             Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
 
@@ -138,51 +134,45 @@ namespace Bam.Net.Caching.Tests
             Expect.IsFalse(now.Equals(then));
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void QueryCacheTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(QueryCacheTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(QueryCacheTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
 
             string name = 8.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             QueryCache cache = new QueryCache();
             bool reloaded = false;
             cache.Reloaded += (o, c) => reloaded = true;
-            IEnumerable<object> results = cache.Results(typeof(TestMonkey), daoRepo, Filter.Where("Name") == name);
+            IEnumerable<object> results = cache.Results(typeof(TestMonkey), mongoRepo, Filter.Where("Name") == name);
             Expect.IsTrue(reloaded);
             reloaded = false;
-            results = cache.Results(typeof(TestMonkey), daoRepo, Filter.Where("Name") == name);
+            results = cache.Results(typeof(TestMonkey), mongoRepo, Filter.Where("Name") == name);
             Expect.IsFalse(reloaded);
             Expect.AreEqual(1, results.Count());
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryStringParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query("Name", name).First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryTypeDictionaryParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query(typeof(TestMonkey), new Dictionary<string, object>()
             {
                 { "Name", name}
@@ -191,15 +181,14 @@ namespace Bam.Net.Caching.Tests
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
-        [UnitTest]
+
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryGenericTypeDictionaryParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query<TestMonkey>(new Dictionary<string, object>()
             {
                 { "Name", name}
@@ -208,59 +197,53 @@ namespace Bam.Net.Caching.Tests
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
-        [UnitTest]
+
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryGenericTypeDynamicParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query<TestMonkey>(new { Name = name }).First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
-        [UnitTest]
+
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryGenericTypeFuncParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query<TestMonkey>((o) => o.Name.Equals(name)).First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryTypeDynamicParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query(typeof(TestMonkey), new { Name = name }).First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryTypeFuncParameterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query(typeof(TestMonkey), (o)=> o.Property("Name").ToString() == name).First();
             
             Expect.IsNotNull(result);
@@ -273,43 +256,37 @@ namespace Bam.Net.Caching.Tests
             Expect.CanCast<TestMonkey>(result2);
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryTypeQueryFilterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query(typeof(TestMonkey), QueryFilter.Where("Name") == name).ToArray().First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
 
-        [UnitTest]
+        [UnitTest(IgnoreBecause = "MongoRepository is not fully implemented")]
         public void CachingRepoQueryGenericQueryFilterTest()
         {
-            DaoRepository daoRepo;
-            CachingRepository cachingRepo;
-            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out MongoRepository mongoRepo, out CachingRepository cachingRepo);
             string name = 6.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            daoRepo.Save(data);
+            mongoRepo.Save(data);
             object result = cachingRepo.Query<TestMonkey>(QueryFilter.Where("Name") == name).ToArray().First();
             Expect.IsNotNull(result);
             Expect.AreEqual(typeof(TestMonkey), result.GetType());
             Expect.CanCast<TestMonkey>(result);
         }
-        private void GetRepos(string dbName, out DaoRepository daoRepo, out CachingRepository cachingRepo)
+
+        private void GetRepos(string dbName, out MongoRepository mongoRepo, out CachingRepository cachingRepo)
         {
-            SQLiteDatabase db = new SQLiteDatabase(dbName);
-            daoRepo = new DaoRepository(db);
-            daoRepo.DaoNamespace = $"{typeof(TestMonkey).Namespace}.Dao";
-            daoRepo.WarningsAsErrors = false;
-            daoRepo.AddType<TestMonkey>();
-            cachingRepo = new CachingRepository(daoRepo);
+            mongoRepo = new MongoRepository(databaseName: dbName);
+            mongoRepo.AddType<TestMonkey>();
+            cachingRepo = new CachingRepository(mongoRepo);
         }
     }
 

@@ -388,6 +388,7 @@
     <Compile Include="_fx\_Data\Database.cs" />
     <Compile Include="_fx\_Data\DaoProxyRegistration.cs" />
     <Compile Include="_fx\_Data\DataExtensions.cs" />
+    <Compile Include="_fx\_Data\SchemaTemplateResources.cs" />
     <Compile Include="_fx\_Data\Sql.cs" />
     <Compile Include="_fx\_Data\SqlStringBuilder.cs" />
     <Compile Include="_fx\_Data\_Dynamic\DaoAssemblyGenerator.cs" />

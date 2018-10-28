@@ -628,6 +628,10 @@ namespace Bam.Net.Caching
             {
                 return daoRepo.InvokeGeneric<T, TArg>(methodName, parameters);
             }
+            else if (SourceRepository is MongoRepository mongoRepo)
+            {
+                return mongoRepo.InvokeGeneric<T, TArg>(methodName, parameters);
+            }
             else
             {
                 throw new UnsupportedRepositoryTypeException(SourceRepository.GetType());

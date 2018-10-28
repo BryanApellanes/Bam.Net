@@ -22,7 +22,7 @@ namespace Bam.Net.Data.Repositories
     /// An incomplete Repository implementation using Mongo as a backing 
     /// data store
     /// </summary>
-	public class MongoRepository: Repository
+	public class MongoRepository: Repository, IQueryFilterable
 	{
 		private string _connectionString;
 		private string _databaseName;

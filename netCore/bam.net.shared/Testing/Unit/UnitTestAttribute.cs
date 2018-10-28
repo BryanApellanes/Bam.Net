@@ -25,6 +25,13 @@ namespace Bam.Net.Testing.Unit
         public UnitTestAttribute(string description)
             : base(description)
         {
-        }        
+        }  
+        
+        public bool Ignore
+        {
+            get { return !string.IsNullOrEmpty(IgnoreBecause); }
+        }
+
+        public string IgnoreBecause { get; set; }
     }
 }
