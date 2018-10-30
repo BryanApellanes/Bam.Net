@@ -13,6 +13,7 @@ namespace Bam.Net.CoreServices
         {
             Default = new ServiceRegistry { Name = "Default" };
             Default.Set<IObjectPersister>(ObjectPersister.Default);
+            Default.Set<IRepository>(new ObjectRepository());
         }
     }
 }

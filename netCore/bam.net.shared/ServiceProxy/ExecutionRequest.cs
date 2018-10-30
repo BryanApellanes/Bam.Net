@@ -35,6 +35,26 @@ namespace Bam.Net.ServiceProxy
             OnAnyInstanciated(this);
         }
 
+        public ExecutionRequest(string className, string methodName, string ext)
+        {
+            Context = new HttpContextWrapper();
+            ViewName = "Default";
+            ClassName = className;
+            MethodName = methodName;
+            Ext = ext;
+
+            IsInitialized = true;
+            OnAnyInstanciated(this);
+        }
+
+        public ExecutionRequest(RequestWrapper request, ResponseWrapper response)
+        {
+            Context = new HttpContextWrapper();
+            Request = request;
+            Response = response;
+            OnAnyInstanciated(this);
+        }
+
         public ExecutionRequest(IHttpContext context, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
             Context = context;

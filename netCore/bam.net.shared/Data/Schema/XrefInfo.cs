@@ -36,10 +36,11 @@ namespace Bam.Net.Data.Schema
         protected string Render(string templateName)
         {
             Type type = this.GetType();
-            string namespacePath = string.Format("{0}.Templates.", type.Namespace);
-            RazorParser<DaoRazorTemplate<XrefInfo>> razorParser = new RazorParser<DaoRazorTemplate<XrefInfo>>();
-            razorParser.GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies;
-            return razorParser.ExecuteResource(templateName, namespacePath, type.Assembly, new { Model = this });
+            RazorParser<DaoRazorTemplate<XrefInfo>> razorParser = new RazorParser<DaoRazorTemplate<XrefInfo>>
+            {
+                GetDefaultAssembliesToReference = DaoGenerator.GetReferenceAssemblies
+            };
+            return razorParser.ExecuteResource(templateName, SchemaTemplateResources.Path, type.Assembly, new { Model = this });
         }
     }
 }

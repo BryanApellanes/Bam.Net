@@ -56,11 +56,13 @@ namespace Bam.Net.Automation
 
         public Ftp(string serverHost)
         {
-            this.Config = new FtpConfig();
-            this.Config.ServerHost = serverHost;
+            this.Config = new FtpConfig
+            {
+                ServerHost = serverHost
+            };
         }
 
-        internal protected FtpConfig Config
+        protected internal FtpConfig Config
         {
             get;
             set;

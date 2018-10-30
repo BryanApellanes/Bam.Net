@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyDescription("Automation tools")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,8 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
+[assembly: InternalsVisibleTo("bam.net.automation.core.tests")]
+[assembly: InternalsVisibleTo("bam.net.coreservices.core.tests")]
+[assembly: InternalsVisibleTo("bam.net.serviceproxy.core.tests")]
+[assembly: InternalsVisibleTo("bam.net.data.repositories.core.tests")]
 [assembly: InternalsVisibleTo("bake")]

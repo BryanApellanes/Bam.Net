@@ -9,7 +9,10 @@ namespace Bam.Net.Data.Repositories
     {
         public override void Hydrate(RepoData data, IRepository repository)
         {
-            Log.Debug("Hydrate called on ({0}) for repo ({1}).", data?.ToString(), repository?.ToString()); 
+            Log.Debug("Hydrate called on ({0}) for repo ({1}).", data?.ToString(), repository?.ToString());
+            Hydrator?.Invoke(data, repository);
         }
+
+        public Action<RepoData, IRepository> Hydrator { get; set; }
     }
 }
