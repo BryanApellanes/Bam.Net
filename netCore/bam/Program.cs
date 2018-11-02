@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace bam
+namespace Bam.Net
 {
     class Program
     {

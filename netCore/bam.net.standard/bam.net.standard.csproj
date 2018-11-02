@@ -5,6 +5,10 @@
     <RootNamespace>Bam.Net</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>c:\bam\build</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Bam.Net\**" />
     <EmbeddedResource Remove="Bam.Net\**" />
