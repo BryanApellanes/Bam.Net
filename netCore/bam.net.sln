@@ -47,10 +47,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_lib", "_lib", "{954E8F66-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam", "bam\bam.csproj", "{8F469666-7FB3-48E5-A93F-7928EF87DE45}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "bam.net.tests.shared", "_tests\shared\bam.net.tests.shared\bam.net.tests.shared.shproj", "{BB169710-5CE7-4957-A2C7-1F570E2CD9C8}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		_tests\shared\bam.net.tests.shared\bam.net.tests.shared.projitems*{0847779c-de6c-4fba-ba15-6a7b618e1199}*SharedItemsImports = 4
 		bam.net.shared\bam.net.shared.projitems*{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}*SharedItemsImports = 4
 		bam.net.shared\bam.net.shared.projitems*{8f2cb78e-8c2e-45c6-97a0-c38f60a85e98}*SharedItemsImports = 13
+		_tests\shared\bam.net.tests.shared\bam.net.tests.shared.projitems*{bb169710-5ce7-4957-a2c7-1f570e2cd9c8}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +215,7 @@ Global
 		{BD291FF9-B08D-440A-90DB-53EB2F6D9023} = {954E8F66-819F-4B97-AF8B-ABCC7A73A56E}
 		{3CC9A65C-6A58-46C6-B947-2397574553D6} = {1DDF084D-7C9B-4C3F-89D7-DFACCAEA7782}
 		{1DDF084D-7C9B-4C3F-89D7-DFACCAEA7782} = {421D4974-14D6-43AF-B00F-9AE19E11531D}
+		{BB169710-5CE7-4957-A2C7-1F570E2CD9C8} = {421D4974-14D6-43AF-B00F-9AE19E11531D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0DA5E0B-6AD8-4F39-8F57-478C6AD7D4CA}

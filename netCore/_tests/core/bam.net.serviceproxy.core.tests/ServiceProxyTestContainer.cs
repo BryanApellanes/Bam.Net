@@ -722,6 +722,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             SQLiteDatabase db = new SQLiteDatabase();
             Db.For<Secure.Application>(db);
+            Db.For<Account>(UserAccountsDatabase.Default);
             Db.TryEnsureSchema<Secure.Application>(db);
             SQLiteRegistrar.Register<Secure.Application>();
             _registeredDb = true;

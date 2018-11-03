@@ -63,7 +63,7 @@ namespace Bam.Net.UserAccounts.Data
             {
                 if(_userDatabase == null)
                 {
-                    _userDatabase = Db.For<User>();
+                    _userDatabase = Db.For<User>(UserAccountsDatabase.Default);
                 }
 
                 return _userDatabase;

@@ -15,4 +15,6 @@
     <ProjectReference Include="..\..\..\bam.net.standard\bam.net.standard.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\shared\bam.net.tests.shared\bam.net.tests.shared.projitems" Label="Shared" />
+
 </Project>
