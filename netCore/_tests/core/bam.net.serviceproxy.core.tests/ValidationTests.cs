@@ -39,6 +39,7 @@ using FakeItEasy;
 using FakeItEasy.Creation;
 using Bam.Net.Web;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -58,9 +59,10 @@ namespace Bam.Net.ServiceProxy.Tests
 
         public static void Prepare()
         {
-            ConsoleLogger logger = new ConsoleLogger();
-            SecureChannel.InitializeDatabase(logger);
             RegisterDb();
+            Db.For<UserAccounts.Data.Account>(UserAccounts.UserAccountsDatabase.Default);
+            ConsoleLogger logger = new ConsoleLogger();
+            SecureChannel.InitializeDatabase(logger);            
             ClearApps();
         }
 

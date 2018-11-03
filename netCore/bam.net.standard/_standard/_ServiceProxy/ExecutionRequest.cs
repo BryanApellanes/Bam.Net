@@ -24,10 +24,5 @@ namespace Bam.Net.ServiceProxy
 {
     public partial class ExecutionRequest
     {
-        public virtual ValidationResult Validate()
-        {
-            Initialize();
-            return new ValidationResult { Message = "Override ExecutionRequest.Validate for validation functionality" };            
-        }
     }
 }

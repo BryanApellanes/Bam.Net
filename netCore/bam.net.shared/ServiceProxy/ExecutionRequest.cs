@@ -99,6 +99,14 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
+        public virtual ValidationResult Validate()
+        {
+            Initialize();
+            ValidationResult result = new ValidationResult(this);
+            result.Execute(Context, Decrypted);
+            return result;
+        }
+
         ILogger _logger;
         public ILogger Logger
         {

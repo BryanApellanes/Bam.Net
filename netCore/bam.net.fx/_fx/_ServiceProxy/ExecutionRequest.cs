@@ -39,13 +39,5 @@ namespace Bam.Net.ServiceProxy
             ServiceProvider = serviceProvider;
             OnAnyInstanciated(this);
         }
-
-        public virtual ValidationResult Validate()
-        {
-            Initialize();
-            ValidationResult result = new ValidationResult(this);
-            result.Execute(Context, Decrypted);
-            return result;
-        }
     }
 }

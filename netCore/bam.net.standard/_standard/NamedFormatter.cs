@@ -15,14 +15,13 @@ namespace Bam.Net
 {
     public static class NamedFormatter
     {
-        [DebuggerStepThrough]
         public static string NamedFormat(this string format, object source)
         {
             PropertyInfo[] props = source.GetType().GetProperties();
             string returnValue = format;
             foreach (PropertyInfo prop in props)
             {
-                returnValue.Replace($"{{{prop.Name}}}", prop.GetValue(source)?.ToString());
+                returnValue = returnValue.Replace($"{{{prop.Name}}}", prop.GetValue(source)?.ToString());
             }
             return returnValue;
         }

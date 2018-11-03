@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.standard", "bam.net
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "daoref", "_tests\daoref\daoref.csproj", "{3CC9A65C-6A58-46C6-B947-2397574553D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "daoref", "daoref", "{1DDF084D-7C9B-4C3F-89D7-DFACCAEA7782}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_daoref", "_daoref", "{1DDF084D-7C9B-4C3F-89D7-DFACCAEA7782}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_lib", "_lib", "{954E8F66-819F-4B97-AF8B-ABCC7A73A56E}"
 EndProject

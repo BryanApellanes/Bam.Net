@@ -37,6 +37,7 @@ using Bam.Net.UserAccounts.Data;
 using Bam.Net.Web;
 using Bam.Net.Testing.Unit;
 using NSubstitute;
+using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -719,8 +720,10 @@ namespace Bam.Net.ServiceProxy.Tests
         static bool? _registeredDb;
         public static void RegisterDb()
         {
+            SQLiteDatabase db = new SQLiteDatabase();
+            Db.For<Secure.Application>(db);
+            Db.TryEnsureSchema<Secure.Application>(db);
             SQLiteRegistrar.Register<Secure.Application>();
-            Db.TryEnsureSchema<Secure.Application>();
             _registeredDb = true;
         }
 

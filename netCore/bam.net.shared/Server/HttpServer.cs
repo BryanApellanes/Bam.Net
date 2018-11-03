@@ -92,7 +92,7 @@ namespace Bam.Net.Server
                         _logger.AddEntry("HttpServer: Another HttpServer is already listening for host {0}", LogEventType.Warning, hp.ToString());
                     }
                 });
-
+                _stopRequested = false;
                 _listener.Start();
                 _handlerThread.Start();
             }
@@ -113,9 +113,11 @@ namespace Bam.Net.Server
         }
 
 		public bool IsDisposed { get; private set; }
-        
+
+        bool _stopRequested;
         public void Stop()
         {
+            _stopRequested = true;
             try
             {
                 _listener.Stop();
@@ -143,14 +145,18 @@ namespace Bam.Net.Server
             
             if (_handlerThread.ThreadState == ThreadState.Running)
 			{
-				_handlerThread.Abort();
-				_handlerThread.Join();
+                try
+                {
+                    _handlerThread.Abort();
+                    _handlerThread.Join();
+                }
+                catch { }
 			}
         }
         
         private void HandleRequests()
         {
-            while (_listener != null && _listener.IsListening)
+            while (_listener != null && _listener.IsListening && !_stopRequested)
             {
                 try
                 {
