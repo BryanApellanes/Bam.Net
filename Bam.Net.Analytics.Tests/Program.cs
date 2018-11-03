@@ -73,8 +73,10 @@ namespace Bam.Net.Analytics.Crawlers.Tests
         [ConsoleAction("Crawl For Images")]
         public void CrawlForImages()
         {
-            ConnectionStringSettings s = new ConnectionStringSettings();
-            s.ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName();
+            ConnectionStringSettings s = new ConnectionStringSettings
+            {
+                ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName()
+            };
 
             string path = Prompt("Please enter the path to the Analytics database");
             s.ConnectionString = string.Format("Data Source={0};Version=3;", path);
