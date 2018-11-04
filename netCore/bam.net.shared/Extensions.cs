@@ -652,6 +652,17 @@ namespace Bam.Net
 
             return found;
         }
+
+        /// <summary>
+        /// Unzips the resource.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="siblingOfResource">The sibling of the resource.  The name of the assembly must match the namespace
+        /// of the pecified siblingOfResource.</param>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="extractTo">The extract to.</param>
+        /// <param name="existingFileAction">The existing file action.</param>
+        /// <returns></returns>
         public static bool UnzipResource(this Assembly assembly, Type siblingOfResource, string resourceName, string extractTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             return UnzipResource(assembly, Path.Combine(siblingOfResource.Namespace, resourceName).Replace("\\", "."), extractTo, existingFileAction);

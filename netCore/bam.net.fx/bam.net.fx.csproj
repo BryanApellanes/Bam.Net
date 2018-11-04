@@ -728,9 +728,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_fx\_Data\_OleDb\empty.accdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Data\OleDb\empty.accdb" />
     <Content Include="_fx\_Presentation\_Dust\dust-full-0.3.0.js" />
     <Content Include="_fx\_Presentation\_Dust\dust.custom.js" />
     <Content Include="_fx\_Presentation\_Dust\feather.js" />

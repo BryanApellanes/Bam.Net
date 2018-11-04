@@ -6,17 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TestFile1.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="TestFile1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>

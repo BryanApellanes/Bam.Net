@@ -20,7 +20,6 @@ namespace Bam.Net.ServiceProxy.Tests
 {
     public partial class ServiceProxyTestContainer : CommandLineTestInterface
     {
-
         [UnitTest]
         public void ShouldBeAbleToDownloadAndCompileCSharpProxy()
         {
@@ -36,10 +35,11 @@ namespace Bam.Net.ServiceProxy.Tests
             codeFile.Directory.Create();
             value.SafeWriteToFile(codeFile.FullName, true);
 
-            List<string> referenceAssemblies = new List<string>(DaoGenerator.DefaultReferenceAssemblies);
-
-            referenceAssemblies.Add(typeof(ServiceProxyClient).Assembly.GetFileInfo().FullName);
-            referenceAssemblies.Add(typeof(BamServer).Assembly.GetFileInfo().FullName);
+            List<string> referenceAssemblies = new List<string>(DaoGenerator.DefaultReferenceAssemblies)
+            {
+                typeof(ServiceProxyClient).Assembly.GetFileInfo().FullName,
+                typeof(BamServer).Assembly.GetFileInfo().FullName
+            };
 
             CompilerResults results = AdHocCSharpCompiler.CompileDirectories(new DirectoryInfo[] { codeFile.Directory }, ".\\Tmp\\TestClients.dll", referenceAssemblies.ToArray(), false);
 
@@ -60,7 +60,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             server.Stop();
         }
-        static bool? _registeredDb;
+
         public static void RegisterDb()
         {
             SQLiteDatabase db = new SQLiteDatabase();
@@ -68,7 +68,6 @@ namespace Bam.Net.ServiceProxy.Tests
             Db.For<Account>(UserAccountsDatabase.Default);
             Db.TryEnsureSchema<Secure.Application>(db);
             SQLiteRegistrar.Register<Secure.Application>();
-            _registeredDb = true;
         }
     }
 }

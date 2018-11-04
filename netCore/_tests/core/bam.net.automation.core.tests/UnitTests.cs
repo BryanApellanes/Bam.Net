@@ -70,7 +70,7 @@ namespace Bam.Net.Automation.Tests
             {
                 System.IO.Directory.Delete(extractTo, true);
             }
-            Expect.IsTrue(Assembly.GetExecutingAssembly().UnzipResource(typeof(UnitTests), "Test.zip", extractTo));
+            Expect.IsTrue(Assembly.GetExecutingAssembly().UnzipResource("bam.net.automation.core.tests.Test.zip", extractTo));
             FileInfo[] files = new DirectoryInfo(extractTo).GetFiles();
             Expect.IsTrue(files.Length > 0);
         }

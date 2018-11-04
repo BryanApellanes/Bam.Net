@@ -1,0 +1,18 @@
+﻿using System;
+using System.Data.Common;
+using System.Web.Mvc.Data.Schema;
+
+namespace @Namespace
+{
+    [Table("@Model.Name")]
+    public partial class @Model.Name: Dao
+    {
+        public @(Model.Name)(){}
+        public @(Model.Name)(DataTable data): base(data){}
+
+		@foreach(Column c in Model.Columns)
+		{
+			Write(string.Format("[Column(\"{0}\"]", c.Name));			
+		}
+    }
+}

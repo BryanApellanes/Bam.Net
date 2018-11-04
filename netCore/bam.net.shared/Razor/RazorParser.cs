@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.Razor;
+using System.Diagnostics;
 
 namespace Bam.Net.Razor
 {
@@ -180,6 +181,7 @@ namespace Bam.Net.Razor
             set;
         }
 
+        [DebuggerStepThrough]
 		private Assembly GetTemplateAssembly(TextReader input, string hashKey, Assembly[] assembliesToReference, out CSharpCodeProvider codeProvider, out GeneratorResults results)
 		{
 			Assembly templateAssembly;

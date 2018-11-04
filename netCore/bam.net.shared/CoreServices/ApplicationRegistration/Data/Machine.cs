@@ -6,7 +6,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy;
 using Newtonsoft.Json;
@@ -22,12 +21,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data
             DnsName = Dns.GetHostName();
             SetNics();
         }
-        Machine(string dnsName)
+
+        public Machine(string dnsName)
         {
             Name = Environment.MachineName;
             DnsName = dnsName;
             SetNics();
         }
+
         public static object ConfigurationLock { get; set; } = new object();
         public virtual List<Application> Applications { get; set; }
         public virtual List<Configuration> Configurations { get; set; }

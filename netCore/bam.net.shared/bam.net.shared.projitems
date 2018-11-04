@@ -3370,8 +3370,8 @@
     <None Include="$(MSBuildThisFileDirectory)CoreServices\README.md" />
     <None Include="$(MSBuildThisFileDirectory)CoreServices\regen.cmd" />
     <None Include="$(MSBuildThisFileDirectory)CoreServices\ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
-    <None Include="$(MSBuildThisFileDirectory)CoreServices\Templates\Proxy.tmpl" />
-    <None Include="$(MSBuildThisFileDirectory)CoreServices\Templates\ProxyMethod.tmpl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CoreServices\Templates\Proxy.tmpl" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CoreServices\Templates\ProxyMethod.tmpl" />
     <None Include="$(MSBuildThisFileDirectory)CoreServices\WebHooks\regen_webhooks_dao.cmd" />
     <None Include="$(MSBuildThisFileDirectory)Data\Dynamic\regen_data_dynamic_dao.cmd" />
     <None Include="$(MSBuildThisFileDirectory)Data\README.md" />

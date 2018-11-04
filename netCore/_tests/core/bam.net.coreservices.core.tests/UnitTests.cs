@@ -55,71 +55,6 @@ namespace Bam.Net.CoreServices.Tests
         }
         
         [UnitTest]
-        public void ShouldBeAbleToRenderService()
-        {
-            ProxyModel model = new ProxyModel(typeof(Echo));
-            OutLine(model.Render(), ConsoleColor.Cyan);
-        }
-
-        [UnitTest]
-        public void ShouldBeAbleToGetGeneratedAssembly()
-        {
-            ProxyFactory serviceFactory = new ProxyFactory();
-            Assembly assembly = serviceFactory.GetAssembly<EncryptedEcho>();
-            OutLine(assembly.FullName);
-        }
- 
-        [UnitTest]
-        public void ShouldBeAbleToInstanciateProxy()
-        {
-            ProxyFactory serviceFactory = new ProxyFactory();
-            EncryptedEcho echoProvider = serviceFactory.GetProxy<EncryptedEcho>();
-            Type echoType = echoProvider.GetType();
-            Expect.IsTrue(echoType.Name.Contains("Proxy"), "Expected 'Proxy' to be in the type name: {0}"._Format(echoType.Name));
-        }
-
-        [UnitTest]
-        public void ShouldBeAbleToSetApiKeyResolver()
-        {
-            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), Logger);
-            EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>();
-            ApiKeyResolver resolver = new ApiKeyResolver();
-            echo.Property("ApiKeyResolver", resolver);
-            ApiKeyResolver got = echo.Property<ApiKeyResolver>("ApiKeyResolver");
-            Expect.AreSame(resolver, got);
-        }
-
-        [UnitTest]
-        public void ShouldBeAbleToUseGeneratedClient()
-        {
-            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out BamServer server, out SecureServiceProxyClient<EncryptedEcho> sspc);
-            ConsoleLogger logger = GetTestConsoleLogger();
-            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
-            try
-            {                
-                IResponder responder = null;
-                int responseCount = 0;
-                server.Responded += (srvr, resp, req) =>
-                {
-                    OutLineFormat("Responded to url: {0}", ConsoleColor.DarkGreen, req.Url.ToString());
-                    responder = resp;
-                    responseCount++;
-                };
-                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>(server.DefaultHostPrefix.HostName, server.DefaultHostPrefix.Port, logger);
-                string value = "A random string: ".RandomLetters(8);
-                string response = echo.Send(value);
-                Expect.IsNotNull(response, "response was null");
-                Expect.AreEqual(value, response);
-                Expect.IsTrue(responseCount > 0); // download, init session, set key, invoke
-                Expect.IsObjectOfType<ServiceProxyResponder>(responder);
-            }
-            finally
-            {
-                server.Stop();
-            }
-        }
-
-        [UnitTest]
         public void ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization()
         {
             TimeSpan elapsed = Timed.Execution(() =>
@@ -300,13 +235,6 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [UnitTest]
-        public void MachineWillSerialize()
-        {
-            Out(Machine.Current.ToJson(), ConsoleColor.Cyan);
-            Out(Machine.Current.ToDynamicData().ToJson(), ConsoleColor.Blue);
-        }
-
-        [UnitTest]
         public void NicsWillSerialize()
         {
             Out(Machine.Current.NetworkInterfaces.ToJson(true));
@@ -453,15 +381,5 @@ namespace Bam.Net.CoreServices.Tests
             svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Data.Machine>().Each(h => svc.ApplicationRegistrationRepository.Delete(h));
             return result;
         }
-
-        private static ConsoleLogger GetTestConsoleLogger()
-        {
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
-            logger.StartLoggingThread();
-            return logger;
-        }
-
-
     }
 }

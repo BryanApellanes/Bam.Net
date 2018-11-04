@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net.standard\bam.net.standard.csproj" />
+    <ProjectReference Include="..\..\..\bam.net\bam.net.csproj" />
     <ProjectReference Include="..\..\daoref\daoref.csproj" />
     <ProjectReference Include="..\bam.net.serviceproxy.core.tests\bam.net.serviceproxy.core.tests.csproj" />
   </ItemGroup>
