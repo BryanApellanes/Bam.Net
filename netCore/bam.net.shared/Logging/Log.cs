@@ -190,10 +190,25 @@ namespace Bam.Net.Logging
                 
                 if (loggerType == null)
                 {
-                    loggerType = Type.GetType(string.Format("{0}.{1}Logger", _loggingNamespace, logType));
+                    try
+                    {
+                        loggerType = Type.GetType(string.Format("{0}.{1}Logger", _loggingNamespace, logType));
+                    }
+                    catch
+                    {
+                        loggerType = null;
+                    }
+
                     if (loggerType == null)
                     {
-                        loggerType = Type.GetType(string.Format("{0}.{1}", _loggingNamespace, logType));
+                        try
+                        {
+                            loggerType = Type.GetType(string.Format("{0}.{1}", _loggingNamespace, logType));
+                        }
+                        catch
+                        {
+                            loggerType = null;
+                        }
                     }
 
                     if (loggerType == null)
