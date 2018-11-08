@@ -647,6 +647,11 @@
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\FixedField.cs" />
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\ObjectDescriptor.cs" />
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\PatternedField.cs" />
+    <Compile Include="_fx\_System\Extensions.cs" />
+    <Compile Include="_fx\_System\IRunAsCredentials.cs" />
+    <Compile Include="_fx\_System\RunAs.cs" />
+    <Compile Include="_fx\_System\RunAsContext.cs" />
+    <Compile Include="_fx\_System\WmiExtensions.cs" />
     <Compile Include="_fx\_Translation\Culture.cs" />
     <Compile Include="_fx\_Translation\_DetectLanguage\DetectLanguageLanguageDetector.cs" />
     <Compile Include="_fx\_Translation\_MyMemory\MyMemoryTranslationProvider.cs" />

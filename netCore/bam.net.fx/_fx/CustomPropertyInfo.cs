@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Globalization;
 
 namespace Bam.Net
 {
@@ -18,11 +19,6 @@ namespace Bam.Net
             this.PropertyType = propertyType;
         }
         #region _PropertyInfo Members
-
-        public System.Reflection.PropertyAttributes Attributes
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         public bool CanRead
         {
@@ -39,16 +35,6 @@ namespace Bam.Net
             get { throw new NotImplementedException(); }
         }
 
-        public System.Reflection.MethodInfo[] GetAccessors()
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Reflection.MethodInfo[] GetAccessors(bool nonPublic)
-        {
-            throw new NotImplementedException();
-        }
-
         public object[] GetCustomAttributes(bool inherit)
         {
             throw new NotImplementedException();
@@ -59,32 +45,8 @@ namespace Bam.Net
             throw new NotImplementedException();
         }
 
-        public System.Reflection.MethodInfo GetGetMethod()
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Reflection.MethodInfo GetGetMethod(bool nonPublic)
-        {
-            throw new NotImplementedException();
-        }
 
         public void GetIDsOfNames(ref Guid riid, IntPtr rgszNames, uint cNames, uint lcid, IntPtr rgDispId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Reflection.ParameterInfo[] GetIndexParameters()
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Reflection.MethodInfo GetSetMethod()
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Reflection.MethodInfo GetSetMethod(bool nonPublic)
         {
             throw new NotImplementedException();
         }
@@ -95,11 +57,6 @@ namespace Bam.Net
         }
 
         public void GetTypeInfoCount(out uint pcTInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object GetValue(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -124,10 +81,6 @@ namespace Bam.Net
             get { throw new NotImplementedException(); }
         }
 
-        public System.Reflection.MemberTypes MemberType
-        {
-            get { throw new NotImplementedException(); }
-        }
 
         public string Name
         {
@@ -146,12 +99,56 @@ namespace Bam.Net
             get { throw new NotImplementedException(); }
         }
 
-        public void SetValue(object obj, object value, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] index, System.Globalization.CultureInfo culture)
+        MemberTypes _PropertyInfo.MemberType => throw new NotImplementedException();
+
+        PropertyAttributes _PropertyInfo.Attributes => throw new NotImplementedException();
+                
+        public void SetValue(object obj, object value, object[] index)
         {
             throw new NotImplementedException();
         }
 
-        public void SetValue(object obj, object value, object[] index)
+        public object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo[] _PropertyInfo.GetAccessors(bool nonPublic)
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo _PropertyInfo.GetGetMethod(bool nonPublic)
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo _PropertyInfo.GetSetMethod(bool nonPublic)
+        {
+            throw new NotImplementedException();
+        }
+
+        ParameterInfo[] _PropertyInfo.GetIndexParameters()
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo[] _PropertyInfo.GetAccessors()
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo _PropertyInfo.GetGetMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        MethodInfo _PropertyInfo.GetSetMethod()
         {
             throw new NotImplementedException();
         }

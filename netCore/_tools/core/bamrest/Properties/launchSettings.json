@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "bamrest": {
-      "commandName": "Project",
-      "commandLineArgs": "/gsr /ta:C:\\src\\vsts\\TestKitchen\\TestKitchen.Foundation\\InnovationLib\\bin\\Debug\\netcoreapp2.1\\InnovationLib.dll /sn:BetaProgram /fns:Innovation.Data /cfi:yes /uis:no /ws:C:\\bam\\src\\generated\\InnovationLib\\Generated_Dao"
-    }
-  }
-}

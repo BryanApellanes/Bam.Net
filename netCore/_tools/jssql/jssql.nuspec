@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>PackageId</id>
+    <version>1.16.1</version>
+    <title>Package Title</title>
+    <authors>Package Authors</authors>
+    <owners>Package Owners</owners>
+    <description>Package Description</description>
+    <releaseNotes>Version 1.16.1
+</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <dependencies />
+  </metadata>
+</package>
