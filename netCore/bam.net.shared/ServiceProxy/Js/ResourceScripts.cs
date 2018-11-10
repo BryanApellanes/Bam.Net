@@ -40,6 +40,11 @@ namespace Bam.Net.ServiceProxy.Js
                 string namespacePath = string.Format("{0}.", type.Namespace);
                 foreach (string fullScriptPath in assembly.GetManifestResourceNames())
                 {
+                    string ext = Path.GetExtension(fullScriptPath);
+                    if (!ext.Equals(".js", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        continue;
+                    }
                     string scriptName = fullScriptPath.Substring(namespacePath.Length, fullScriptPath.Length - namespacePath.Length);
                     Stream resource = assembly.GetManifestResourceStream(fullScriptPath);
                     JavaScriptCompressor jsc = new JavaScriptCompressor();

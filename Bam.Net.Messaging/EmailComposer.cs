@@ -30,10 +30,12 @@ namespace Bam.Net.Messaging
             get;
             set;
         }
+
         public virtual void SetTemplateDirectory(string directory)
         {
             TemplateDirectory = new DirectoryInfo(directory);
         }
+
         public bool GetIsHtml(string emailName)
         {
             return GetTemplate(emailName).IsHtml;
