@@ -601,6 +601,7 @@
     <Compile Include="_fx\_ServiceProxy\DefaultRoleResolver.cs" />
     <Compile Include="_fx\_ServiceProxy\ExecutionRequest.cs" />
     <Compile Include="_fx\_ServiceProxy\ExecutionResultDelegate.cs" />
+    <Compile Include="_fx\_ServiceProxy\ScriptResourcePaths.cs" />
     <Compile Include="_fx\_ServiceProxy\SecureChannel.cs" />
     <Compile Include="_fx\_ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="_fx\_ServiceProxy\HttpContextWrapper.cs" />
@@ -734,10 +735,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\OleDb\empty.accdb" />
-    <Content Include="_fx\_Presentation\_Dust\dust-full-0.3.0.js" />
-    <Content Include="_fx\_Presentation\_Dust\dust.custom.js" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\dust-full-0.3.0.js" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\dust.custom.js" />
     <Content Include="_fx\_Presentation\_Dust\feather.js" />
-    <Content Include="_fx\_Presentation\_Dust\json2.js" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\json2.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="_fx\_Net\_Ping\Ping.resx" />
