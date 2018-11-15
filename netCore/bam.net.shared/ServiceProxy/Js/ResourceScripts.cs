@@ -19,7 +19,10 @@ namespace Bam.Net.ServiceProxy.Js
         static ResourceScripts()
         {
             _scripts = new Dictionary<string, string>();
-            LoadScripts(typeof(ResourceScripts));
+            foreach(string path in ScriptResourcePaths.Value)
+            {
+                LoadScripts(typeof(ResourceScripts).Assembly, path);
+            }
         }
 
         /// <summary>
@@ -38,20 +41,30 @@ namespace Bam.Net.ServiceProxy.Js
                 _loaded.Add(assembly);
 
                 string namespacePath = string.Format("{0}.", type.Namespace);
-                foreach (string fullScriptPath in assembly.GetManifestResourceNames())
+                LoadScripts(assembly, namespacePath);
+            }
+        }
+
+        public static void LoadScripts(Assembly assembly, string resourceNamePrefix)
+        {
+            foreach (string fullScriptPath in assembly.GetManifestResourceNames())
+            {
+                string ext = Path.GetExtension(fullScriptPath);
+                if (!ext.Equals(".js", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    string scriptName = fullScriptPath.Substring(namespacePath.Length, fullScriptPath.Length - namespacePath.Length);
-                    Stream resource = assembly.GetManifestResourceStream(fullScriptPath);
-                    JavaScriptCompressor jsc = new JavaScriptCompressor();
-                    using (StreamReader script = new StreamReader(resource))
-                    {
-                        string js = script.ReadToEnd();                        
-                        _scripts.AddMissing(scriptName, js);
-                        _scripts.AddMissing(
-                            string.Format("{0}.min.js", scriptName.Substring(0, scriptName.Length - 3)),
-                            jsc.Compress(js)
-                        );
-                    }
+                    continue;
+                }
+                string scriptName = fullScriptPath.Substring(resourceNamePrefix.Length, fullScriptPath.Length - resourceNamePrefix.Length);
+                Stream resource = assembly.GetManifestResourceStream(fullScriptPath);
+                JavaScriptCompressor jsc = new JavaScriptCompressor();
+                using (StreamReader script = new StreamReader(resource))
+                {
+                    string js = script.ReadToEnd();
+                    _scripts.AddMissing(scriptName, js);
+                    _scripts.AddMissing(
+                        string.Format("{0}.min.js", scriptName.Substring(0, scriptName.Length - 3)),
+                        jsc.Compress(js)
+                    );
                 }
             }
         }

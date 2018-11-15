@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Bam.Net.Automation.Testing
 {
-    class ReportGenerator
+    public class ReportGenerator
     {
         static ReportGenerator()
         {

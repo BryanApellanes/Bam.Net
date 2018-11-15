@@ -1,0 +1,69 @@
+﻿{
+  "WindowsServices": [
+    {
+      "Host": "integration",
+      "Name": "Heart",
+      "FileName": "heart.exe",
+      "AppSettings": {
+        "HostNames": "int-heart.bamapps.net,int-heart.threeheadz.io",
+        "Ssl": false,
+        "Port": 9101,
+        "ApplicationName": "int-heart.bamapps.net",
+        "ProcessMode": "Test",
+        "LogType": "Windows"
+      }
+    }
+  ],
+  "DaemonServices": [
+    {
+      "Host": "integration",
+      "Port": 8477,
+      "HostNames": "bamd-integration",
+      "Ssl": false,
+      "ApplicationName": "bamd-integration",
+      "LogType": "Windows"
+    }
+  ],
+  "Daemons": [
+    {
+      "Copy": true,
+      "Host": "integration",
+      "Name": "GlooTestRegistry",
+      "FileName": "C:\\bam\\sys\\GlooTestRegistry\\gloo.exe",
+      "Arguments": "/registries:GlooTestRegistry /verbose:true",
+      "WorkingDirectory":  "C:\\bam\\sys\\GlooTestRegistry",
+      "AppSettings": {
+        "CoreHostName": "int-heart.bamapps.net",
+        "CorePort": 80,
+        "ContentRoot": "C:\\bam\\content",
+        "AssemblySearchPattern": "gloo.exe",
+        "HostNames": "gloo-test.bamapps.net,gloo-test.threeheadz.io",
+        "Ssl": false,
+        "Port": 9100,
+        "ApplicationName": "gloo-test.bamapps.net",
+        "ProcessMode": "Test",
+        "LogType": "TextFile"
+      }
+    },
+    {
+      "Copy": true,
+      "Host": "integration",
+      "Name": "TestingServicesRegistry",
+      "FileName": "C:\\bam\\sys\\TestingServicesRegistry\\gloo.exe",
+      "Arguments": "/registries:TestingServicesRegistry /verbose:true",
+      "WorkingDirectory": "C:\\bam\\sys\\TestingServicesRegistry",
+      "AppSettings": {
+        "CoreHostName": "int-heart.bamapps.net",
+        "CorePort": 80,
+        "ContentRoot": "C:\\bam\\content",
+        "AssemblySearchPattern": "Bam.Net.Automation.dll",
+        "HostNames": "int.bamapps.net,int.threeheadz.io",
+        "Ssl": false,
+        "Port": 8080,
+        "ApplicationName": "int.bamapps.net",
+        "ProcessMode": "Test",
+        "LogType": "TextFile"
+      }
+    }
+  ]
+}

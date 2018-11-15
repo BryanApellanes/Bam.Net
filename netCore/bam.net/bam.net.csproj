@@ -24,8 +24,10 @@
     <PackageReference Include="InterSystemsCache" Version="1.0.4" />
     <PackageReference Include="Lucene.Net" Version="3.0.3" />
     <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.9.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="2.1.2" />
     <PackageReference Include="mongocsharpdriver" Version="2.7.0" />
     <PackageReference Include="MySql.Data" Version="8.0.12" />
@@ -41,8 +43,18 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <PackageReference Include="System.Net.FtpClient" Version="1.0.5824.34026" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.5.0" />
     <PackageReference Include="YamlSerializer" Version="1.0.0" />
     <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Authentication">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.authentication\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
