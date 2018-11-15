@@ -67,7 +67,8 @@ namespace Bam.Net.Data.Repositories
         {
             BaseNamespace = nameSpace;
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
-            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace)));
+            Type[] types = typeAssembly.GetTypes();
+            AddTypes(types.Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace)));
         }
 
         public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
