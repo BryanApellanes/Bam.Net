@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Bam.Net;
 
-namespace Bam.Net.Schema.Org.Tests
+namespace Bam.Net.Schema.Org
 {
     public class SchemaDotOrgProperty
     {

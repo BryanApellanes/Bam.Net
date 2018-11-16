@@ -47,11 +47,12 @@ namespace Bam.Net.ServiceProxy
             OnAnyInstanciated(this);
         }
 
-        public ExecutionRequest(RequestWrapper request, ResponseWrapper response)
+        public ExecutionRequest(RequestWrapper request, ResponseWrapper response, params ProxyAlias[] aliases)
         {
             Context = new HttpContextWrapper();
             Request = request;
             Response = response;
+            ProxyAliases = aliases;
             OnAnyInstanciated(this);
         }
 

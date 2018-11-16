@@ -92,7 +92,7 @@ namespace Bam.Net.Server
             try
             {
                 StringBuilder script = new StringBuilder();
-                script.Append(Bam.CombinedAppScript(this.Server, bamAppName, refresh, min));
+                script.Append(BamSettings.CombinedAppScript(this.Server, bamAppName, refresh, min));
                 script.Append("\r\n\r\n");
                 script.Append(callback);
                 return this.JavaScript(script.ToString());
@@ -163,7 +163,7 @@ namespace Bam.Net.Server
 
         private bool AppPathExists(string hostName)
         {
-            string appPath = Server.MapPath(Bam.AppRoot.NamedFormat(new { appName = hostName }));
+            string appPath = Server.MapPath(BamSettings.AppRoot.NamedFormat(new { appName = hostName }));
             bool exists = Directory.Exists(appPath);
             
             return exists;

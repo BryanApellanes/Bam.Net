@@ -14,7 +14,7 @@ namespace Bam.Net.ServiceProxy
         /// <value>
         /// The value.
         /// </value>
-        public string[] Value
+        public static string[] Value
         {
             get
             {

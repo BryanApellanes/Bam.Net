@@ -125,7 +125,7 @@ namespace Bam.Net.Razor
 		public string ExecuteResource(string templateName, string resourceNamePrefix, Assembly resourceContainer, object options = null, params Assembly[] assembliesToReference)
 		{
             string[] manifestResourceNames = resourceContainer.GetManifestResourceNames();
-            string resourcePath = manifestResourceNames.FirstOrDefault(fullPath => fullPath.Substring(resourceNamePrefix.Length, fullPath.Length - resourceNamePrefix.Length).Equals(templateName));
+            string resourcePath = manifestResourceNames.FirstOrDefault(fullPath => fullPath.StartsWith(resourceNamePrefix) && fullPath.EndsWith($".{templateName}"));
 			
 			if (string.IsNullOrEmpty(resourcePath))
 			{
@@ -181,7 +181,7 @@ namespace Bam.Net.Razor
             set;
         }
 
-        [DebuggerStepThrough]
+        //[DebuggerStepThrough]
 		private Assembly GetTemplateAssembly(TextReader input, string hashKey, Assembly[] assembliesToReference, out CSharpCodeProvider codeProvider, out GeneratorResults results)
 		{
 			Assembly templateAssembly;

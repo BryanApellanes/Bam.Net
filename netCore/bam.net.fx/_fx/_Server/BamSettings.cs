@@ -19,9 +19,9 @@ using Yahoo.Yui.Compressor;
 
 namespace Bam.Net.Server
 {
-    public static class Bam
+    public static class BamSettings
     {
-        static Bam()
+        static BamSettings()
         {
 
         }

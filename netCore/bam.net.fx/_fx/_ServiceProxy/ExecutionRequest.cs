@@ -23,15 +23,6 @@ namespace Bam.Net.ServiceProxy
 {
     public partial class ExecutionRequest
     {
-        public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases)
-        {
-            Context = new HttpContextWrapper();
-            Request = request;
-            Response = response;
-            ProxyAliases = aliases;
-            OnAnyInstanciated(this);
-        }
-
         public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases, Incubator serviceProvider)
             : this(request, response, aliases)
         {

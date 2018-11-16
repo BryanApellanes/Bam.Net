@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Server.Tests
 {
     [Serializable]
-    public class KeyValueStoreServerTests: CommandLineTestInterface
+    public class KeyValueStoreServerTests : CommandLineTestInterface
     {
         [UnitTest]
         public void CanServeKeyValueStore()

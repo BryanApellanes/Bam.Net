@@ -567,7 +567,7 @@
     <Compile Include="_fx\_Presentation\_Pdf\PdfOutput.cs" />
     <Compile Include="_fx\RoleRequiredAttribute.cs" />
     <Compile Include="_fx\_Server\AppContentResponder.cs" />
-    <Compile Include="_fx\_Server\Bam.cs" />
+    <Compile Include="_fx\_Server\BamSettings.cs" />
     <Compile Include="_fx\_Server\BamController.cs" />
     <Compile Include="_fx\_Server\BamServer.cs" />
     <Compile Include="_fx\_Server\ContentResponder.cs" />

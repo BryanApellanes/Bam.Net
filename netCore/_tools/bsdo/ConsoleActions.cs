@@ -1,88 +1,25 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
+﻿using Bam.Net.CommandLine;
+using Bam.Net.Schema.Org;
+using Bam.Net.Testing;
+using Bam.Net.Web;
+using CsQuery;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Data;
-using System.Data.Common;
-using System.Data.Sql;
-using System.Data.SqlClient;
 using System.IO;
-using Bam.Net.CommandLine;
-using Bam.Net;
-using Bam.Net.Testing;
-using Bam.Net.Encryption;
+using System.Linq;
 using System.Net;
-using CsQuery;
-using Sdo = Bam.Net.Schema.Org;
-using System.Xml;
-using Bam.Net.Web;
+using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
-using Dt = Bam.Net.Schema.Org.DataTypes;
-using Bam.Net.Testing.Unit;
 
-namespace Bam.Net.Schema.Org.Tests
+namespace Bam.Net
 {
     [Serializable]
-    class Program : CommandLineTestInterface
+    public class ConsoleActions : CommandLineTestInterface
     {
-        static void Main(string[] args)
-        {
-            PreInit();
-            Initialize(args);
-        }
-
-        public static void PreInit()
-        {
-            #region expand for PreInit help
-            // To accept custom command line arguments you may use            
-            /*
-             * AddValidArgument(string argumentName, bool allowNull)
-            */
-
-            // All arguments are assumed to be name value pairs in the format
-            // /name:value unless allowNull is true then only the name is necessary.
-
-            // to access arguments and values you may use the protected member
-            // arguments. Example:
-
-            /*
-             * arguments.Contains(argName); // returns true if the specified argument name was passed in on the command line
-             * arguments[argName]; // returns the specified value associated with the named argument
-             */
-
-            // the arguments protected member is not available in PreInit() (this method)
-            #endregion
-			AddValidArgument("t", true, description: "run all tests");			
-			DefaultMethod = typeof(Program).GetMethod("Start");
-		}
-
-		public static void Start()
-		{
-			if (Arguments.Contains("t"))
-			{
-				RunAllUnitTests(typeof(Program).Assembly);
-			}
-			else
-			{
-				Interactive();
-			}
-		}
-
         static string _genDir = "C:\\bam\\src\\_gen\\Schema.org";
         static string _tmpDir = "C:\\bam\\src\\_gen\\Schema.org.tmp";
-        private void Create(string dir)
-        {
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-        }
-		public static HashSet<string> FailedTypeNames { get; private set; }
+
+        public static HashSet<string> FailedTypeNames { get; private set; }
         static HashSet<string> _writtenTypes;
         [ConsoleAction("Generate Schema.org.cs files")]
         public void Generate()
@@ -90,28 +27,28 @@ namespace Bam.Net.Schema.Org.Tests
             Create(_genDir);
             Create(_tmpDir);
 
-			FailedTypeNames = new HashSet<string>();
+            FailedTypeNames = new HashSet<string>();
             _writtenTypes = new HashSet<string>();
             HashSet<SpecificType> types = GetTypes();
             types.ToList().ForEach(currentType =>
             {
                 WriteCsCode(currentType);
             });
-            
-			foreach(string failedType in FailedTypeNames)
-			{
-				FileInfo file = new FileInfo($"{_genDir}\\{0}.cs"._Format(failedType));
+
+            foreach (string failedType in FailedTypeNames)
+            {
+                FileInfo file = new FileInfo($"{_genDir}\\{0}.cs"._Format(failedType));
                 try
-				{
-					file.Delete();
-				}
-				catch (Exception ex)
-				{
-					OutLineFormat("Failed to delete file {0}: {1}", ConsoleColor.Magenta, file.FullName, ex.Message);
-				}
-			}
+                {
+                    file.Delete();
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Failed to delete file {0}: {1}", ConsoleColor.Magenta, file.FullName, ex.Message);
+                }
+            }
         }
-        
+
         [ConsoleAction("List sub types")]
         public void ListTypes()
         {
@@ -134,12 +71,19 @@ namespace Bam.Net.Schema.Org.Tests
             });
         }
 
+        private void Create(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
+
         private void WriteCsCode(SpecificType currentType)
         {
             OutLine($"Writing code for {currentType.TypeName}: {currentType.Extends}", ConsoleColor.Cyan);
-            int num;
             string specified = $"{_genDir}\\{currentType.TypeName.LettersOnly()}.cs";
-            string path = specified.GetNextFileName(out num);
+            string path = specified.GetNextFileName(out int num);
             if (num > 0)
             {
                 currentType.ClassName = $"{currentType.ClassName}_{num}";
@@ -156,7 +100,7 @@ namespace Bam.Net.Schema.Org.Tests
             results.Add(thing);
             queue.Enqueue(thing);
 
-            while(queue.Count > 0)
+            while (queue.Count > 0)
             {
                 OutLine($"Queue count is {queue.Count}", ConsoleColor.Yellow);
                 SpecificType currentType = queue.Dequeue();
@@ -187,17 +131,15 @@ namespace Bam.Net.Schema.Org.Tests
 
         private void TryWrite(string content, string path)
         {
-			try
-			{
+            try
+            {
                 File.WriteAllText(path, content);
-			}
-			catch (Exception ex)
-			{
-				OutLineFormat("Unable to write content for path {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.DarkYellow, path, ex.Message, ex.StackTrace);
-			}
+            }
+            catch (Exception ex)
+            {
+                OutLineFormat("Unable to write content for path {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.DarkYellow, path, ex.Message, ex.StackTrace);
+            }
         }
-        
-        
 
         private string GetCsCode(SpecificType currentType)
         {
@@ -224,7 +166,7 @@ namespace Bam.Net.Schema.Org.Tests
             foreach (SchemaDotOrgProperty prop in properties)
             {
                 result.AppendFormat("\t\t///<summary>{0}</summary>\r\n", prop.Description);
-				result.AppendFormat("\t\tpublic {0} {1} {{get; set;}}\r\n", prop.ExpectedType, prop.Name.PrefixWithUnderscoreIfStartsWithNumber().PascalCase());
+                result.AppendFormat("\t\tpublic {0} {1} {{get; set;}}\r\n", prop.ExpectedType, prop.Name.PrefixWithUnderscoreIfStartsWithNumber().PascalCase());
             }
             result.AppendLine("\t}");
             result.AppendLine("}");
@@ -235,15 +177,15 @@ namespace Bam.Net.Schema.Org.Tests
         private static string GetTypeDescription(string typeName)
         {
             string html = TryGetHtml(typeName);
-			string returnValue = string.Empty;
-			if (!string.IsNullOrEmpty(html))
-			{
-				CQ cq = CQ.Create(html);
-				cq = cq.Remove("script");
-				returnValue = cq["[property='rdfs:comment']"].First().Text().Replace("\r", "").Replace("\n", "");
-			}
+            string returnValue = string.Empty;
+            if (!string.IsNullOrEmpty(html))
+            {
+                CQ cq = CQ.Create(html);
+                cq = cq.Remove("script");
+                returnValue = cq["[property='rdfs:comment']"].First().Text().Replace("\r", "").Replace("\n", "");
+            }
 
-			return returnValue;
+            return returnValue;
         }
 
         private static SchemaDotOrgProperty[] GetProperties(string typeName)
@@ -271,26 +213,26 @@ namespace Bam.Net.Schema.Org.Tests
 
         private static string TryGetHtml(string typeName)
         {
-			try
-			{
+            try
+            {
                 FileInfo typeFile = new FileInfo(Path.Combine(_tmpDir, $"{typeName}.html"));
                 if (typeFile.Exists)
                 {
                     return typeFile.ReadAllText();
                 }
 
-				string baseUrl = "http://schema.org/";
-				WebClient client = new WebClient();
-				string html = client.DownloadString(string.Format("{0}{1}", baseUrl, typeName));
+                string baseUrl = "http://schema.org/";
+                WebClient client = new WebClient();
+                string html = client.DownloadString(string.Format("{0}{1}", baseUrl, typeName));
                 html.SafeWriteToFile(typeFile.FullName);
-				return html;
-			}
-			catch (Exception ex)
-			{
-				OutLineFormat("An error occurred getting html for type {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.Yellow, typeName, ex.Message, ex.StackTrace);
-				FailedTypeNames.Add(typeName);
-				return string.Empty;
-			}
+                return html;
+            }
+            catch (Exception ex)
+            {
+                OutLineFormat("An error occurred getting html for type {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.Yellow, typeName, ex.Message, ex.StackTrace);
+                FailedTypeNames.Add(typeName);
+                return string.Empty;
+            }
         }
 
         string fullHtml = string.Empty;
@@ -303,52 +245,5 @@ namespace Bam.Net.Schema.Org.Tests
             }
             return fullHtml;
         }
-
-        [UnitTest("DataType.GetDataType should get expected Types")]
-        public void DataTypeGetDataType()
-        {
-            string[] types = new string[] { "Boolean", "Date", "Number", "Text", "Time", "Url" };
-            foreach (string typeName in types)
-            {
-                object dataType = Dt.DataType.GetDataType(typeName);
-                Type sysType = Dt.DataType.GetTypeOfDataType(typeName);
-                Expect.AreSame(sysType, dataType.GetType());
-            }            
-        }
-
-        private int AddTest(int one, int two)
-        {
-            return one + two;
-        }
-
-        [UnitTest("Schema Integer should be implicitly int")]
-        public void SchemaInteger()
-        {
-            Dt.Integer three = new Dt.Integer(3);
-            Dt.Integer four = new Dt.Integer(4);
-            int result = AddTest(three, four);
-            Expect.IsTrue(result == 7);
-        }
-
-        [UnitTest("DataType.GetDataType should get expected generic types")]
-        public void DataTypeGetGenericDataType()
-        {
-            Dt.Boolean b = Dt.DataType.GetDataType<Dt.Boolean>("Boolean");
-            Expect.IsNotNull(b);
-
-            Dt.Date d = Dt.DataType.GetDataType<Dt.Date>("Date");
-            Expect.IsNotNull(d);
-
-            Dt.Number n = Dt.DataType.GetDataType<Dt.Number>("Number");
-            Expect.IsNotNull(n);
-
-            Dt.Text t = Dt.DataType.GetDataType<Dt.Text>("Text");
-            Expect.IsNotNull(t);
-
-            Dt.Url u = Dt.DataType.GetDataType<Dt.Url>("Url");
-            Expect.IsNotNull(u);
-        }
-
     }
-
 }
