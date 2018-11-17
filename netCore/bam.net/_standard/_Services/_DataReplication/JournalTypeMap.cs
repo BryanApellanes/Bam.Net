@@ -16,10 +16,7 @@ namespace Bam.Net.Services.DataReplication
     {
         public static long GetTypeId(KeyHashAuditRepoData instance, out object dynamicInstance, out Type dynamicType)
         {
-            Log.AddEntry("GetTypeId(KeyHashAuditRepoData instance, out object dynamicInstance, out Type dynamicType) is not supported on this platform and dynamicInstance will be a bald object.");
-            dynamicInstance = new object();
-            dynamicType = null;
-            return GetTypeId(instance.GetType(), out string ignore);
+            throw new PlatformNotSupportedException("GetTypeId(KeyHashAuditRepoData instance, out object dynamicInstance, out Type dynamicType) is not supported on this platform, use GetTypeId(Type, out string) instead.");
         }
     }
 }

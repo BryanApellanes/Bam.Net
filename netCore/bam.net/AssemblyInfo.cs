@@ -39,4 +39,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("bam.net.encryption.core.tests")]
 [assembly: InternalsVisibleTo("bam.net.profiguration.core.tests")]
 [assembly: InternalsVisibleTo("bam.net.server.core.tests")]
+[assembly: InternalsVisibleTo("bam.net.services.core.tests")]
 [assembly: InternalsVisibleTo("bake")]

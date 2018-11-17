@@ -17,16 +17,16 @@ namespace Bam.Net.Services.DataReplication
     public class FileSequenceProvider : ISequenceProvider
     {
         ulong _current;
-        public FileSequenceProvider(FileInfo file, ILogger logger = null)
+        public FileSequenceProvider() : this(0, Log.Default)
+        { }
+
+        public FileSequenceProvider(ulong start, ILogger logger = null)
         {
             Logger = logger ?? Log.Default;
             SystemPaths paths = SystemPaths.Get(DefaultDataDirectoryProvider.Current);
 
             File = new FileInfo(Path.Combine(paths.Data.AppFiles, $"{nameof(FileSequenceProvider)}.txt"));
-            if (ulong.TryParse(file.FullName.SafeReadFile(), out ulong value))
-            {
-                _current = value;
-            }
+            _current = start;
         }
 
         public ILogger Logger { get; set; }

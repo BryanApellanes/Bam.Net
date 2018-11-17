@@ -135,10 +135,20 @@ namespace Bam.Net.Services.DataReplication
             return GetTypeId(instance, out object ignore1, out Type ignore2);
         }
 
+        public static long GetTypeId(Type type)
+        {
+            return GetTypeId(type, out string ignore);
+        }
+
         public static long GetTypeId(Type type, out string name)
         {
             name = NormalizeName(type);
             return name.ToSha256Long();
+        }
+
+        public static long GetPropertyId(PropertyInfo prop)
+        {
+            return GetPropertyId(prop, out string ignore);
         }
 
         public static long GetPropertyId(PropertyInfo prop, out string name)

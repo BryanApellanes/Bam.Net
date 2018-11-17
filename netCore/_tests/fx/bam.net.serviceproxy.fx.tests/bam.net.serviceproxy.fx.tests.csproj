@@ -73,9 +73,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net.fx\bam.net.fx.csproj">
+    <ProjectReference Include="..\..\..\bam.net.fx\bam.net.csproj">
       <Project>{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}</Project>
-      <Name>bam.net.fx</Name>
+      <Name>bam.net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\shared\bam.net.tests.shared\bam.net.tests.shared.projitems" Label="Shared" />

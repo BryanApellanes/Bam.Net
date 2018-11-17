@@ -10,5 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxyTestHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserTestTools.cs" />
   </ItemGroup>
 </Project>

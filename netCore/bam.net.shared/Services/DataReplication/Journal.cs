@@ -138,7 +138,7 @@ namespace Bam.Net.Services.DataReplication
                 }
                 catch (Exception ex)
                 {
-                    Log.Default.AddEntry("Failed to set property ({0}) on instance ({1}) of type ({2})", ex, prop.Name, id.ToString(), typeof(T).FullName);
+                    Log.Default.AddEntry("Failed to set property ({0}) on instance ({1}) of type ({2})", ex, prop?.Name, id.ToString(), typeof(T).FullName);
                 }
             }
             toLoad.Id = id;

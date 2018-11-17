@@ -93,9 +93,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\bam.net.fx\bam.net.fx.csproj">
+    <ProjectReference Include="..\..\bam.net.fx\bam.net.csproj">
       <Project>{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}</Project>
-      <Name>bam.net.fx</Name>
+      <Name>bam.net</Name>
     </ProjectReference>
     <ProjectReference Include="..\gloo\gloo.csproj">
       <Project>{aa380b69-17e8-4fe3-b332-3e625e8b6036}</Project>

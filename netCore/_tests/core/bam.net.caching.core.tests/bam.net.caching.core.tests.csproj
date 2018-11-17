@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net\bam.net.csproj" />
+    <ProjectReference Include="..\..\..\bam.net\bam.net.core.csproj" />
   </ItemGroup>
 
 </Project>
