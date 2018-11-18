@@ -647,6 +647,7 @@
     <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\UpdateOperation.cs" />
     <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\WriteEvent.cs" />
     <Compile Include="_fx\_Services\_KeyValueStore\_KeyValueStore_Generated\_Qi\KeyValuePair.cs" />
+    <Compile Include="_fx\_Services\_OpenApi\OpenApiTemplateResources.cs" />
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\FixedField.cs" />
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\ObjectDescriptor.cs" />
     <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\PatternedField.cs" />

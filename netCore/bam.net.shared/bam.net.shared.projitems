@@ -2778,7 +2778,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDescriptorModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiObjectDescriptorModelTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApiTemplateResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedFieldCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\FixedFieldColumns.cs" />
