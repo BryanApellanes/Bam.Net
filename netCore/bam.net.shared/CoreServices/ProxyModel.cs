@@ -98,7 +98,7 @@ namespace Bam.Net.CoreServices
 
         public string Render()
         {
-            return RazorRenderer.RenderResource<ProxyModel>(this, "Proxy.tmpl", ReferenceAssemblies);
+            return RazorRenderer.RenderResource(this, ProxyTemplateResources.Path, "Proxy.tmpl", ReferenceAssemblies);
         }
     }
 }

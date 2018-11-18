@@ -26,8 +26,13 @@ namespace Bam.Net.Razor
         {
             Type type = typeof(T);
             string namespacePath = string.Format("{0}.Templates.", type.Namespace);
+            return RenderResource(model, namespacePath, templateName, assembliesToReference);
+        }
+
+        public static string RenderResource<T>(T model, string resourcePath, string templateName, IEnumerable<Assembly> assembliesToReference)
+        {
             RazorParser<RazorTemplate<T>> razorParser = GetRazorParser<T>(assembliesToReference);
-            return razorParser.ExecuteResource(templateName, namespacePath, type.Assembly, new { Model = model });        
+            return razorParser.ExecuteResource(templateName, resourcePath, typeof(T).Assembly, new { Model = model });
         }
 
         public static string Render<T>(T model, FileInfo razorFile, IEnumerable<Assembly> assembliesToReference = null)
@@ -50,8 +55,10 @@ namespace Bam.Net.Razor
 
         private static RazorParser<RazorTemplate<T>> GetRazorParser<T>(IEnumerable<Assembly> assembliesToReference = null)
         {
-            RazorParser<RazorTemplate<T>> razorParser = new RazorParser<RazorTemplate<T>>();
-            razorParser.GetDefaultAssembliesToReference = () => assembliesToReference == null ? new Assembly[] { } : assembliesToReference.ToArray();
+            RazorParser<RazorTemplate<T>> razorParser = new RazorParser<RazorTemplate<T>>
+            {
+                GetDefaultAssembliesToReference = () => assembliesToReference == null ? new Assembly[] { } : assembliesToReference.ToArray()
+            };
             return razorParser;
         }
 

@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices
 
         public string Render(params Assembly[] assembliesToReference)
         {
-            return RazorRenderer.RenderResource<ProxyMethodModel>(this, "ProxyMethod.tmpl", assembliesToReference);
+            return RazorRenderer.RenderResource<ProxyMethodModel>(this, ProxyTemplateResources.Path, "ProxyMethod.tmpl", assembliesToReference);
         }
     }
 }

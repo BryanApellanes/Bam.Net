@@ -89,9 +89,11 @@ namespace Bam.Net.Data.Tests
             fk.TableName = "test";
             fk.Name = "columnName";
 
-            Column col = new Column();
-            col.TableName = fk.TableName;
-            col.Name = fk.Name;
+            Column col = new Column
+            {
+                TableName = fk.TableName,
+                Name = fk.Name
+            };
 
             Expect.IsTrue(fk.Equals(col));
             Expect.IsFalse(fk == col);
@@ -100,8 +102,10 @@ namespace Bam.Net.Data.Tests
         [UnitTest]
         public static void ListContainsShouldBeTrueForSameNameAndTable()
         {
-            List<ForeignKeyColumn> fks = new List<ForeignKeyColumn>();
-            fks.Add(new ForeignKeyColumn("columnName", "test", "target"));
+            List<ForeignKeyColumn> fks = new List<ForeignKeyColumn>
+            {
+                new ForeignKeyColumn("columnName", "test", "target")
+            };
 
             Expect.IsTrue(fks.Contains(new ForeignKeyColumn("columnName", "test", "target")));
         }

@@ -62,11 +62,17 @@ namespace Bam.Net.Data
         {
 			string dbFile = GetDatabaseFilePath(connectionName);
 
-            ConnectionStringSettings s = new ConnectionStringSettings();
-			s.Name = connectionName;
-            s.ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName();            
-            s.ConnectionString = string.Format("Data Source={0};Version=3;", dbFile);
-
+            ConnectionStringSettings s = new ConnectionStringSettings
+            {
+                Name = connectionName,
+                ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName(),
+                ConnectionString = string.Format("Data Source={0};Version=3;", dbFile)
+            };
+            FileInfo dbFileInfo = new FileInfo(dbFile);
+            if (!dbFileInfo.Directory.Exists)
+            {
+                dbFileInfo.Directory.Create();
+            }
             return s;
         }
 

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net\bam.net.core.csproj" />
+    <ProjectReference Include="..\..\..\bam.net.core\bam.net.core.csproj" />
   </ItemGroup>
 
 </Project>

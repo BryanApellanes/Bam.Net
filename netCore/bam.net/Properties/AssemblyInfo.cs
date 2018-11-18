@@ -39,4 +39,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("bam.net.data.repositories.fx.tests")]
 [assembly: InternalsVisibleTo("bam.net.coreservices.fx.tests")]
 [assembly: InternalsVisibleTo("bam.net.presentation.fx.tests")]
+[assembly: InternalsVisibleTo("bam.net.services.fx.tests")]
 [assembly: InternalsVisibleTo("bake")]

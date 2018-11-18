@@ -161,8 +161,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ToDynamic(this DataRow row, string typeName)
         {
-            AssemblyBuilder ignore;
-            Type dynamicType = ToDynamicType(row, typeName, out ignore);
+            Type dynamicType = ToDynamicType(row, typeName, out AssemblyBuilder ignore);
             ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
             object instance = ctor.Invoke(null);
             instance.CopyValues(row);
@@ -172,8 +171,22 @@ namespace Bam.Net
         public static dynamic ToDynamic(this object instance, Func<PropertyInfo, bool> propertyPredicate, out Type dynamicType)
         {
             Type instanceType = instance.GetType();
-            string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
-            dynamicType = instance.ToDynamicType(newTypeName, propertyPredicate, out AssemblyBuilder ignore);
+            string newTypeName = $"{instanceType.Namespace}.{instanceType.Name}";
+            return ToDynamic(newTypeName, instance, propertyPredicate, out dynamicType);
+        }
+
+        /// <summary>
+        /// Create a dynamic type from the specified instance giving it the specified name and returning a new instance
+        /// cloned from the specified instance.
+        /// </summary>
+        /// <param name="namespaceQualifiedNewTypeName">Name of the namespace qualified new type.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="propertyPredicate">The property predicate.</param>
+        /// <param name="dynamicType">Type of the dynamic.</param>
+        /// <returns></returns>
+        public static dynamic ToDynamic(string namespaceQualifiedNewTypeName, object instance, Func<PropertyInfo, bool> propertyPredicate, out Type dynamicType)
+        {
+            dynamicType = instance.ToDynamicType(namespaceQualifiedNewTypeName, propertyPredicate, out AssemblyBuilder ignore);
             ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
             object filteredProperties = ctor.Invoke(null);
             DefaultConfiguration.CopyProperties(instance, filteredProperties);

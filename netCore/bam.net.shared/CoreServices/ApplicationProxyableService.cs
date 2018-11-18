@@ -201,8 +201,7 @@ namespace Bam.Net.CoreServices
             if (app.Equals(ApplicationRegistration.Data.Application.Unknown))
             {
                 throw new InvalidOperationException("Application is Uknown");
-            }
-
+            }            
             return app;
         }
     }

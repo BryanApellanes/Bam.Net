@@ -7,8 +7,8 @@
     <ProjectGuid>{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>bam.net.fx</RootNamespace>
-    <AssemblyName>bam.net.fx</AssemblyName>
+    <RootNamespace>Bam.Net</RootNamespace>
+    <AssemblyName>bam.net</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -340,6 +340,7 @@
     <Compile Include="_fx\_Configuration\RuntimeSettings.cs" />
     <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />
     <Compile Include="_fx\_CoreServices\ProxyableService.cs" />
+    <Compile Include="_fx\_CoreServices\ProxyTemplateResources.cs" />
     <Compile Include="_fx\_CoreServices\ServiceRegistry.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ActiveApiKeyIndex.cs" />

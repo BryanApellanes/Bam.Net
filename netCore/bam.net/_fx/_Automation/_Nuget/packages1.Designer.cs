@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace bam.net.fx._fx._Automation._Nuget {
+namespace Bam.Net._fx._Automation._Nuget {
     
     
     /// <summary>

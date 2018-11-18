@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "bam.net.shared", "bam.net.shared\bam.net.shared.shproj", "{8F2CB78E-8C2E-45C6-97A0-C38F60A85E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net", "bam.net.fx\bam.net.csproj", "{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net", "bam.net\bam.net.csproj", "{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tests", "_tests", "{421D4974-14D6-43AF-B00F-9AE19E11531D}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.data.repositories.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.data.repositories.fx.tests", "_tests\fx\bam.net.data.repositories.fx.tests\bam.net.data.repositories.fx.tests.csproj", "{C2944B8E-D3D6-4664-B645-E14692BE1FBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.core", "bam.net\bam.net.core.csproj", "{BD291FF9-B08D-440A-90DB-53EB2F6D9023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.core", "bam.net.core\bam.net.core.csproj", "{BD291FF9-B08D-440A-90DB-53EB2F6D9023}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "daoref", "_tests\daoref\daoref.csproj", "{3CC9A65C-6A58-46C6-B947-2397574553D6}"
 EndProject
