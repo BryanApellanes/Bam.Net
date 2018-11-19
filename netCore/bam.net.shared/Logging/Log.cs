@@ -13,7 +13,41 @@ namespace Bam.Net.Logging
 {
     public static partial class Log
     {
-		static ILogger _defaultLogger;
+        static bool? _debug;
+        public static bool DebugOut
+        {
+            get
+            {
+                if (_debug == null)
+                {
+                    _debug = DefaultConfiguration.GetAppSetting("Debug", "true").IsAffirmative();
+                }
+                return _debug.Value;
+            }
+            set
+            {
+                _debug = value;
+            }
+        }
+
+        static bool? _trace;
+        public static bool TraceOut
+        {
+            get
+            {
+                if (_trace == null)
+                {
+                    _trace = DefaultConfiguration.GetAppSetting("Trace", "true").IsAffirmative();
+                }
+                return _trace.Value;
+            }
+            set
+            {
+                _trace = value;
+            }
+        }
+
+        static ILogger _defaultLogger;
 		static object _defaultLoggerLock = new object();
         /// <summary>
         /// Gets or sets the default logger.  Default is determined by the configuration 
@@ -66,27 +100,36 @@ namespace Bam.Net.Logging
 
         public static void DebugInfo(string messageSignature, params object[] args)
         {
-            WriteDebug(messageSignature, args);
-            Info(messageSignature, args);
+            if (DebugOut)
+            {
+                WriteDebug(messageSignature, args);
+                Info(messageSignature, args);
+            }
         }
         
         public static void DebugWarn(string messageSignature, params object[] args)
         {
-            WriteDebug(messageSignature, args);
-            Warn(messageSignature, args);
+            if (DebugOut)
+            {
+                WriteDebug(messageSignature, args);
+                Warn(messageSignature, args);
+            }
         }
 
         public static void DebugError(string messageSignature, Exception ex, params object[] args)
         {
-            WriteDebug(messageSignature, args);
-            Error(messageSignature, ex, args);
+            if (DebugOut)
+            {
+                WriteDebug(messageSignature, args);
+                Error(messageSignature, ex, args);
+            }
         }
         
         private static void WriteDebug(string messageSignature, object[] args)
         {
             if(ProcessMode.Current.Mode == ProcessModes.Dev)
             {
-                if(DefaultConfiguration.GetAppSetting("Debug", "true").IsAffirmative())
+                if(DebugOut)
                 {
                     string message = string.Format(messageSignature, args);
                     Console.WriteLine($"DEBUG: {message}");
@@ -94,7 +137,7 @@ namespace Bam.Net.Logging
                 }
             }
         }
-
+        
         public static void Trace(string messageSignature, params object[] args)
         {
             TraceInfo(messageSignature, args);
@@ -107,33 +150,42 @@ namespace Bam.Net.Logging
 
         public static void TraceInfo(string messageSignature, params object[] args)
         {
-            WriteTrace(messageSignature, args);
-            Info(messageSignature, args);
+            if (TraceOut)
+            {
+                WriteTrace(messageSignature, args);
+                Info(messageSignature, args);
+            }
         }
 
         public static void TraceWarn(string messageSignature, params object[] args)
         {
-            WriteTrace(messageSignature, args);
-            Warn(messageSignature, args);
+            if (TraceOut)
+            {
+                WriteTrace(messageSignature, args);
+                Warn(messageSignature, args);
+            }
+        }
+
+        private static void TraceError(string messageSignature, Exception ex, params object[] args)
+        {
+            if (TraceOut)
+            {
+                WriteTrace(messageSignature, args);
+                Error(messageSignature, ex, args);
+            }
         }
 
         private static void WriteTrace(string messageSignature, object[] args)
         {
             if (ProcessMode.Current.Mode == ProcessModes.Dev || ProcessMode.Current.Mode == ProcessModes.Test)
             {
-                if(DefaultConfiguration.GetAppSetting("Trace", "true").IsAffirmative())
+                if(TraceOut)
                 {
                     string message = string.Format(messageSignature, args);
                     Console.WriteLine($"TRACE: {message}");
                     System.Diagnostics.Trace.WriteLine(message);
                 }
             }
-        }
-        
-        private static void TraceError(string messageSignature, Exception ex, params object[] args)
-        {
-            WriteTrace(messageSignature, args);
-            Error(messageSignature, ex, args);
         }
 
         /// <summary>

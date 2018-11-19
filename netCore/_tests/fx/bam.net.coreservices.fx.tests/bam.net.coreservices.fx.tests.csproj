@@ -58,7 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileServiceTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests.cs" />
@@ -68,7 +67,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bam.net.fx\bam.net.csproj">
+    <ProjectReference Include="..\..\..\bam.net\bam.net.csproj">
       <Project>{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}</Project>
       <Name>bam.net</Name>
     </ProjectReference>

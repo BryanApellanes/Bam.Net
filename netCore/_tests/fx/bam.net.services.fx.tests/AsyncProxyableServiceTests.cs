@@ -25,6 +25,35 @@ namespace Bam.Net.Services.Tests
         }
 
         [UnitTest]
+        public void ShouldBeAbleToUseGenericInvokeAsync()
+        {
+            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
+
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            string value = "this is a value: ".RandomString(8);
+            Task<string> task = testObj.InvokeAsync<string>("Send", value);
+            task.Wait(1000 * 60 * 3);
+
+            StopServers();
+            Expect.AreEqual(value, task.Result);
+        }
+
+        [UnitTest]
+        public void ShouldUseCacheInvokeAsync()
+        {
+            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
+
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            string value = "this is a value";
+            Task<string> task = testObj.InvokeAsync<string>("Send", value);
+            task.Wait(1000 * 60 * 3);
+
+            StopServers();
+            Expect.AreEqual(value, task.Result);
+            // TODO: add better assertions that validate that the remote call wasn't made and the result was retrieved from the local repo
+        }
+
+        [UnitTest]
         public void ShouldBeAbleToUseInvokeAsync()
         {
             AsyncProxyableEcho testObj = GetTestAsyncProxyable();
@@ -56,34 +85,6 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual(ext, request.Ext);
         }
 
-        [UnitTest]
-        public void ShouldBeAbleToUseGenericInvokeAsync()
-        {
-            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
-
-            AutoResetEvent blocker = new AutoResetEvent(false);
-            string value = "this is a value: ".RandomString(8);
-            Task<string> task = testObj.InvokeAsync<string>("Send", value);
-            task.Wait(1000 * 60 * 3);
-
-            StopServers();
-            Expect.AreEqual(value, task.Result);
-        }
-
-        [UnitTest]
-        public void ShouldUseCacheInvokeAsync()
-        {
-            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
-
-            AutoResetEvent blocker = new AutoResetEvent(false);
-            string value = "this is a value";
-            Task<string> task = testObj.InvokeAsync<string>("Send", value);
-            task.Wait(1000 * 60 * 3);
-
-            StopServers();
-            Expect.AreEqual(value, task.Result);
-            // TODO: add better assertions that validate that the remote call wasn't made and the result was retrieved from the local repo
-        }
 
         [UnitTest]
         public void DnsHostnameTest()

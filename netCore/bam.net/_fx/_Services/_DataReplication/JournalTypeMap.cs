@@ -19,14 +19,5 @@ namespace Bam.Net.Services.DataReplication
             return GetTypeId(dynamicType, out string ignore);
         }
 
-        public void AddMapping(KeyHashAuditRepoData instance)
-        {
-            long typeId = GetTypeId(instance, out object dynamicInstance, out Type dynamicType);
-            AddTypeMapping(dynamicType);
-            foreach (PropertyInfo property in dynamicType.GetProperties())
-            {
-                AddPropertyMapping(property);
-            }
-        }
     }
 }

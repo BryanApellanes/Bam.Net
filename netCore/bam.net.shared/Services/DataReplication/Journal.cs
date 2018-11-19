@@ -25,6 +25,7 @@ namespace Bam.Net.Services.DataReplication
         {
             _journalEntries = new Queue<JournalEntry>();
             _keepFlushing = true;
+            FlushCycleDelay = 300;
             ExceptionThreshold = 100;
             SequenceProvider = sequenceProvider;
             Paths = paths;
@@ -66,6 +67,15 @@ namespace Bam.Net.Services.DataReplication
                 return _journalDirectory;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the number of milliseconds to wait for the next check for entries waiting
+        /// to be flushed.
+        /// </summary>
+        /// <value>
+        /// The flush cycle delay.
+        /// </value>
+        public int FlushCycleDelay { get; set; }
 
         public ITypeConverter TypeConverter { get; set; }
         
@@ -130,7 +140,17 @@ namespace Bam.Net.Services.DataReplication
             foreach(JournalEntry entry in JournalEntry.LoadInstanceEntries<T>(id, JournalDirectory, TypeMap, Loader))
             {
                 string propertyName = TypeMap.GetPropertyShortName(entry.PropertyId);
+                if (string.IsNullOrEmpty(propertyName))
+                {
+                    Log.Warn("Failed to get property name for property id {0}", entry.PropertyId);
+                    continue;
+                }
                 PropertyInfo prop = typeof(T).GetProperty(propertyName);
+                if(prop == null)
+                {
+                    Log.Warn("Failed to get property {0}.{1}", typeof(T).Name, propertyName);
+                    continue;
+                }
                 try
                 {
                     object value = TypeConverter.ChangeType(entry.Value, prop.PropertyType);
@@ -138,7 +158,7 @@ namespace Bam.Net.Services.DataReplication
                 }
                 catch (Exception ex)
                 {
-                    Log.Default.AddEntry("Failed to set property ({0}) on instance ({1}) of type ({2})", ex, prop?.Name, id.ToString(), typeof(T).FullName);
+                    Log.AddEntry("Failed to set property ({0} ({1})) on instance ({2}) of type ({3})", ex, propertyName, prop?.Name, id.ToString(), typeof(T).FullName);
                 }
             }
             toLoad.Id = id;
@@ -170,7 +190,8 @@ namespace Bam.Net.Services.DataReplication
 
         public IEnumerable<JournalEntry> Enqueue(KeyHashAuditRepoData data, Action<JournalEntry[]> onFullyFlushed)
         {
-            Task.Run(() => TypeMap.AddMapping(data));
+            TypeMap.AddMapping(data);
+            
             JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
             return Enqueue(journalEntries, onFullyFlushed);
         }

@@ -26,6 +26,7 @@ namespace Bam.Net.Services.DataReplication
         
         protected JournalTypeMap()
         {
+            MappedTypes = new HashSet<Type>();
             TypeMappings = new ConcurrentDictionary<long, string>();
             PropertyMappings = new ConcurrentDictionary<long, string>();
         }
@@ -46,9 +47,26 @@ namespace Bam.Net.Services.DataReplication
             return typeMap;
         }
 
+        protected HashSet<Type> MappedTypes { get; set; }
+
         public ConcurrentDictionary<long, string> TypeMappings { get; set; }
         public ConcurrentDictionary<long, string> PropertyMappings { get; set; }
 
+        public void AddMapping(KeyHashAuditRepoData instance)
+        {
+            Args.ThrowIfNull(instance, "instance");
+            Type type = instance.GetType();
+            if (MappedTypes.Contains(type))
+            {
+                return;
+            }
+            AddTypeMapping(type);
+            foreach (PropertyInfo property in type.GetProperties())
+            {
+                AddPropertyMapping(property);
+            }
+            MappedTypes.Add(type);
+        }
         /// <summary>
         /// Gets the name of the type using TypeMappings, if the mapping is not found the string representation of 
         /// the specified typeId is returned.

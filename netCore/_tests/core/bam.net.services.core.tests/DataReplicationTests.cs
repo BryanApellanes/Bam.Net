@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CoreServices;
+using Bam.Net.Logging;
 using Bam.Net.Services.DataReplication;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
@@ -14,7 +15,18 @@ namespace Bam.Net.Services.Tests
 {
     [Serializable]
     public class DataReplicationTests: CommandLineTestInterface
-    {        
+    {      
+        [BeforeEachUnitTest]
+        public void Setup()
+        {
+            Log.DebugOut = false;
+            Log.TraceOut = false;
+            // preinitialize stuff
+            GetTestJournals();
+            GetTestObjectWithCompressedJournal<Journal>();
+            GetTestObjectWithEncryptedJournal<Journal>();
+        }
+
         [UnitTest("Data Replication: can get type map")]
         public void CanGetTypeMap()
         {
@@ -130,10 +142,10 @@ namespace Bam.Net.Services.Tests
             bool? fullyFlushed = false;
             entries.AddRange(journal.Enqueue(value1, (je)=>
             {
-                blocker.Set();
                 fullyFlushed = true;
+                blocker.Set();                
             }));
-            blocker.WaitOne(5000);
+            blocker.WaitOne(10000);
             DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value1.Id);
             Expect.IsNotNull(check);
             Expect.IsTrue(fullyFlushed.Value);

@@ -9,6 +9,8 @@
     <Import_RootNamespace>bam.net.tests.shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncProxyableEcho.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KeyHashRepoTestData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxyTestHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserTestTools.cs" />

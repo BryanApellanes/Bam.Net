@@ -18,43 +18,10 @@ namespace Bam.Net.Services.Tests
     [Serializable]
     public partial class UnitTests : CommandLineTestInterface
     {
-        [UnitTest]
-        public void FixedFieldRenderTest()
+        static UnitTests()
         {
-            OpenApiFixedFieldModel model = new OpenApiFixedFieldModel
-            {
-                FieldName = "_malarkey",
-                
-                Type = "object"
-            };
-
-            OpenApiFixedFieldModel model2 = new OpenApiFixedFieldModel
-            {
-                FieldName = "_malarkey2",
-                
-                Type = "string"
-            };
-
-            OpenApiObjectDescriptorModel objModel = new OpenApiObjectDescriptorModel
-            {
-                Namespace = "Test.This.Out",
-                ObjectName = "TheObjectName",
-                ObjectDescription = "This is a comprehensive description",
-                FixedFields = new List<OpenApiFixedFieldModel>
-                {
-                    model,
-                    model2
-                }
-            };
-            OutLine(objModel.Render());
-        }
-        [UnitTest]
-        public void OpenApiDatabaseHasData()
-        {
-            OpenApiObjectDatabase db = new OpenApiObjectDatabase();
-            ObjectDescriptorCollection objects = ObjectDescriptor.Where(c => c.Id > 0, db);
-            Expect.IsGreaterThan(objects.Count, 0);
-            OutLine(objects[0].PropertiesToLine(), ConsoleColor.Green);
+            Log.DebugOut = false;
+            Log.TraceOut = false;
         }
 
         [UnitTest]
@@ -95,6 +62,7 @@ namespace Bam.Net.Services.Tests
             public string Monkey { get; set; }
             public bool HasTail { get; set; }
         }
+
         [UnitTest]
         public void ToAndFromDataPropertyCollection()
         {
@@ -250,8 +218,10 @@ namespace Bam.Net.Services.Tests
             ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
             logger.StartLoggingThread();
             string schemaName = "TheSchemaName_".RandomLetters(5);
-            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", nameof(SavingKeyHashRepoDataShouldntDuplicate)), logger, schemaName);
-            repo.WarningsAsErrors = false;
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", nameof(SavingKeyHashRepoDataShouldntDuplicate)), logger, schemaName)
+            {
+                WarningsAsErrors = false
+            };
             repo.AddType(typeof(KeyHashRepoTestData));
             CachingRepository cachingRepo = new CachingRepository(repo, logger);
 
@@ -269,48 +239,6 @@ namespace Bam.Net.Services.Tests
             two.Save<KeyHashRepoTestData>(cachingRepo);
             retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
             Expect.AreEqual(1, retrieved.Count);
-        }
-
-        [UnitTest]
-        public void RepoQueryTest()
-        {
-            string nameOne = 32.RandomLetters();
-            foreach (Repository repo in GetTestRepositories())
-            {
-                KeyHashRepoTestData one = new KeyHashRepoTestData { Name = nameOne };
-                one.Save<KeyHashRepoTestData>(repo);
-
-                List<KeyHashRepoTestData> retrieved = repo.Query<KeyHashRepoTestData>(new { Name = nameOne }).ToList();
-                retrieved = repo.Query<KeyHashRepoTestData>(d => d.Name.Equals(nameOne)).ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query(typeof(KeyHashRepoTestData), o => o.Property("Name").Equals(nameOne)).CopyAs<KeyHashRepoTestData>().ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query<KeyHashRepoTestData>(new Dictionary<string, object> { { "Name", nameOne } }).ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query(typeof(KeyHashRepoTestData), new Dictionary<string, object> { { "Name", nameOne } }).CopyAs<KeyHashRepoTestData>().ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query(typeof(KeyHashRepoTestData), new { Name = nameOne }).CopyAs<KeyHashRepoTestData>().ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query("Name", nameOne).CopyAs<KeyHashRepoTestData>().ToList();
-                Expect.AreEqual(1, retrieved.Count);
-                retrieved = repo.Query(new { Type = typeof(KeyHashRepoTestData), Name = nameOne }).CopyAs<KeyHashRepoTestData>().ToList();
-                Expect.AreEqual(1, retrieved.Count);
-
-                Pass(repo.GetType().Name);
-            }
-        }
-
-        private IEnumerable<Repository> GetTestRepositories()
-        {
-            ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
-            logger.StartLoggingThread();
-            string schemaName = "TheSchemaName_".RandomLetters(5);
-            DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(".", nameof(RepoQueryTest)), logger, schemaName);
-            daoRepo.WarningsAsErrors = false;
-            daoRepo.AddType(typeof(KeyHashRepoTestData));
-            yield return daoRepo;
-            CachingRepository cachingRepo = new CachingRepository(daoRepo, logger);
-            yield return cachingRepo;
         }
     }
 }

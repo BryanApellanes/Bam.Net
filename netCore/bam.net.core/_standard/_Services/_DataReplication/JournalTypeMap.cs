@@ -21,16 +21,5 @@ namespace Bam.Net.Services.DataReplication
             dynamicType = type;
             return GetTypeId(type);
         }
-
-        public void AddMapping(KeyHashAuditRepoData instance)
-        {
-            Args.ThrowIfNull(instance, "instance");
-            Type type = instance.GetType();
-            AddTypeMapping(type);
-            foreach (PropertyInfo property in type.GetProperties())
-            {
-                AddPropertyMapping(property);
-            }
-        }
     }
 }
