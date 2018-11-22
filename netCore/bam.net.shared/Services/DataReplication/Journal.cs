@@ -14,7 +14,7 @@ namespace Bam.Net.Services.DataReplication
     [Serializable]
     public class Journal: Loggable
     {
-        Queue<JournalEntry> _journalEntries;
+        Queue<JournalEntry> _journalEntryQueue;
         bool _keepFlushing;
 
         public Journal(ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter, ILogger logger = null) 
@@ -23,7 +23,7 @@ namespace Bam.Net.Services.DataReplication
 
         public Journal(SystemPaths paths, JournalTypeMap typeMap, ISequenceProvider sequenceProvider, IJournalEntryValueFlusher flusher, IJournalEntryValueLoader loader, ITypeConverter typeConverter = null, ILogger logger = null)
         {
-            _journalEntries = new Queue<JournalEntry>();
+            _journalEntryQueue = new Queue<JournalEntry>();
             _keepFlushing = true;
             FlushCycleDelay = 300;
             ExceptionThreshold = 100;
@@ -200,12 +200,13 @@ namespace Bam.Net.Services.DataReplication
         internal protected IEnumerable<JournalEntry> Enqueue(JournalEntry[] journalEntries, Action<JournalEntry[]> onFullyFlushed)
         {
             HashSet<JournalEntry> written = new HashSet<JournalEntry>();
+            int doneCount = journalEntries.Length;
             foreach (JournalEntry entry in journalEntries)
             {
                 entry.Written += (o, a) =>
                 {
                     written.Add(((JournalEntryWrittenEventArgs)a).JournalEntry);
-                    if (written.Count == journalEntries.Length)
+                    if (written.Count == doneCount)
                     {
                         onFullyFlushed(written.ToArray());
                     }
@@ -213,6 +214,14 @@ namespace Bam.Net.Services.DataReplication
             }
             EnqueueEntriesForWrite(journalEntries);
             return journalEntries;
+        }
+
+        public int QueueLength
+        {
+            get
+            {
+                return _journalEntryQueue.Count;
+            }
         }
 
         public DirectoryInfo GetTypeDirectory(long typeId)
@@ -234,33 +243,39 @@ namespace Bam.Net.Services.DataReplication
             foreach(JournalEntry journalEntry in journalEntries)
             {
                 journalEntry.Seq = SequenceProvider.Next();
-                _journalEntries.Enqueue(journalEntry);
+                _journalEntryQueue.Enqueue(journalEntry);
             }
             FireEvent(EntriesEnqueued, new JournalEntriesEnqueuedEventArgs { JournalEntries = journalEntries });
+        }
+        
+        protected internal Thread QueueFlusher
+        {
+            get;
+            set;
         }
 
         int _exceptionCount;
         private void FlushQueue()
         {
-            _fireQueueEmpty = true;
-            Task.Run(() =>
+            QueueFlusher = Exec.InThread(() =>
             {
-                while (_keepFlushing )
+                while (_keepFlushing)
                 {
                     try
                     {
-                        if (_journalEntries.Count > 0)
+                        if (_journalEntryQueue.Count > 0)
                         {
                             _fireQueueEmpty = true;
-                            while(_journalEntries.Count > 0)
+                            while (_journalEntryQueue.Count > 0)
                             {
-                                JournalEntry journalEntry = _journalEntries.Dequeue();
-                                if(journalEntry != null)
+                                JournalEntry journalEntry = _journalEntryQueue.Dequeue();
+                                if (journalEntry != null)
                                 {
                                     FileInfo propertyFile = Flusher.Flush(this, journalEntry);
-                                    JournalEntryWrittenEventArgs  eventArgs = new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile };
+                                    JournalEntryWrittenEventArgs eventArgs = new JournalEntryWrittenEventArgs { JournalEntry = journalEntry, File = propertyFile };
                                     FireEvent(EntryFlushed, eventArgs);
                                     journalEntry.OnEntryWritten(this, eventArgs);
+                                    Log.DebugInfo("Entry flushed: {0}", journalEntry.ToString());
                                 }
                             }
                         }
@@ -272,12 +287,14 @@ namespace Bam.Net.Services.DataReplication
                                 _exceptionCount = 0;
                                 FireEvent(QueueEmpty, EventArgs.Empty);
                             }
-                            Thread.Sleep(300);
+                            Log.DebugInfo("Journal Flush thread sleeping: {0}", FlushCycleDelay);
+                            Thread.Sleep(FlushCycleDelay);
                         }
                     }
                     catch (Exception ex)
                     {
                         _exceptionCount++;
+                        Log.DebugError("Exception in {0}.{1}: Count {2}", ex, nameof(Journal), nameof(FlushQueue), _exceptionCount.ToString());
                         Logger.AddEntry("Exception in {0}.{1}: Count {2}", ex, nameof(Journal), nameof(FlushQueue), _exceptionCount.ToString());
                         if (_exceptionCount >= ExceptionThreshold)
                         {
@@ -288,6 +305,7 @@ namespace Bam.Net.Services.DataReplication
                     }
                 }
             });
+            
         }
     }
 }

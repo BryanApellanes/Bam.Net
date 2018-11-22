@@ -1869,6 +1869,16 @@ namespace Bam.Net
             return result == 0 ? valueIfZero : result;
         }
 
+        public static ulong ToUlong(this string number, ulong valueIfZero)
+        {
+            ulong result = valueIfZero;
+            if(ulong.TryParse(number, out ulong value))
+            {
+                result = value;
+            }
+            return result;
+        }
+
         /// <summary>
         /// Use int.TryParse to try to convert the specified
         /// number to an integer; returns 0 on failure

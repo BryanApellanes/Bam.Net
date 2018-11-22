@@ -1,4 +1,5 @@
-﻿using Bam.Net.CoreServices;
+﻿using Bam.Net.CommandLine;
+using Bam.Net.CoreServices;
 using Bam.Net.Logging;
 using Bam.Net.Services.DataReplication;
 using Bam.Net.Testing;
@@ -159,17 +160,26 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CompressionJournalGetsLatestPropertyValue()
         {
+            Log.DebugOut = true;
             AutoResetEvent blocker = new AutoResetEvent(false);
             DataReplicationTestClass value = GetRandomDataInstance();
             Journal journal = GetCompressionJournal<Journal>();
+            journal.Logger = new ConsoleLogger();
             bool? checkedJournal = false;
             journal.Enqueue(value, (jes) => jes.Each(je =>
             {
+                OutLineFormat("Fully flushed called", ConsoleColor.DarkBlue);
                 checkedJournal = true;
                 Expect.AreSame(journal, je.Journal);
                 blocker.Set();
             }));
-            if (!blocker.WaitOne(60000))
+            for (int i = 0; i < 100; i++)
+            {
+                Thread.Sleep(30);
+                OutLineFormat("QueueLength={0}", ConsoleColor.Cyan, journal.QueueLength.ToString());
+                OutLineFormat("Flushed status: {0}", ConsoleColor.Yellow, journal.QueueFlusher.ThreadState.ToString());
+            }
+            if (!blocker.WaitOne(15000))
             {
                 Warn("Inconclusive, blocker was not set");
             }
@@ -180,6 +190,7 @@ namespace Bam.Net.Services.Tests
             {
                 DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value.Id);
                 Expect.AreEqual(newAddress, check.Address);
+                OutLine(check.Address);
                 blocker.Set();
             });
 
@@ -202,7 +213,7 @@ namespace Bam.Net.Services.Tests
                 Expect.AreSame(journal, je.Journal);
                 blocker.Set();
             }));
-            if (!blocker.WaitOne(60000))
+            if (!blocker.WaitOne(15000))
             {
                 Warn("Inconclusive, blocker was not set");
             }

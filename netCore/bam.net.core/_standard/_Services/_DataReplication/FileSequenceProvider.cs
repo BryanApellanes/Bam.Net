@@ -27,6 +27,10 @@ namespace Bam.Net.Services.DataReplication
 
             File = new FileInfo(Path.Combine(paths.Data.AppFiles, $"{nameof(FileSequenceProvider)}.txt"));
             _current = start;
+            if (File.Exists)
+            {
+                _current = File.FullName.SafeReadFile().ToUlong(start);
+            }
         }
 
         public ILogger Logger { get; set; }
