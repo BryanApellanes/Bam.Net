@@ -65,6 +65,35 @@ namespace Bam.Net.Tests
         }
 
         [UnitTest]
+        public void SavingKeyHashRepoDataShouldntDuplicate()
+        {
+            ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
+            logger.StartLoggingThread();
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", nameof(SavingKeyHashRepoDataShouldntDuplicate)), logger, schemaName)
+            {
+                WarningsAsErrors = false
+            };
+            repo.AddType(typeof(KeyHashRepoTestData));
+            CachingRepository cachingRepo = new CachingRepository(repo, logger);
+
+            string nameOne = 32.RandomLetters();
+            string valueOne = 16.RandomLetters();
+            KeyHashRepoTestData one = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
+            KeyHashRepoTestData two = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
+            Expect.AreEqual(one, two);
+
+            one.Save<KeyHashRepoTestData>(cachingRepo);
+            var queryParams = new { Name = nameOne };
+            cachingRepo.Cache<KeyHashRepoTestData>(queryParams);
+            List<KeyHashRepoTestData> retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
+            Expect.AreEqual(1, retrieved.Count);
+            two.Save<KeyHashRepoTestData>(cachingRepo);
+            retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
+            Expect.AreEqual(1, retrieved.Count);
+        }
+
+        [UnitTest]
         public void CanSaveToRepo()
         {
             DataPoint point = new DataPoint()

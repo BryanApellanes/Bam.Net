@@ -137,7 +137,8 @@ namespace Bam.Net.Services.DataReplication
         public T LoadInstance<T>(ulong id) where T : KeyHashAuditRepoData, new()
         {
             T toLoad = new T();
-            foreach(JournalEntry entry in JournalEntry.LoadInstanceEntries<T>(id, JournalDirectory, TypeMap, Loader))
+            List<JournalEntry> instanceEntries = JournalEntry.LoadInstanceEntries<T>(id, this).ToList();
+            foreach (JournalEntry entry in instanceEntries)
             {
                 string propertyName = TypeMap.GetPropertyShortName(entry.PropertyId);
                 if (string.IsNullOrEmpty(propertyName))
@@ -192,11 +193,11 @@ namespace Bam.Net.Services.DataReplication
         {
             TypeMap.AddMapping(data);
             
-            JournalEntry[] journalEntries = JournalEntry.FromInstance(data).ToArray();
+            JournalEntry[] journalEntries = JournalEntry.FromInstance(data, this).ToArray();
             return Enqueue(journalEntries, onFullyFlushed);
         }
 
-        public IEnumerable<JournalEntry> Enqueue(JournalEntry[] journalEntries, Action<JournalEntry[]> onFullyFlushed)
+        internal protected IEnumerable<JournalEntry> Enqueue(JournalEntry[] journalEntries, Action<JournalEntry[]> onFullyFlushed)
         {
             HashSet<JournalEntry> written = new HashSet<JournalEntry>();
             foreach (JournalEntry entry in journalEntries)

@@ -611,9 +611,10 @@ namespace Bam.Net.Caching
         private T DelegateOrThrow<T>(string methodName, params object[] parameters)
         {
             Args.ThrowIfNull(SourceRepository, "SourceRepository");
-            if (SourceRepository is DaoRepository daoRepo)
+            if (SourceRepository is DaoRepository ||
+                SourceRepository is MongoRepository)
             {
-                return daoRepo.Invoke<T>(methodName, parameters);
+                return SourceRepository.Invoke<T>(methodName, parameters);
             }
             else
             {
@@ -624,13 +625,10 @@ namespace Bam.Net.Caching
         private T DelegateGenericOrThrow<T, TArg>(string methodName, params object[] parameters)
         {
             Args.ThrowIfNull(SourceRepository, "SourceRepository");
-            if (SourceRepository is DaoRepository daoRepo)
+            if (SourceRepository is DaoRepository || 
+                SourceRepository is MongoRepository)
             {
-                return daoRepo.InvokeGeneric<T, TArg>(methodName, parameters);
-            }
-            else if (SourceRepository is MongoRepository mongoRepo)
-            {
-                return mongoRepo.InvokeGeneric<T, TArg>(methodName, parameters);
+                return SourceRepository.InvokeGeneric<T, TArg>(methodName, parameters);
             }
             else
             {

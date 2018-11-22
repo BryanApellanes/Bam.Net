@@ -125,7 +125,7 @@ namespace Bam.Net.Razor
 		public string ExecuteResource(string templateName, string resourceNamePrefix, Assembly resourceContainer, object options = null, params Assembly[] assembliesToReference)
 		{
             string[] manifestResourceNames = resourceContainer.GetManifestResourceNames();
-            string resourcePath = manifestResourceNames.FirstOrDefault(fullPath => fullPath.StartsWith(resourceNamePrefix) && fullPath.EndsWith($".{templateName}"));
+            string resourcePath = manifestResourceNames.FirstOrDefault(fullPath => fullPath.StartsWith(resourceNamePrefix, StringComparison.InvariantCultureIgnoreCase) && fullPath.EndsWith($".{templateName}", StringComparison.InvariantCultureIgnoreCase));
 			
 			if (string.IsNullOrEmpty(resourcePath))
 			{

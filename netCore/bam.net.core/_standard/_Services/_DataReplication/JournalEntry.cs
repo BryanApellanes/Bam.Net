@@ -15,7 +15,7 @@ namespace Bam.Net.Services.DataReplication
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
-        public static IEnumerable<JournalEntry> FromInstance(KeyHashAuditRepoData instance)
+        public static IEnumerable<JournalEntry> FromInstance(KeyHashAuditRepoData instance, Journal journal = null)
         {
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType();
@@ -23,16 +23,19 @@ namespace Bam.Net.Services.DataReplication
             instance.Id = instance.GetULongKeyHash();
             foreach (PropertyInfo prop in GetProperties(type))
             {
-                yield return new JournalEntry { TypeId = typeId, InstanceId = instance.Id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string i), Value = prop.GetValue(instance)?.ToString() };
+                yield return new JournalEntry { Journal = journal, TypeId = typeId, InstanceId = instance.Id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string i), Value = prop.GetValue(instance)?.ToString() };
             }
         }
 
-        public static IEnumerable<JournalEntry> LoadInstanceEntries<T>(ulong id, DirectoryInfo journalDirectory, JournalTypeMap typeMap, IJournalEntryValueLoader loader = null) where T : KeyHashAuditRepoData, new()
+        public static IEnumerable<JournalEntry> LoadInstanceEntries<T>(ulong id, Journal journal) where T : KeyHashAuditRepoData, new()
         {
+            DirectoryInfo journalDirectory = journal.JournalDirectory;
+            JournalTypeMap typeMap = journal.TypeMap;
+            IJournalEntryValueLoader loader = journal.Loader;
             long typeId = JournalTypeMap.GetTypeId(typeof(T));
             foreach (PropertyInfo prop in GetProperties(typeof(T)))
             {
-                JournalEntry entry = new JournalEntry { TypeId = typeId, InstanceId = id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string ignore) };
+                JournalEntry entry = new JournalEntry { Journal = journal, TypeId = typeId, InstanceId = id, PropertyId = JournalTypeMap.GetPropertyId(prop, out string ignore) };
                 yield return entry.LoadLatestValue(journalDirectory, typeMap, loader) ?? entry;
             }
         }

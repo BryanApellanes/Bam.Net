@@ -211,34 +211,30 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("service.bamapps.net", route.Domain);
             Expect.AreEqual("echo/send", route.PathAndQuery);
         }
+        
+        [UnitTest]
+        public void GetHashThrowsIfNoKeyProperties()
+        {
+            Expect.Throws(() => new KeyHashRepoThrowsData().GetHashCode(), (ex) => OutLineFormat("Exception thrown as expected: {0}", ConsoleColor.Green, ex.Message));
+            Expect.Throws(() => new KeyHashRepoThrowsData().GetLongKeyHash(), (ex) => OutLineFormat("Exception thrown as expected: {0}", ConsoleColor.Green, ex.Message));
+        }
 
         [UnitTest]
-        public void SavingKeyHashRepoDataShouldntDuplicate()
+        public void GetHashReturnsSameValueForDifferentInstances()
         {
-            ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
-            logger.StartLoggingThread();
-            string schemaName = "TheSchemaName_".RandomLetters(5);
-            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", nameof(SavingKeyHashRepoDataShouldntDuplicate)), logger, schemaName)
-            {
-                WarningsAsErrors = false
-            };
-            repo.AddType(typeof(KeyHashRepoTestData));
-            CachingRepository cachingRepo = new CachingRepository(repo, logger);
+            string name = 16.RandomLetters();
+            string otherProp = 32.RandomLetters();
+            KeyHashRepoTestData one = new KeyHashRepoTestData { Name = name, SomeOtherUniqueProperty = otherProp };
+            KeyHashRepoTestData two = new KeyHashRepoTestData { Name = name, SomeOtherUniqueProperty = otherProp };
+            KeyHashRepoTestData three = new KeyHashRepoTestData { Name = name, SomeOtherUniqueProperty = "different" };
+            Expect.IsFalse(one == two);
+            Expect.AreEqual(one.GetHashCode(), two.GetHashCode());
+            Expect.AreEqual(one.GetLongKeyHash(), two.GetLongKeyHash());
 
-            string nameOne = 32.RandomLetters();
-            string valueOne = 16.RandomLetters();
-            KeyHashRepoTestData one = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
-            KeyHashRepoTestData two = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
-            Expect.AreEqual(one, two);
+            Expect.IsFalse(one.GetHashCode().Equals(three.GetHashCode()));
+            Expect.IsFalse(two.GetHashCode().Equals(three.GetHashCode()));
 
-            one.Save<KeyHashRepoTestData>(cachingRepo);
-            var queryParams = new { Name = nameOne };
-            cachingRepo.Cache<KeyHashRepoTestData>(queryParams);
-            List<KeyHashRepoTestData> retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
-            Expect.AreEqual(1, retrieved.Count);
-            two.Save<KeyHashRepoTestData>(cachingRepo);
-            retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
-            Expect.AreEqual(1, retrieved.Count);
+            OutLine(one.GetLongKeyHash().ToString());
         }
     }
 }

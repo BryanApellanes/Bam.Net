@@ -23,14 +23,14 @@ namespace Bam.Net.Services.Tests
             Log.TraceOut = false;
             // preinitialize stuff
             GetTestJournals();
-            GetTestObjectWithCompressedJournal<Journal>();
-            GetTestObjectWithEncryptedJournal<Journal>();
+            GetCompressionJournal<Journal>();
+            GetEncryptionJournal<Journal>();
         }
 
         [UnitTest("Data Replication: can get type map")]
         public void CanGetTypeMap()
         {
-            JournalTypeMap typeMap = GetTestObjectWithEncryptedJournal<JournalTypeMap>();
+            JournalTypeMap typeMap = GetEncryptionJournal<JournalTypeMap>();
             Expect.IsNotNull(typeMap, "typeMap was null");
         }
 
@@ -122,14 +122,14 @@ namespace Bam.Net.Services.Tests
         [UnitTest("Data Replication: can read compressed entries")]
         public void CanReadCompressed()
         {
-            Journal journal = GetTestObjectWithCompressedJournal<Journal>();
+            Journal journal = GetCompressionJournal<Journal>();
             DoReadTest(journal);
         }
 
         [UnitTest("Data Replication: can read encrypted entries")]
         public void CanReadEncrypted()
         {
-            Journal journal = GetTestObjectWithEncryptedJournal<Journal>();
+            Journal journal = GetEncryptionJournal<Journal>();
             DoReadTest(journal);
         }
 
@@ -145,7 +145,7 @@ namespace Bam.Net.Services.Tests
                 fullyFlushed = true;
                 blocker.Set();                
             }));
-            blocker.WaitOne(10000);
+            blocker.WaitOne(60000);
             DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value1.Id);
             Expect.IsNotNull(check);
             Expect.IsTrue(fullyFlushed.Value);
@@ -157,52 +157,75 @@ namespace Bam.Net.Services.Tests
         }
 
         [UnitTest]
-        public void WillGetLatestPropertyValue()
+        public void CompressionJournalGetsLatestPropertyValue()
         {
-            foreach(Journal journal in GetTestJournals())
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            DataReplicationTestClass value = GetRandomDataInstance();
+            Journal journal = GetCompressionJournal<Journal>();
+            bool? checkedJournal = false;
+            journal.Enqueue(value, (jes) => jes.Each(je =>
             {
-                DataReplicationTestClass value1 = GetRandomDataInstance();
-                DataReplicationTestClass value2 = GetDataInstance();
-                DataReplicationTestClass value3 = GetRandomDataInstance();
-                HashSet<DataReplicationTestClass> retrieved = new HashSet<DataReplicationTestClass>();
-                List<JournalEntry> entries = new List<JournalEntry>();
-                AutoResetEvent blocker = new AutoResetEvent(false);
-                journal.QueueEmpty += (o, a) =>
-                {
-                    OutLineFormat("queue empty fired");
-                    foreach (JournalEntry entry in entries)
-                    {
-                        retrieved.Add(journal.LoadInstance<DataReplicationTestClass>(entry));
-                    }
-                    blocker.Set();
-                };
-                foreach (DataReplicationTestClass entry in new DataReplicationTestClass[] { value1, value2, value3 })
-                {
-                    entries.AddRange(journal.Enqueue(entry));
-                }
-                if (!blocker.WaitOne(5000))
-                {
-                    Warn("blocker didn't get set");
-                }
-                Expect.AreEqual(3, retrieved.Count);
-                string newAddress = "Updated " + 8.RandomLetters();
-                value2.Address = newAddress;
-                journal.Enqueue(value2).ToArray();
-                blocker.WaitOne();
-                DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value2.Id);
-                Expect.IsNotNull(check);
-                Expect.AreEqual(check.FirstName, value2.FirstName);
-                Expect.AreEqual(check.LastName, value2.LastName);
+                checkedJournal = true;
+                Expect.AreSame(journal, je.Journal);
+                blocker.Set();
+            }));
+            if (!blocker.WaitOne(60000))
+            {
+                Warn("Inconclusive, blocker was not set");
+            }
+            Expect.IsTrue(checkedJournal.Value);
+            string newAddress = "Updated " + 8.RandomLetters();
+            value.Address = newAddress;
+            journal.Enqueue(value, (jes) =>
+            {
+                DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value.Id);
                 Expect.AreEqual(newAddress, check.Address);
+                blocker.Set();
+            });
 
-                Thread.Sleep(3000);
+            if (!blocker.WaitOne(15000))
+            {
+                Warn("Inconclusive, blocker was not set");
             }
         }
 
+        [UnitTest]
+        public void EncryptionJournalGetsLatestPropertyValue()
+        {
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            DataReplicationTestClass value = GetRandomDataInstance();
+            Journal journal = GetEncryptionJournal<Journal>();
+            bool? checkedJournal = false;
+            journal.Enqueue(value, (jes) => jes.Each(je =>
+            {
+                checkedJournal = true;
+                Expect.AreSame(journal, je.Journal);
+                blocker.Set();
+            }));
+            if (!blocker.WaitOne(60000))
+            {
+                Warn("Inconclusive, blocker was not set");
+            }
+            Expect.IsTrue(checkedJournal.Value);
+            string newAddress = "Updated " + 8.RandomLetters();
+            value.Address = newAddress;
+            journal.Enqueue(value, (jes) =>
+            {
+                DataReplicationTestClass check = journal.LoadInstance<DataReplicationTestClass>(value.Id);
+                Expect.AreEqual(newAddress, check.Address);
+                blocker.Set();
+            });
+
+            if (!blocker.WaitOne(15000))
+            {
+                Warn("Inconclusive, blocker was not set");
+            }
+        }
+        
         [UnitTest("Data Replication: can save and load type map")]
         public void CanSaveAndLoadTypeMap()
         {
-            JournalTypeMap typeMap = GetTestObjectWithEncryptedJournal<JournalTypeMap>();
+            JournalTypeMap typeMap = GetEncryptionJournal<JournalTypeMap>();
             typeMap.AddMapping(new DataReplicationTestClass());
             int typeCount = typeMap.TypeMappings.Count;
             int propCount = typeMap.PropertyMappings.Count;
@@ -253,7 +276,7 @@ namespace Bam.Net.Services.Tests
             yield return registry.Get<Journal>();
         }
 
-        private T GetTestObjectWithCompressedJournal<T>()
+        private T GetCompressionJournal<T>()
         {
             ServiceRegistry registry = JournalRegistryContainer.GetServiceRegistry();
             registry.For<IJournalEntryValueFlusher>().Use<CompressedJournalEntryValueFlusher>();
@@ -262,7 +285,7 @@ namespace Bam.Net.Services.Tests
             return registry.Get<T>();
         }
 
-        private T GetTestObjectWithEncryptedJournal<T>()
+        private T GetEncryptionJournal<T>()
         {
             ServiceRegistry registry = JournalRegistryContainer.GetServiceRegistry();
             registry.For<IJournalEntryValueFlusher>().Use<EncryptedJournalEntryValueFlusher>();

@@ -192,7 +192,6 @@ namespace Bam.Net
             set;
         }
 
-
         public Type MessageType
         {
             get;
