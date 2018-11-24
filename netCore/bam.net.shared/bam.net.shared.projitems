@@ -1298,6 +1298,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\BlockingLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\ClientLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Counters\Counter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Counters\Data\CounterData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Counters\Data\TimerData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Counters\Stats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Counters\Timer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\CsvLogger.cs" />
@@ -1464,6 +1466,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Attributes\ReadOnly.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Attributes\StringInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Attributes\TextArea.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\BamTemplateParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\HtmlMeta.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Js\DataSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ICompiledTemplate.cs" />
@@ -1476,7 +1480,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\IDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\PipeTableDocumentComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\PageModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\OAuthSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\PersistenceModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessInfo.cs" />
@@ -3409,7 +3413,9 @@
     <None Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi.sqlite" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Services\OpenApi\Templates\FixedField.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Services\OpenApi\Templates\ObjectDescriptor.tmpl" />
-    <None Include="$(MSBuildThisFileDirectory)Translation\Language.sqlite" />
+    <None Include="$(MSBuildThisFileDirectory)Translation\Language.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="$(MSBuildThisFileDirectory)Translation\README.md" />
     <None Include="$(MSBuildThisFileDirectory)Translation\regendao.cmd" />
   </ItemGroup>

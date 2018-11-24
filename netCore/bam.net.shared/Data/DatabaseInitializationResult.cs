@@ -23,8 +23,8 @@ namespace Bam.Net.Data
         }
 
         public Database Database { get; private set; }
-        public Exception Exception { get; private set; }
-        public bool Success { get; private set; }
+        public Exception Exception { get; set; }
+        public bool Success { get; set; }
         public IDatabaseInitializer Initializer { get; set; }
     }
 }

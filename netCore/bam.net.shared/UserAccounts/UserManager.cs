@@ -505,8 +505,9 @@ namespace Bam.Net.UserAccounts
                 {
                     RequestConfirmationEmail(emailAddress);
                 }
-                FireEvent(SignUpSucceeded, new UserManagerEventArgs { UserJson = user.ToJsonSafe().ToJson(), SignUpOptions = options });
-                return GetSuccess<SignUpResponse>(user.ToJsonSafe());
+                object jsonSafe = user.ToJsonSafe();
+                FireEvent(SignUpSucceeded, new UserManagerEventArgs { UserJson = jsonSafe.ToJson(), SignUpOptions = options });
+                return GetSuccess<SignUpResponse>(jsonSafe);
             }
             catch (Exception ex)
             {

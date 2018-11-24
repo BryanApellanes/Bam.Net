@@ -312,23 +312,29 @@ namespace Bam.Net.UserAccounts.Data
 
         public static User Create(string userName, Database db = null)
         {
-            User user = new User();
-            user.CreationDate = DateTime.UtcNow;
-            user.UserName = userName;
-            user.IsApproved = true;
-            user.IsDeleted = false;
+            User user = new User
+            {
+                Cuid = NCuid.Cuid.Generate(),
+                CreationDate = DateTime.UtcNow,
+                UserName = userName,
+                IsApproved = true,
+                IsDeleted = false
+            };
             user.Save(db);
             return user;
         }
 
         private static User Create(string userName, string email, string password, bool isApproved, Database db = null)
         {
-            User user = new User();
-            user.CreationDate = DateTime.UtcNow;
-            user.UserName = userName;
-            user.Email = email;
-            user.IsApproved = isApproved;
-            user.IsDeleted = false;
+            User user = new User
+            {
+                Cuid = NCuid.Cuid.Generate(),
+                CreationDate = DateTime.UtcNow,
+                UserName = userName,
+                Email = email,
+                IsApproved = isApproved,
+                IsDeleted = false
+            };
             user.Save(db);
             Password p = Password.Set(userName, password, db);
             return user;

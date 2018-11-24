@@ -9,7 +9,7 @@ namespace Bam.Net.Translation.Yandex
 {
     public partial class YandexTranslationProvider
     {
-        private static string ApiDetectEndpointNumberedFormat = "https://translate.yandex.net/api/v1.5/tr.json/detect?key={ApiKey}&text={Text}";
+        private static string ApiDetectEndpointNumberedFormat = "https://translate.yandex.net/api/v1.5/tr.json/detect?key={0}&text={1}";
         private static string ApiGetEndpointNumberedFormat = "https://translate.yandex.net/api/v1.5/tr.json/translate?key={0}&lang={1}-{2}&text={3}";
 
         protected override string GetTranslationFromService(string from, string to, string text)

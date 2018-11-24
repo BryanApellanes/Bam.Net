@@ -13,20 +13,22 @@ using Bam.Net.ServiceProxy;
 namespace Bam.Net.UserAccounts.Data
 {
     public partial class Account
-    {       
+    {
         /// <summary>
-        /// Creates a new Confirmation with the Created and
+        /// Creates a new Account with the Created and
         /// Token properties set
         /// </summary>
         /// <returns></returns>
         public static Account Create(User user, string provider, string providerUserId, bool isConfirmed = false, Database db = null)
         {
             DateTime now = DateTime.UtcNow;
-            Account result = new Account();
-            result.CreationDate = now;
-            result.Provider = provider;
-            result.ProviderUserId = providerUserId;
-            result.Comment = "Account for ({0})::confirmed({1})"._Format(user.UserName, isConfirmed ? "Y" : "N");
+            Account result = new Account
+            {
+                CreationDate = now,
+                Provider = provider,
+                ProviderUserId = providerUserId,
+                Comment = "Account for ({0})::confirmed({1})"._Format(user.UserName, isConfirmed ? "Y" : "N")
+            };
             if (isConfirmed)
             {
                 result.ConfirmationDate = now;

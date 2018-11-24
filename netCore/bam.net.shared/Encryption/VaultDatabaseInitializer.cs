@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 using Bam.Net.Data;
 using System.Configuration;
 using System.IO;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Encryption
 {
     public class VaultDatabaseInitializer: SQLiteDatabaseInitializer
     {
+        public const string DbFileName = "Vault";
+
         public VaultDatabaseInitializer() { }
         public VaultDatabaseInitializer(FileInfo vaultFile)
         {
@@ -33,18 +36,17 @@ namespace Bam.Net.Encryption
 
         public DatabaseInitializationResult Initialize()
         {
-            DatabaseInitializationResult result = base.Initialize("Encryption");
-            if (result.Success)
+            try
             {
-                result.Initializer = this;
-                SQLiteRegistrar.Register(result.Database.ServiceProvider);
+                DataPaths paths = DataPaths.Get(DefaultDataDirectoryProvider.Instance);
+                string appDbDir = VaultFile == null ? paths.AppDatabase : VaultFile.Directory.FullName;
+                string fileName = VaultFile == null ? DbFileName : VaultFile.Name;
+                return new DatabaseInitializationResult(VaultDatabase.FromFile(Path.Combine(appDbDir, fileName))) { Success = true };
             }
-            else
+            catch (Exception ex)
             {
-                throw result.Exception;
+                return new DatabaseInitializationResult { Exception = ex, Success = false };
             }
-
-            return result;
         }
 
         public override Database GetDatabase(ConnectionStringSettings conn, System.Data.Common.DbProviderFactory factory)

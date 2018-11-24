@@ -29,9 +29,25 @@ namespace Bam.Net.Data
             Args.ThrowIfNull(obj, "obj");
             JObject jobj = new JObject();
             Type type = obj.GetType();
-            foreach (PropertyInfo prop in type.GetProperties().Where(pi => pi.HasCustomAttributeOfType<ColumnAttribute>()))
+            IEnumerable<PropertyInfo> properties = type.GetProperties().Where(pi => pi.HasCustomAttributeOfType<ColumnAttribute>());
+            foreach (PropertyInfo prop in properties)
             {
-                jobj.Add(prop.Name, new JObject(prop.GetValue(obj)));
+                object val = prop.GetValue(obj);
+                if (val != null)
+                {
+                    if (prop.PropertyType.IsPrimitiveNullableOrString() || prop.PropertyType.IsNullable<DateTime>())
+                    {
+                        jobj.Add(prop.Name, new JValue(val));
+                    }
+                    else
+                    {
+                        jobj.Add(prop.Name, (JObject)ToJsonSafe(val));                        
+                    }
+                }
+                else
+                {
+                    jobj.Add(prop.Name, null);
+                }
             }
             return jobj;
         }

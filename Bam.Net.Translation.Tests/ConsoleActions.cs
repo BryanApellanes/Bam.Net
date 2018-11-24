@@ -30,7 +30,7 @@ namespace Bam.Net.Translation.Tests
         [ConsoleAction("Fill language table")]
         public void FillLanguageTable()
         {
-            Action<dynamic> ouput = (args) =>
+            Action<dynamic> output = (args) =>
             {
                 OutLineFormat(args.Message, args.Color, args.Parameters);
             };

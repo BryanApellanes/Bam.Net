@@ -899,6 +899,7 @@ namespace Bam.Net.Data
 		{
             return TryEnsureSchema(type, out Exception e, logger);
         }
+
 		public EnsureSchemaStatus TryEnsureSchema(Type type, out Exception ex, ILogger logger = null)
 		{
 			return TryEnsureSchema(type, false, out ex, logger);

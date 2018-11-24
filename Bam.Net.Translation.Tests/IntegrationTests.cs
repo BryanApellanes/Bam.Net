@@ -163,7 +163,7 @@ namespace Bam.Net.Translation.Tests
             FileInfo translationFile = new FileInfo(translationPath);
             FileInfo languageFile = new FileInfo(languagePath);
             SQLiteDatabase translationDb = new SQLiteDatabase(translationFile.Directory.FullName, Path.GetFileNameWithoutExtension(translationFile.Name));
-            languageDb = new SQLiteDatabase(languageFile.Directory.FullName, Path.GetFileNameWithoutExtension(languageFile.Name));
+            languageDb = (SQLiteDatabase)LanguageDatabase.Default;//(); new SQLiteDatabase(languageFile.Directory.FullName, Path.GetFileNameWithoutExtension(languageFile.Name));
             translator = new YandexTranslationProvider(vaultInfo.Load(), languageDb, translationDb);
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;

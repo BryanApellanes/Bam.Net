@@ -47,7 +47,7 @@ namespace Bam.Net
 
         public override string ToString()
         {
-            return "{Month}/{Day}/{Year};{Hour}.{Minute}.{Second}.{Millisecond}".NamedFormat(this);
+            return $"{Month}/{Day}/{Year};{Hour}.{Minute}.{Second}.{Millisecond}";
         }
 
         public string ToString(Func<Instant, string> toStringer)

@@ -14,6 +14,7 @@ namespace Bam.Net.Encryption
         public VaultDatabase(Database db)
         {
             Database = db;
+            SchemaStatus = Database.TryEnsureSchema(typeof(Vault));
         }
 
         public VaultDatabase(FileInfo sqliteVaultDatabase) : this(SQLiteDatabase.FromFile(sqliteVaultDatabase))
@@ -29,6 +30,7 @@ namespace Bam.Net.Encryption
             return new VaultDatabase(sqliteVaultDatabase);
         }
 
+        public EnsureSchemaStatus SchemaStatus { get; private set; }
         public Database Database { get; set; }
 
         public static implicit operator Database(VaultDatabase vaultDatabase)

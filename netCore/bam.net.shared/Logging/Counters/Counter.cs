@@ -58,7 +58,7 @@ namespace Bam.Net.Logging.Counters
             --_count;
             if (CountReader != DefaultCountReader)
             {
-                Log.Warn("Decrement called on counter ({0}) with custom CountReader; this may not behave as expected.", Name);
+                Log.TraceWarn("Decrement called on counter ({0}) with custom CountReader; this may not behave as expected.", Name);
             }
             return this;
         }

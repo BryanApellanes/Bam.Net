@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bam.net.web.Controllers
+namespace Bam.Net.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

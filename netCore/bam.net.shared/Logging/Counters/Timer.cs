@@ -65,6 +65,10 @@ namespace Bam.Net.Logging.Counters
             return this;
         }
 
+        /// <summary>
+        /// Ends this instance by setting the EndTime and Duration.
+        /// </summary>
+        /// <returns></returns>
         public int End()
         {
             if(EndTime == null)
@@ -74,6 +78,30 @@ namespace Bam.Net.Logging.Counters
                 Value = Duration;
             }
             return Duration;
+        }
+
+        /// <summary>
+        /// Gets the number of milliseconds that have passed since this timer was started.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// Timer already ended
+        /// or
+        /// Timer not started
+        /// </exception>
+        public int SoFar()
+        {
+            if(Ended)
+            {
+                throw new InvalidOperationException("Timer already ended");
+            }
+
+            if(StartTime == null)
+            {
+                throw new InvalidOperationException("Timer not started");
+            }
+
+            return StartTime.DiffInMilliseconds(new Instant());
         }
 
         public override string ToString()
@@ -95,6 +123,5 @@ namespace Bam.Net.Logging.Counters
                 StartTime = new Instant()
             };
         }
-
     }
 }

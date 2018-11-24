@@ -3578,6 +3578,26 @@ namespace Bam.Net
                 Nullable.GetUnderlyingType(otherType) == type);
         }
 
+        public static bool IsPrimitiveNullableOrString(this Type type)
+        {
+            return type == typeof(string) || IsPrimitiveOrNullable(type);
+        }
+
+        public static bool IsPrimitiveOrNullable(this Type type)
+        {
+            return type.IsPrimitive || Nullable.GetUnderlyingType(type).IsPrimitive;
+        }
+
+        public static bool IsNullable<T>(this Type type)
+        {
+            Type underlyingType = Nullable.GetUnderlyingType(type);
+            if(underlyingType != null)
+            {
+                return underlyingType == typeof(T);
+            }
+            return false;
+        }
+
         public static DateTime WithoutMilliseconds(this DateTime dateTime)
         {
             return DropMilliseconds(dateTime);
