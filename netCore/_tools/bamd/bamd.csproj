@@ -72,12 +72,7 @@
   <ItemGroup>
     <Compile Include="BambotHostConfig.cs" />
     <Compile Include="BambotHostMode.cs" />
-    <Compile Include="DaemonProcess.cs" />
-    <Compile Include="DaemonProcessEventArgs.cs" />
     <Compile Include="BambotServiceConfig.cs" />
-    <Compile Include="DaemonProcessInfo.cs" />
-    <Compile Include="DaemonProcessMonitor.cs" />
-    <Compile Include="DaemonProcessMonitorService.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

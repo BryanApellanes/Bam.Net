@@ -16,14 +16,14 @@ namespace Bam.Net.CoreServices.OAuth.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class OAuthSettingsDataWrapper: Bam.Net.CoreServices.OAuth.Data.OAuthSettingsData, IHasUpdatedXrefCollectionProperties
+	public class OAuthProviderSettingsDataWrapper: Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData, IHasUpdatedXrefCollectionProperties
 	{
-		public OAuthSettingsDataWrapper()
+		public OAuthProviderSettingsDataWrapper()
 		{
 			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
-		public OAuthSettingsDataWrapper(DaoRepository repository) : this()
+		public OAuthProviderSettingsDataWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
 		}

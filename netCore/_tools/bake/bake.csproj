@@ -108,18 +108,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DaemonServiceInfo.cs" />
     <Compile Include="BuildConfig.cs" />
     <Compile Include="BuildInfo.cs" />
-    <Compile Include="DeployInfo.cs" />
     <Compile Include="TestInfo.cs" />
     <Compile Include="TestTypes.cs" />
-    <Compile Include="WindowsServiceInfo.cs" />
     <Compile Include="WixComponent.cs" />
     <Compile Include="WixDirectory.cs" />
     <Compile Include="WixFile.cs" />
     <Compile Include="BakeSettings.cs" />
-    <Compile Include="DaemonInfo.cs" />
     <Compile Include="BuildActions.cs" />
     <Compile Include="NugetSourceKind.cs" />
     <Compile Include="Program.cs" />

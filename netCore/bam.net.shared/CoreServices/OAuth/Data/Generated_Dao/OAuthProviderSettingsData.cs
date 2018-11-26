@@ -17,30 +17,30 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 	// schema = OAuthSettings
 	// connection Name = OAuthSettings
 	[Serializable]
-	[Bam.Net.Data.Table("OAuthSettingsData", "OAuthSettings")]
-	public partial class OAuthSettingsData: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("OAuthProviderSettingsData", "OAuthSettings")]
+	public partial class OAuthProviderSettingsData: Bam.Net.Data.Dao
 	{
-		public OAuthSettingsData():base()
+		public OAuthProviderSettingsData():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public OAuthSettingsData(DataRow data)
+		public OAuthProviderSettingsData(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public OAuthSettingsData(Database db)
+		public OAuthProviderSettingsData(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public OAuthSettingsData(Database db, DataRow data)
+		public OAuthProviderSettingsData(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator OAuthSettingsData(DataRow data)
+		public static implicit operator OAuthProviderSettingsData(DataRow data)
 		{
-			return new OAuthSettingsData(data);
+			return new OAuthProviderSettingsData(data);
 		}
 
 		private void SetChildren()
@@ -213,45 +213,45 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 	}
 
-	// property:AuthorizationCallbackUrl, columnName:AuthorizationCallbackUrl	
-	[Bam.Net.Data.Column(Name="AuthorizationCallbackUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AuthorizationCallbackUrl
+	// property:AuthorizationCallbackEndpoint, columnName:AuthorizationCallbackEndpoint	
+	[Bam.Net.Data.Column(Name="AuthorizationCallbackEndpoint", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationCallbackEndpoint
 	{
 		get
 		{
-			return GetStringValue("AuthorizationCallbackUrl");
+			return GetStringValue("AuthorizationCallbackEndpoint");
 		}
 		set
 		{
-			SetValue("AuthorizationCallbackUrl", value);
+			SetValue("AuthorizationCallbackEndpoint", value);
 		}
 	}
 
-	// property:AuthorizationUrlFormat, columnName:AuthorizationUrlFormat	
-	[Bam.Net.Data.Column(Name="AuthorizationUrlFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AuthorizationUrlFormat
+	// property:AuthorizationEndpointFormat, columnName:AuthorizationEndpointFormat	
+	[Bam.Net.Data.Column(Name="AuthorizationEndpointFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationEndpointFormat
 	{
 		get
 		{
-			return GetStringValue("AuthorizationUrlFormat");
+			return GetStringValue("AuthorizationEndpointFormat");
 		}
 		set
 		{
-			SetValue("AuthorizationUrlFormat", value);
+			SetValue("AuthorizationEndpointFormat", value);
 		}
 	}
 
-	// property:AuthorizationCallbackUrlFormat, columnName:AuthorizationCallbackUrlFormat	
-	[Bam.Net.Data.Column(Name="AuthorizationCallbackUrlFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AuthorizationCallbackUrlFormat
+	// property:AuthorizationCallbackEndpointFormat, columnName:AuthorizationCallbackEndpointFormat	
+	[Bam.Net.Data.Column(Name="AuthorizationCallbackEndpointFormat", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AuthorizationCallbackEndpointFormat
 	{
 		get
 		{
-			return GetStringValue("AuthorizationCallbackUrlFormat");
+			return GetStringValue("AuthorizationCallbackEndpointFormat");
 		}
 		set
 		{
-			SetValue("AuthorizationCallbackUrlFormat", value);
+			SetValue("AuthorizationCallbackEndpointFormat", value);
 		}
 	}
 
@@ -344,23 +344,23 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			}
 			else
 			{
-				var colFilter = new OAuthSettingsDataColumns();
+				var colFilter = new OAuthProviderSettingsDataColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the OAuthSettingsData table.
+		/// Return every record in the OAuthProviderSettingsData table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static OAuthSettingsDataCollection LoadAll(Database database = null)
+		public static OAuthProviderSettingsDataCollection LoadAll(Database database = null)
 		{
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			SqlStringBuilder sql = db.GetSqlStringBuilder();
-			sql.Select<OAuthSettingsData>();
-			var results = new OAuthSettingsDataCollection(db, sql.GetDataTable(db))
+			sql.Select<OAuthProviderSettingsData>();
+			var results = new OAuthProviderSettingsDataCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
 			};
@@ -371,12 +371,12 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<OAuthProviderSettingsData>> batchProcessor, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
-				var orderBy = Bam.Net.Data.Order.By<OAuthSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				OAuthProviderSettingsDataColumns columns = new OAuthProviderSettingsDataColumns();
+				var orderBy = Bam.Net.Data.Order.By<OAuthProviderSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -394,7 +394,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<OAuthProviderSettingsData>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -403,12 +403,12 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<OAuthSettingsDataColumns> where, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<OAuthProviderSettingsDataColumns> where, Action<IEnumerable<OAuthProviderSettingsData>> batchProcessor, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
-				var orderBy = Bam.Net.Data.Order.By<OAuthSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				OAuthProviderSettingsDataColumns columns = new OAuthProviderSettingsDataColumns();
+				var orderBy = Bam.Net.Data.Order.By<OAuthProviderSettingsDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -417,7 +417,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (OAuthSettingsDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (OAuthProviderSettingsDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
@@ -426,7 +426,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<OAuthProviderSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthProviderSettingsDataColumns> orderBy, Database database = null)
 		{
 			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
 		}
@@ -435,11 +435,11 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OAuthSettingsDataColumns> where, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OAuthProviderSettingsDataColumns> where, Action<IEnumerable<OAuthProviderSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthProviderSettingsDataColumns> orderBy, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
+				OAuthProviderSettingsDataColumns columns = new OAuthProviderSettingsDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -448,101 +448,101 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 						batchProcessor(results);
 					});
 					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
-					results = Top(batchSize, (OAuthSettingsDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
+					results = Top(batchSize, (OAuthProviderSettingsDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
 
-		public static OAuthSettingsData GetById(uint id, Database database = null)
+		public static OAuthProviderSettingsData GetById(uint id, Database database = null)
 		{
 			return GetById((ulong)id, database);
 		}
 
-		public static OAuthSettingsData GetById(int id, Database database = null)
+		public static OAuthProviderSettingsData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static OAuthSettingsData GetById(long id, Database database = null)
+		public static OAuthProviderSettingsData GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static OAuthSettingsData GetById(ulong id, Database database = null)
+		public static OAuthProviderSettingsData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static OAuthSettingsData GetByUuid(string uuid, Database database = null)
+		public static OAuthProviderSettingsData GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static OAuthSettingsData GetByCuid(string cuid, Database database = null)
+		public static OAuthProviderSettingsData GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Query(QueryFilter filter, Database database = null)
+		public static OAuthProviderSettingsDataCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static OAuthSettingsDataCollection Where(QueryFilter filter, Database database = null)
+		public static OAuthProviderSettingsDataCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<OAuthSettingsDataColumns> whereDelegate = (c) => filter;
+			WhereDelegate<OAuthProviderSettingsDataColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A Func delegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Where(Func<OAuthSettingsDataColumns, QueryFilter<OAuthSettingsDataColumns>> where, OrderBy<OAuthSettingsDataColumns> orderBy = null, Database database = null)
+		public static OAuthProviderSettingsDataCollection Where(Func<OAuthProviderSettingsDataColumns, QueryFilter<OAuthProviderSettingsDataColumns>> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<OAuthSettingsData>();
-			return new OAuthSettingsDataCollection(database.GetQuery<OAuthSettingsDataColumns, OAuthSettingsData>(where, orderBy), true);
+			database = database ?? Db.For<OAuthProviderSettingsData>();
+			return new OAuthProviderSettingsDataCollection(database.GetQuery<OAuthProviderSettingsDataColumns, OAuthProviderSettingsData>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Where(WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static OAuthProviderSettingsDataCollection Where(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<OAuthSettingsData>();
-			var results = new OAuthSettingsDataCollection(database, database.GetQuery<OAuthSettingsDataColumns, OAuthSettingsData>(where), true);
+			database = database ?? Db.For<OAuthProviderSettingsData>();
+			var results = new OAuthProviderSettingsDataCollection(database, database.GetQuery<OAuthProviderSettingsDataColumns, OAuthProviderSettingsData>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Where(WhereDelegate<OAuthSettingsDataColumns> where, OrderBy<OAuthSettingsDataColumns> orderBy = null, Database database = null)
+		public static OAuthProviderSettingsDataCollection Where(WhereDelegate<OAuthProviderSettingsDataColumns> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<OAuthSettingsData>();
-			var results = new OAuthSettingsDataCollection(database, database.GetQuery<OAuthSettingsDataColumns, OAuthSettingsData>(where, orderBy), true);
+			database = database ?? Db.For<OAuthProviderSettingsData>();
+			var results = new OAuthProviderSettingsDataCollection(database, database.GetQuery<OAuthProviderSettingsDataColumns, OAuthProviderSettingsData>(where, orderBy), true);
 			return results;
 		}
 
@@ -550,13 +550,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;OAuthSettingsDataColumns&gt;.
+		/// WhereDelegate&lt;OAuthProviderSettingsDataColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static OAuthSettingsDataCollection Where(QiQuery where, Database database = null)
+		public static OAuthProviderSettingsDataCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new OAuthSettingsDataCollection(database, Select<OAuthSettingsDataColumns>.From<OAuthSettingsData>().Where(where, database));
+			var results = new OAuthProviderSettingsDataCollection(database, Select<OAuthProviderSettingsDataColumns>.From<OAuthProviderSettingsData>().Where(where, database));
 			return results;
 		}
 				
@@ -566,7 +566,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData GetOneWhere(QueryFilter where, Database database = null)
+		public static OAuthProviderSettingsData GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -585,9 +585,9 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData OneWhere(QueryFilter where, Database database = null)
+		public static OAuthProviderSettingsData OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<OAuthSettingsDataColumns> whereDelegate = (c) => where;
+			WhereDelegate<OAuthProviderSettingsDataColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -600,12 +600,12 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData GetOneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static OAuthProviderSettingsData GetOneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				OAuthSettingsDataColumns c = new OAuthSettingsDataColumns();
+				OAuthProviderSettingsDataColumns c = new OAuthProviderSettingsDataColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -617,15 +617,15 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single OAuthSettingsData instance by its Id/Key value
+		/// single OAuthProviderSettingsData instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData OneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static OAuthProviderSettingsData OneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -635,11 +635,11 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<OAuthSettingsDataColumns>.
+		/// WhereDelegate<OAuthProviderSettingsDataColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static OAuthSettingsData OneWhere(QiQuery where, Database database = null)
+		public static OAuthProviderSettingsData OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -649,13 +649,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData FirstOneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static OAuthProviderSettingsData FirstOneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -672,13 +672,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData FirstOneWhere(WhereDelegate<OAuthSettingsDataColumns> where, OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		public static OAuthProviderSettingsData FirstOneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -694,15 +694,15 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsData FirstOneWhere(QueryFilter where, OrderBy<OAuthSettingsDataColumns> orderBy = null, Database database = null)
+		public static OAuthProviderSettingsData FirstOneWhere(QueryFilter where, OrderBy<OAuthProviderSettingsDataColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<OAuthSettingsDataColumns> whereDelegate = (c) => where;
+			WhereDelegate<OAuthProviderSettingsDataColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -723,13 +723,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Top(int count, WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static OAuthProviderSettingsDataCollection Top(int count, WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -743,9 +743,9 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -754,29 +754,29 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Top(int count, WhereDelegate<OAuthSettingsDataColumns> where, OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		public static OAuthProviderSettingsDataCollection Top(int count, WhereDelegate<OAuthProviderSettingsDataColumns> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy, Database database = null)
 		{
-			OAuthSettingsDataColumns c = new OAuthSettingsDataColumns();
+			OAuthProviderSettingsDataColumns c = new OAuthProviderSettingsDataColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<OAuthSettingsData>(count);
+			query.Top<OAuthProviderSettingsData>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<OAuthSettingsDataColumns>(orderBy);
+				query.OrderBy<OAuthProviderSettingsDataColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<OAuthSettingsDataCollection>(0);
+			var results = query.Results.As<OAuthProviderSettingsDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Top(int count, QueryFilter where, Database database)
+		public static OAuthProviderSettingsDataCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -800,30 +800,30 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Top(int count, QueryFilter where, OrderBy<OAuthSettingsDataColumns> orderBy = null, Database database = null)
+		public static OAuthProviderSettingsDataCollection Top(int count, QueryFilter where, OrderBy<OAuthProviderSettingsDataColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<OAuthSettingsData>(count);
+			query.Top<OAuthProviderSettingsData>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<OAuthSettingsDataColumns>(orderBy);
+				query.OrderBy<OAuthProviderSettingsDataColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<OAuthSettingsDataCollection>(0);
+			var results = query.Results.As<OAuthProviderSettingsDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static OAuthSettingsDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		public static OAuthProviderSettingsDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
 		{
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<OAuthSettingsData>(count);
+			query.Top<OAuthProviderSettingsData>(count);
 			query.Where(where);
 
 			if(orderBy != null)
@@ -832,7 +832,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<OAuthSettingsDataCollection>(0);
+			var results = query.Results.As<OAuthProviderSettingsDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -853,29 +853,29 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static OAuthSettingsDataCollection Top(int count, QiQuery where, Database database = null)
+		public static OAuthProviderSettingsDataCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<OAuthSettingsData>(count);
+			query.Top<OAuthProviderSettingsData>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<OAuthSettingsDataCollection>(0);
+			var results = query.Results.As<OAuthProviderSettingsDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of OAuthSettingsDatas
+		/// Return the count of OAuthProviderSettingsDatas
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
             QuerySet query = GetQuerySet(db);
-            query.Count<OAuthSettingsData>();
+            query.Count<OAuthProviderSettingsData>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -883,22 +883,22 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a OAuthSettingsDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between OAuthSettingsDataColumns and other values
+		/// between OAuthProviderSettingsDataColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<OAuthSettingsDataColumns> where, Database database = null)
+		public static long Count(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database database = null)
 		{
-			OAuthSettingsDataColumns c = new OAuthSettingsDataColumns();
+			OAuthProviderSettingsDataColumns c = new OAuthProviderSettingsDataColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<OAuthSettingsData>();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<OAuthSettingsData>();
+			query.Count<OAuthProviderSettingsData>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -906,18 +906,18 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<OAuthSettingsData>();
+		    Database db = database ?? Db.For<OAuthProviderSettingsData>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<OAuthSettingsData>();
+			query.Count<OAuthProviderSettingsData>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static OAuthSettingsData CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static OAuthProviderSettingsData CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<OAuthSettingsData>();			
-			var dao = new OAuthSettingsData();
+			Database db = database ?? Db.For<OAuthProviderSettingsData>();			
+			var dao = new OAuthProviderSettingsData();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -926,7 +926,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			return dao;
 		}
 		
-		private static OAuthSettingsData OneOrThrow(OAuthSettingsDataCollection c)
+		private static OAuthProviderSettingsData OneOrThrow(OAuthProviderSettingsDataCollection c)
 		{
 			if(c.Count == 1)
 			{

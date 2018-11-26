@@ -19,6 +19,7 @@ using Bam.Net.Web;
 using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.OAuth;
 
 namespace Bam.Net.Services.Clients
 {
@@ -88,7 +89,6 @@ namespace Bam.Net.Services.Clients
 
         static CoreClient _local;
         static object _localLock = new object();
-
         /// <summary>
         /// A CoreClient configured for localhost on port 9100
         /// </summary>
@@ -97,6 +97,16 @@ namespace Bam.Net.Services.Clients
             get
             {
                 return _localLock.DoubleCheckLock(ref _local, () => new CoreClient(Organization.Public.Name, DefaultApplicationName));
+            }
+        }
+
+        static CoreClient _heart;
+        static object _heartLock = new object();
+        public static CoreClient Heart
+        {
+            get
+            {
+                return _heartLock.DoubleCheckLock(ref _heart, () => new CoreClient("heart.bamapps.net", 80));
             }
         }
 
@@ -315,6 +325,34 @@ namespace Bam.Net.Services.Clients
                 return IsInitialized;
             }
         }
+
+        public SupportedOAuthProviders GetSupportedOAuthProviders()
+        {
+            string settingsPath = SupportedOAuthProviders.GetSettingsPath(this);
+            SupportedOAuthProviders providers = new SupportedOAuthProviders();
+            if (!File.Exists(settingsPath))
+            {
+                CoreServiceResponse response = OAuthSettingsService.GetClientSettings(true);
+                if (!response.Success)
+                {
+                    throw new ApplicationException(response.Message);
+                }
+                string json = response.Data.ToString();
+                OAuthClientSettings[] settings = json.FromJson<OAuthClientSettings[]>();                
+                foreach(OAuthClientSettings setting in settings)
+                {
+                    providers.AddProvider(setting.CopyAs<OAuthProviderInfo>());
+                }
+                providers.Save(settingsPath);
+            }
+            else
+            {
+                providers = SupportedOAuthProviders.LoadFrom(settingsPath);
+            }
+
+            return providers;
+        }
+
         /// <summary>
         /// Register this client machine/process with the remote host
         /// </summary>
@@ -351,6 +389,7 @@ namespace Bam.Net.Services.Clients
         {
             return ProxyFactory.GetProxy<T>(HostName, Port, new HashSet<Assembly>());
         }
+
         public bool UseServiceSubdomains
         {
             get
@@ -391,6 +430,7 @@ namespace Bam.Net.Services.Clients
         protected internal DiagnosticService DiagnosticService { get; set; }
         protected internal ServiceRegistryService ServiceRegistryService { get; set; }
         protected internal SystemLogReaderService SystemLogReaderService { get; set; }
+        protected internal OAuthSettingsService OAuthSettingsService { get; set; }
 
         /// <summary>
         /// Each of the Core service proxies
@@ -407,6 +447,7 @@ namespace Bam.Net.Services.Clients
                 yield return DiagnosticService;
                 yield return ServiceRegistryService;
                 yield return SystemLogReaderService;
+                yield return OAuthSettingsService;
             }
         }
 
@@ -443,6 +484,7 @@ namespace Bam.Net.Services.Clients
             OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port, Logger);
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port, Logger);
             SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>(HostName, Port, Logger);
+            OAuthSettingsService = ProxyFactory.GetProxy<OAuthSettingsService>(HostName, Port, Logger);
         }
 
         private void SetLocalServiceProxies()
@@ -456,6 +498,7 @@ namespace Bam.Net.Services.Clients
             OAuthService = ProxyFactory.GetProxy<OAuthService>();
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>();
             SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>();
+            OAuthSettingsService = ProxyFactory.GetProxy<OAuthSettingsService>();
         }
 
         private void WireInvocationEventHandlers()

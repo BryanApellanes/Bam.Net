@@ -11,7 +11,7 @@ namespace Bam.Net.CoreServices.OAuth
         public OAuthClientSettings() { }
         public string ProviderName { get; set; }
         public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
         public string AuthorizationEndpoint { get; set; }
-        public string TokenEndpoint { get; set; }
     }
 }

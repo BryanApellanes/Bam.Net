@@ -64,6 +64,10 @@ namespace Bam.Net.CoreServices
             }
         }
         bool _mungeHostName;
+        /// <summary>
+        /// Gets or sets a value indicating whether the client hostname used will have 
+        /// the service name as a subdomain.
+        /// </summary>
         public bool MungeHostNames
         {
             get

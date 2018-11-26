@@ -7,9 +7,9 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.OAuth.Data
 {
-    public class OAuthSettingsData: AuditRepoData
+    public class OAuthProviderSettingsData: AuditRepoData
     {
-        public OAuthSettingsData()
+        public OAuthProviderSettingsData()
         {
             ProviderName = "bamapps.net";
         }
@@ -40,16 +40,16 @@ namespace Bam.Net.CoreServices.OAuth.Data
         /// The url of our app that will receive the
         /// authenticated redirect
         /// </summary>
-        public string AuthorizationCallbackUrl { get; set; }
+        public string AuthorizationCallbackEndpoint { get; set; }
         
 
-        public string AuthorizationUrlFormat
+        public string AuthorizationEndpointFormat
         {
             get;
             set;
         }
 
-        public string AuthorizationCallbackUrlFormat
+        public string AuthorizationCallbackEndpointFormat
         {
             get;
             set;

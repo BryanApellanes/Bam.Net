@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
+    /// <summary>
+    /// InformationSettings used by a daemon or service. 
+    /// </summary>
     public class DaemonInfo
     {
         public bool Copy { get; set; }

@@ -152,7 +152,7 @@ namespace Bam.Net.Server
                     {
                         new HostPrefix
                         {
-                            HostName = "www.{0}.com"._Format(Name),
+                            HostName = $"{Name}.bamapps.com",
                             Port = 80,
                             Ssl = false
                         },

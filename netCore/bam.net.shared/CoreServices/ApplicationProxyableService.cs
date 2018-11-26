@@ -204,5 +204,15 @@ namespace Bam.Net.CoreServices
             }            
             return app;
         }
+
+        protected internal Bam.Net.CoreServices.ApplicationRegistration.Data.Application GetClientApplicationOrDie()
+        {
+            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ClientApplicationName);
+            if (app.Equals(ApplicationRegistration.Data.Application.Unknown))
+            {
+                throw new InvalidOperationException("Application is Uknown");
+            }
+            return app;
+        }
     }
 }

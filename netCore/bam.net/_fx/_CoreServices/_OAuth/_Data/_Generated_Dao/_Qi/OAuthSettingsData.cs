@@ -12,13 +12,13 @@ using Bam.Net.CoreServices.OAuth.Data.Dao;
 
 namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 {
-    public class OAuthSettingsDataController : DaoController
+    public class OAuthProviderSettingsDataController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData[] values)
+		public ActionResult Save(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData[] values)
 		{
 			try
 			{
-				OAuthSettingsDataCollection saver = new OAuthSettingsDataCollection();
+				OAuthProviderSettingsDataCollection saver = new OAuthProviderSettingsDataCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData dao)
+		public ActionResult Create(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData dao)
+		public ActionResult Update(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData dao = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData dao = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (OAuthSettingsData)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (OAuthProviderSettingsData)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData));
-				object value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData));
+				object value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData));
-				object[] value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData));
+				object[] value = Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

@@ -31,56 +31,56 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 
 
-	public class OAuthSettingsDataQueryContext
+	public class OAuthProviderSettingsDataQueryContext
 	{
-			public OAuthSettingsDataCollection Where(WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public OAuthProviderSettingsDataCollection Where(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Where(where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Where(where, db);
 			}
 		   
-			public OAuthSettingsDataCollection Where(WhereDelegate<OAuthSettingsDataColumns> where, OrderBy<OAuthSettingsDataColumns> orderBy = null, Database db = null)
+			public OAuthProviderSettingsDataCollection Where(WhereDelegate<OAuthProviderSettingsDataColumns> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Where(where, orderBy, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Where(where, orderBy, db);
 			}
 
-			public OAuthSettingsData OneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public OAuthProviderSettingsData OneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.OneWhere(where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(where, db);
 			}
 
-			public static OAuthSettingsData GetOneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public static OAuthProviderSettingsData GetOneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.GetOneWhere(where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.GetOneWhere(where, db);
 			}
 		
-			public OAuthSettingsData FirstOneWhere(WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public OAuthProviderSettingsData FirstOneWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.FirstOneWhere(where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.FirstOneWhere(where, db);
 			}
 
-			public OAuthSettingsDataCollection Top(int count, WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public OAuthProviderSettingsDataCollection Top(int count, WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Top(count, where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Top(count, where, db);
 			}
 
-			public OAuthSettingsDataCollection Top(int count, WhereDelegate<OAuthSettingsDataColumns> where, OrderBy<OAuthSettingsDataColumns> orderBy, Database db = null)
+			public OAuthProviderSettingsDataCollection Top(int count, WhereDelegate<OAuthProviderSettingsDataColumns> where, OrderBy<OAuthProviderSettingsDataColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Top(count, where, orderBy, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<OAuthSettingsDataColumns> where, Database db = null)
+			public long Count(WhereDelegate<OAuthProviderSettingsDataColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthSettingsData.Count(where, db);
+				return Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.Count(where, db);
 			}
 	}
 
-	static OAuthSettingsDataQueryContext _oAuthSettingsDatas;
-	static object _oAuthSettingsDatasLock = new object();
-	public static OAuthSettingsDataQueryContext OAuthSettingsDatas
+	static OAuthProviderSettingsDataQueryContext _oAuthProviderSettingsDatas;
+	static object _oAuthProviderSettingsDatasLock = new object();
+	public static OAuthProviderSettingsDataQueryContext OAuthProviderSettingsDatas
 	{
 		get
 		{
-			return _oAuthSettingsDatasLock.DoubleCheckLock<OAuthSettingsDataQueryContext>(ref _oAuthSettingsDatas, () => new OAuthSettingsDataQueryContext());
+			return _oAuthProviderSettingsDatasLock.DoubleCheckLock<OAuthProviderSettingsDataQueryContext>(ref _oAuthProviderSettingsDatas, () => new OAuthProviderSettingsDataQueryContext());
 		}
 	}    }
 }																								

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
+    /// <summary>
+    /// Class that represents settings used by a running daemon.
+    /// </summary>
     public class DaemonServiceInfo
     {
         public DaemonServiceInfo()
