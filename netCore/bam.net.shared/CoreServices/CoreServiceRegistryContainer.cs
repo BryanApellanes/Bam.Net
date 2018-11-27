@@ -18,7 +18,7 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 namespace Bam.Net.CoreServices
 {
     /// <summary>
-    /// Default application registry container for applications running locally.
+    /// Core application registry container for applications running locally.
     /// </summary>
     [ServiceRegistryContainer]
     public static class CoreServiceRegistryContainer

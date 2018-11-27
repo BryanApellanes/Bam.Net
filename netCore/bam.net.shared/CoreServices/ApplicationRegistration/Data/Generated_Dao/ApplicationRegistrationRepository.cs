@@ -916,7 +916,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository
 		public Bam.Net.CoreServices.ApplicationRegistration.Data.Application OneApplicationWhere(WhereDelegate<ApplicationColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>();
-            return (Bam.Net.CoreServices.ApplicationRegistration.Data.Application)Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.CoreServices.ApplicationRegistration.Data.Application)Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

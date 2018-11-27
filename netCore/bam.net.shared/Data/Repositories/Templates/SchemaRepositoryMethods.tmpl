@@ -8,13 +8,12 @@
 		public @(Model.Type.FullName) GetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
 		{
 			Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
-			return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single @(Model.Type.Name) instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a @(Model.Type.Name)Columns 
@@ -24,7 +23,7 @@
 		public @(Model.Type.FullName) One@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
         {
             Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
-            return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

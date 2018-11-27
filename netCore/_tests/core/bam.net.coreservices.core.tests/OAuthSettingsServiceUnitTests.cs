@@ -1,5 +1,7 @@
 ﻿using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.OAuth;
+using Bam.Net.CoreServices.Tests;
+using Bam.Net.ServiceProxy;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 using System;
@@ -27,11 +29,10 @@ namespace Bam.Net.Tests
         [UnitTest]
         public void CanSetGetAndDeleteProviders()
         {
-            CoreServices.ApplicationRegistration.Data.Dao.Repository.ApplicationRegistrationRepository appRepo = new CoreServices.ApplicationRegistration.Data.Dao.Repository.ApplicationRegistrationRepository();
-            appRepo.EnsureDaoAssemblyAndSchema();
-            CoreServices.OAuth.Data.Dao.Repository.OAuthSettingsRepository oauthRepo = new CoreServices.OAuth.Data.Dao.Repository.OAuthSettingsRepository();
-            oauthRepo.EnsureDaoAssemblyAndSchema();
-            OAuthSettingsService svc = new OAuthSettingsService(oauthRepo, appRepo);
+            ServiceRegistry registry = CoreServicesTestRegistry.GetServiceRegistry();
+            OAuthSettingsService svc = registry.Get<OAuthSettingsService>();
+            svc.HttpContext = registry.Get<IHttpContext>();
+            Expect.AreEqual("CoreServicesTests", svc.ClientApplicationName);
 
             CoreServiceResponse<List<OAuthClientSettings>> settingsResponse = svc.GetClientSettings();
             Expect.IsTrue(settingsResponse.Success, "Failed to get client settings");
@@ -49,6 +50,26 @@ namespace Bam.Net.Tests
 
             CoreServiceResponse check = svc.RemoveProvider(testProvider);
             Expect.IsTrue(check.Success, "failed to remove test provider");
+        }
+
+        [UnitTest]
+        public void GetClientAppShouldGetTheSameCuid()
+        {            
+            ServiceRegistry registry = CoreServicesTestRegistry.GetServiceRegistry();
+            OAuthSettingsService svc = registry.Get<OAuthSettingsService>();
+            svc.HttpContext = registry.Get<IHttpContext>();
+            CoreServices.ApplicationRegistration.Data.Application check = svc.ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == svc.ClientApplicationName);
+            if(check != null)
+            {
+                svc.ApplicationRegistrationRepository.Delete(check);
+            }
+            CoreServices.ApplicationRegistration.Data.Application toSave = new CoreServices.ApplicationRegistration.Data.Application { Name = svc.ClientApplicationName };
+            svc.ApplicationRegistrationRepository.Save(toSave);
+
+            CoreServices.ApplicationRegistration.Data.Application app = svc.GetClientApplicationOrDie();
+            CoreServices.ApplicationRegistration.Data.Application app2 = svc.GetClientApplicationOrDie();
+            Expect.AreEqual(app.Name, app2.Name, "Names didn't match");
+            Expect.AreEqual(app.Cuid, app2.Cuid, "Cuids didn't match");
         }
     }
 }

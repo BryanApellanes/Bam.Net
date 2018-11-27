@@ -28,6 +28,14 @@ namespace Bam.Net.CoreServices
             return new FluentServiceRegistryContext<I>(serviceRegistry);
         }
 
+        /// <summary>
+        /// Prepares the specified constructor parameter to receive a value for use in 
+        /// the resulting registry.
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <param name="serviceRegistry">The service registry.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <returns></returns>
         public static FluentCtorContext<I> ForCtor<I>(this ServiceRegistry serviceRegistry, string parameterName)
         {
             return new FluentCtorContext<I>(serviceRegistry, parameterName);

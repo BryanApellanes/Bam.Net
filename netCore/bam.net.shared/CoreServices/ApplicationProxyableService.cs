@@ -33,6 +33,12 @@ namespace Bam.Net.CoreServices
 
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
 
+        /// <summary>
+        /// Gets the name of the server application.
+        /// </summary>
+        /// <value>
+        /// The name of the server application.
+        /// </value>
         public string ServerApplicationName
         {
             get
@@ -45,6 +51,12 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        /// <summary>
+        /// Gets the name of the client application.
+        /// </summary>
+        /// <value>
+        /// The name of the client application.
+        /// </value>
         public string ClientApplicationName
         {
             get
@@ -197,20 +209,28 @@ namespace Bam.Net.CoreServices
         
         protected internal Bam.Net.CoreServices.ApplicationRegistration.Data.Application GetServerApplicationOrDie()
         {
-            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ServerApplicationName);
-            if (app.Equals(ApplicationRegistration.Data.Application.Unknown))
+            if (ServerApplicationName.Equals(ApplicationRegistration.Data.Application.Unknown.Name))
             {
-                throw new InvalidOperationException("Application is Uknown");
-            }            
+                throw new InvalidOperationException("Application is unkown");
+            }
+            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == ServerApplicationName);
+            if (app == null)
+            {
+                throw new InvalidOperationException("Application was not found");
+            }
             return app;
         }
 
         protected internal Bam.Net.CoreServices.ApplicationRegistration.Data.Application GetClientApplicationOrDie()
         {
-            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ClientApplicationName);
-            if (app.Equals(ApplicationRegistration.Data.Application.Unknown))
+            if (ClientApplicationName.Equals(ApplicationRegistration.Data.Application.Unknown.Name))
             {
-                throw new InvalidOperationException("Application is Uknown");
+                throw new InvalidOperationException("Application is unkown");
+            }
+            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == ClientApplicationName);
+            if(app == null)
+            {
+                throw new InvalidOperationException("Application was not found");
             }
             return app;
         }

@@ -96,7 +96,7 @@ namespace Bam.Net.CoreServices
                     {
                         throw OAuthSettingsRepository.LastException;
                     }
-                    return new CoreServiceResponse { Success = OAuthSettingsRepository.Delete(data) };
+                    return new CoreServiceResponse { Success = success };
                 }
                 throw new InvalidOperationException($"OAuthSettings not found: AppId={app.Cuid}, AppName={app.Name}, Provider={providerName}");
             }

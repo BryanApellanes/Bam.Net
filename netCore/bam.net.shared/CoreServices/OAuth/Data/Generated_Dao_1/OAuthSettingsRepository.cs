@@ -48,12 +48,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Repository
 		public Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData GetOneOAuthProviderSettingsDataWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData>();
-			return (Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData)Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+			return (Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData)Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.GetOneWhere(where, Database).CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
-		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
 		/// single OAuthProviderSettingsData instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a OAuthProviderSettingsDataColumns 
@@ -63,7 +64,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao.Repository
 		public Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData OneOAuthProviderSettingsDataWhere(WhereDelegate<OAuthProviderSettingsDataColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData>();
-            return (Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData)Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
+            return (Bam.Net.CoreServices.OAuth.Data.OAuthProviderSettingsData)Bam.Net.CoreServices.OAuth.Data.Dao.OAuthProviderSettingsData.OneWhere(where, Database).CopyAs(wrapperType, this);
         }
 
 		/// <summary>
