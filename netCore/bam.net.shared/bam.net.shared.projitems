@@ -3415,6 +3415,8 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\QueryClass.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Schema\Templates\XrefProperty.tmpl" />
     <None Include="$(MSBuildThisFileDirectory)Documentation\XmlDocumentation.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Encryption\Encryption.db.js" />
+    <None Include="$(MSBuildThisFileDirectory)Messaging\messaging.db.js" />
     <None Include="$(MSBuildThisFileDirectory)Presentation\Emojis.sqlite" />
     <None Include="$(MSBuildThisFileDirectory)Presentation\README.md" />
     <None Include="$(MSBuildThisFileDirectory)Server\README.md" />

@@ -50,13 +50,12 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookCall GetOneWebHookCallWhere(WhereDelegate<WebHookCallColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookCall>();
-			return (Bam.Net.CoreServices.WebHooks.Data.WebHookCall)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookCall.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.CoreServices.WebHooks.Data.WebHookCall)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookCall.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single WebHookCall instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a WebHookCallColumns 
@@ -66,7 +65,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookCall OneWebHookCallWhere(WhereDelegate<WebHookCallColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookCall>();
-            return (Bam.Net.CoreServices.WebHooks.Data.WebHookCall)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookCall.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.CoreServices.WebHooks.Data.WebHookCall)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookCall.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -143,13 +142,12 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor GetOneWebHookDescriptorWhere(WhereDelegate<WebHookDescriptorColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor>();
-			return (Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single WebHookDescriptor instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a WebHookDescriptorColumns 
@@ -159,7 +157,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor OneWebHookDescriptorWhere(WhereDelegate<WebHookDescriptorColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor>();
-            return (Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.CoreServices.WebHooks.Data.WebHookDescriptor)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookDescriptor.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -236,13 +234,12 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber GetOneWebHookSubscriberWhere(WhereDelegate<WebHookSubscriberColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber>();
-			return (Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single WebHookSubscriber instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a WebHookSubscriberColumns 
@@ -252,7 +249,7 @@ namespace Bam.Net.CoreServices.WebHooks.Data.Dao.Repository
 		public Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber OneWebHookSubscriberWhere(WhereDelegate<WebHookSubscriberColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber>();
-            return (Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.CoreServices.WebHooks.Data.WebHookSubscriber)Bam.Net.CoreServices.WebHooks.Data.Dao.WebHookSubscriber.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

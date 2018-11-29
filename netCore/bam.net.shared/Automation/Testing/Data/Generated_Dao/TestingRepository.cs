@@ -25,9 +25,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 			BaseNamespace = "Bam.Net.Automation.Testing.Data";			
 ﻿			
 			AddType<Bam.Net.Automation.Testing.Data.NotificationSubscription>();﻿			
-			AddType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestDefinition>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestExecution>();﻿			
+			AddType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary>();
 			DaoAssembly = typeof(TestingRepository).Assembly;
 		}
@@ -52,13 +52,12 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.NotificationSubscription GetOneNotificationSubscriptionWhere(WhereDelegate<NotificationSubscriptionColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.NotificationSubscription>();
-			return (Bam.Net.Automation.Testing.Data.NotificationSubscription)Bam.Net.Automation.Testing.Data.Dao.NotificationSubscription.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Automation.Testing.Data.NotificationSubscription)Bam.Net.Automation.Testing.Data.Dao.NotificationSubscription.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single NotificationSubscription instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
@@ -68,7 +67,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.NotificationSubscription OneNotificationSubscriptionWhere(WhereDelegate<NotificationSubscriptionColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.NotificationSubscription>();
-            return (Bam.Net.Automation.Testing.Data.NotificationSubscription)Bam.Net.Automation.Testing.Data.Dao.NotificationSubscription.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Automation.Testing.Data.NotificationSubscription)Bam.Net.Automation.Testing.Data.Dao.NotificationSubscription.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -142,109 +141,15 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// of the specified columns.
 		/// </summary>
 		/// <param name="where"></param>
-		public Bam.Net.Automation.Testing.Data.TestSuiteDefinition GetOneTestSuiteDefinitionWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
-		{
-			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();
-			return (Bam.Net.Automation.Testing.Data.TestSuiteDefinition)Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.GetOneWhere(where, Database).CopyAs(wrapperType, this);
-		}
-
-		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
-		/// single TestSuiteDefinition instance by its Id/Key value
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
-		/// </param>
-		public Bam.Net.Automation.Testing.Data.TestSuiteDefinition OneTestSuiteDefinitionWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
-        {
-            Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();
-            return (Bam.Net.Automation.Testing.Data.TestSuiteDefinition)Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.OneWhere(where, Database).CopyAs(wrapperType, this);
-        }
-
-		/// <summary>
-		/// Execute a query and return the results. 
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition> TestSuiteDefinitionsWhere(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null)
-        {
-            return Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, orderBy, Database));
-        }
-		
-		/// <summary>
-		/// Execute a query and return the specified number
-		/// of values. This method will issue a sql TOP clause so only the 
-		/// specified number of values will be returned.
-		/// </summary>
-		/// <param name="count">The number of values to return.
-		/// This value is used in the sql query so no more than this 
-		/// number of values will be returned by the database.
-		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition> TopTestSuiteDefinitionsWhere(int count, WhereDelegate<TestSuiteDefinitionColumns> where)
-        {
-            return Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, Database));
-        }
-
-		/// <summary>
-		/// Return the count of TestSuiteDefinitions
-		/// </summary>
-		public long CountTestSuiteDefinitions()
-        {
-            return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(Database);
-        }
-
-		/// <summary>
-		/// Execute a query and return the number of results
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestSuiteDefinitionColumns and other values
-		/// </param>
-        public long CountTestSuiteDefinitionsWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
-        {
-            return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(where, Database);
-        }
-        
-        public async Task BatchQueryTestSuiteDefinitions(int batchSize, WhereDelegate<TestSuiteDefinitionColumns> where, Action<IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>> batchProcessor)
-        {
-            await Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.BatchQuery(batchSize, where, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(batch));
-            }, Database);
-        }
-		
-        public async Task BatchAllTestSuiteDefinitions(int batchSize, Action<IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>> batchProcessor)
-        {
-            await Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.BatchAll(batchSize, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(batch));
-            }, Database);
-        }﻿		
-		/// <summary>
-		/// Get one entry matching the specified filter.  If none exists 
-		/// one will be created; success will depend on the nullability
-		/// of the specified columns.
-		/// </summary>
-		/// <param name="where"></param>
 		public Bam.Net.Automation.Testing.Data.TestDefinition GetOneTestDefinitionWhere(WhereDelegate<TestDefinitionColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestDefinition>();
-			return (Bam.Net.Automation.Testing.Data.TestDefinition)Bam.Net.Automation.Testing.Data.Dao.TestDefinition.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Automation.Testing.Data.TestDefinition)Bam.Net.Automation.Testing.Data.Dao.TestDefinition.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single TestDefinition instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
@@ -254,7 +159,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.TestDefinition OneTestDefinitionWhere(WhereDelegate<TestDefinitionColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestDefinition>();
-            return (Bam.Net.Automation.Testing.Data.TestDefinition)Bam.Net.Automation.Testing.Data.Dao.TestDefinition.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Automation.Testing.Data.TestDefinition)Bam.Net.Automation.Testing.Data.Dao.TestDefinition.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -331,13 +236,12 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.TestExecution GetOneTestExecutionWhere(WhereDelegate<TestExecutionColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestExecution>();
-			return (Bam.Net.Automation.Testing.Data.TestExecution)Bam.Net.Automation.Testing.Data.Dao.TestExecution.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Automation.Testing.Data.TestExecution)Bam.Net.Automation.Testing.Data.Dao.TestExecution.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single TestExecution instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
@@ -347,7 +251,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.TestExecution OneTestExecutionWhere(WhereDelegate<TestExecutionColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestExecution>();
-            return (Bam.Net.Automation.Testing.Data.TestExecution)Bam.Net.Automation.Testing.Data.Dao.TestExecution.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Automation.Testing.Data.TestExecution)Bam.Net.Automation.Testing.Data.Dao.TestExecution.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -421,16 +325,107 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// of the specified columns.
 		/// </summary>
 		/// <param name="where"></param>
-		public Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary GetOneTestSuiteExecutionSummaryWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where)
+		public Bam.Net.Automation.Testing.Data.TestSuiteDefinition GetOneTestSuiteDefinitionWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
 		{
-			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary>();
-			return (Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary)Bam.Net.Automation.Testing.Data.Dao.TestSuiteExecutionSummary.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();
+			return (Bam.Net.Automation.Testing.Data.TestSuiteDefinition)Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// single TestSuiteDefinition instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between TestSuiteDefinitionColumns and other values
+		/// </param>
+		public Bam.Net.Automation.Testing.Data.TestSuiteDefinition OneTestSuiteDefinitionWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();
+            return (Bam.Net.Automation.Testing.Data.TestSuiteDefinition)Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.OneWhere(where, Database)?.CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition> TestSuiteDefinitionsWhere(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between TestSuiteDefinitionColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition> TopTestSuiteDefinitionsWhere(int count, WhereDelegate<TestSuiteDefinitionColumns> where)
+        {
+            return Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of TestSuiteDefinitions
+		/// </summary>
+		public long CountTestSuiteDefinitions()
+        {
+            return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between TestSuiteDefinitionColumns and other values
+		/// </param>
+        public long CountTestSuiteDefinitionsWhere(WhereDelegate<TestSuiteDefinitionColumns> where)
+        {
+            return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(where, Database);
+        }
+        
+        public async Task BatchQueryTestSuiteDefinitions(int batchSize, WhereDelegate<TestSuiteDefinitionColumns> where, Action<IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>> batchProcessor)
+        {
+            await Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllTestSuiteDefinitions(int batchSize, Action<IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>> batchProcessor)
+        {
+            await Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary GetOneTestSuiteExecutionSummaryWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary>();
+			return (Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary)Bam.Net.Automation.Testing.Data.Dao.TestSuiteExecutionSummary.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single TestSuiteExecutionSummary instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
@@ -440,7 +435,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		public Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary OneTestSuiteExecutionSummaryWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary>();
-            return (Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary)Bam.Net.Automation.Testing.Data.Dao.TestSuiteExecutionSummary.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary)Bam.Net.Automation.Testing.Data.Dao.TestSuiteExecutionSummary.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

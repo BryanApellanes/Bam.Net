@@ -50,13 +50,12 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData GetOneAsyncExecutionDataWhere(WhereDelegate<AsyncExecutionDataColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData>();
-			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionData.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single AsyncExecutionData instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a AsyncExecutionDataColumns 
@@ -66,7 +65,7 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData OneAsyncExecutionDataWhere(WhereDelegate<AsyncExecutionDataColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData>();
-            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionData.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -143,13 +142,12 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData GetOneAsyncExecutionRequestDataWhere(WhereDelegate<AsyncExecutionRequestDataColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData>();
-			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionRequestData.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionRequestData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single AsyncExecutionRequestData instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a AsyncExecutionRequestDataColumns 
@@ -159,7 +157,7 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData OneAsyncExecutionRequestDataWhere(WhereDelegate<AsyncExecutionRequestDataColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData>();
-            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionRequestData.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionRequestData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionRequestData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -236,13 +234,12 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData GetOneAsyncExecutionResponseDataWhere(WhereDelegate<AsyncExecutionResponseDataColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData>();
-			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionResponseData.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionResponseData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single AsyncExecutionResponseData instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a AsyncExecutionResponseDataColumns 
@@ -252,7 +249,7 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao.Repository
 		public Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData OneAsyncExecutionResponseDataWhere(WhereDelegate<AsyncExecutionResponseDataColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData>();
-            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionResponseData.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Services.AsyncCallback.Data.AsyncExecutionResponseData)Bam.Net.Services.AsyncCallback.Data.Dao.AsyncExecutionResponseData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

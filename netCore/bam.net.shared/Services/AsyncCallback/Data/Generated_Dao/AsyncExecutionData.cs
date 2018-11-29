@@ -61,11 +61,11 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -245,11 +245,13 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 		/// </param>
 		public static AsyncExecutionDataCollection LoadAll(Database database = null)
 		{
-			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<AsyncExecutionData>();
 			Database db = database ?? Db.For<AsyncExecutionData>();
-			var results = new AsyncExecutionDataCollection(sql.GetDataTable(db));
-			results.Database = db;
+			SqlStringBuilder sql = db.GetSqlStringBuilder();
+			sql.Select<AsyncExecutionData>();
+			var results = new AsyncExecutionDataCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -259,14 +261,14 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<AsyncExecutionData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AsyncExecutionDataColumns columns = new AsyncExecutionDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<AsyncExecutionDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{
 						batchProcessor(results);
 					});
@@ -291,14 +293,14 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<AsyncExecutionDataColumns> where, Action<IEnumerable<AsyncExecutionData>> batchProcessor, Database database = null)
 		{
-			await Task.Run(async ()=>
+			await System.Threading.Tasks.Task.Run(async ()=>
 			{
 				AsyncExecutionDataColumns columns = new AsyncExecutionDataColumns();
 				var orderBy = Bam.Net.Data.Order.By<AsyncExecutionDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await Task.Run(()=>
+					await System.Threading.Tasks.Task.Run(()=>
 					{ 
 						batchProcessor(results);
 					});
@@ -308,12 +310,53 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 			});			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<AsyncExecutionData>> batchProcessor, Bam.Net.Data.OrderBy<AsyncExecutionDataColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<AsyncExecutionDataColumns> where, Action<IEnumerable<AsyncExecutionData>> batchProcessor, Bam.Net.Data.OrderBy<AsyncExecutionDataColumns> orderBy, Database database = null)
+		{
+			await System.Threading.Tasks.Task.Run(async ()=>
+			{
+				AsyncExecutionDataColumns columns = new AsyncExecutionDataColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await System.Threading.Tasks.Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (AsyncExecutionDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
+				}
+			});			
+		}
+
+		public static AsyncExecutionData GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static AsyncExecutionData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static AsyncExecutionData GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static AsyncExecutionData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
@@ -655,6 +698,25 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 			if(orderBy != null)
 			{
 				query.OrderBy<AsyncExecutionDataColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<AsyncExecutionDataCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static AsyncExecutionDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<AsyncExecutionData>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<AsyncExecutionData>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

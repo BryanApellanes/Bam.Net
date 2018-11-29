@@ -83,58 +83,6 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 			return _notificationSubscriptionsLock.DoubleCheckLock<NotificationSubscriptionQueryContext>(ref _notificationSubscriptions, () => new NotificationSubscriptionQueryContext());
 		}
 	}
-	public class TestSuiteDefinitionQueryContext
-	{
-			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, db);
-			}
-		   
-			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, orderBy, db);
-			}
-
-			public TestSuiteDefinition OneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.OneWhere(where, db);
-			}
-
-			public static TestSuiteDefinition GetOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.GetOneWhere(where, db);
-			}
-		
-			public TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.FirstOneWhere(where, db);
-			}
-
-			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, db);
-			}
-
-			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, orderBy, db);
-			}
-
-			public long Count(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
-			{
-				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(where, db);
-			}
-	}
-
-	static TestSuiteDefinitionQueryContext _testSuiteDefinitions;
-	static object _testSuiteDefinitionsLock = new object();
-	public static TestSuiteDefinitionQueryContext TestSuiteDefinitions
-	{
-		get
-		{
-			return _testSuiteDefinitionsLock.DoubleCheckLock<TestSuiteDefinitionQueryContext>(ref _testSuiteDefinitions, () => new TestSuiteDefinitionQueryContext());
-		}
-	}
 	public class TestDefinitionQueryContext
 	{
 			public TestDefinitionCollection Where(WhereDelegate<TestDefinitionColumns> where, Database db = null)
@@ -237,6 +185,58 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		get
 		{
 			return _testExecutionsLock.DoubleCheckLock<TestExecutionQueryContext>(ref _testExecutions, () => new TestExecutionQueryContext());
+		}
+	}
+	public class TestSuiteDefinitionQueryContext
+	{
+			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, db);
+			}
+		   
+			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Where(where, orderBy, db);
+			}
+
+			public TestSuiteDefinition OneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.OneWhere(where, db);
+			}
+
+			public static TestSuiteDefinition GetOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.GetOneWhere(where, db);
+			}
+		
+			public TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.FirstOneWhere(where, db);
+			}
+
+			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, db);
+			}
+
+			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Testing.Data.Dao.TestSuiteDefinition.Count(where, db);
+			}
+	}
+
+	static TestSuiteDefinitionQueryContext _testSuiteDefinitions;
+	static object _testSuiteDefinitionsLock = new object();
+	public static TestSuiteDefinitionQueryContext TestSuiteDefinitions
+	{
+		get
+		{
+			return _testSuiteDefinitionsLock.DoubleCheckLock<TestSuiteDefinitionQueryContext>(ref _testSuiteDefinitions, () => new TestSuiteDefinitionQueryContext());
 		}
 	}
 	public class TestSuiteExecutionSummaryQueryContext
