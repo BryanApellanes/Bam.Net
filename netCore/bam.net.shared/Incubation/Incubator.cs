@@ -462,6 +462,11 @@ namespace Bam.Net.Incubation
             }
         }
         
+        public void Add<T>() where T: new()
+        {
+            Set<T>(new T());
+        }
+
         public void Set<T>(T instance)
         {
             Set<T>(instance, false);

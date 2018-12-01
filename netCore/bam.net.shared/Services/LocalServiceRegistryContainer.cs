@@ -14,8 +14,12 @@ using Bam.Net.Services.Catalog.Data;
 
 namespace Bam.Net.Services
 {
+    /// <summary>
+    /// Container with a CoreServiceRegistryContainer as it's base.  Core services will 
+    /// run locally.
+    /// </summary>
     [ServiceRegistryContainer]
-    public class ClientServiceRegistryContainer
+    public class LocalServiceRegistryContainer
     {
         public const string RegistryName = "ClientServiceRegistry";
         static ServiceRegistry _clientServiceRegistry;

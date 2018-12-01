@@ -2516,6 +2516,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Administration\AdministrationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Administration\AdministrationServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ApiKeyVaultInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ApplicationServiceRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AsyncCallback\AsyncCallbackService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AsyncCallback\Data\AsyncExecutionData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AsyncCallback\Data\AsyncExecutionRequestData.cs" />
@@ -2564,14 +2565,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkServer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\ClientServiceRegistryContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LocalServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationDataDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationDataManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationLogDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ClientServiceRegistryContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\CoreClientServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ConfigurationServiceCredentialProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\CoreAsyncProxyableService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\CoreClient.cs" />
@@ -3422,6 +3423,7 @@
     <None Include="$(MSBuildThisFileDirectory)Server\README.md" />
     <None Include="$(MSBuildThisFileDirectory)Services\AsyncCallback\regen_asyncecallback_dao.cmd" />
     <None Include="$(MSBuildThisFileDirectory)Services\DataReplication\Data\regen_datareplication_dao.cmd" />
+    <None Include="$(MSBuildThisFileDirectory)Services\Hosts\README.md" />
     <None Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi.sqlite" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Services\OpenApi\Templates\FixedField.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Services\OpenApi\Templates\ObjectDescriptor.tmpl" />

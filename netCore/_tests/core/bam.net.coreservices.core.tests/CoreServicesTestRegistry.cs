@@ -79,7 +79,6 @@ namespace Bam.Net.CoreServices.Tests
                 .For<OAuthSettingsService>().Use<OAuthSettingsService>()
                 .For<IHttpContext>().Use(ctx);
 
-
             return registry;
         }
     }

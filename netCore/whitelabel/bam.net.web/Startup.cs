@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace bam.net.web
+using Bam.Net.Services;
+using Bam.Net.Web.AppModules;
+
+namespace Bam.Net.Web
 {
     public class Startup
     {
@@ -31,6 +34,11 @@ namespace bam.net.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
+            {
+                // Configure the Bam appRegistry here
+                appRegistry.Add<TestAppModule>();
+            }));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

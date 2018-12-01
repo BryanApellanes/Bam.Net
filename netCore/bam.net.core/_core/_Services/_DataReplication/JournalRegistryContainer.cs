@@ -26,7 +26,7 @@ namespace Bam.Net.Services.DataReplication
 
         public static ServiceRegistry Create()
         {
-            ServiceRegistry registry = ClientServiceRegistryContainer.Create();
+            ServiceRegistry registry = LocalServiceRegistryContainer.Create();
             registry
                 .For<ISequenceProvider>().Use<FileSequenceProvider>()
                 .For<ITypeConverter>().Use<DefaultTypeConverter>()

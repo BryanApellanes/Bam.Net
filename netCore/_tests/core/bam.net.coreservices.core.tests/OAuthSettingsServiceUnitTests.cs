@@ -37,6 +37,7 @@ namespace Bam.Net.Tests
             CoreServiceResponse<List<OAuthClientSettings>> settingsResponse = svc.GetClientSettings();
             Expect.IsTrue(settingsResponse.Success, "Failed to get client settings");
 
+            // this is technically clean up code
             OutLineFormat("there are currently {0} oauthsettings", settingsResponse.TypedData().Count);
             foreach(OAuthClientSettings setting in settingsResponse.Data)
             {
@@ -70,6 +71,7 @@ namespace Bam.Net.Tests
             CoreServices.ApplicationRegistration.Data.Application app2 = svc.GetClientApplicationOrDie();
             Expect.AreEqual(app.Name, app2.Name, "Names didn't match");
             Expect.AreEqual(app.Cuid, app2.Cuid, "Cuids didn't match");
+            Expect.AreEqual(app.Uuid, app2.Uuid, "Uuids didn't match");
         }
     }
 }

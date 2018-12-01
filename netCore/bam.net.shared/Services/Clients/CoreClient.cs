@@ -24,7 +24,7 @@ using Bam.Net.CoreServices.OAuth;
 namespace Bam.Net.Services.Clients
 {
     /// <summary>
-    /// A client to the core service server.
+    /// A client to the core bam service server.
     /// </summary>
     /// <seealso cref="Bam.Net.Logging.Loggable" />
     /// <seealso cref="Bam.Net.ServiceProxy.Secure.IApiKeyResolver" />

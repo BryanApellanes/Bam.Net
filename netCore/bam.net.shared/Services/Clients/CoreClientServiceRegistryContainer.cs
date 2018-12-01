@@ -17,12 +17,24 @@ namespace Bam.Net.Services.Clients
 {
     /// <summary>
     /// Dependency injection container for a locally 
-    /// running application process
+    /// running application process.  Core services are consumed 
+    /// by a CoreClient internally.
     /// </summary>
     [ServiceRegistryContainer]
-    public class ClientServiceRegistryContainer
+    public class CoreClientServiceRegistryContainer
     {
         public const string RegistryName = "ApplicationServiceRegistry";
+        static Dictionary<ProcessModes, Func<ServiceRegistry>> _factories;
+
+        static CoreClientServiceRegistryContainer()
+        {
+            _factories = new Dictionary<ProcessModes, Func<ServiceRegistry>>()
+            {
+                { ProcessModes.Dev, CreateTestingServicesRegistryForDev },
+                { ProcessModes.Test, CreateTestingServicesRegistryForTest },
+                { ProcessModes.Prod, CreateTestingServicesRegistryForProd }
+            };
+        }
 
         [ServiceRegistryLoader(RegistryName, ProcessModes.Dev)]
         public static ServiceRegistry CreateTestingServicesRegistryForDev()
@@ -43,6 +55,16 @@ namespace Bam.Net.Services.Clients
         {
             CoreClient coreClient = new CoreClient("heart.bamapps.net", 80);
             return GetServiceRegistry(coreClient);
+        }
+
+        static object _currentLock = new object();
+        static ServiceRegistry _current;
+        public static ServiceRegistry Current
+        {
+            get
+            {
+                return _currentLock.DoubleCheckLock(ref _current, () => _factories[ProcessMode.Current.Mode]());
+            }
         }
 
         private static ServiceRegistry GetServiceRegistry(CoreClient coreClient)        
