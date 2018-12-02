@@ -4,6 +4,7 @@ using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy.Tests;
+using Bam.Net.Services.Clients;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 using System;
@@ -14,6 +15,14 @@ namespace Bam.Net.CoreServices.Tests
     [Serializable]
     public class UnitTests : CommandLineTestInterface
     {
+        [UnitTest]
+        public void ShouldBeAbleToSaveGeneratedAssemblies()
+        {
+            CoreClient client = new CoreClient();
+            
+            client.SaveProxyAssemblies();
+        }
+
         [UnitTest]
         public void ShouldBeAbleToGetGeneratedAssembly()
         {

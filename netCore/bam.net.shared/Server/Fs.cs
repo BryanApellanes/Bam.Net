@@ -11,7 +11,7 @@ using Bam.Net.Configuration;
 using Bam.Net.Presentation.Html;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
-using System.Web.Mvc;
+
 using System.Web;
 using Bam.Net.Caching.File;
 

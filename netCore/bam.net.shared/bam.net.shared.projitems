@@ -654,6 +654,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppModuleAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ProxyCode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyMethodModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyModel.cs" />
@@ -2810,8 +2812,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\OpenApi\OpenApi_Generated\PatternedFieldQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestRoute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestRouter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ScopedAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ServiceProxyServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ServiceResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SingletonAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\TransientAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Translation\TranslationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ValidationFailure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Validation\Data\EvaluatorProperty.cs" />

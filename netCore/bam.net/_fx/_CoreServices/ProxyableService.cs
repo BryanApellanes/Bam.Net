@@ -9,7 +9,7 @@ namespace Bam.Net.CoreServices
     public abstract partial class ProxyableService
     {
         [RoleRequired("/", "Admin", "Diagnoser")]
-        public Dictionary<string, string> GetSettings()
+        public virtual Dictionary<string, string> GetSettings()
         {
             object userDatabase = UserManager?.Property("Database", false);
 

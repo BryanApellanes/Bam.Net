@@ -37,7 +37,9 @@ namespace Bam.Net.Web
             services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
             {
                 // Configure the Bam appRegistry here
-                appRegistry.Add<TestAppModule>();
+                appRegistry
+                    .RegisterAppModules()
+                    .AddServices(services);
             }));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

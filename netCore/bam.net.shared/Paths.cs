@@ -51,6 +51,8 @@ namespace Bam.Net
         public static string Conf { get; private set; }
         public static string Sys { get; private set; }
         
+        public static string Generated { get; private set; }
+
         public static string Logs { get; private set; }
         public static string Data { get; private set; }
         public static string Tools { get; private set; }
@@ -76,6 +78,7 @@ namespace Bam.Net
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");
             Tests = Path.Combine(Root, "tests");
+            Generated = Path.Combine(Root, "src", "_gen");
             NugetPackages = Path.Combine(Root, "nuget", "packages");
 
             Builds = Path.Combine(PubRoot, "Builds");            

@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices
         public OAuthSettingsRepository OAuthSettingsRepository { get; set; }
 
         [RoleRequired("/", "Admin")]
-        public CoreServiceResponse<List<OAuthClientSettings>> GetClientSettings(bool includeSecret = false)
+        public virtual CoreServiceResponse<List<OAuthClientSettings>> GetClientSettings(bool includeSecret = false)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/", "Admin")]
-        public CoreServiceResponse<OAuthClientSettings> SetProvider(string providerName, string clientId, string clientSecret)
+        public virtual CoreServiceResponse<OAuthClientSettings> SetProvider(string providerName, string clientId, string clientSecret)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/", "Admin")]
-        public CoreServiceResponse RemoveProvider(string providerName)
+        public virtual CoreServiceResponse RemoveProvider(string providerName)
         {
             try
             {

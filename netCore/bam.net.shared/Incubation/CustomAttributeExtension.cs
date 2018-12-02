@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace System.Web.Mvc.Poco.Incubation
+namespace Bam.Net.Incubation
 {
     public static class CustomAttributeExtension
     {

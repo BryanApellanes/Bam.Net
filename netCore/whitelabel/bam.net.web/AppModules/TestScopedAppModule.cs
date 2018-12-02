@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Web.AppModules
 {
-    [AppModule]
-    public class TestAppModule
+    [Scoped]
+    public class TestScopedAppModule
     {
-        public TestAppModule()
+        public TestScopedAppModule()
         {
         }
 

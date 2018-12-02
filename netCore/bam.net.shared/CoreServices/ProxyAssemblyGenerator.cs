@@ -9,6 +9,7 @@ using System.Text;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using System.Collections.Generic;
+using Bam.Net.Services.Clients;
 
 namespace Bam.Net.CoreServices
 {
@@ -72,6 +73,17 @@ namespace Bam.Net.CoreServices
                 OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
                 return result;
             }
+        }
+        
+        public ProxyCode GenerateProxyCode()
+        {
+            Code = new StringBuilder();
+            ProxyCode code = new ProxyCode
+            {
+                ProxyModel = RenderCode(),
+                Code = Code.ToString()
+            };
+            return code;
         }
 
         private ProxyModel RenderCode()

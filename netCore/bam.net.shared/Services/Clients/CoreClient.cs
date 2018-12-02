@@ -421,6 +421,19 @@ namespace Bam.Net.Services.Clients
         /// </summary>
         public int Port { get; private set; }
 
+        /// <summary>
+        /// Saves the proxy assemblies to /bam/proxies.
+        /// </summary>
+        public void SaveProxyAssemblies(string directory = null)
+        {
+            DirectoryInfo dir = new DirectoryInfo(directory ?? "\\bam\\proxies");
+            foreach(ProxyableService svc in ServiceClients)
+            {
+                FileInfo assembly = svc.GetType().Assembly.GetFileInfo();
+                assembly.CopyTo(Path.Combine(dir.FullName, assembly.Name));
+            }
+        }
+
         public UserRegistryService UserRegistryService { get; set; }
         protected internal RoleService RoleService { get; set; }
         protected internal OAuthService OAuthService { get; set; }

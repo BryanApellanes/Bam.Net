@@ -21,10 +21,10 @@ namespace Bam.Net.Services
             }
         }
 
-        public static Action<ServiceRegistry> Configurer { get; set; }
+        public static Action<ApplicationServiceRegistry> Configurer { get; set; }
 
         [ServiceRegistryLoader]
-        public static ApplicationServiceRegistry Configure(Action<ServiceRegistry> config)
+        public static ApplicationServiceRegistry Configure(Action<ApplicationServiceRegistry> config)
         {
             Configurer = config;
             ApplicationServiceRegistry result = new ApplicationServiceRegistry();

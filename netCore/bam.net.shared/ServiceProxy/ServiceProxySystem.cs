@@ -11,7 +11,7 @@ using Bam.Net.Incubation;
 using Bam.Net.Logging;
 using Bam.Net.Configuration;
 using System.Web;
-using System.Web.Mvc;
+
 using System.Reflection;
 using System.IO;
 using Bam.Net.ServiceProxy.Secure;

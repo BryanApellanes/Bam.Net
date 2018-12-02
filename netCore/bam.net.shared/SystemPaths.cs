@@ -23,6 +23,7 @@ namespace Bam.Net
             Content = Paths.Content;
             Conf = Paths.Conf;
             Sys = Paths.Sys;
+            Generated = Paths.Generated;
             Logs = Paths.Logs;
             Tools = Paths.Tools;
         }
@@ -47,6 +48,7 @@ namespace Bam.Net
         public string Content { get; set; }
         public string Conf { get; set; }
         public string Sys { get; set; }
+        public string Generated { get; set; }
         public string Logs { get; set; }
         public string Tools { get; set; }
         public string NugetPackages { get; set; }

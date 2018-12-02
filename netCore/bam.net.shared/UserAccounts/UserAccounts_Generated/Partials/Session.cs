@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Net;
 using Bam.Net.Encryption;
 using Bam.Net.ServiceProxy;
-using System.Web.Mvc;
+
 using Org.BouncyCastle.Security;
 using Bam.Net.Logging;
 using Bam.Net.Data;

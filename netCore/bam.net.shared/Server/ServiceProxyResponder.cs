@@ -18,7 +18,7 @@ using Bam.Net.Web;
 using Bam.Net.Server.Renderers;
 using Bam.Net.Presentation.Html;
 using Bam.Net.Configuration;
-using System.Web.Mvc;
+
 using System.Threading.Tasks;
 using Bam.Net.Presentation;
 using Bam.Net.Server.Meta;

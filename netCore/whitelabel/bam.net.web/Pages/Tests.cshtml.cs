@@ -18,11 +18,11 @@ namespace Bam.Net.Web.Pages
             ApplicationServiceRegistry = applicationRegistry;
         }
 
-        public TestAppModule TestServiceModule
+        public TestTransientAppModule TestServiceModule
         {
             get
             {
-                return ApplicationServiceRegistry.Get<TestAppModule>();
+                return ApplicationServiceRegistry.Get<TestTransientAppModule>();
             }
         }
 
