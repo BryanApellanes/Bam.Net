@@ -315,9 +315,12 @@
     <Compile Include="_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Definition.cs" />
     <Compile Include="_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Word.cs" />
     <Compile Include="_fx\_Automation\AssemblyAttributeInfo.cs" />
+    <Compile Include="_fx\_Automation\CredentialEventArgs.cs" />
+    <Compile Include="_fx\_Automation\DaemonServiceDeployer.cs" />
     <Compile Include="_fx\_Automation\JobManagerService.cs" />
     <Compile Include="_fx\_Automation\SuspendedJob.cs" />
     <Compile Include="_fx\_Automation\SuspendJobWorker.cs" />
+    <Compile Include="_fx\_Automation\WindowsServiceDeployer.cs" />
     <Compile Include="_fx\_Automation\_Nuget\conventionbasedpackage.cs" />
     <Compile Include="_fx\_Automation\_Nuget\NugetPackageIdentifier.cs" />
     <Compile Include="_fx\_Automation\_Nuget\NuspecFile.cs" />
@@ -336,7 +339,6 @@
     <Compile Include="_fx\_Automation\_Nuget\PackageVersion.cs" />
     <Compile Include="_fx\_Automation\_SourceControl\GitReleaseNotes.cs" />
     <Compile Include="_fx\_Automation\_Testing\TestReportService.cs" />
-    <Compile Include="_fx\_Automation\_Windows\WindowsService.cs" />
     <Compile Include="_fx\_CommandLine\CommandLineInterface.cs" />
     <Compile Include="_fx\_Configuration\RuntimeSettings.cs" />
     <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />

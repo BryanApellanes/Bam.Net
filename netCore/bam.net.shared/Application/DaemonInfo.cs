@@ -8,13 +8,21 @@ using System.Threading.Tasks;
 namespace Bam.Net.Application
 {
     /// <summary>
-    /// InformationSettings used by a daemon or service. 
+    /// Settings used by a daemon or service. 
     /// </summary>
     public class DaemonInfo
     {
         public bool Copy { get; set; }
         public string Host { get; set; }
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the file.  This should be the full local path
+        /// to the file on the destination host.
+        /// </summary>
+        /// <value>
+        /// The name of the file.
+        /// </value>
         public string FileName { get; set; }
         public string Arguments { get; set; }
         public string WorkingDirectory { get; set; }

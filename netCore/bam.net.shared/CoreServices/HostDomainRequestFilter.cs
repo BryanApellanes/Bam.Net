@@ -18,6 +18,7 @@ namespace Bam.Net.CoreServices
         public override bool RequestIsAllowed(ExecutionRequest request, out string failureMessage)
         {
             Args.ThrowIfNull(request, "request");
+            Args.ThrowIfNull(request.Instance, "request.Instance");
             bool result = false;
             failureMessage = null;
             if (request.Instance is ApplicationProxyableService svc)

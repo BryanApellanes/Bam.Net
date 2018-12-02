@@ -17,13 +17,14 @@ namespace Bam.Net
             Root = Paths.Root;
             PubRoot = Paths.PubRoot;
             SystemDrive = Paths.SystemDrive;
-            WindowsBamDrive = Paths.WindowsBamDrive;
+            WindowsBamDrive = Paths.WindowsDrive;
             Apps = Paths.Apps;
             Local = Paths.Local;
             Content = Paths.Content;
             Conf = Paths.Conf;
             Sys = Paths.Sys;
             Generated = Paths.Generated;
+            Proxies = Paths.Proxies;
             Logs = Paths.Logs;
             Tools = Paths.Tools;
         }
@@ -49,6 +50,7 @@ namespace Bam.Net
         public string Conf { get; set; }
         public string Sys { get; set; }
         public string Generated { get; set; }
+        public string Proxies { get; set; }
         public string Logs { get; set; }
         public string Tools { get; set; }
         public string NugetPackages { get; set; }

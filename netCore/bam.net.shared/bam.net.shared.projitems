@@ -228,6 +228,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Automation\BamInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\BamProject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\CsFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\DaemonDeployer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\DirectoryCopyWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\EmailWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\Extensions.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Automation\FileSystemFileCopyWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\Ftp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\FtpUploadWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\IDeployable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IfElseWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IWorkerTypeProvider.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Automation\ProcessWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\ProjectReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\PsExec.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\Deployable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\PsKill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\ScanningWorkerTypeProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\Sftp.cs" />
@@ -388,6 +391,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ProcessExitEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ProcessOutput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ProcessOutputCollector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommandLine\ProcessOutputEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Comparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\Configurable.cs" />

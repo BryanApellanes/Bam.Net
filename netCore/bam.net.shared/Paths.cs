@@ -15,7 +15,7 @@ namespace Bam.Net
             Root = "C:\\bam";
 
             SystemDrive = "/b/drive"; // should be mapped to PubRoot (net use b: \\bam\public)
-            WindowsBamDrive = "B:\\drive";
+            WindowsDrive = "B:\\drive";
         }
 
         static string _root;
@@ -43,7 +43,7 @@ namespace Bam.Net
         }
 
         public static string SystemDrive { get; set; }
-        public static string WindowsBamDrive { get; set; }
+        public static string WindowsDrive { get; set; }
 
         public static string Apps { get; private set; }
         public static string Local { get; private set; }
@@ -52,6 +52,7 @@ namespace Bam.Net
         public static string Sys { get; private set; }
         
         public static string Generated { get; private set; }
+        public static string Proxies { get; private set; }
 
         public static string Logs { get; private set; }
         public static string Data { get; private set; }
@@ -77,10 +78,11 @@ namespace Bam.Net
             Logs = Path.Combine(Root, "logs");
             Data = Path.Combine(Root, "data");
             Tools = Path.Combine(Root, "tools");
-            Tests = Path.Combine(Root, "tests");
-            Generated = Path.Combine(Root, "src", "_gen");
+            Tests = Path.Combine(Root, "tests");            
             NugetPackages = Path.Combine(Root, "nuget", "packages");
 
+            Generated = Path.Combine(Root, "src", "_gen");
+            Proxies = Path.Combine(Sys, "proxies");
             Builds = Path.Combine(PubRoot, "Builds");            
         }
     }

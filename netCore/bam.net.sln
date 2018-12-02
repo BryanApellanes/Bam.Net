@@ -99,9 +99,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.fx.tests", "_tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.web", "whitelabel\bam.net.web\bam.net.web.csproj", "{4E46EA1E-9CC9-4789-A230-40E35500A65E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.translation.core.tests", "_tests\core\bam.net.translation.core.tests\bam.net.translation.core.tests.csproj", "{6A8C8D97-6ECD-422A-9958-9B639C7E7C9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.translation.core.tests", "_tests\core\bam.net.translation.core.tests\bam.net.translation.core.tests.csproj", "{6A8C8D97-6ECD-422A-9958-9B639C7E7C9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bam.net.useraccounts.core.tests", "_tests\core\bam.net.useraccounts.core.tests\bam.net.useraccounts.core.tests.csproj", "{2D33E17E-6E9F-4C54-9C43-E60A23DA3339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.useraccounts.core.tests", "_tests\core\bam.net.useraccounts.core.tests\bam.net.useraccounts.core.tests.csproj", "{2D33E17E-6E9F-4C54-9C43-E60A23DA3339}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
