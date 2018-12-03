@@ -33,6 +33,11 @@ namespace Bam.Net.Testing
 
         protected static MethodInfo DefaultMethod { get; set; }
 
+        /// <summary>
+        /// Prepares commandline arguments for reading.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="parseErrorHandler">The parse error handler.</param>
         public static void Initialize(string[] args, ConsoleArgsParsedDelegate parseErrorHandler = null)
 		{
             AssemblyResolve.Monitor(()=>

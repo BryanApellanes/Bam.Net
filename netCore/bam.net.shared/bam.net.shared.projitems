@@ -236,8 +236,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Automation\FileSystemFileCopyWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\Ftp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\FtpUploadWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\IAppSettingsWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IDeployable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IfElseWorker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\IRemoteFileHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\IWorkerTypeProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\Job.cs" />

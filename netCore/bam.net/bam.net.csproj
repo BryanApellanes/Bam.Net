@@ -320,6 +320,8 @@
     <Compile Include="_fx\_Automation\JobManagerService.cs" />
     <Compile Include="_fx\_Automation\SuspendedJob.cs" />
     <Compile Include="_fx\_Automation\SuspendJobWorker.cs" />
+    <Compile Include="_fx\_Automation\WindowsAppSettingsWriter.cs" />
+    <Compile Include="_fx\_Automation\WindowsRemoteFileHandler.cs" />
     <Compile Include="_fx\_Automation\WindowsServiceDeployer.cs" />
     <Compile Include="_fx\_Automation\_Nuget\conventionbasedpackage.cs" />
     <Compile Include="_fx\_Automation\_Nuget\NugetPackageIdentifier.cs" />

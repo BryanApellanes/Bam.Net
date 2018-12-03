@@ -16,6 +16,7 @@ using System.Reflection;
 using Bam.Net.Services;
 using Bam.Net.CoreServices;
 using System.Threading;
+using Bam.Net.Automation;
 
 namespace Bam.Net.Application
 {
@@ -43,6 +44,31 @@ namespace Bam.Net.Application
         {
             ServiceRegistry serviceRegistry = StartServer();
             Pause($"Heart server is serving service registry {serviceRegistry.Name}");
+        }
+
+        [ConsoleAction("deployHeartServer", "Deploy the Heart server to a remote host")]
+        public static void DeployServer()
+        {
+            string serviceInfo = Arguments.Contains("deployHeartServer") ? Arguments["deployHeartServer"] : string.Empty;
+            if (string.IsNullOrEmpty(serviceInfo))
+            {
+                serviceInfo = Arguments.Contains("dhs") ? Arguments["dhs"] : string.Empty;
+            }
+
+            if(string.IsNullOrEmpty(serviceInfo))
+            {
+                OutLineFormat("Please specify the path to the service info file.");
+                Exit(1);
+            }
+            FileInfo svcInfoFile = new FileInfo(serviceInfo);
+            if (!svcInfoFile.Exists)
+            {
+                OutLineFormat("Specified service info file was not found: {0}", svcInfoFile.FullName);
+                Exit(1);
+            }
+            WindowsServiceInfo svcInfo = svcInfoFile.FullName.FromJsonFile<WindowsServiceInfo>();
+            DirectoryInfo dir = Assembly.GetExecutingAssembly().GetFileInfo().Directory;
+            WindowsServiceDeployer.Deploy(dir, svcInfo, Log.Default);
         }
 
         internal static ServiceRegistry StartServer()

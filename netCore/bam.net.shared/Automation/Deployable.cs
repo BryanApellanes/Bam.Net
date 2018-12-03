@@ -25,6 +25,8 @@ namespace Bam.Net.Automation
         public event EventHandler ConfiguringService;
         public event EventHandler ConfiguredService;
         
+        public IRemoteFileHandler FileHandler { get; set; }
+        public IAppSettingsWriter AppSettingsWriter { get; set; }
         public abstract void Deploy();
 
         protected void OnProcessExecuting(EventArgs args)

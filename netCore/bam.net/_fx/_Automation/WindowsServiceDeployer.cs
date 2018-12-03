@@ -16,6 +16,22 @@ namespace Bam.Net.Automation
     {
         public WindowsServiceDeployer()
         {
+            FileHandler = new WindowsRemoteFileHandler();
+            AppSettingsWriter = new WindowsAppSettingsWriter();
+        }
+
+        public static void Deploy(DirectoryInfo localDirectory, WindowsServiceInfo svcInfo, ILogger logger = null)
+        {
+            WindowsServiceDeployer deployer = new WindowsServiceDeployer()
+            {
+                LocalDirectory = localDirectory,
+                ServiceInfo = svcInfo
+            };
+            if(logger != null)
+            {
+                deployer.Subscribe(logger);
+            }
+            deployer.Deploy();
         }
 
         /// <summary>
@@ -48,7 +64,9 @@ namespace Bam.Net.Automation
             }
 
             OnCopyingFiles(EventArgs.Empty);
-            LocalDirectory.CopyTo(svcInfo.Host, directoryPathOnRemote);
+
+            FileHandler.CopyTo(svcInfo.Host, LocalDirectory, directoryPathOnRemote);
+
             OnCopiedFiles(EventArgs.Empty);
             InstallService(svcInfo, filePathOnRemote);
 
@@ -118,11 +136,9 @@ namespace Bam.Net.Automation
         private void SetAppSettings(string directoryPathOnRemote)
         {
             string configPath = Path.Combine(directoryPathOnRemote, $"{ServiceInfo.FileName}.config");
-            FileInfo configFile = new FileInfo(configPath);
-            string adminSharePath = configFile.GetAdminSharePath(ServiceInfo.Host);
 
             OnConfiguringService(EventArgs.Empty);
-            DefaultConfiguration.SetAppSettings(adminSharePath, ServiceInfo.AppSettings);
+            AppSettingsWriter.SetAppSettings(ServiceInfo.Host, configPath, ServiceInfo.AppSettings);
             OnConfiguredService(EventArgs.Empty);
         }
     }

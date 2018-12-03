@@ -18,7 +18,7 @@ namespace Bam.Net.Application
 
         public string Host { get; set; }
         /// <summary>
-        /// Gets or sets the name of the Windows service to create.
+        /// Gets or sets the name of the service, used to name the destination folder.
         /// </summary>
         /// <value>
         /// The name.
@@ -32,11 +32,6 @@ namespace Bam.Net.Application
         /// The name of the file.
         /// </value>
         public string FileName { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use credentials.
-        /// </summary>
-        public bool UseCredentials { get; set; }
 
         /// <summary>
         /// Gets or sets the application settings, these values are written to the app.config file for the service

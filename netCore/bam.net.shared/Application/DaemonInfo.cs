@@ -12,6 +12,11 @@ namespace Bam.Net.Application
     /// </summary>
     public class DaemonInfo
     {
+        public DaemonInfo()
+        {
+            Copy = true;
+        }
+
         public bool Copy { get; set; }
         public string Host { get; set; }
         public string Name { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Application;
+using Bam.Net.ExceptionHandling;
 using Bam.Net.Logging;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,32 @@ namespace Bam.Net.Automation
 
             string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
             FileInfo daemonFile = new FileInfo(daemonInfo.FileName);
+            KillRemoteProcess(daemonInfo.Host, daemonInfo.FileName);
+            if (daemonInfo.Copy)
+            {
+                if (FileHandler.Exists(daemonInfo.Host, directoryPathOnRemote))
+                {
+                    try
+                    {
+                        
+                        FileHandler.Delete(daemonInfo.Host, directoryPathOnRemote);
+                    }
+                    catch (Exception ex)
+                    {
+                        OnExceptionDeletingDirectory(new ExceptionEventArgs(ex));
+                    }
+                }
 
+                OnCopyingFiles(EventArgs.Empty);
+                FileHandler.CopyTo(daemonInfo.Host, LocalDirectory, directoryPathOnRemote);
+                OnCopiedFiles(EventArgs.Empty);
+            }
 
-
-            throw new NotImplementedException();
+            if(daemonInfo.AppSettings != null)
+            {
+                string configPath = $"{daemonInfo.FileName}.config";
+                AppSettingsWriter.SetAppSettings(daemonInfo.Host, configPath, daemonInfo.AppSettings);
+            }
         }
     }
 }
