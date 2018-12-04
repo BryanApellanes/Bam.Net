@@ -16,11 +16,11 @@ namespace Bam.Net.CoreServices
         public event EventHandler<ProxyAssemblyGenerationEventArgs> AssemblyGenerating;
         public event EventHandler<ProxyAssemblyGenerationEventArgs> AssemblyGenerated;
         public event EventHandler<ProxyAssemblyGenerationEventArgs> MethodWarning;
-        protected void OnAssemblyGenerating(ProxyAssemblyGenerationEventArgs args)
+        protected virtual void OnAssemblyGenerating(ProxyAssemblyGenerationEventArgs args)
         {
             AssemblyGenerating?.Invoke(this, args);
         }
-        protected void OnAssemblyGenerated(ProxyAssemblyGenerationEventArgs args)
+        protected virtual void OnAssemblyGenerated(ProxyAssemblyGenerationEventArgs args)
         {
             AssemblyGenerated?.Invoke(this, args);
         }

@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,14 @@ namespace Bam.Net
             {
                 Data = DataPaths.Get(dataProvider)
             };
+        }
+
+        public static SystemPaths Current
+        {
+            get
+            {
+                return Get(DefaultDataDirectoryProvider.Current);
+            }
         }
 
         public DataPaths Data { get; set; }

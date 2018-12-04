@@ -484,6 +484,26 @@ namespace Bam.Net.Services.Clients
             HashAlgorithm = HashAlgorithms.SHA256;
             Logger = logger ?? Log.Default;
             ProxyFactory = new ProxyFactory(WorkspaceDirectory, Logger);
+            ProxyFactory.AssemblyGenerated += (o, args) =>
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        FileInfo assemblyFile = args.Assembly.GetFileInfo();
+                        FileInfo destinationFile = new FileInfo(Path.Combine(SystemPaths.Current.Proxies, assemblyFile.Name));
+                        if (!destinationFile.Directory.Exists)
+                        {
+                            destinationFile.Directory.Create();
+                        }
+                        assemblyFile.CopyTo(destinationFile.FullName);
+                    }
+                    catch(Exception ex)
+                    {
+                        Logger.AddEntry("Error copying generated proxy assembly: {0}", ex, ex.Message);
+                    }
+                });
+            };
         }
 
         private void SetDownloadedServiceProxies()

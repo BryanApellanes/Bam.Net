@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bam.Net.Testing;
+using System;
 
 namespace Bam.Net
 {
-    class Program
+    [Serializable]
+    class Program : CommandLineTestInterface
     {
         static void Main(string[] args)
         {
+            Initialize(args);
         }
     }
 }

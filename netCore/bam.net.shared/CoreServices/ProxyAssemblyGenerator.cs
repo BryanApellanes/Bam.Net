@@ -70,7 +70,7 @@ namespace Bam.Net.CoreServices
 
                 GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
                 result.Save();
-                OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
+                OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings, Assembly = compileResult.CompiledAssembly });
                 return result;
             }
         }

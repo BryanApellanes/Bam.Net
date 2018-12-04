@@ -22,5 +22,7 @@ namespace Bam.Net.CoreServices
         /// The MethodInfo being reported as non virtual or null
         /// </summary>
         public MethodInfo NonVirtualMethod { get; set; }
+
+        public Assembly Assembly { get; set; }
     }
 }
