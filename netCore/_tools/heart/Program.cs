@@ -24,11 +24,8 @@ namespace Bam.Net.Application
                     OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
                     Environment.Exit(1);
                 });
-                if (Arguments.Contains("i"))
-                {
-                    Interactive();
-                }
-                else if(!ExecuteSwitches(Arguments, new ConsoleActions()))
+
+                if (!ExecuteSwitches(Arguments, new ConsoleActions()))
                 {
                     HeartService.RunService<HeartService>();
                 }

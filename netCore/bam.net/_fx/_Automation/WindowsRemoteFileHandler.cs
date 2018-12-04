@@ -15,8 +15,16 @@ namespace Bam.Net.Automation
         public void CopyTo(string host, FileSystemInfo localData, string localPathOnRemote = null)
         {
             localPathOnRemote = localPathOnRemote ?? localData.FullName;
-            DirectoryInfo adminSharePath = localPathOnRemote.GetAdminShareDirectory(host);
-            adminSharePath.CopyTo(host, localPathOnRemote);
+            if (Directory.Exists(localData.FullName))
+            {
+                DirectoryInfo localDir = new DirectoryInfo(localData.FullName);
+                localDir.CopyTo(host, localPathOnRemote);
+            }
+            else if (File.Exists(localData.FullName))
+            {
+                FileInfo localFile = new FileInfo(localData.FullName);
+                localFile.CopyTo(host, localPathOnRemote);
+            }
         }
 
         public void Delete(string host, string localPathOnRemote)

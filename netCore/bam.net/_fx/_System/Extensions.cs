@@ -10,23 +10,23 @@ namespace Bam.Net.Sys
     public static class Extensions
     {
 
-        public static void CopyTo(this DirectoryInfo directory, string computerName, string remoteDirectory)
+        public static void CopyTo(this DirectoryInfo directory, string computerName, string localPathOnRemote)
         {
-            if (!remoteDirectory.EndsWith("\\"))
+            if (!localPathOnRemote.EndsWith("\\"))
             {
-                remoteDirectory += "\\";
+                localPathOnRemote += "\\";
             }
 
             List<Task> copyTasks = new List<Task>();
             foreach(FileInfo file in directory.GetFiles())
             {
-                copyTasks.Add(Task.Run(() => file.CopyTo(computerName, remoteDirectory)));
+                copyTasks.Add(Task.Run(() => file.CopyTo(computerName, localPathOnRemote)));
             }
 
             foreach(DirectoryInfo dir in directory.GetDirectories())
             {
                 string subPath = dir.FullName.TruncateFront(directory.FullName.Length);
-                copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, remoteDirectory + subPath)));
+                copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, localPathOnRemote + subPath)));
             }
 
             Task.WaitAll(copyTasks.ToArray());
@@ -40,11 +40,11 @@ namespace Bam.Net.Sys
             }
         }
 
-        public static void CopyTo(this FileInfo file, string computerName, string remoteDirectory = null)
+        public static void CopyTo(this FileInfo file, string computerName, string localPathOnRemote = null)
         {
             try
             {
-                string adminSharePath = GetAdminSharePath(file.Name, computerName, remoteDirectory);
+                string adminSharePath = GetAdminSharePath(file.Name, computerName, localPathOnRemote);
                 FileInfo destination = new FileInfo(adminSharePath);
                 if (!destination.Directory.Exists)
                 {
@@ -54,7 +54,7 @@ namespace Bam.Net.Sys
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Exception copying file ({0}) to target computer ({1}), Path={2}", ex, file.FullName, computerName, remoteDirectory);
+                Logging.Log.Error("Exception copying file ({0}) to target computer ({1}), Path={2}", ex, file.FullName, computerName, localPathOnRemote);
             }
         }
 

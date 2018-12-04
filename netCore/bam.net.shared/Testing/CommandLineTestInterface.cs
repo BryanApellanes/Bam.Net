@@ -25,7 +25,6 @@ namespace Bam.Net.Testing
         {
             GetUnitTestRunListeners = () => new List<ITestRunListener<UnitTestMethod>>();
             InitLogger();
-            DefaultMethod = typeof(CommandLineTestInterface).GetMethod("Interactive");
         }
         
         protected static ILogger Logger { get; set; }
