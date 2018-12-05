@@ -660,6 +660,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerationEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGeneratorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppModuleAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ProxyCode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyFactory.cs" />

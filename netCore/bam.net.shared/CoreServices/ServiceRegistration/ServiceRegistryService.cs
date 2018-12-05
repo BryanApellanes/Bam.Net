@@ -19,6 +19,7 @@ using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
 using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
+using Bam.Net.Data;
 
 namespace Bam.Net.CoreServices
 {
@@ -145,7 +146,7 @@ namespace Bam.Net.CoreServices
         /// </summary>
         public string AssemblySearchPattern { get; set; }
         public IFileService FileService { get; set; }
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public ServiceRegistryRepository ServiceRegistryRepository { get; set; }
 
         public IAssemblyService AssemblyService { get; set; }

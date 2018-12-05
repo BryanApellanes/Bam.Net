@@ -13,7 +13,7 @@ using Bam.Net.Services.Clients;
 
 namespace Bam.Net.CoreServices
 {
-    public class ProxyAssemblyGenerator: ProxyAssemblyGenerationEventSource, IAssemblyGenerator
+    public partial class ProxyAssemblyGenerator: ProxyAssemblyGenerationEventSource, IAssemblyGenerator
     {
         public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null, HashSet<Assembly> addedReferenceAssemblies = null)
         {
@@ -42,39 +42,32 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        public string GetSource()
+        {
+            RenderCode();
+            return Code.ToString();
+        }
+
         public void WriteSource(string writeSourceTo)
         {
             RenderCode();
             Code.ToString().SafeWriteToFile(Path.Combine(WorkspaceDirectory, "src", $"{ServiceType.Name}.Proxy.cs"));
         }
 
+        public void WriteSource(Stream stream)
+        {
+            RenderCode();
+            using (StreamWriter sw = new StreamWriter(stream))
+            {
+                sw.Write(Code.ToString());
+            }
+        }
+
         public GeneratedAssemblyInfo GetAssembly()
         {
             return GeneratedAssemblyInfo.GetGeneratedAssembly(FileName, this);
         }
-
-        object _generateLock = new object();
-        public GeneratedAssemblyInfo GenerateAssembly()
-        {
-            lock (_generateLock)
-            {
-                OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-
-                ProxyModel proxyModel = RenderCode();
-
-                CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
-                if (compileResult.Errors.Count > 0)
-                {
-                    throw new CompilationException(compileResult);
-                }
-
-                GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
-                result.Save();
-                OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings, Assembly = compileResult.CompiledAssembly });
-                return result;
-            }
-        }
-        
+                
         public ProxyCode GenerateProxyCode()
         {
             Code = new StringBuilder();

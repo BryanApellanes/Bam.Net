@@ -346,6 +346,7 @@
     <Compile Include="_fx\_Configuration\RuntimeSettings.cs" />
     <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />
     <Compile Include="_fx\_CoreServices\ProxyableService.cs" />
+    <Compile Include="_fx\_CoreServices\ProxyAssemblyGenerator.cs" />
     <Compile Include="_fx\_CoreServices\ProxyTemplateResources.cs" />
     <Compile Include="_fx\_CoreServices\ServiceRegistry.cs" />
     <Compile Include="_fx\_CoreServices\_ApplicationRegistration\ApplicationRegistrationService.cs" />
