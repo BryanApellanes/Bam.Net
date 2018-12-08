@@ -401,7 +401,7 @@ namespace {0}
 
                     string methodParams = methodGenInfo.MethodSignature;
                     string wrapped = parameters.ToDelimited(p => p.Name.CamelCase()); // wrapped as object array
-                    string methodApiKeyRequired = method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t[ApiKeyRequired]" : "";
+                    string methodApiKeyRequired = method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t\t[ApiKeyRequired]" : "";
                     methods.AppendFormat(MethodFormat, methodApiKeyRequired, returnType, method.Name, methodParams, wrapped, invoke);
                     interfaceMethods.AppendFormat(InterfaceMethodFormat, returnType, method.Name, methodParams);
                 }
@@ -414,7 +414,7 @@ namespace {0}
                 }
 
                 string classFormatToUse = type.HasCustomAttributeOfType<EncryptAttribute>() ? SecureClassFormat : ClassFormat;
-                string typeApiKeyRequired = type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t[ApiKeyRequired]" : "";
+                string typeApiKeyRequired = type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t\t[ApiKeyRequired]" : "";
                 classes.AppendFormat(classFormatToUse, typeApiKeyRequired, clientName, contractNamespace, serverName, defaultBaseAddress, methods.ToString());
                 interfaces.AppendFormat(InterfaceFormat, serverName, interfaceMethods.ToString());
             }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Automation.Testing
 {
-    public class TestReportResponse: ServiceResponse
+    public class TestReportResponse: ServiceProxyResponse
     {
         public string Uuid { get; set; }
         public CreateStatus CreateStatus { get; set; }

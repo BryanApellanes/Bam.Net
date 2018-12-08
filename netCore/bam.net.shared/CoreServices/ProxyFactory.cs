@@ -160,6 +160,37 @@ namespace Bam.Net.CoreServices
             Assembly assembly = GetAssembly<T>();
             return ConstructProxy<T>(assembly, ServiceProvider);
         }
+        
+        public string GetProxySource(Type type)
+        {
+            ProxySettings settings = DefaultSettings.CopyAs<ProxySettings>();
+            settings.ServiceType = type;
+            return GetProxySource(settings);
+        }
+
+        public string GetProxySource<T>(string hostName, int port)
+        {
+            return GetProxySource(typeof(T), hostName, port);
+        }
+
+        public string GetProxySource(Type type, string hostName, int port)
+        {
+            ProxySettings settings = DefaultSettings.Clone();
+            settings.ServiceType = type;
+            settings.DownloadClient = true;
+            settings.Host = hostName;
+            settings.Port = port;
+            return GetProxySource(settings);
+        }
+
+        public string GetProxySource(ProxySettings proxySettings)
+        {
+            ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(proxySettings, WorkspaceDirectory, Logger);
+            generator.AssemblyGenerating += (o, args) => OnAssemblyGenerating(args);
+            generator.AssemblyGenerated += (o, args) => OnAssemblyGenerated(args);
+            generator.MethodWarning += (o, args) => OnMethodWarning(args);
+            return generator.GetSource();
+        }
 
         /// <summary>
         /// Get a proxy instance downloading source from the

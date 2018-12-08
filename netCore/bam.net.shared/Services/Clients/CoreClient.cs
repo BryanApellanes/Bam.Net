@@ -434,6 +434,17 @@ namespace Bam.Net.Services.Clients
             }
         }
 
+        public void SaveProxySource(string directory = null)
+        {
+            DirectoryInfo dir = new DirectoryInfo(directory ?? "\\bam\\src\\_gen");
+            foreach(Type type in ServiceClientTypes)
+            {
+                string fileName = $"{type.Name}_{ProxyFactory.DefaultSettings.Protocol.ToString()}_{HostName}_{Port}_Proxy.cs";
+                FileInfo sourceFile = new FileInfo(Path.Combine(dir.FullName, fileName));
+                ProxyFactory.GetProxySource(type, HostName, Port).SafeWriteToFile(sourceFile.FullName, true);
+            }
+        }
+
         public UserRegistryService UserRegistryService { get; set; }
         protected internal RoleService RoleService { get; set; }
         protected internal OAuthService OAuthService { get; set; }
@@ -444,6 +455,7 @@ namespace Bam.Net.Services.Clients
         protected internal ServiceRegistryService ServiceRegistryService { get; set; }
         protected internal SystemLogReaderService SystemLogReaderService { get; set; }
         protected internal OAuthSettingsService OAuthSettingsService { get; set; }
+        protected internal ProxyAssemblyGeneratorService ProxyAssemblyGeneratorService { get; set; }
 
         /// <summary>
         /// Each of the Core service proxies
@@ -461,6 +473,24 @@ namespace Bam.Net.Services.Clients
                 yield return ServiceRegistryService;
                 yield return SystemLogReaderService;
                 yield return OAuthSettingsService;
+                yield return ProxyAssemblyGeneratorService;
+            }
+        }
+
+        protected internal IEnumerable<Type> ServiceClientTypes
+        {
+            get
+            {
+                yield return typeof(UserRegistryService);
+                yield return typeof(ApplicationRegistrationService);
+                yield return typeof(ConfigurationService);
+                yield return typeof(SystemLoggerService);
+                yield return typeof(RoleService);
+                yield return typeof(DiagnosticService);
+                yield return typeof(ServiceRegistryService);
+                yield return typeof(SystemLogReaderService);
+                yield return typeof(OAuthSettingsService);
+                yield return typeof(ProxyAssemblyGeneratorService);
             }
         }
 
@@ -518,6 +548,7 @@ namespace Bam.Net.Services.Clients
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port, Logger);
             SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>(HostName, Port, Logger);
             OAuthSettingsService = ProxyFactory.GetProxy<OAuthSettingsService>(HostName, Port, Logger);
+            ProxyAssemblyGeneratorService = ProxyFactory.GetProxy<ProxyAssemblyGeneratorService>(HostName, Port, Logger);
         }
 
         private void SetLocalServiceProxies()
@@ -532,6 +563,7 @@ namespace Bam.Net.Services.Clients
             ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>();
             SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>();
             OAuthSettingsService = ProxyFactory.GetProxy<OAuthSettingsService>();
+            ProxyAssemblyGeneratorService = ProxyFactory.GetProxy<ProxyAssemblyGeneratorService>();
         }
 
         private void WireInvocationEventHandlers()

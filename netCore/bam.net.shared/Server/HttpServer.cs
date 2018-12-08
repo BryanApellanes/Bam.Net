@@ -66,7 +66,7 @@ namespace Bam.Net.Server
             Start(Usurped, hostPrefixes);
         }
 
-        static object _startLock = new object();
+        static readonly object _startLock = new object();
         public void Start(bool usurped, params HostPrefix[] hostPrefixes)
         {
             if(hostPrefixes.Length == 0)

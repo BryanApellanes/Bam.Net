@@ -146,8 +146,10 @@ namespace Bam.Net.CoreServices
                 .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>()
                 .For<ILogReader>().Use<SystemLogReaderService>()
+                .For<SystemLogReaderService>().Use<SystemLogReaderService>()
                 .For<CredentialManagementService>().Use<CredentialManagementService>()
-                .For<OAuthSettingsService>().Use<OAuthSettingsService>();
+                .For<OAuthSettingsService>().Use<OAuthSettingsService>()
+                .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorService>();
 
             reg.For<ServiceRegistry>().Use(reg)
                 .For<DiagnosticService>().Use<DiagnosticService>();

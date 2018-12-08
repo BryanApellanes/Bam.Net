@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.UserAccounts
 {
-    public class CheckUserNameResponse: ServiceResponse
+    public class CheckUserNameResponse: ServiceProxyResponse
     {
         public CheckUserNameResponse() { }
     }

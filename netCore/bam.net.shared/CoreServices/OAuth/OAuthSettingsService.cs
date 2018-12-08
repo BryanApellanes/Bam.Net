@@ -18,6 +18,8 @@ namespace Bam.Net.CoreServices
     [Authenticated]
     public class OAuthSettingsService : ApplicationProxyableService
     {
+        protected OAuthSettingsService() { }
+
         public OAuthSettingsService(OAuthSettingsRepository oauthRepo, ApplicationRegistrationRepository applicationRegistrationRepo)
         {
             OAuthSettingsRepository = oauthRepo;

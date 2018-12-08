@@ -6,6 +6,7 @@ using Bam.Net.Presentation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Web.Pages
 {

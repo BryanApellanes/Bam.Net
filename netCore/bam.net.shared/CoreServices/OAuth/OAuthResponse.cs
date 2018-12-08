@@ -13,7 +13,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.OAuth
 {
-    public class OAuthResponse: ServiceResponse
+    public class OAuthResponse: ServiceProxyResponse
     {
         
     }

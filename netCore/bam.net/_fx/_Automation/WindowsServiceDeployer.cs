@@ -85,14 +85,21 @@ namespace Bam.Net.Automation
             InstallService(ServiceInfo, filePathOnRemote);
         }
 
+        public event EventHandler InstallingService;
+        public event EventHandler InstalledService;
         protected void InstallService(WindowsServiceInfo svcInfo, string filePathOnRemote)
         {
+            FireEvent(InstallingService);
             string installSwitch = GetInstallSwitch(svcInfo.Host, svcInfo.Name);
             RemoteExecute(filePathOnRemote, installSwitch);
+            FireEvent(InstalledService);
         }
 
+        public event EventHandler UninstallingService;
+        public event EventHandler UninstalledService;
         protected void UninstallService(string filePathOnRemote, DirectoryInfo adminShareDirectory)
         {
+            FireEvent(UninstallingService);
             RemoteExecute(filePathOnRemote, "-k");
             RemoteExecute(filePathOnRemote, "-u");
             KillRemoteProcess(ServiceInfo.Host, ServiceInfo.FileName);
@@ -104,6 +111,7 @@ namespace Bam.Net.Automation
             {
                 OnExceptionDeletingDirectory(new ExceptionEventArgs(ex));
             }
+            FireEvent(UninstalledService);
         }
 
         protected void RemoteExecute(string pathOnRemote, string commandArgs)

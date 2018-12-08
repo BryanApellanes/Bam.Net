@@ -1,5 +1,6 @@
 ﻿using Bam.Net.Data;
 using Bam.Net.Logging;
+using Bam.Net.ServiceProxy;
 using Bam.Net.Services;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,14 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    [Proxy("proxyGen")]
     [Serializable]
+    [Encrypt]
+    [ServiceSubdomain("proxyGen")]
     public class ProxyAssemblyGeneratorService : AsyncProxyableService
     {
+        protected ProxyAssemblyGeneratorService() { }
+
         Dictionary<string, Assembly> _assemblies;
         public ProxyAssemblyGeneratorService(IDataDirectoryProvider dataDirectoryProvider, ILogger logger)
         {
@@ -29,27 +35,27 @@ namespace Bam.Net.CoreServices
         public ProxyFactory ProxyFactory { get; set; }
         public ProxyAssemblyGenerator ProxyAssemblyGenerator { get; set; }
 
-        public ServiceResponse GetBase64ProxyAssembly(string nameSpace, string typeName)
+        public virtual Services.ServiceResponse GetBase64ProxyAssembly(string nameSpace, string typeName)
         {
             Type type = GetType(nameSpace, typeName);
             if(type == null)
             {
-                return new ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not found." };
+                return new Services.ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not found." };
             }
             Assembly proxyAssembly = ProxyFactory.GetAssembly(type);
             FileInfo assemblyFileInfo = proxyAssembly.GetFileInfo();
             byte[] bytes = File.ReadAllBytes(assemblyFileInfo.FullName);
-            return new ServiceResponse { Success = true, Data = bytes.ToBase64() };
+            return new Services.ServiceResponse { Success = true, Data = bytes.ToBase64() };
         }
 
-        public ServiceResponse GetProxyCode(string nameSpace, string typeName)
+        public virtual Services.ServiceResponse GetProxyCode(string nameSpace, string typeName)
         {
             Type type = GetType(nameSpace, typeName);
             if (type == null)
             {
-                return new ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not found." };
+                return new Services.ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not found." };
             }
-            return new ServiceResponse { Success = true, Data = ProxyAssemblyGenerator.GetSource() };
+            return new Services.ServiceResponse { Success = true, Data = ProxyAssemblyGenerator.GetSource() };
         }
         
         protected Assembly GetRealAssembly(string nameSpace, string typeName)

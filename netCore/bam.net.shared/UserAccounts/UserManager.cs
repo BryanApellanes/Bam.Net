@@ -667,7 +667,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        private T GetSuccess<T>(object data, string message = null) where T: ServiceResponse, new()
+        private T GetSuccess<T>(object data, string message = null) where T: ServiceProxyResponse, new()
         {
             T result = new T();
             result.Success = true;
@@ -676,7 +676,7 @@ namespace Bam.Net.UserAccounts
             return result;
         }
 
-        private T GetFailure<T>(Exception ex) where T: ServiceResponse, new()
+        private T GetFailure<T>(Exception ex) where T: ServiceProxyResponse, new()
         {
             T result = new T()
             {

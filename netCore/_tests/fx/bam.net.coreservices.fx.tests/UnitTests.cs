@@ -24,6 +24,13 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [UnitTest]
+        public void ShouldBeAbleToSaveGeneratedSource()
+        {
+            CoreClient client = new CoreClient();
+            client.SaveProxySource();
+        }
+
+        [UnitTest]
         public void ShouldBeAbleToGetGeneratedAssembly()
         {
             ProxyFactory serviceFactory = new ProxyFactory();

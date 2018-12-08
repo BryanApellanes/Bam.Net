@@ -2516,7 +2516,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceProxyParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceProxySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceProxyVerbs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceProxyResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\ServiceSubdomainAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\TestObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\UnableToResolveUserException.cs" />

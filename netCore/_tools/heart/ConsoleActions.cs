@@ -66,9 +66,15 @@ namespace Bam.Net.Application
                 OutLineFormat("Specified service info file was not found: {0}", svcInfoFile.FullName);
                 Exit(1);
             }
+            ConsoleLogger logger = new ConsoleLogger
+            {
+                AddDetails = false
+            };
+            logger.Info("Starting deployment");
             WindowsServiceInfo svcInfo = svcInfoFile.FullName.FromJsonFile<WindowsServiceInfo>();
+            logger.Info(svcInfo.ToJson(true));
             DirectoryInfo dir = Assembly.GetExecutingAssembly().GetFileInfo().Directory;
-            WindowsServiceDeployer.Deploy(dir, svcInfo, Log.Default);
+            WindowsServiceDeployer.Deploy(dir, svcInfo, logger);
         }
 
         internal static ServiceRegistry StartServer()
