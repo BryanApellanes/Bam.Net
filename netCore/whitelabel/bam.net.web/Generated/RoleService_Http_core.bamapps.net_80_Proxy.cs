@@ -5,14 +5,14 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
     public class RoleServiceClient: SecureServiceProxyClient<Bam.Net.CoreServices.Contracts.IRoleService>, Bam.Net.CoreServices.Contracts.IRoleService
@@ -106,33 +106,33 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface IRoleService
         {
-	void AddUsersToRoles(System.String[] usernames, System.String[] roleNames);
-	void CreateRole(System.String roleName);
-	Boolean DeleteRole(System.String roleName, System.Boolean throwOnPopulatedRole);
-	String[] FindUsersInRole(System.String roleName, System.String usernameToMatch);
-	String[] GetAllRoles();
-	String[] GetRolesForUser(System.String username);
-	String[] GetUsersInRole(System.String roleName);
-	Boolean IsUserInRole(System.String username, System.String roleName);
-	void RemoveUsersFromRoles(System.String[] usernames, System.String[] roleNames);
-	Boolean RoleExists(System.String roleName);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			void AddUsersToRoles(System.String[] usernames, System.String[] roleNames);
+			void CreateRole(System.String roleName);
+			Boolean DeleteRole(System.String roleName, System.Boolean throwOnPopulatedRole);
+			String[] FindUsersInRole(System.String roleName, System.String usernameToMatch);
+			String[] GetAllRoles();
+			String[] GetRolesForUser(System.String username);
+			String[] GetUsersInRole(System.String roleName);
+			Boolean IsUserInRole(System.String username, System.String roleName);
+			void RemoveUsersFromRoles(System.String[] usernames, System.String[] roleNames);
+			Boolean RoleExists(System.String roleName);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -148,7 +148,10 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using System;using System.Collections.Generic;using Bam.Net.UserAccounts;
+	using System;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+
 	public class RoleServiceProxy: RoleService, IProxy 
 	{
 		RoleServiceClient _proxyClient;

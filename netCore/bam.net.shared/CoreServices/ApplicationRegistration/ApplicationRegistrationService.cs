@@ -17,9 +17,9 @@ using Bam.Net.Web;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("appRegistrySvc")]
+    [Proxy("appRegistrationSvc")]
     [Encrypt]
-    [ServiceSubdomain("appregistry")]
+    [ServiceSubdomain("appregistration")]
     public partial class ApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         CacheManager _cacheManager;
@@ -137,6 +137,11 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
+        /// <summary>
+        /// Registers the application using the specified applicationName.
+        /// </summary>
+        /// <param name="applicationName">Name of the application.</param>
+        /// <returns></returns>
         public virtual CoreServiceResponse RegisterApplication(string applicationName)
         {
             if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
@@ -289,8 +294,8 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// Establishes the means by which the client will 
-        /// communicate securely with the server.  Creates 
+        /// Establishes the means by which the client  
+        /// communicates securely with the server.  Creates 
         /// a machine account for the client; used primarily 
         /// for .Net client assemblies using CoreClient
         /// </summary>

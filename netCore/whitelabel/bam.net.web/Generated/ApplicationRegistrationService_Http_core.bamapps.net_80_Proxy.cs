@@ -5,15 +5,15 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using System.Collections.Generic;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
 
     
     public class ApplicationRegistrationServiceClient: SecureServiceProxyClient<Bam.Net.CoreServices.Contracts.IApplicationRegistrationService>, Bam.Net.CoreServices.Contracts.IApplicationRegistrationService
@@ -100,32 +100,32 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using System.Collections.Generic;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
 
     
         public interface IApplicationRegistrationService
         {
-	ApiKeyInfo[] ListApiKeys();
-	ApiKeyInfo AddApiKey();
-	ApiKeyInfo SetActiveApiKeyIndex(System.Int32 index);
-	String GetApplicationName();
-	ApiKeyInfo GetClientApiKeyInfo();
-	CoreServiceResponse RegisterApplication(System.String applicationName);
-	CoreServiceResponse RegisterApplicationProcess(Bam.Net.CoreServices.ApplicationRegistration.Data.ProcessDescriptor descriptor);
-	CoreServiceResponse RegisterClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			ApiKeyInfo[] ListApiKeys();
+			ApiKeyInfo AddApiKey();
+			ApiKeyInfo SetActiveApiKeyIndex(System.Int32 index);
+			String GetApplicationName();
+			ApiKeyInfo GetClientApiKeyInfo();
+			CoreServiceResponse RegisterApplication(System.String applicationName);
+			CoreServiceResponse RegisterApplicationProcess(Bam.Net.CoreServices.ApplicationRegistration.Data.ProcessDescriptor descriptor);
+			CoreServiceResponse RegisterClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -141,7 +141,12 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.ServiceProxy.Secure;using System;using Bam.Net.CoreServices;using System.Collections.Generic;using Bam.Net.UserAccounts;
+	using Bam.Net.ServiceProxy.Secure;
+	using System;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+
 	public class ApplicationRegistrationServiceProxy: ApplicationRegistrationService, IProxy 
 	{
 		ApplicationRegistrationServiceClient _proxyClient;

@@ -5,14 +5,14 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.UserAccounts;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.UserAccounts;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
     
     public class UserRegistryServiceClient: SecureServiceProxyClient<Bam.Net.CoreServices.Contracts.IUserRegistryService>, Bam.Net.CoreServices.Contracts.IUserRegistryService
@@ -111,34 +111,34 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.UserAccounts;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.UserAccounts;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
     
         public interface IUserRegistryService
         {
-	ConfirmResponse ConfirmAccount(System.String token);
-	ForgotPasswordResponse ForgotPassword(System.String emailAddress);
-	CheckEmailResponse IsEmailInUse(System.String emailAddress);
-	CheckUserNameResponse IsUserNameAvailable(System.String userName);
-	SendEmailResponse RequestConfirmationEmail(System.String emailAddress, System.Int32 accountIndex);
-	PasswordResetResponse ResetPassword(System.String passHash, System.String resetToken);
-	SignOutResponse SignOut();
-	SignUpResponse SignUp(System.String emailAddress, System.String userName, System.String passHash, System.Boolean sendConfirmationEmail);
-	String GetCurrentUser();
-	Boolean IsInRole(System.String roleName);
-	String[] GetRoles();
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			ConfirmResponse ConfirmAccount(System.String token);
+			ForgotPasswordResponse ForgotPassword(System.String emailAddress);
+			CheckEmailResponse IsEmailInUse(System.String emailAddress);
+			CheckUserNameResponse IsUserNameAvailable(System.String userName);
+			SendEmailResponse RequestConfirmationEmail(System.String emailAddress, System.Int32 accountIndex);
+			PasswordResetResponse ResetPassword(System.String passHash, System.String resetToken);
+			SignOutResponse SignOut();
+			SignUpResponse SignUp(System.String emailAddress, System.String userName, System.String passHash, System.Boolean sendConfirmationEmail);
+			String GetCurrentUser();
+			Boolean IsInRole(System.String roleName);
+			String[] GetRoles();
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -154,7 +154,10 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.UserAccounts;using System;using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+	using System;
+	using System.Collections.Generic;
+
 	public class UserRegistryServiceProxy: UserRegistryService, IProxy 
 	{
 		UserRegistryServiceClient _proxyClient;

@@ -41,7 +41,7 @@ namespace Bam.Net.CoreServices
 
         public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
 
-        public ApplicationRegistrationService CoreApplicationRegistryService { get; set; }
+        public ApplicationRegistrationService CoreApplicationRegistryService { get; set; } // TODO: rename this to CoreApplicationRegistrationService and test
 
         public override int GetMaximumLimit()
         {

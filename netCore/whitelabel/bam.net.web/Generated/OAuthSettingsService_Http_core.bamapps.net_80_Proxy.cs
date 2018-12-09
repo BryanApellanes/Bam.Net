@@ -5,16 +5,16 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.OAuth;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.OAuth;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
 		[ApiKeyRequired]
@@ -74,28 +74,28 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.OAuth;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.OAuth;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface IOAuthSettingsService
         {
-	CoreServiceResponse<System.Collections.Generic.List<Bam.Net.CoreServices.OAuth.OAuthClientSettings>> GetClientSettings(System.Boolean includeSecret);
-	CoreServiceResponse<Bam.Net.CoreServices.OAuth.OAuthClientSettings> SetProvider(System.String providerName, System.String clientId, System.String clientSecret);
-	CoreServiceResponse RemoveProvider(System.String providerName);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			CoreServiceResponse<System.Collections.Generic.List<Bam.Net.CoreServices.OAuth.OAuthClientSettings>> GetClientSettings(System.Boolean includeSecret);
+			CoreServiceResponse<Bam.Net.CoreServices.OAuth.OAuthClientSettings> SetProvider(System.String providerName, System.String clientId, System.String clientSecret);
+			CoreServiceResponse RemoveProvider(System.String providerName);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -111,7 +111,11 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;using System.Collections.Generic;using Bam.Net.UserAccounts;using System;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+	using System;
+
 	public class OAuthSettingsServiceProxy: OAuthSettingsService, IProxy 
 	{
 		OAuthSettingsServiceClient _proxyClient;

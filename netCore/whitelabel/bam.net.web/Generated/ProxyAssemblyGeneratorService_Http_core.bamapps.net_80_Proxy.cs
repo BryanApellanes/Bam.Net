@@ -5,15 +5,15 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.Services;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.Services;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
     public class ProxyAssemblyGeneratorServiceClient: SecureServiceProxyClient<Bam.Net.CoreServices.Contracts.IProxyAssemblyGeneratorService>, Bam.Net.CoreServices.Contracts.IProxyAssemblyGeneratorService
@@ -72,27 +72,27 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.Services;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.Services;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface IProxyAssemblyGeneratorService
         {
-	ServiceResponse GetBase64ProxyAssembly(System.String nameSpace, System.String typeName);
-	ServiceResponse GetProxyCode(System.String nameSpace, System.String typeName);
-	void ExecuteRemoteAsync(Bam.Net.Services.AsyncExecutionRequest request);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			ServiceResponse GetBase64ProxyAssembly(System.String nameSpace, System.String typeName);
+			ServiceResponse GetProxyCode(System.String nameSpace, System.String typeName);
+			void ExecuteRemoteAsync(Bam.Net.Services.AsyncExecutionRequest request);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -108,7 +108,11 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.Services;using System;using System.Collections.Generic;using Bam.Net.UserAccounts;
+	using Bam.Net.Services;
+	using System;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+
 	public class ProxyAssemblyGeneratorServiceProxy: ProxyAssemblyGeneratorService, IProxy 
 	{
 		ProxyAssemblyGeneratorServiceClient _proxyClient;

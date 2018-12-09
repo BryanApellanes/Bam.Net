@@ -90,6 +90,7 @@ namespace Bam.Net.CommandLine
                 return GetArgument(name, promptMessage);
             }
         }
+
         public static string GetPasswordArgument(string name, bool useCache, string promptMessage = null)
         {
             if (useCache)
@@ -105,6 +106,7 @@ namespace Bam.Net.CommandLine
                 return GetArgument(name, promptMessage);
             }
         }
+
         public static string GetPasswordArgument(string name, string promptMessage = null)
         {
             return GetArgument(name, promptMessage, (p) => PasswordPrompt(p));

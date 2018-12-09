@@ -193,6 +193,11 @@ namespace Bam.Net.Services.Clients
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]
         public event EventHandler ApiKeyFileNotFound;
 
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "Writing ApiKeyFile {ApiKeyFilePath}")]
+        public event EventHandler WritingApiKeyFile;
+
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "Wrote ApiKeyFile {ApiKeyFilePath}")]
+        public event EventHandler WroteApiKeyFile;
         #region IApiKeyProvider
 
         ApiKeyInfo _apiKeyInfo;
@@ -209,8 +214,10 @@ namespace Bam.Net.Services.Clients
                     FireEvent(ApiKeyFileNotFound);
                     _apiKeyInfo = ApplicationRegistryService.GetClientApiKeyInfo();
                     _apiKeyInfo.ApplicationName = nameProvider.GetApplicationName();
+                    FireEvent(WritingApiKeyFile);
                     EnsureApiKeyFileDirectory();
                     _apiKeyInfo.ToJsonFile(ApiKeyFilePath);
+                    FireEvent(WroteApiKeyFile);
                 }
             }
             return _apiKeyInfo;
@@ -277,7 +284,17 @@ namespace Bam.Net.Services.Clients
             return UserRegistryService.SignUp(emailAddress, userName, password.Sha1(), true);
         }
 
-        public ApiKeyInfo RegisterApplication()
+        public CoreServices.ApplicationRegistration.Data.Application RegisterApplication(string applicationName)
+        {
+            //CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(applicationName);
+            //if (response.Success)
+            //{
+
+            //}
+            throw new NotImplementedException();
+        }
+
+        public ApiKeyInfo GetCurrentApplicationApiKeyInfo()
         {
             RegisterApplicationProcess();
             return ApiKeyFilePath.FromJsonFile<ApiKeyInfo>();
@@ -325,6 +342,10 @@ namespace Bam.Net.Services.Clients
                 return IsInitialized;
             }
         }
+        
+        public event EventHandler OAuthSettingsNotFound;
+        public event EventHandler OAuthSettingsWritten;
+        public event EventHandler OAuthSettingsLoaded;
 
         public SupportedOAuthProviders GetSupportedOAuthProviders()
         {
@@ -332,6 +353,7 @@ namespace Bam.Net.Services.Clients
             SupportedOAuthProviders providers = new SupportedOAuthProviders();
             if (!File.Exists(settingsPath))
             {
+                FireEvent(OAuthSettingsNotFound);
                 CoreServiceResponse response = OAuthSettingsService.GetClientSettings(true);
                 if (!response.Success)
                 {
@@ -344,10 +366,12 @@ namespace Bam.Net.Services.Clients
                     providers.AddProvider(setting.CopyAs<OAuthProviderInfo>());
                 }
                 providers.Save(settingsPath);
+                FireEvent(OAuthSettingsWritten);
             }
             else
             {
                 providers = SupportedOAuthProviders.LoadFrom(settingsPath);
+                FireEvent(OAuthSettingsLoaded);
             }
 
             return providers;
@@ -459,7 +483,7 @@ namespace Bam.Net.Services.Clients
         public UserRegistryService UserRegistryService { get; set; }
         protected internal RoleService RoleService { get; set; }
         protected internal OAuthService OAuthService { get; set; }
-        protected internal ApplicationRegistrationService ApplicationRegistryService { get; set; }
+        protected internal ApplicationRegistrationService ApplicationRegistryService { get; set; } // TODO: rename this to ApplicationRegistrationService and test
         protected internal ConfigurationService ConfigurationService { get; set; }
         protected internal SystemLoggerService LoggerService { get; set; }
         protected internal DiagnosticService DiagnosticService { get; set; }

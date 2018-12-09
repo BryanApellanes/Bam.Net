@@ -5,15 +5,15 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
 		[ApiKeyRequired]
@@ -98,32 +98,32 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface IConfigurationService
         {
-	ApplicationConfiguration GetConfiguration(System.String applicationName, System.String machineName, System.String configurationName);
-	void SetCommonConfiguration(System.Collections.Generic.Dictionary<System.String, System.String> settings);
-	Dictionary<System.String, System.String> GetCommonConfiguration();
-	void SetApplicationConfiguration(System.String applicationName, System.Collections.Generic.Dictionary<System.String, System.String> configuration, System.String configurationName);
-	void SetApplicationConfiguration(System.Collections.Generic.Dictionary<System.String, System.String> settings, System.String applicationName, System.String configurationName);
-	void SetMachineConfiguration(System.String machineName, System.Collections.Generic.Dictionary<System.String, System.String> settings, System.String configurationName);
-	Dictionary<System.String, System.String> GetApplicationConfiguration(System.String applicationName, System.String configurationName);
-	Dictionary<System.String, System.String> GetMachineConfiguration(System.String machineName, System.String configurationName);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			ApplicationConfiguration GetConfiguration(System.String applicationName, System.String machineName, System.String configurationName);
+			void SetCommonConfiguration(System.Collections.Generic.Dictionary<System.String, System.String> settings);
+			Dictionary<System.String, System.String> GetCommonConfiguration();
+			void SetApplicationConfiguration(System.String applicationName, System.Collections.Generic.Dictionary<System.String, System.String> configuration, System.String configurationName);
+			void SetApplicationConfiguration(System.Collections.Generic.Dictionary<System.String, System.String> settings, System.String applicationName, System.String configurationName);
+			void SetMachineConfiguration(System.String machineName, System.Collections.Generic.Dictionary<System.String, System.String> settings, System.String configurationName);
+			Dictionary<System.String, System.String> GetApplicationConfiguration(System.String applicationName, System.String configurationName);
+			Dictionary<System.String, System.String> GetMachineConfiguration(System.String machineName, System.String configurationName);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -139,7 +139,11 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices;using System;using System.Collections.Generic;using Bam.Net.UserAccounts;
+	using Bam.Net.CoreServices;
+	using System;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+
 	public class ConfigurationServiceProxy: ConfigurationService, IProxy 
 	{
 		ConfigurationServiceClient _proxyClient;

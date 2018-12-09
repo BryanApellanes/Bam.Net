@@ -5,16 +5,16 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using System.Collections.Generic;
-using Bam.Net.Logging;
-using Bam.Net.CoreServices.Logging;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using System.Collections.Generic;
+	using Bam.Net.Logging;
+	using Bam.Net.CoreServices.Logging;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
 		[ApiKeyRequired]
@@ -74,28 +74,28 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using System.Collections.Generic;
-using Bam.Net.Logging;
-using Bam.Net.CoreServices.Logging;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using System.Collections.Generic;
+	using Bam.Net.Logging;
+	using Bam.Net.CoreServices.Logging;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface ISystemLogReaderService
         {
-	List<Bam.Net.Logging.LogEntry> GetLogEntries(System.DateTime from, System.DateTime to);
-	List<Bam.Net.Logging.LogEntry> GetLogEntriesFrom(System.DateTime since, System.String applicationName, System.String machineName);
-	List<Bam.Net.CoreServices.Logging.LogEntrySource> GetSources(System.DateTime since);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			List<Bam.Net.Logging.LogEntry> GetLogEntries(System.DateTime from, System.DateTime to);
+			List<Bam.Net.Logging.LogEntry> GetLogEntriesFrom(System.DateTime since, System.String applicationName, System.String machineName);
+			List<Bam.Net.CoreServices.Logging.LogEntrySource> GetSources(System.DateTime since);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -111,7 +111,10 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using System.Collections.Generic;using Bam.Net.UserAccounts;using System;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+	using System;
+
 	public class SystemLogReaderServiceProxy: SystemLogReaderService, IProxy 
 	{
 		SystemLogReaderServiceClient _proxyClient;

@@ -5,15 +5,15 @@ This file was generated from http://core.bamapps.net/serviceproxy/csharpproxies.
 
 namespace Bam.Net.CoreServices
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices.ServiceRegistration.Data;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices.ServiceRegistration.Data;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
 		[ApiKeyRequired]
@@ -93,31 +93,31 @@ using Bam.Net.UserAccounts;
 }
 namespace Bam.Net.CoreServices.Contracts
 {
-using System;
-using Bam.Net.Configuration;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices.ServiceRegistration.Data;
-using System.Collections.Generic;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-using Bam.Net.UserAccounts;
+	using System;
+	using Bam.Net.Configuration;
+	using Bam.Net.ServiceProxy;
+	using Bam.Net.ServiceProxy.Secure;
+	using Bam.Net.CoreServices.Contracts;
+	using Bam.Net.CoreServices.ServiceRegistration.Data;
+	using System.Collections.Generic;
+	using Bam.Net.CoreServices.ApplicationRegistration.Data;
+	using Bam.Net.UserAccounts;
 
     
         public interface IServiceRegistryService
         {
-	ServiceRegistryDescriptor GetServiceRegistryDescriptor(System.String name);
-	ServiceRegistryLoaderDescriptor GetServiceRegistryLoaderDescriptor(System.String name);
-	ServiceRegistryDescriptor RegisterServiceRegistryDescriptor(Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor registry, System.Boolean overwrite);
-	ServiceRegistryLoaderDescriptor RegisterServiceRegistryLoaderDescriptor(Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLoaderDescriptor loader, System.Boolean overwrite);
-	void LockServiceRegistry(System.String name);
-	void UnlockServiceRegistry(System.String name);
-	Boolean IsLocked(System.String name);
-	Dictionary<System.String, System.String> GetSettings();
-	LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
-	LoginResponse Login(System.String userName, System.String passHash);
-	SignOutResponse EndSession();
-	String WhoAmI();
+			ServiceRegistryDescriptor GetServiceRegistryDescriptor(System.String name);
+			ServiceRegistryLoaderDescriptor GetServiceRegistryLoaderDescriptor(System.String name);
+			ServiceRegistryDescriptor RegisterServiceRegistryDescriptor(Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor registry, System.Boolean overwrite);
+			ServiceRegistryLoaderDescriptor RegisterServiceRegistryLoaderDescriptor(Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLoaderDescriptor loader, System.Boolean overwrite);
+			void LockServiceRegistry(System.String name);
+			void UnlockServiceRegistry(System.String name);
+			Boolean IsLocked(System.String name);
+			Dictionary<System.String, System.String> GetSettings();
+			LoginResponse ConnectClient(Bam.Net.CoreServices.ApplicationRegistration.Data.Client client);
+			LoginResponse Login(System.String userName, System.String passHash);
+			SignOutResponse EndSession();
+			String WhoAmI();
 
         }
 
@@ -133,7 +133,11 @@ namespace Bam.Net.CoreServices
     using Bam.Net.ServiceProxy;
     using Bam.Net.ServiceProxy.Secure;
     using Bam.Net.CoreServices.Contracts;
-using Bam.Net.CoreServices.ServiceRegistration.Data;using System;using System.Collections.Generic;using Bam.Net.UserAccounts;
+	using Bam.Net.CoreServices.ServiceRegistration.Data;
+	using System;
+	using System.Collections.Generic;
+	using Bam.Net.UserAccounts;
+
 	public class ServiceRegistryServiceProxy: ServiceRegistryService, IProxy 
 	{
 		ServiceRegistryServiceClient _proxyClient;

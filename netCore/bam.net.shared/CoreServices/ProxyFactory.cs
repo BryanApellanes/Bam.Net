@@ -220,7 +220,7 @@ namespace Bam.Net.CoreServices
         /// <summary>
         /// A function that takes the service type and hostname and optionally
         /// returns a modified hostname.  Useful if services will be
-        /// hosted on subdomains, for example: bamapps.net -> appregistry.bammapps.net.
+        /// hosted on subdomains, for example: bamapps.net -> appregistration.bammapps.net.
         /// </summary>
         public Func<Type, string, string> HostNameMunger { get; set; }
 
