@@ -6,6 +6,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy.Tests;
 using Bam.Net.Services.Clients;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
 using System;
 using System.Reflection;
@@ -15,18 +16,25 @@ namespace Bam.Net.CoreServices.Tests
     [Serializable]
     public class UnitTests : CommandLineTestInterface
     {
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void ShouldBeAbleToSaveGeneratedAssemblies()
         {
             CoreClient client = new CoreClient();
-            
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
+            client.Subscribe(logger);
+            client.Logger = logger;
             client.SaveProxyAssemblies();
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void ShouldBeAbleToSaveGeneratedSource()
         {
             CoreClient client = new CoreClient();
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
+            client.Subscribe(logger);
+            client.Logger = logger;
             client.SaveProxySource();
         }
 

@@ -43,7 +43,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 HashSet<string> usings = new HashSet<string>();
-                foreach (string u in Methods.Select(pmm => $"using {pmm.MethodGenerationInfo.Method.ReturnType.Namespace};"))
+                foreach (string u in Methods.Select(pmm => $"\tusing {pmm.MethodGenerationInfo.Method.ReturnType.Namespace};\r\n"))
                 {
                     usings.Add(u);
                 }

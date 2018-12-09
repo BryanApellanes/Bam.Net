@@ -14,8 +14,4 @@
     <ProjectReference Include="..\..\bam.net.core\bam.net.core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Generated\" />
-  </ItemGroup>
-
 </Project>

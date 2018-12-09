@@ -426,11 +426,22 @@ namespace Bam.Net.Services.Clients
         /// </summary>
         public void SaveProxyAssemblies(string directory = null)
         {
-            DirectoryInfo dir = new DirectoryInfo(directory ?? "\\bam\\proxies");
+            DirectoryInfo dir = new DirectoryInfo(directory ?? SystemPaths.Current.Proxies);
+            if (!dir.Exists)
+            {
+                dir.Create();
+            }
             foreach(ProxyableService svc in ServiceClients)
             {
-                FileInfo assembly = svc.GetType().Assembly.GetFileInfo();
-                assembly.CopyTo(Path.Combine(dir.FullName, assembly.Name));
+                try
+                {
+                    FileInfo assembly = svc.GetType().Assembly.GetFileInfo();                    
+                    assembly.CopyTo(Path.Combine(dir.FullName, assembly.Name), true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Exception saving service proxy ({0}): {1}", ex, svc?.GetType().Name ?? "null", ex.Message);
+                }
             }
         }
 

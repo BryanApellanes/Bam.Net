@@ -18,11 +18,11 @@ namespace Bam.Net
             {
                 ThreadHashCode = ThreadHashCode.ToString(),
                 ThreadId = ThreadId.ToString(),
-                ApplicationName = ApplicationName,
+                ApplicationName,
                 ProcessId = ProcessId.ToString(),
                 UtcShortDate = Utc.ToShortDateString(),
                 UtcShortTime = Utc.ToShortTimeString(),
-                Message = Message
+                Message
             };
             return NamedMessageFormat.NamedFormat(names);
         }

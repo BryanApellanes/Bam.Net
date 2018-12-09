@@ -26,11 +26,11 @@ namespace Bam.Net
 
         public ApplicationDiagnosticInfo()
         {
-            this.NamedMessageFormat = DefaultMessageFormat;
-            this.Utc = DateTime.UtcNow;
-            this.ThreadHashCode = Thread.CurrentThread.GetHashCode();
-            this.ThreadId = Thread.CurrentThread.ManagedThreadId;
-            this.ProcessId = Process.GetCurrentProcess().Id;
+            NamedMessageFormat = DefaultMessageFormat;
+            Utc = DateTime.UtcNow;
+            ThreadHashCode = Thread.CurrentThread.GetHashCode();
+            ThreadId = Thread.CurrentThread.ManagedThreadId;
+            ProcessId = Process.GetCurrentProcess().Id;
         }
 
         public ApplicationDiagnosticInfo(LogEvent logEvent)

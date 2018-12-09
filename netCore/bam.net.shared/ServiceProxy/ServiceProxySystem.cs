@@ -273,7 +273,7 @@ This file was generated from {0}serviceproxy/csharpproxies.  This file should no
             }
         }
 
-        protected static string UsingFormat { get { return "using {0};\r\n"; } }
+        protected static string UsingFormat { get { return "\tusing {0};\r\n"; } }
 
         protected static string NameSpaceFormat
         {
@@ -329,6 +329,7 @@ namespace {0}
 ";
             }
         }
+
         protected static string InterfaceFormat
         {
             get
@@ -341,13 +342,15 @@ namespace {0}
 ";
             }
         }
+
         protected static string InterfaceMethodFormat
         {
             get
             {
-                return "\t{0} {1}({2});\r\n";
+                return "\t\t\t{0} {1}({2});\r\n";
             }
         }
+
         public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace, Incubator incubator, ILogger logger = null, bool includeLocalMethods = false)
         {
             logger = logger ?? Log.Default;
@@ -367,6 +370,7 @@ namespace {0}
             Args.ThrowIf(types.Count == 0, "None of the specified classes were found: {0}", string.Join(", ", classNames));
             return ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray(), includeLocalMethods);
         }
+
         public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string nameSpace, string contractNamespace, Type[] types, bool includeLocalMethods = false)
         {
             StringBuilder code = new StringBuilder();
@@ -380,6 +384,7 @@ namespace {0}
                 "Bam.Net.ServiceProxy.Secure",
                 contractNamespace
             };
+
             foreach (Type type in types)
             {
                 StringBuilder methods = new StringBuilder();

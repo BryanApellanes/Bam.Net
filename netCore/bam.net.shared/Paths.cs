@@ -82,7 +82,7 @@ namespace Bam.Net
             NugetPackages = Path.Combine(Root, "nuget", "packages");
 
             Generated = Path.Combine(Root, "src", "_gen");
-            Proxies = Path.Combine(Sys, "proxies");
+            Proxies = Path.Combine(Sys, "_proxies");
             Builds = Path.Combine(PubRoot, "Builds");            
         }
     }
