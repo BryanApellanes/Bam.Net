@@ -8,7 +8,7 @@ using NLog.Targets;
 
 namespace Bam.Net.Logging.NLog
 {
-    public class BamNLogTarget: Target
+    public class NLogTarget: Target
     {
         public static ILogger Logger { get; set; }
         protected override void Write(LogEventInfo logEvent)

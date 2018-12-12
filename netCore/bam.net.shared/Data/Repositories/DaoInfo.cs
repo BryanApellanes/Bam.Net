@@ -28,11 +28,10 @@ namespace Bam.Net.Data.Repositories
                     string[] chunks = uri.AbsolutePath.DelimitSplit("/");
                     if(chunks.Length == 4 && chunks[0].Equals("dao", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        CrudMethods method;
-                        if(Enum.TryParse<CrudMethods>(chunks[2], out method))
+                        if (Enum.TryParse<CrudMethods>(chunks[2], out CrudMethods method))
                         {
                             return new DaoInfo { ConnectionName = chunks[1], Method = method, DaoName = chunks[3] };
-                        }                            
+                        }
                     }
                     return new DaoInfo();
                 };

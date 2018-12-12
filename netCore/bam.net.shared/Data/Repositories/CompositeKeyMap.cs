@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
+    /// <summary>
+    /// Maps the composite key of an instance to its Cuid.
+    /// </summary>
     [Serializable]
     public class CompositeKeyMap: RepoData
     {
