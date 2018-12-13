@@ -17,30 +17,30 @@ namespace Bam.Net.Logging.Http.Data.Dao
 	// schema = HttpLogging
 	// connection Name = HttpLogging
 	[Serializable]
-	[Bam.Net.Data.Table("RequestData", "HttpLogging")]
-	public partial class RequestData: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("UserData", "HttpLogging")]
+	public partial class UserData: Bam.Net.Data.Dao
 	{
-		public RequestData():base()
+		public UserData():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public RequestData(DataRow data)
+		public UserData(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public RequestData(Database db)
+		public UserData(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public RequestData(Database db, DataRow data)
+		public UserData(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,22 +48,14 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator RequestData(DataRow data)
+		public static implicit operator UserData(DataRow data)
 		{
-			return new RequestData(data);
+			return new UserData(data);
 		}
 
 		private void SetChildren()
 		{
-
-			if(_database != null)
-			{
-				this.ChildCollections.Add("CookieData_RequestDataId", new CookieDataCollection(Database.GetQuery<CookieDataColumns, CookieData>((c) => c.RequestDataId == GetULongValue("Id")), this, "RequestDataId"));				
-			}
-			if(_database != null)
-			{
-				this.ChildCollections.Add("HeaderData_RequestDataId", new HeaderDataCollection(Database.GetQuery<HeaderDataColumns, HeaderData>((c) => c.RequestDataId == GetULongValue("Id")), this, "RequestDataId"));				
-			}						
+						
 		}
 
 	// property:Id, columnName:Id	
@@ -109,143 +101,31 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 	}
 
-	// property:AcceptTypes, columnName:AcceptTypes	
-	[Bam.Net.Data.Column(Name="AcceptTypes", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AcceptTypes
+	// property:UserName, columnName:UserName	
+	[Bam.Net.Data.Column(Name="UserName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string UserName
 	{
 		get
 		{
-			return GetStringValue("AcceptTypes");
+			return GetStringValue("UserName");
 		}
 		set
 		{
-			SetValue("AcceptTypes", value);
+			SetValue("UserName", value);
 		}
 	}
 
-	// property:ContentEncoding, columnName:ContentEncoding	
-	[Bam.Net.Data.Column(Name="ContentEncoding", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ContentEncoding
+	// property:RequestCuid, columnName:RequestCuid	
+	[Bam.Net.Data.Column(Name="RequestCuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string RequestCuid
 	{
 		get
 		{
-			return GetStringValue("ContentEncoding");
+			return GetStringValue("RequestCuid");
 		}
 		set
 		{
-			SetValue("ContentEncoding", value);
-		}
-	}
-
-	// property:ContentLength, columnName:ContentLength	
-	[Bam.Net.Data.Column(Name="ContentLength", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
-	public long? ContentLength
-	{
-		get
-		{
-			return GetLongValue("ContentLength");
-		}
-		set
-		{
-			SetValue("ContentLength", value);
-		}
-	}
-
-	// property:ContentType, columnName:ContentType	
-	[Bam.Net.Data.Column(Name="ContentType", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ContentType
-	{
-		get
-		{
-			return GetStringValue("ContentType");
-		}
-		set
-		{
-			SetValue("ContentType", value);
-		}
-	}
-
-	// property:HttpMethod, columnName:HttpMethod	
-	[Bam.Net.Data.Column(Name="HttpMethod", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string HttpMethod
-	{
-		get
-		{
-			return GetStringValue("HttpMethod");
-		}
-		set
-		{
-			SetValue("HttpMethod", value);
-		}
-	}
-
-	// property:UserAgent, columnName:UserAgent	
-	[Bam.Net.Data.Column(Name="UserAgent", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UserAgent
-	{
-		get
-		{
-			return GetStringValue("UserAgent");
-		}
-		set
-		{
-			SetValue("UserAgent", value);
-		}
-	}
-
-	// property:UserHostAddress, columnName:UserHostAddress	
-	[Bam.Net.Data.Column(Name="UserHostAddress", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UserHostAddress
-	{
-		get
-		{
-			return GetStringValue("UserHostAddress");
-		}
-		set
-		{
-			SetValue("UserHostAddress", value);
-		}
-	}
-
-	// property:UserHostName, columnName:UserHostName	
-	[Bam.Net.Data.Column(Name="UserHostName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UserHostName
-	{
-		get
-		{
-			return GetStringValue("UserHostName");
-		}
-		set
-		{
-			SetValue("UserHostName", value);
-		}
-	}
-
-	// property:UserLanguages, columnName:UserLanguages	
-	[Bam.Net.Data.Column(Name="UserLanguages", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UserLanguages
-	{
-		get
-		{
-			return GetStringValue("UserLanguages");
-		}
-		set
-		{
-			SetValue("UserLanguages", value);
-		}
-	}
-
-	// property:RawUrl, columnName:RawUrl	
-	[Bam.Net.Data.Column(Name="RawUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string RawUrl
-	{
-		get
-		{
-			return GetStringValue("RawUrl");
-		}
-		set
-		{
-			SetValue("RawUrl", value);
+			SetValue("RequestCuid", value);
 		}
 	}
 
@@ -266,55 +146,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 
 
 				
-
-	[Bam.Net.Exclude]	
-	public CookieDataCollection CookieDatasByRequestDataId
-	{
-		get
-		{
-			if (this.IsNew)
-			{
-				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-			}
-
-			if(!this.ChildCollections.ContainsKey("CookieData_RequestDataId"))
-			{
-				SetChildren();
-			}
-
-			var c = (CookieDataCollection)this.ChildCollections["CookieData_RequestDataId"];
-			if(!c.Loaded)
-			{
-				c.Load(Database);
-			}
-			return c;
-		}
-	}
-	
-	[Bam.Net.Exclude]	
-	public HeaderDataCollection HeaderDatasByRequestDataId
-	{
-		get
-		{
-			if (this.IsNew)
-			{
-				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-			}
-
-			if(!this.ChildCollections.ContainsKey("HeaderData_RequestDataId"))
-			{
-				SetChildren();
-			}
-
-			var c = (HeaderDataCollection)this.ChildCollections["HeaderData_RequestDataId"];
-			if(!c.Loaded)
-			{
-				c.Load(Database);
-			}
-			return c;
-		}
-	}
-			
+		
 
 		/// <summary>
 		/// Gets a query filter that should uniquely identify
@@ -330,23 +162,23 @@ namespace Bam.Net.Logging.Http.Data.Dao
 			}
 			else
 			{
-				var colFilter = new RequestDataColumns();
+				var colFilter = new UserDataColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the RequestData table.
+		/// Return every record in the UserData table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static RequestDataCollection LoadAll(Database database = null)
+		public static UserDataCollection LoadAll(Database database = null)
 		{
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			SqlStringBuilder sql = db.GetSqlStringBuilder();
-			sql.Select<RequestData>();
-			var results = new RequestDataCollection(db, sql.GetDataTable(db))
+			sql.Select<UserData>();
+			var results = new UserDataCollection(db, sql.GetDataTable(db))
 			{
 				Database = db
 			};
@@ -357,12 +189,12 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<RequestData>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserData>> batchProcessor, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				RequestDataColumns columns = new RequestDataColumns();
-				var orderBy = Bam.Net.Data.Order.By<RequestDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				UserDataColumns columns = new UserDataColumns();
+				var orderBy = Bam.Net.Data.Order.By<UserDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -380,7 +212,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<RequestData>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<UserData>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -389,12 +221,12 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<RequestDataColumns> where, Action<IEnumerable<RequestData>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<UserDataColumns> where, Action<IEnumerable<UserData>> batchProcessor, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				RequestDataColumns columns = new RequestDataColumns();
-				var orderBy = Bam.Net.Data.Order.By<RequestDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				UserDataColumns columns = new UserDataColumns();
+				var orderBy = Bam.Net.Data.Order.By<UserDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -403,7 +235,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (RequestDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (UserDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
@@ -412,7 +244,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<RequestData>> batchProcessor, Bam.Net.Data.OrderBy<RequestDataColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<UserData>> batchProcessor, Bam.Net.Data.OrderBy<UserDataColumns> orderBy, Database database = null)
 		{
 			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
 		}
@@ -421,11 +253,11 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RequestDataColumns> where, Action<IEnumerable<RequestData>> batchProcessor, Bam.Net.Data.OrderBy<RequestDataColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserDataColumns> where, Action<IEnumerable<UserData>> batchProcessor, Bam.Net.Data.OrderBy<UserDataColumns> orderBy, Database database = null)
 		{
 			await System.Threading.Tasks.Task.Run(async ()=>
 			{
-				RequestDataColumns columns = new RequestDataColumns();
+				UserDataColumns columns = new UserDataColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -434,101 +266,101 @@ namespace Bam.Net.Logging.Http.Data.Dao
 						batchProcessor(results);
 					});
 					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
-					results = Top(batchSize, (RequestDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
+					results = Top(batchSize, (UserDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
 
-		public static RequestData GetById(uint id, Database database = null)
+		public static UserData GetById(uint id, Database database = null)
 		{
 			return GetById((ulong)id, database);
 		}
 
-		public static RequestData GetById(int id, Database database = null)
+		public static UserData GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static RequestData GetById(long id, Database database = null)
+		public static UserData GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static RequestData GetById(ulong id, Database database = null)
+		public static UserData GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static RequestData GetByUuid(string uuid, Database database = null)
+		public static UserData GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static RequestData GetByCuid(string cuid, Database database = null)
+		public static UserData GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Query(QueryFilter filter, Database database = null)
+		public static UserDataCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static RequestDataCollection Where(QueryFilter filter, Database database = null)
+		public static UserDataCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<RequestDataColumns> whereDelegate = (c) => filter;
+			WhereDelegate<UserDataColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a RequestDataColumns 
+		/// <param name="where">A Func delegate that recieves a UserDataColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Where(Func<RequestDataColumns, QueryFilter<RequestDataColumns>> where, OrderBy<RequestDataColumns> orderBy = null, Database database = null)
+		public static UserDataCollection Where(Func<UserDataColumns, QueryFilter<UserDataColumns>> where, OrderBy<UserDataColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<RequestData>();
-			return new RequestDataCollection(database.GetQuery<RequestDataColumns, RequestData>(where, orderBy), true);
+			database = database ?? Db.For<UserData>();
+			return new UserDataCollection(database.GetQuery<UserDataColumns, UserData>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Where(WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static UserDataCollection Where(WhereDelegate<UserDataColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<RequestData>();
-			var results = new RequestDataCollection(database, database.GetQuery<RequestDataColumns, RequestData>(where), true);
+			database = database ?? Db.For<UserData>();
+			var results = new UserDataCollection(database, database.GetQuery<UserDataColumns, UserData>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Where(WhereDelegate<RequestDataColumns> where, OrderBy<RequestDataColumns> orderBy = null, Database database = null)
+		public static UserDataCollection Where(WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<RequestData>();
-			var results = new RequestDataCollection(database, database.GetQuery<RequestDataColumns, RequestData>(where, orderBy), true);
+			database = database ?? Db.For<UserData>();
+			var results = new UserDataCollection(database, database.GetQuery<UserDataColumns, UserData>(where, orderBy), true);
 			return results;
 		}
 
@@ -536,13 +368,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;RequestDataColumns&gt;.
+		/// WhereDelegate&lt;UserDataColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static RequestDataCollection Where(QiQuery where, Database database = null)
+		public static UserDataCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new RequestDataCollection(database, Select<RequestDataColumns>.From<RequestData>().Where(where, database));
+			var results = new UserDataCollection(database, Select<UserDataColumns>.From<UserData>().Where(where, database));
 			return results;
 		}
 				
@@ -552,7 +384,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static RequestData GetOneWhere(QueryFilter where, Database database = null)
+		public static UserData GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -571,9 +403,9 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData OneWhere(QueryFilter where, Database database = null)
+		public static UserData OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<RequestDataColumns> whereDelegate = (c) => where;
+			WhereDelegate<UserDataColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -586,12 +418,12 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData GetOneWhere(WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static UserData GetOneWhere(WhereDelegate<UserDataColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				RequestDataColumns c = new RequestDataColumns();
+				UserDataColumns c = new UserDataColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -603,15 +435,15 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single RequestData instance by its Id/Key value
+		/// single UserData instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData OneWhere(WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static UserData OneWhere(WhereDelegate<UserDataColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -621,11 +453,11 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<RequestDataColumns>.
+		/// WhereDelegate<UserDataColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static RequestData OneWhere(QiQuery where, Database database = null)
+		public static UserData OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -635,13 +467,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData FirstOneWhere(WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static UserData FirstOneWhere(WhereDelegate<UserDataColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -658,13 +490,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData FirstOneWhere(WhereDelegate<RequestDataColumns> where, OrderBy<RequestDataColumns> orderBy, Database database = null)
+		public static UserData FirstOneWhere(WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -680,15 +512,15 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestData FirstOneWhere(QueryFilter where, OrderBy<RequestDataColumns> orderBy = null, Database database = null)
+		public static UserData FirstOneWhere(QueryFilter where, OrderBy<UserDataColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<RequestDataColumns> whereDelegate = (c) => where;
+			WhereDelegate<UserDataColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -709,13 +541,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Top(int count, WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static UserDataCollection Top(int count, WhereDelegate<UserDataColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -729,9 +561,9 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -740,29 +572,29 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Top(int count, WhereDelegate<RequestDataColumns> where, OrderBy<RequestDataColumns> orderBy, Database database = null)
+		public static UserDataCollection Top(int count, WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy, Database database = null)
 		{
-			RequestDataColumns c = new RequestDataColumns();
+			UserDataColumns c = new UserDataColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<RequestData>(count);
+			query.Top<UserData>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<RequestDataColumns>(orderBy);
+				query.OrderBy<UserDataColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<RequestDataCollection>(0);
+			var results = query.Results.As<UserDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Top(int count, QueryFilter where, Database database)
+		public static UserDataCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -786,30 +618,30 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Top(int count, QueryFilter where, OrderBy<RequestDataColumns> orderBy = null, Database database = null)
+		public static UserDataCollection Top(int count, QueryFilter where, OrderBy<UserDataColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<RequestData>(count);
+			query.Top<UserData>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<RequestDataColumns>(orderBy);
+				query.OrderBy<UserDataColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<RequestDataCollection>(0);
+			var results = query.Results.As<UserDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static RequestDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		public static UserDataCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
 		{
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<RequestData>(count);
+			query.Top<UserData>(count);
 			query.Where(where);
 
 			if(orderBy != null)
@@ -818,7 +650,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<RequestDataCollection>(0);
+			var results = query.Results.As<UserDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -839,29 +671,29 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static RequestDataCollection Top(int count, QiQuery where, Database database = null)
+		public static UserDataCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<RequestData>(count);
+			query.Top<UserData>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<RequestDataCollection>(0);
+			var results = query.Results.As<UserDataCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of RequestDatas
+		/// Return the count of UserDatas
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
             QuerySet query = GetQuerySet(db);
-            query.Count<RequestData>();
+            query.Count<UserData>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -869,22 +701,22 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a RequestDataColumns 
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between RequestDataColumns and other values
+		/// between UserDataColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<RequestDataColumns> where, Database database = null)
+		public static long Count(WhereDelegate<UserDataColumns> where, Database database = null)
 		{
-			RequestDataColumns c = new RequestDataColumns();
+			UserDataColumns c = new UserDataColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<RequestData>();
+			Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<RequestData>();
+			query.Count<UserData>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -892,18 +724,18 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<RequestData>();
+		    Database db = database ?? Db.For<UserData>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<RequestData>();
+			query.Count<UserData>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static RequestData CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static UserData CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<RequestData>();			
-			var dao = new RequestData();
+			Database db = database ?? Db.For<UserData>();			
+			var dao = new UserData();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -912,7 +744,7 @@ namespace Bam.Net.Logging.Http.Data.Dao
 			return dao;
 		}
 		
-		private static RequestData OneOrThrow(RequestDataCollection c)
+		private static UserData OneOrThrow(UserDataCollection c)
 		{
 			if(c.Count == 1)
 			{

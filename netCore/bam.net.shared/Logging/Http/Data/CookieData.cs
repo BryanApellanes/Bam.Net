@@ -36,10 +36,7 @@ namespace Bam.Net.Logging.Http.Data
 
         public static CookieData FromCookie(Cookie cookie)
         {
-            return new CookieData
-            {
-
-            };
+            return cookie.CopyAs<CookieData>();
         }
     }
 }

@@ -19,9 +19,14 @@ namespace Bam.Net.Logging.Http
         public IUserResolver UserResolver { get; }
         public HttpLoggingRepository HttpLoggingRepository { get; }
 
-        public void Log(IRequest request)
+        public void Log(IHttpContext context)
         {
-            Task.Run(() => HttpLoggingRepository.Save(RequestData.FromRequest(request)));
+            Task.Run(() =>
+            {
+                IRequest request = context.Request;
+                RequestData reqeustData = HttpLoggingRepository.Save(RequestData.FromRequest(request));
+                UserData user = new UserData { UserName = UserResolver.GetUser(context), RequestCuid = reqeustData.Cuid };
+            });
         }
     }
 }

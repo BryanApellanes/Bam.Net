@@ -101,6 +101,286 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 	}
 
+	// property:IsDefaultPort, columnName:IsDefaultPort	
+	[Bam.Net.Data.Column(Name="IsDefaultPort", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsDefaultPort
+	{
+		get
+		{
+			return GetBooleanValue("IsDefaultPort");
+		}
+		set
+		{
+			SetValue("IsDefaultPort", value);
+		}
+	}
+
+	// property:Authority, columnName:Authority	
+	[Bam.Net.Data.Column(Name="Authority", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Authority
+	{
+		get
+		{
+			return GetStringValue("Authority");
+		}
+		set
+		{
+			SetValue("Authority", value);
+		}
+	}
+
+	// property:DnsSafeHost, columnName:DnsSafeHost	
+	[Bam.Net.Data.Column(Name="DnsSafeHost", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string DnsSafeHost
+	{
+		get
+		{
+			return GetStringValue("DnsSafeHost");
+		}
+		set
+		{
+			SetValue("DnsSafeHost", value);
+		}
+	}
+
+	// property:Fragment, columnName:Fragment	
+	[Bam.Net.Data.Column(Name="Fragment", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Fragment
+	{
+		get
+		{
+			return GetStringValue("Fragment");
+		}
+		set
+		{
+			SetValue("Fragment", value);
+		}
+	}
+
+	// property:Host, columnName:Host	
+	[Bam.Net.Data.Column(Name="Host", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Host
+	{
+		get
+		{
+			return GetStringValue("Host");
+		}
+		set
+		{
+			SetValue("Host", value);
+		}
+	}
+
+	// property:IdnHost, columnName:IdnHost	
+	[Bam.Net.Data.Column(Name="IdnHost", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string IdnHost
+	{
+		get
+		{
+			return GetStringValue("IdnHost");
+		}
+		set
+		{
+			SetValue("IdnHost", value);
+		}
+	}
+
+	// property:IsAbsoluteUri, columnName:IsAbsoluteUri	
+	[Bam.Net.Data.Column(Name="IsAbsoluteUri", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsAbsoluteUri
+	{
+		get
+		{
+			return GetBooleanValue("IsAbsoluteUri");
+		}
+		set
+		{
+			SetValue("IsAbsoluteUri", value);
+		}
+	}
+
+	// property:IsFile, columnName:IsFile	
+	[Bam.Net.Data.Column(Name="IsFile", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsFile
+	{
+		get
+		{
+			return GetBooleanValue("IsFile");
+		}
+		set
+		{
+			SetValue("IsFile", value);
+		}
+	}
+
+	// property:IsUnc, columnName:IsUnc	
+	[Bam.Net.Data.Column(Name="IsUnc", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsUnc
+	{
+		get
+		{
+			return GetBooleanValue("IsUnc");
+		}
+		set
+		{
+			SetValue("IsUnc", value);
+		}
+	}
+
+	// property:LocalPath, columnName:LocalPath	
+	[Bam.Net.Data.Column(Name="LocalPath", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string LocalPath
+	{
+		get
+		{
+			return GetStringValue("LocalPath");
+		}
+		set
+		{
+			SetValue("LocalPath", value);
+		}
+	}
+
+	// property:OriginalString, columnName:OriginalString	
+	[Bam.Net.Data.Column(Name="OriginalString", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string OriginalString
+	{
+		get
+		{
+			return GetStringValue("OriginalString");
+		}
+		set
+		{
+			SetValue("OriginalString", value);
+		}
+	}
+
+	// property:PathAndQuery, columnName:PathAndQuery	
+	[Bam.Net.Data.Column(Name="PathAndQuery", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string PathAndQuery
+	{
+		get
+		{
+			return GetStringValue("PathAndQuery");
+		}
+		set
+		{
+			SetValue("PathAndQuery", value);
+		}
+	}
+
+	// property:Port, columnName:Port	
+	[Bam.Net.Data.Column(Name="Port", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? Port
+	{
+		get
+		{
+			return GetIntValue("Port");
+		}
+		set
+		{
+			SetValue("Port", value);
+		}
+	}
+
+	// property:QueryString, columnName:QueryString	
+	[Bam.Net.Data.Column(Name="QueryString", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string QueryString
+	{
+		get
+		{
+			return GetStringValue("QueryString");
+		}
+		set
+		{
+			SetValue("QueryString", value);
+		}
+	}
+
+	// property:Scheme, columnName:Scheme	
+	[Bam.Net.Data.Column(Name="Scheme", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Scheme
+	{
+		get
+		{
+			return GetStringValue("Scheme");
+		}
+		set
+		{
+			SetValue("Scheme", value);
+		}
+	}
+
+	// property:AbsoluteUri, columnName:AbsoluteUri	
+	[Bam.Net.Data.Column(Name="AbsoluteUri", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AbsoluteUri
+	{
+		get
+		{
+			return GetStringValue("AbsoluteUri");
+		}
+		set
+		{
+			SetValue("AbsoluteUri", value);
+		}
+	}
+
+	// property:IsLoopback, columnName:IsLoopback	
+	[Bam.Net.Data.Column(Name="IsLoopback", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? IsLoopback
+	{
+		get
+		{
+			return GetBooleanValue("IsLoopback");
+		}
+		set
+		{
+			SetValue("IsLoopback", value);
+		}
+	}
+
+	// property:AbsolutePath, columnName:AbsolutePath	
+	[Bam.Net.Data.Column(Name="AbsolutePath", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AbsolutePath
+	{
+		get
+		{
+			return GetStringValue("AbsolutePath");
+		}
+		set
+		{
+			SetValue("AbsolutePath", value);
+		}
+	}
+
+	// property:UserInfo, columnName:UserInfo	
+	[Bam.Net.Data.Column(Name="UserInfo", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string UserInfo
+	{
+		get
+		{
+			return GetStringValue("UserInfo");
+		}
+		set
+		{
+			SetValue("UserInfo", value);
+		}
+	}
+
+	// property:UserEscaped, columnName:UserEscaped	
+	[Bam.Net.Data.Column(Name="UserEscaped", DbDataType="Bit", MaxLength="1", AllowNull=true)]
+	public bool? UserEscaped
+	{
+		get
+		{
+			return GetBooleanValue("UserEscaped");
+		}
+		set
+		{
+			SetValue("UserEscaped", value);
+		}
+	}
+
 	// property:Created, columnName:Created	
 	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? Created

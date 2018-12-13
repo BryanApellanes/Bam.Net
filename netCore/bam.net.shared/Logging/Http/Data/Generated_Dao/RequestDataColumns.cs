@@ -49,6 +49,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
                 return new RequestDataColumns("AcceptTypes");
             }
         }
+        public RequestDataColumns ContentEncoding
+        {
+            get
+            {
+                return new RequestDataColumns("ContentEncoding");
+            }
+        }
         public RequestDataColumns ContentLength
         {
             get

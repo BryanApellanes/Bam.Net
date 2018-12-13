@@ -290,5 +290,57 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		{
 			return _uriDatasLock.DoubleCheckLock<UriDataQueryContext>(ref _uriDatas, () => new UriDataQueryContext());
 		}
+	}
+	public class UserDataQueryContext
+	{
+			public UserDataCollection Where(WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.Where(where, db);
+			}
+		   
+			public UserDataCollection Where(WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.Where(where, orderBy, db);
+			}
+
+			public UserData OneWhere(WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.OneWhere(where, db);
+			}
+
+			public static UserData GetOneWhere(WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.GetOneWhere(where, db);
+			}
+		
+			public UserData FirstOneWhere(WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.FirstOneWhere(where, db);
+			}
+
+			public UserDataCollection Top(int count, WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.Top(count, where, db);
+			}
+
+			public UserDataCollection Top(int count, WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<UserDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserData.Count(where, db);
+			}
+	}
+
+	static UserDataQueryContext _userDatas;
+	static object _userDatasLock = new object();
+	public static UserDataQueryContext UserDatas
+	{
+		get
+		{
+			return _userDatasLock.DoubleCheckLock<UserDataQueryContext>(ref _userDatas, () => new UserDataQueryContext());
+		}
 	}    }
 }																								

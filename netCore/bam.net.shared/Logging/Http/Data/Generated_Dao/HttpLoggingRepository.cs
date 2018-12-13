@@ -28,7 +28,8 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
 			AddType<Bam.Net.Logging.Http.Data.HeaderData>();﻿			
 			AddType<Bam.Net.Logging.Http.Data.QueryStringData>();﻿			
 			AddType<Bam.Net.Logging.Http.Data.RequestData>();﻿			
-			AddType<Bam.Net.Logging.Http.Data.UriData>();
+			AddType<Bam.Net.Logging.Http.Data.UriData>();﻿			
+			AddType<Bam.Net.Logging.Http.Data.UserData>();
 			DaoAssembly = typeof(HttpLoggingRepository).Assembly;
 		}
 
@@ -501,6 +502,98 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
             await Bam.Net.Logging.Http.Data.Dao.UriData.BatchAll(batchSize, (batch) =>
             {
 				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UriData>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.Logging.Http.Data.UserData GetOneUserDataWhere(WhereDelegate<UserDataColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.Logging.Http.Data.UserData>();
+			return (Bam.Net.Logging.Http.Data.UserData)Bam.Net.Logging.Http.Data.Dao.UserData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// single UserData instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserDataColumns and other values
+		/// </param>
+		public Bam.Net.Logging.Http.Data.UserData OneUserDataWhere(WhereDelegate<UserDataColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.Logging.Http.Data.UserData>();
+            return (Bam.Net.Logging.Http.Data.UserData)Bam.Net.Logging.Http.Data.Dao.UserData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Logging.Http.Data.UserDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.Logging.Http.Data.UserDataColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Logging.Http.Data.UserData> UserDatasWhere(WhereDelegate<UserDataColumns> where, OrderBy<UserDataColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.Logging.Http.Data.UserData>(Bam.Net.Logging.Http.Data.Dao.UserData.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserDataColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Logging.Http.Data.UserData> TopUserDatasWhere(int count, WhereDelegate<UserDataColumns> where)
+        {
+            return Wrap<Bam.Net.Logging.Http.Data.UserData>(Bam.Net.Logging.Http.Data.Dao.UserData.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of UserDatas
+		/// </summary>
+		public long CountUserDatas()
+        {
+            return Bam.Net.Logging.Http.Data.Dao.UserData.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserDataColumns and other values
+		/// </param>
+        public long CountUserDatasWhere(WhereDelegate<UserDataColumns> where)
+        {
+            return Bam.Net.Logging.Http.Data.Dao.UserData.Count(where, Database);
+        }
+        
+        public async Task BatchQueryUserDatas(int batchSize, WhereDelegate<UserDataColumns> where, Action<IEnumerable<Bam.Net.Logging.Http.Data.UserData>> batchProcessor)
+        {
+            await Bam.Net.Logging.Http.Data.Dao.UserData.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UserData>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllUserDatas(int batchSize, Action<IEnumerable<Bam.Net.Logging.Http.Data.UserData>> batchProcessor)
+        {
+            await Bam.Net.Logging.Http.Data.Dao.UserData.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UserData>(batch));
             }, Database);
         }
 	}
