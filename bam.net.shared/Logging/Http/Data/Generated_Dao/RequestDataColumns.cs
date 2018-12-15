@@ -77,6 +77,20 @@ namespace Bam.Net.Logging.Http.Data.Dao
                 return new RequestDataColumns("HttpMethod");
             }
         }
+        public RequestDataColumns UrlId
+        {
+            get
+            {
+                return new RequestDataColumns("UrlId");
+            }
+        }
+        public RequestDataColumns UrlReferrerId
+        {
+            get
+            {
+                return new RequestDataColumns("UrlReferrerId");
+            }
+        }
         public RequestDataColumns UserAgent
         {
             get

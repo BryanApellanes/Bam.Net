@@ -241,6 +241,20 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 	}
 
+	// property:UriId, columnName:UriId	
+	[Bam.Net.Data.Column(Name="UriId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public ulong? UriId
+	{
+		get
+		{
+			return GetULongValue("UriId");
+		}
+		set
+		{
+			SetValue("UriId", value);
+		}
+	}
+
 	// property:Comment, columnName:Comment	
 	[Bam.Net.Data.Column(Name="Comment", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Comment

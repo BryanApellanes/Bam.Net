@@ -112,6 +112,13 @@ namespace Bam.Net.Logging.Http.Data.Dao
                 return new CookieDataColumns("Discard");
             }
         }
+        public CookieDataColumns UriId
+        {
+            get
+            {
+                return new CookieDataColumns("UriId");
+            }
+        }
         public CookieDataColumns Comment
         {
             get

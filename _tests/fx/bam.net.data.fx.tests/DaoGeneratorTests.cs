@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Data.Schema;
+using Bam.Net.Logging.Http;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 using System;

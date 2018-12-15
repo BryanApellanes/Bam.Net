@@ -27,6 +27,8 @@ namespace Bam.Net.Logging.Http.Data
         [CompositeKey]
         public string Value { get; set; }
         public bool Discard { get; set; }
+
+        public ulong UriId { get; set; }
         public virtual UriData Uri { get; set; }
         public string Comment { get; set; }
         public bool Expired { get; set; }

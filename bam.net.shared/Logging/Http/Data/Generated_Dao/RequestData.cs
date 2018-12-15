@@ -179,6 +179,34 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 	}
 
+	// property:UrlId, columnName:UrlId	
+	[Bam.Net.Data.Column(Name="UrlId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public ulong? UrlId
+	{
+		get
+		{
+			return GetULongValue("UrlId");
+		}
+		set
+		{
+			SetValue("UrlId", value);
+		}
+	}
+
+	// property:UrlReferrerId, columnName:UrlReferrerId	
+	[Bam.Net.Data.Column(Name="UrlReferrerId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public ulong? UrlReferrerId
+	{
+		get
+		{
+			return GetULongValue("UrlReferrerId");
+		}
+		set
+		{
+			SetValue("UrlReferrerId", value);
+		}
+	}
+
 	// property:UserAgent, columnName:UserAgent	
 	[Bam.Net.Data.Column(Name="UserAgent", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string UserAgent

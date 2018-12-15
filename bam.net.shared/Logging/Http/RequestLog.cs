@@ -10,6 +10,11 @@ namespace Bam.Net.Logging.Http
 {
     public class RequestLog
     {
+        public RequestLog()
+        {
+            HttpLoggingRepository = new HttpLoggingRepository();
+        }
+
         public RequestLog(IUserResolver userResolver, HttpLoggingRepository repository)
         {
             HttpLoggingRepository = repository;

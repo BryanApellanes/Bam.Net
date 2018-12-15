@@ -20,7 +20,11 @@ namespace Bam.Net.Logging.Http.Data
         public virtual List<HeaderData> Headers { get; set; }
         public string HttpMethod { get; set; }
         public byte[] InputStream { get; set; }
+
+        public ulong UrlId { get; set; }
         public virtual UriData Url { get; set; }
+
+        public ulong UrlReferrerId { get; set; }
         public virtual UriData UrlReferrer { get; set; }
         public string UserAgent { get; set; }
         public string UserHostAddress { get; set; }
