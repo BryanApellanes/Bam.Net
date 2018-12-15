@@ -446,6 +446,28 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		}
 
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<HeaderDataColumns> where, Database database = null)
+		{
+			SetOneWhere(where, out HeaderData ignore, database);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<HeaderDataColumns> where, out HeaderData result, Database database = null)
+		{
+			result = GetOneWhere(where, database);
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.

@@ -42,11 +42,11 @@ namespace Bam.Net.Logging.Http.Data.Dao
                 return new UserDataColumns("Cuid");
             }
         }
-        public UserDataColumns UserName
+        public UserDataColumns UserNameHash
         {
             get
             {
-                return new UserDataColumns("UserName");
+                return new UserDataColumns("UserNameHash");
             }
         }
         public UserDataColumns RequestCuid

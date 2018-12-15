@@ -1,5 +1,26 @@
 ﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
+		{
+			@(Model.DaoNamespace).@(Model.Type.Name).SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where, out @(Model.Type.FullName) result)
+		{
+			@(Model.DaoNamespace).@(Model.Type.Name).SetOneWhere(where, out @(Model.DaoNamespace).@(Model.Type.Name) daoResult, Database);
+			result = daoResult.CopyAs<@(Model.Type.FullName)>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.

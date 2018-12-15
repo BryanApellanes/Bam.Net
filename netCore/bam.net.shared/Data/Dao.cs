@@ -459,7 +459,6 @@ namespace Bam.Net.Data
         protected internal void OnBeforeWriteCommit(Database db)
         {
             BeforeWriteCommit?.Invoke(db, this);
-
             BeforeWriteCommitAny?.Invoke(db, this);
         }
 
@@ -467,8 +466,7 @@ namespace Bam.Net.Data
         public static event DaoDelegate AfterWriteCommitAny;
         protected internal void OnAfterWriteCommit(Database db)
         {
-            AfterWriteCommitAny?.Invoke(db, this);
-
+            AfterWriteCommit?.Invoke(db, this);
             AfterWriteCommitAny?.Invoke(db, this);
         }
 
@@ -477,23 +475,25 @@ namespace Bam.Net.Data
         protected internal void OnBeforeCommit(Database db)
         {
             BeforeCommit?.Invoke(db, this);
-
             BeforeCommitAny?.Invoke(db, this);
         }
 
         /// <summary>
-        /// Fires after this instance has been committed.
+        /// The event that fires after this instance is committed.
         /// May be fired as the result of its membership in 
         /// a DaoCollection, in that case the current
         /// Dao instance may not be fully-hydrated at the
-        /// time of the firing of this event
+        /// time of the firing of this event.
         /// </summary>
         public event ICommittableDelegate AfterCommit;
+
+        /// <summary>
+        /// The event that fires after any Dao instance is committed.
+        /// </summary>
         public static event DaoDelegate AfterCommitAny;
         protected internal void OnAfterCommit(Database db)
         {
             AfterCommit?.Invoke(db, this);
-
             AfterCommitAny?.Invoke(db, this);
         }
 
@@ -502,7 +502,6 @@ namespace Bam.Net.Data
         protected void OnBeforeWriteDelete(Database db)
         {
             BeforeWriteDelete?.Invoke(db, this);
-
             BeforeWriteDeleteAny?.Invoke(db, this);
         }
 
@@ -511,7 +510,6 @@ namespace Bam.Net.Data
         protected void OnAfterWriteDelete(Database db)
         {
             AfterWriteDelete?.Invoke(db, this);
-
             AfterWriteDeleteAny?.Invoke(db, this);
         }
 
@@ -520,7 +518,6 @@ namespace Bam.Net.Data
         protected void OnBeforeDelete(Database db)
         {
             BeforeDelete?.Invoke(db, this);
-
             BeforeDeleteAny?.Invoke(db, this);
         }
 
@@ -529,9 +526,7 @@ namespace Bam.Net.Data
         protected void OnAfterDelete(Database db)
         {
             AfterDelete?.Invoke(db, this);
-
             AfterDeleteAny?.Invoke(db, this);
-
         }
 
         protected internal Dictionary<string, ILoadable> ChildCollections
@@ -605,7 +600,7 @@ namespace Bam.Net.Data
         /// </summary>
         /// <param name="messages"></param>
         /// <returns></returns>
-        protected bool ValidateRequiredProperties(out string[] messages)
+        public bool ValidateRequiredProperties(out string[] messages)
         {
             Type type = this.GetType();
             PropertyInfo[] props = type.GetPropertiesWithAttributeOfType<ColumnAttribute>();
@@ -800,6 +795,9 @@ namespace Bam.Net.Data
             OnAfterDelete(db);
         }
 
+        /// <summary>
+        /// Loads all child collections in parallel.
+        /// </summary>
         public void PreLoadChildCollections()
         {
             Parallel.ForEach(ChildCollections.Values, (loadable) =>
@@ -932,7 +930,7 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Undo any changes that have been made to the current instance
-        /// since it was loaded.
+        /// since it was loaded.  This method will write to the database.
         /// </summary>
         /// <param name="db"></param>
         public virtual void Undo(Database db = null)
@@ -958,7 +956,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Re-insert the current instance after it has been deleted
+        /// Re-insert the current instance after it has been deleted.
         /// </summary>
         /// <param name="db"></param>
         public virtual void Undelete(Database db = null)
@@ -1251,7 +1249,7 @@ namespace Bam.Net.Data
         object _primaryKey;
         /// <summary>
         /// Gets the primary key.  If the current instance is backed
-        /// by a DataRow because it was hydrated from a database query
+        /// by a DataRow because it was hydrated from a database query,
         /// the primary key value is the value in DataRow[KeyColumnName].
         /// Otherwise, null.
         /// </summary>
@@ -1287,9 +1285,9 @@ namespace Bam.Net.Data
         /// <summary>
         /// Overrides default logic as to whether 
         /// to insert or update the current instance
-        /// based on the state of its Id causing
-        /// Save to always insert instead of checking
-        /// whether it should insert or update
+        /// based on the state of its Id.  This causes
+        /// Save to always insert, instead of checking
+        /// whether it should insert or update.
         /// </summary>
         [Exclude]
         public bool ForceInsert { get; set; }
@@ -1297,9 +1295,9 @@ namespace Bam.Net.Data
         /// <summary>
         /// Overrides default logic as to whether 
         /// to insert or update the current instance
-        /// based on the state of its Id causing
+        /// based on the state of its Id.  This causes
         /// Save to always update instead of checking
-        /// whether it should insert or update
+        /// whether it should insert or update.
         /// </summary>
         [Exclude]
         public bool ForceUpdate

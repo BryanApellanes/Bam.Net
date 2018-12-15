@@ -19,13 +19,16 @@ namespace Bam.Net.Logging.Http
         public IUserResolver UserResolver { get; }
         public HttpLoggingRepository HttpLoggingRepository { get; }
 
-        public void Log(IHttpContext context)
+        public void LogRequest(IHttpContext context)
         {
             Task.Run(() =>
             {
                 IRequest request = context.Request;
-                RequestData reqeustData = HttpLoggingRepository.Save(RequestData.FromRequest(request));
-                UserData user = new UserData { UserName = UserResolver.GetUser(context), RequestCuid = reqeustData.Cuid };
+                RequestData requestData = HttpLoggingRepository.Save(RequestData.FromRequest(request));
+                string userName = UserResolver.GetUser(context);
+                ulong userNameHash = userName.ToSha512ULong();
+                UserHashData dataMap = HttpLoggingRepository.GetOneUserHashDataWhere(uhd => uhd.UserName == userName && uhd.UserNameHash == userNameHash);
+                HttpLoggingRepository.SetOneUserDataWhere(ud => ud.UserNameHash == userNameHash && ud.RequestCuid == requestData.Cuid);
             });
         }
     }

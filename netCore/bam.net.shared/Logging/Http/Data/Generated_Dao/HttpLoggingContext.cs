@@ -342,5 +342,57 @@ namespace Bam.Net.Logging.Http.Data.Dao
 		{
 			return _userDatasLock.DoubleCheckLock<UserDataQueryContext>(ref _userDatas, () => new UserDataQueryContext());
 		}
+	}
+	public class UserHashDataQueryContext
+	{
+			public UserHashDataCollection Where(WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.Where(where, db);
+			}
+		   
+			public UserHashDataCollection Where(WhereDelegate<UserHashDataColumns> where, OrderBy<UserHashDataColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.Where(where, orderBy, db);
+			}
+
+			public UserHashData OneWhere(WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.OneWhere(where, db);
+			}
+
+			public static UserHashData GetOneWhere(WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.GetOneWhere(where, db);
+			}
+		
+			public UserHashData FirstOneWhere(WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.FirstOneWhere(where, db);
+			}
+
+			public UserHashDataCollection Top(int count, WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.Top(count, where, db);
+			}
+
+			public UserHashDataCollection Top(int count, WhereDelegate<UserHashDataColumns> where, OrderBy<UserHashDataColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<UserHashDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Http.Data.Dao.UserHashData.Count(where, db);
+			}
+	}
+
+	static UserHashDataQueryContext _userHashDatas;
+	static object _userHashDatasLock = new object();
+	public static UserHashDataQueryContext UserHashDatas
+	{
+		get
+		{
+			return _userHashDatasLock.DoubleCheckLock<UserHashDataQueryContext>(ref _userHashDatas, () => new UserHashDataQueryContext());
+		}
 	}    }
 }																								

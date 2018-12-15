@@ -29,7 +29,8 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
 			AddType<Bam.Net.Logging.Http.Data.QueryStringData>();﻿			
 			AddType<Bam.Net.Logging.Http.Data.RequestData>();﻿			
 			AddType<Bam.Net.Logging.Http.Data.UriData>();﻿			
-			AddType<Bam.Net.Logging.Http.Data.UserData>();
+			AddType<Bam.Net.Logging.Http.Data.UserData>();﻿			
+			AddType<Bam.Net.Logging.Http.Data.UserHashData>();
 			DaoAssembly = typeof(HttpLoggingRepository).Assembly;
 		}
 
@@ -44,6 +45,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
         }
 
 ﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneCookieDataWhere(WhereDelegate<CookieDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.CookieData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneCookieDataWhere(WhereDelegate<CookieDataColumns> where, out Bam.Net.Logging.Http.Data.CookieData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.CookieData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.CookieData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.CookieData>();
+		}
+
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
@@ -137,6 +159,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneHeaderDataWhere(WhereDelegate<HeaderDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.HeaderData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneHeaderDataWhere(WhereDelegate<HeaderDataColumns> where, out Bam.Net.Logging.Http.Data.HeaderData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.HeaderData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.HeaderData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.HeaderData>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -228,6 +271,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
 				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.HeaderData>(batch));
             }, Database);
         }﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneQueryStringDataWhere(WhereDelegate<QueryStringDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.QueryStringData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneQueryStringDataWhere(WhereDelegate<QueryStringDataColumns> where, out Bam.Net.Logging.Http.Data.QueryStringData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.QueryStringData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.QueryStringData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.QueryStringData>();
+		}
+
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
@@ -321,6 +385,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneRequestDataWhere(WhereDelegate<RequestDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.RequestData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneRequestDataWhere(WhereDelegate<RequestDataColumns> where, out Bam.Net.Logging.Http.Data.RequestData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.RequestData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.RequestData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.RequestData>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -412,6 +497,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
 				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.RequestData>(batch));
             }, Database);
         }﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUriDataWhere(WhereDelegate<UriDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UriData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUriDataWhere(WhereDelegate<UriDataColumns> where, out Bam.Net.Logging.Http.Data.UriData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UriData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.UriData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.UriData>();
+		}
+
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
@@ -505,6 +611,27 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUserDataWhere(WhereDelegate<UserDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UserData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUserDataWhere(WhereDelegate<UserDataColumns> where, out Bam.Net.Logging.Http.Data.UserData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UserData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.UserData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.UserData>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -594,6 +721,119 @@ namespace Bam.Net.Logging.Http.Data.Dao.Repository
             await Bam.Net.Logging.Http.Data.Dao.UserData.BatchAll(batchSize, (batch) =>
             {
 				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UserData>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUserHashDataWhere(WhereDelegate<UserHashDataColumns> where)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UserHashData.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneUserHashDataWhere(WhereDelegate<UserHashDataColumns> where, out Bam.Net.Logging.Http.Data.UserHashData result)
+		{
+			Bam.Net.Logging.Http.Data.Dao.UserHashData.SetOneWhere(where, out Bam.Net.Logging.Http.Data.Dao.UserHashData daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Logging.Http.Data.UserHashData>();
+		}
+
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.Logging.Http.Data.UserHashData GetOneUserHashDataWhere(WhereDelegate<UserHashDataColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.Logging.Http.Data.UserHashData>();
+			return (Bam.Net.Logging.Http.Data.UserHashData)Bam.Net.Logging.Http.Data.Dao.UserHashData.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// single UserHashData instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserHashDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserHashDataColumns and other values
+		/// </param>
+		public Bam.Net.Logging.Http.Data.UserHashData OneUserHashDataWhere(WhereDelegate<UserHashDataColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.Logging.Http.Data.UserHashData>();
+            return (Bam.Net.Logging.Http.Data.UserHashData)Bam.Net.Logging.Http.Data.Dao.UserHashData.OneWhere(where, Database)?.CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Logging.Http.Data.UserHashDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.Logging.Http.Data.UserHashDataColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Logging.Http.Data.UserHashData> UserHashDatasWhere(WhereDelegate<UserHashDataColumns> where, OrderBy<UserHashDataColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.Logging.Http.Data.UserHashData>(Bam.Net.Logging.Http.Data.Dao.UserHashData.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a UserHashDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserHashDataColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Logging.Http.Data.UserHashData> TopUserHashDatasWhere(int count, WhereDelegate<UserHashDataColumns> where)
+        {
+            return Wrap<Bam.Net.Logging.Http.Data.UserHashData>(Bam.Net.Logging.Http.Data.Dao.UserHashData.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of UserHashDatas
+		/// </summary>
+		public long CountUserHashDatas()
+        {
+            return Bam.Net.Logging.Http.Data.Dao.UserHashData.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserHashDataColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserHashDataColumns and other values
+		/// </param>
+        public long CountUserHashDatasWhere(WhereDelegate<UserHashDataColumns> where)
+        {
+            return Bam.Net.Logging.Http.Data.Dao.UserHashData.Count(where, Database);
+        }
+        
+        public async Task BatchQueryUserHashDatas(int batchSize, WhereDelegate<UserHashDataColumns> where, Action<IEnumerable<Bam.Net.Logging.Http.Data.UserHashData>> batchProcessor)
+        {
+            await Bam.Net.Logging.Http.Data.Dao.UserHashData.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UserHashData>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllUserHashDatas(int batchSize, Action<IEnumerable<Bam.Net.Logging.Http.Data.UserHashData>> batchProcessor)
+        {
+            await Bam.Net.Logging.Http.Data.Dao.UserHashData.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Logging.Http.Data.UserHashData>(batch));
             }, Database);
         }
 	}
