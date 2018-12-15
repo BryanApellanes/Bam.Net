@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Bam.Net.Services;
 using Bam.Net.Web.AppModules;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Web
 {
@@ -37,6 +38,9 @@ namespace Bam.Net.Web
             services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
             {
                 // Configure the Bam appRegistry here
+                appRegistry
+                    .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
+
                 appRegistry
                     .RegisterAppModules()
                     .AddServices(services);

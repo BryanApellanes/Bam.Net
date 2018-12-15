@@ -23,6 +23,10 @@ namespace Bam.Net.Services
             {
                 return _appRegistryLock.DoubleCheckLock(ref _appRegistry, () => Configure(Configurer ?? ((reg) => { })));
             }
+            private set
+            {
+                _appRegistry = value;
+            }
         }
 
         public static Action<ApplicationServiceRegistry> Configurer { get; set; }
@@ -36,6 +40,7 @@ namespace Bam.Net.Services
             result.For<IApplicationNameProvider>().Use<DefaultConfigurationApplicationNameProvider>();
             configure(result);
             result.CoreClient = result.Get<CoreClient>();
+            Current = result;
             return result;
         }
     }

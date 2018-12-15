@@ -40,7 +40,7 @@ namespace Bam.Net.CoreServices
             Type type = GetType(nameSpace, typeName);
             if(type == null)
             {
-                return new Services.ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not found." };
+                return new Services.ServiceResponse { Success = false, Message = $"Specified type {nameSpace}.{typeName} not registered for generation." };
             }
             Assembly proxyAssembly = ProxyFactory.GetAssembly(type);
             FileInfo assemblyFileInfo = proxyAssembly.GetFileInfo();

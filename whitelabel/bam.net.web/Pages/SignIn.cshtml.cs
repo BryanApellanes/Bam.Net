@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Bam.Net.CoreServices;
+using Bam.Net.Services;
 
 namespace Bam.Net.Web.Pages
 {
     public class SignInModel : PageModel
     {
-        public SignInModel()
+        public SignInModel(ApplicationServiceRegistry applicationServiceRegistry)
         {
             UserNamePlaceHolder = "UserName";
             PasswordPlaceHolder = "Password";
@@ -20,7 +21,10 @@ namespace Bam.Net.Web.Pages
             RememberMeText = "Remember me";
             LoginText = "Sign In";
             SignupText = "Sign Up";
+            ApplicationServiceRegistry = applicationServiceRegistry;
         }
+
+        public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
 
         public string UserNamePlaceHolder { get; set; }
         public string PasswordPlaceHolder { get; set; }

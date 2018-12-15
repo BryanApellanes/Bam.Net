@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Bam.Net.Services;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,11 +13,20 @@ namespace Bam.Net.CoreServices
     {
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            // define ProxyAssemblyGeneratorService
-            // string GetBase64ProxyAssembly(string nameSpace, string name)
-
-            // use ServiceTypeIdentifier
-            throw new NotImplementedException();
+            ApplicationServiceRegistry appServiceRegistry = ApplicationServiceRegistry.Current;
+            ProxyAssemblyGeneratorService genSvc = appServiceRegistry.Get<ProxyAssemblyGeneratorService>();
+            ServiceResponse response = genSvc.GetBase64ProxyAssembly(ServiceType.Namespace, ServiceType.Name);
+            if (!response.Success)
+            {
+                throw new ApplicationException(response.Message);
+            }
+            // write bytes to temp
+            byte[] assembly = response.Data.ToString().FromBase64();
+            string path = Path.Combine(SystemPaths.Current.Generated, $"{ServiceType.Name}_{ServiceSettings.Protocol}_{ServiceSettings.Host}_{ServiceSettings.Port}_proxy.dll");
+            File.WriteAllBytes(path, assembly);
+            // load the assembly from the file
+            GeneratedAssemblyInfo info = new GeneratedAssemblyInfo(Assembly.LoadFile(path));
+            return info;
         }
     }
 }
