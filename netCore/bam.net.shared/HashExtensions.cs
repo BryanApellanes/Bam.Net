@@ -244,6 +244,16 @@ namespace Bam.Net
             return ToHashULong(toBeHashed, Bam.Net.HashAlgorithms.SHA256);
         }
 
+        public static long ToSha512Long(this string toBeHashed)
+        {
+            return ToHashLong(toBeHashed, Bam.Net.HashAlgorithms.SHA512);
+        }
+
+        public static ulong ToSha512ULong(this string toBeHashed)
+        {
+            return ToHashULong(toBeHashed, Bam.Net.HashAlgorithms.SHA512);
+        }
+
         public static long ToSha1Long(this string toBeHashed)
         {
             return ToHashLong(toBeHashed, Bam.Net.HashAlgorithms.SHA1);
