@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsQuery">
-      <HintPath>..\..\..\..\..\..\..\nuget\global\csquery\1.3.4\lib\net40\CsQuery.dll</HintPath>
+    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\nuget\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\bam.net\bam.net.csproj">

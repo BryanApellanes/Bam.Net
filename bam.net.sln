@@ -103,6 +103,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.translation.core.te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bam.net.useraccounts.core.tests", "_tests\core\bam.net.useraccounts.core.tests\bam.net.useraccounts.core.tests.csproj", "{2D33E17E-6E9F-4C54-9C43-E60A23DA3339}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B7A6C3C-C0EA-4F5F-86BD-AEF5C85D2C34}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		_tests\shared\bam.net.tests.shared\bam.net.tests.shared.projitems*{0847779c-de6c-4fba-ba15-6a7b618e1199}*SharedItemsImports = 4
