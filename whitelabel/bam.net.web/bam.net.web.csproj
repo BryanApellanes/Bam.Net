@@ -8,14 +8,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\bam.net.core\bam.net.core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Generated\Bin\" />
   </ItemGroup>
 
 </Project>

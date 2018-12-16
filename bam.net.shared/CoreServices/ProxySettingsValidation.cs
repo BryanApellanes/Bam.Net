@@ -11,6 +11,6 @@ namespace Bam.Net.CoreServices
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public MethodInfo[] NonVirtualMethods { get; set; }
+        public MethodInfo[] NonVirtualMethods { get; set; }                
     }
 }

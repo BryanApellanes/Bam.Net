@@ -34,11 +34,11 @@ namespace Bam.Net.CoreServices
         public StringBuilder Code { get; set; }
         public string WorkspaceDirectory { get; set; }
         public Type ServiceType { get; set; }
-        public string FileName
+        public string AssemblyFilePath
         {
             get
             {
-                return Path.Combine(WorkspaceDirectory, "{0}_{1}_Proxy.dll"._Format(ServiceType.Name, ServiceSettings.ToString()));
+                return Path.Combine(WorkspaceDirectory, $"{ServiceType.Name}_{ServiceSettings.ToString()}_Proxy.dll");
             }
         }
 
@@ -61,11 +61,6 @@ namespace Bam.Net.CoreServices
             {
                 sw.Write(Code.ToString());
             }
-        }
-
-        public GeneratedAssemblyInfo GetAssembly()
-        {
-            return GeneratedAssemblyInfo.GetGeneratedAssembly(FileName, this);
         }
                 
         public ProxyCode GenerateProxyCode()

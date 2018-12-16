@@ -276,7 +276,7 @@ namespace Bam.Net.CoreServices
         protected internal Assembly GetAssembly(ProxySettings settings, HashSet<Assembly> addedReferenceAssemblies = null)
         {
             Args.ThrowIfNull(settings.ServiceType, "ProxySettings.ServiceType");
-            settings.ValidateOrThrow();
+            settings.ValidateTypeMethodsOrThrow();
 
             settings = settings ?? DefaultSettings;
             ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger, addedReferenceAssemblies);

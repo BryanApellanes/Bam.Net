@@ -31,6 +31,16 @@ namespace Bam.Net.CoreServices
             LoadAssemblies();
         }
 
+        static object _defaultLock = new object();
+        static ProxyAssemblyGeneratorService _default;
+        public static ProxyAssemblyGeneratorService Default
+        {
+            get
+            {
+                return _defaultLock.DoubleCheckLock(ref _default, () => new ProxyAssemblyGeneratorServiceProxy());
+            }
+        }
+
         public IDataDirectoryProvider DataDirectoryProvider { get; set; }
         public ProxyFactory ProxyFactory { get; set; }
         public ProxyAssemblyGenerator ProxyAssemblyGenerator { get; set; }

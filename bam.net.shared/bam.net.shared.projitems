@@ -3180,6 +3180,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Yaml\YamlSchemaGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\ApplicationRegistrationService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\ConfigurationService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\DiagnosticService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\OAuthSettingsService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\ProxyAssemblyGeneratorService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\RoleService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\ServiceRegistryService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\SystemLoggerService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\SystemLogReaderService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\UserRegistryService_Http_core.bamapps.net_80_Proxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Analytics\EnglishDictionary\EnglishDictionary.sqlite" />

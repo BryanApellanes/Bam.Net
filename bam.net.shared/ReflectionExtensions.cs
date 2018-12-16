@@ -57,7 +57,10 @@ namespace Bam.Net
             StringBuilder output = new StringBuilder();
             output.AppendLine($"{type.FullName}");
             List<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties());
-            props.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
+            if(type != typeof(System.RuntimeTypeHandle) && !type.Name.Equals("RuntimeType"))
+            {
+                props.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
+            }
             props.Each(pi =>
             {
                 output.AppendLine($"\t{pi.ToInfoString()}");

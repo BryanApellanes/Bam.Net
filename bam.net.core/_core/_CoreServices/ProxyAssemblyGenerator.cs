@@ -11,10 +11,20 @@ namespace Bam.Net.CoreServices
 {
     public partial class ProxyAssemblyGenerator // core
     {
+        public GeneratedAssemblyInfo GetAssembly()
+        {
+            return GenerateAssembly();
+        }
+
+        static Dictionary<Type, GeneratedAssemblyInfo> _generatedAssemblyInfos = new Dictionary<Type, GeneratedAssemblyInfo>();
+
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            ApplicationServiceRegistry appServiceRegistry = ApplicationServiceRegistry.Current;
-            ProxyAssemblyGeneratorService genSvc = appServiceRegistry.Get<ProxyAssemblyGeneratorService>();
+            if (_generatedAssemblyInfos.ContainsKey(ServiceType))
+            {
+                return _generatedAssemblyInfos[ServiceType];
+            }
+            ProxyAssemblyGeneratorService genSvc = ProxyAssemblyGeneratorService.Default;
             ServiceResponse response = genSvc.GetBase64ProxyAssembly(ServiceType.Namespace, ServiceType.Name);
             if (!response.Success)
             {
@@ -26,6 +36,7 @@ namespace Bam.Net.CoreServices
             File.WriteAllBytes(path, assembly);
             // load the assembly from the file
             GeneratedAssemblyInfo info = new GeneratedAssemblyInfo(Assembly.LoadFile(path));
+            _generatedAssemblyInfos[ServiceType] = info;
             return info;
         }
     }

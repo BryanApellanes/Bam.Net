@@ -82,30 +82,41 @@ namespace Bam.Net.CoreServices
             return this.CopyAs<ProxySettings>();
         }
 
-        public ProxySettingsValidation Validate()
+        public ProxySettingsValidation ValidateTypeMethods()
         {
             Args.ThrowIfNull(ServiceType, nameof(ServiceType));
-            ProxySettingsValidation result = new ProxySettingsValidation();
-            List<MethodInfo> nonOverridableMethods = new List<MethodInfo>();
-            ServiceProxySystem.GetProxiedMethods(ServiceType, IncludeLocalMethods)
-                .Where(mi => !mi.IsOverridable())
-                .Each(new { NonOverridableMethods = nonOverridableMethods }, (ctx, mi) => ctx.NonOverridableMethods.Add(mi));
-            
-            string nonVirtualMethodsMessage = $"Non virtual proxied methods were found; proxies cannot be automatically generated for the specified type {ServiceType.Namespace}.{ServiceType.Name} because proxyable methods were not declared virtual and will subsequently not properly delegate to the remote \"{Host}\"";
-            nonVirtualMethodsMessage += $"\r\n\t{string.Join("\r\n\t", nonOverridableMethods.Select(m=> m.Name))}\r\n";            
-            result.Success = nonOverridableMethods.Count == 0;
-            result.Message = result.Success ? string.Empty : nonVirtualMethodsMessage;
-            result.NonVirtualMethods = nonOverridableMethods.ToArray();
-            return result;
+            return ValidateTypeMethods(ServiceType, IncludeLocalMethods);
         }
 
-        public void ValidateOrThrow()
+        public void ValidateTypeMethodsOrThrow()
         {
-            ProxySettingsValidation validation = Validate();
+            ProxySettingsValidation validation = ValidateTypeMethods();
             if (!validation.Success)
             {
                 throw new ProxySettingsValidationException(validation);
             }
+        }
+
+        static Dictionary<Type, ProxySettingsValidation> _validatedTypes = new Dictionary<Type, ProxySettingsValidation>();
+        public static ProxySettingsValidation ValidateTypeMethods(Type serviceType, bool includeLocalMethods)
+        {
+            if (_validatedTypes.ContainsKey(serviceType))
+            {
+                return _validatedTypes[serviceType];
+            }
+            ProxySettingsValidation result = new ProxySettingsValidation();
+            List<MethodInfo> nonOverridableMethods = new List<MethodInfo>();
+            ServiceProxySystem.GetProxiedMethods(serviceType, includeLocalMethods)
+                .Where(mi => !mi.IsOverridable())
+                .Each(new { NonOverridableMethods = nonOverridableMethods }, (ctx, mi) => ctx.NonOverridableMethods.Add(mi));
+
+            string nonVirtualMethodsMessage = $"Non virtual proxied methods were found; proxies cannot be automatically generated for the specified type {serviceType.Namespace}.{serviceType.Name} because proxyable methods were not declared virtual and will subsequently not properly delegate to the remote";
+            nonVirtualMethodsMessage += $"\r\n\t{string.Join("\r\n\t", nonOverridableMethods.Select(m => m.Name))}\r\n";
+            result.Success = nonOverridableMethods.Count == 0;
+            result.Message = result.Success ? string.Empty : nonVirtualMethodsMessage;
+            result.NonVirtualMethods = nonOverridableMethods.ToArray();
+            _validatedTypes.Add(serviceType, result);
+            return result;
         }
     }
 }
