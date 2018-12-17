@@ -1,4 +1,5 @@
-﻿using Bam.Net.Data;
+﻿using Bam.Net.Configuration;
+using Bam.Net.Data;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Services;
@@ -37,7 +38,7 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new ProxyAssemblyGeneratorServiceProxy());
+                return _defaultLock.DoubleCheckLock(ref _default, () => new ProxyAssemblyGeneratorServiceProxy(ConfigurationResolverServiceUrlProvider.Instance.GetServiceUrl<ProxyAssemblyGeneratorService>()));
             }
         }
 

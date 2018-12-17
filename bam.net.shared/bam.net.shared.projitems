@@ -397,6 +397,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Comparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\Configurable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\ConfigurationResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurationApplicationNameProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\DefaultConfigurationOrganizationNameProvider.cs" />
@@ -597,12 +598,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ClientApplicationNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ClientRegistrationFailedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\CompositeRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ConfigurationResolverServiceUrlProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Configuration\ConfigurationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\CoreExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\CoreServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\CoreServiceResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Credentials\CredentialManagementService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\DataSettingsSmtpSettingsProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\DefaultConfigurationServiceUrlProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Defaults.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\DiagnosableSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Diagnostic\DiagnosticInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Diagnostic\DiagnosticService.cs" />
@@ -627,6 +631,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\FluentServiceRegistryContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\For.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\HostDomainRequestFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\HostNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\IServiceUrlProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Logging\LogEntrySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Logging\SystemLoggerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\Logging\SystemLogReaderService.cs" />
@@ -713,6 +719,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\UserData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\UserHashData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\RequestLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceProxy\Secure\SecureSessionDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppModuleAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ProxyCode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyFactory.cs" />

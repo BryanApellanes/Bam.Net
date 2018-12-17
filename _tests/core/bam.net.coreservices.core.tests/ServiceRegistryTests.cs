@@ -66,6 +66,22 @@ namespace Bam.Net.CoreServices.Tests
     public class ServiceRegistryTests : CommandLineTestInterface
     {
         [UnitTest]
+        public void CanGetIDataProvider()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            IDataDirectoryProvider provider = registry.Get<IDataDirectoryProvider>();
+            Expect.IsNotNull(provider);
+        }
+
+        [UnitTest]
+        public void CanGetProxyGeneratorService()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            ProxyAssemblyGeneratorService svc = registry.Get<ProxyAssemblyGeneratorService>();
+            Expect.IsNotNull(svc);
+        }
+
+        [UnitTest]
         public void ServiceTypeResolvesFromFunc()
         {
             ServiceRegistry registry = new ServiceRegistry()

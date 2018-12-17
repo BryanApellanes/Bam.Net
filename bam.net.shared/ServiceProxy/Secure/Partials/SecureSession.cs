@@ -37,6 +37,8 @@ namespace Bam.Net.ServiceProxy.Secure
         static ConcurrentDictionary<string, SecureSession> _secureSessions;
         static SecureSession()
         {
+            SecureSessionDatabase = new SecureSessionDatabase();
+            Db.For<SecureSession>(SecureSessionDatabase);
             DefaultKeySize = RsaKeyLength._1024; // TODO: change this to 2048 without breaking clients
             _secureSessions = new ConcurrentDictionary<string, SecureSession>();
         }
@@ -172,7 +174,7 @@ namespace Bam.Net.ServiceProxy.Secure
             }
             else
             {
-                result = OneWhere(c => c.Identifier == sessionIdentifier);                
+                result = OneWhere(c => c.Identifier == sessionIdentifier, SecureSessionDatabase);                
                 if (result == null)
                 {
                     result = CreateSession(sessionIdentifier, instant);
@@ -341,6 +343,12 @@ namespace Bam.Net.ServiceProxy.Secure
             return new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
         }
 
+        public static SecureSessionDatabase SecureSessionDatabase
+        {
+            get;
+            set;
+        }
+
         private static SecureSession CreateSession(string identifier, Instant instant = null)
         {
             if (instant == null)
@@ -365,7 +373,7 @@ namespace Bam.Net.ServiceProxy.Secure
             result.SymmetricKey = kvp.Key.EncryptWithPublicKey(keys.Public);
             result.SymmetricIV = kvp.IV.EncryptWithPublicKey(keys.Public);
             
-            result.Save();
+            result.Save(SecureSessionDatabase);
             return result;
         }
     }

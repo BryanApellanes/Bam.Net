@@ -2128,7 +2128,7 @@ namespace Bam.Net
         {
             return RandomString(length, true, true);
         }
-
+        
         /// <summary>
         /// Add the specified length of random characters
         /// to the current string.  Only  lowercase

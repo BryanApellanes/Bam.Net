@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Bam.Net.Services;
 using Bam.Net.Web.AppModules;
 using Bam.Net.CoreServices;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Web
 {
@@ -20,6 +21,7 @@ namespace Bam.Net.Web
     {
         public Startup(IConfiguration configuration)
         {
+            ConfigurationResolver.Startup(configuration);
             Configuration = configuration;
         }
 
@@ -36,9 +38,10 @@ namespace Bam.Net.Web
             });
 
             services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
-            {
+            {                
                 // Configure the Bam appRegistry here
                 appRegistry
+                    .For<ConfigurationResolver>().Use(ConfigurationResolver.Current)
                     .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
 
                 appRegistry

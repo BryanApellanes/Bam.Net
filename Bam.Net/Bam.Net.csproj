@@ -343,6 +343,7 @@
     <Compile Include="_fx\_Automation\_SourceControl\GitReleaseNotes.cs" />
     <Compile Include="_fx\_Automation\_Testing\TestReportService.cs" />
     <Compile Include="_fx\_CommandLine\CommandLineInterface.cs" />
+    <Compile Include="_fx\_Configuration\ConfigurationResolver.cs" />
     <Compile Include="_fx\_Configuration\RuntimeSettings.cs" />
     <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />
     <Compile Include="_fx\_CoreServices\ProxyableService.cs" />

@@ -140,6 +140,7 @@ namespace Bam.Net.CoreServices
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<SystemLoggerService>().Use(loggerSvc)
+                .For<IDataDirectoryProvider>().Use(DefaultDataDirectoryProvider.Current)
                 .For<DefaultDataDirectoryProvider>().Use(DefaultDataDirectoryProvider.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
