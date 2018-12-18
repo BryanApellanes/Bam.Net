@@ -8,6 +8,11 @@ namespace Bam.Net.Configuration
 {
     public partial class ConfigurationResolver
     {
+        static ConfigurationResolver()
+        {
+            Current = new ConfigurationResolver();
+        }
+
         public static ConfigurationResolver Current
         {
             get;

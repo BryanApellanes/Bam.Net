@@ -14,6 +14,7 @@ namespace Bam.Net.CoreServices.Tests
 {
     using System.IO;
     using Bam.Net.CoreServices.ApplicationRegistration;
+    using Bam.Net.Services;
     using Bam.Net.Testing.Unit;
     using Net.Data.SQLite;
     using Server;
@@ -62,9 +63,66 @@ namespace Bam.Net.CoreServices.Tests
         public SecondConcrete PropTwo { get; set; }
     }
 
+    [Proxy]
+    public class ProxyClass
+    {
+    }
+
+    public class NotProxyClass { }
+
     [Serializable]
     public class ServiceRegistryTests : CommandLineTestInterface
     {
+        [UnitTest]
+        public void WebServiceRegistryFromServiceRegistryOnlyGetsProxies()
+        {
+            ServiceRegistry registry = ServiceRegistry.Create()
+                .For<ProxyClass>().Use<ProxyClass>()
+                .For<NotProxyClass>().Use<NotProxyClass>();
+
+            WebServiceRegistry webServiceRegistry = WebServiceRegistry.FromRegistry(registry);
+            Expect.AreEqual(1, webServiceRegistry.ClassNames.Length);
+        }
+
+        [UnitTest]
+        public void CanValidateAfterConvertingToWebServiceRegistry()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            WebServiceRegistry webServiceRegistry = WebServiceRegistry.FromRegistry(registry);
+            webServiceRegistry.Validate();
+        }
+
+        [UnitTest]
+        public void WillValidate()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            registry.Validate();
+        }
+
+        [UnitTest]
+        public void CanGetAllInstancesByClassNames()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            Expect.IsTrue(registry.ClassNames.Length > 0);
+            foreach(string className in registry.ClassNames)
+            {
+                object instance = registry.Get(className);
+                Expect.IsNotNull(instance, $"{className} was null");
+            }
+        }
+
+        [UnitTest]
+        public void CanGetAllInstancesByType()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            Expect.IsTrue(registry.ClassNameTypes.Length > 0);
+            foreach(Type type in registry.ClassNameTypes)
+            {
+                object instance = registry.Get(type);
+                Expect.IsNotNull(instance, $"{type.Name} returned null");
+            }
+        }
+
         [UnitTest]
         public void CanGetIDataProvider()
         {

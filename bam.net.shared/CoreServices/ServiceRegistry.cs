@@ -35,6 +35,30 @@ namespace Bam.Net.CoreServices
             return new ServiceRegistry();
         }
 
+        public void Validate()
+        {
+            ValidateClassNames();
+            ValidateClassTypes();
+        }
+
+        public void ValidateClassNames()
+        {
+            foreach (string className in ClassNames)
+            {
+                object instance = Get(className);
+                Expect.IsNotNull(instance, $"{className} was null");
+            }
+        }
+
+        public void ValidateClassTypes()
+        {
+            foreach (Type type in ClassNameTypes)
+            {
+                object instance = Get(type);
+                Expect.IsNotNull(instance, $"{type.Name} returned null");
+            }
+        }
+
         public new static ServiceRegistry Default { get; set; }
         public static Func<object> GetServiceLoader(Type type, object orDefault = null)
         {

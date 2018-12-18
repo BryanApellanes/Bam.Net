@@ -22,6 +22,7 @@ using Bam.Net.Configuration;
 using System.Threading.Tasks;
 using Bam.Net.Presentation;
 using Bam.Net.Server.Meta;
+using Bam.Net.Services;
 
 namespace Bam.Net.Server
 {
@@ -122,6 +123,16 @@ namespace Bam.Net.Server
             {
                 return _appSecureChannels;
             }
+        }
+
+        public void SetCommonWebServices(WebServiceRegistry webServiceRegistry)
+        {
+            _commonServiceProvider = webServiceRegistry;
+        }
+
+        public void SetApplicationWebServices(string applicationName, WebServiceRegistry webServiceRegistry)
+        {
+            _appServiceProviders[applicationName] = webServiceRegistry;
         }
 
         public void AddClientProxyGenerator<T>(T proxyGenerator, params string[] fileNames) where T : IClientProxyGenerator

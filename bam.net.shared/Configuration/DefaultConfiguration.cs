@@ -163,7 +163,10 @@ namespace Bam.Net.Configuration
             {
                 returnValue = defaultValue;
             }
-
+            if (string.IsNullOrEmpty(returnValue))
+            {
+                returnValue = ConfigurationResolver.Current[key];
+            }
             return returnValue;
         }
 

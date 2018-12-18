@@ -2895,6 +2895,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Vault\IVaultService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Vault\VaultDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Vault\VaultService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\WebServiceRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sleep.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Smtp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SQLiteBitMonitor.cs" />

@@ -102,6 +102,30 @@ namespace Bam.Net.Incubation
         }
 
         /// <summary>
+        /// Copies the specified generic type from the specified source.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source">The incubator.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        public void CopyTypeFrom<T>(Incubator source, bool overwrite = true)
+        {
+            CopyTypeFrom(typeof(T), source, overwrite);
+        }
+
+        public void CopyTypeFrom(Type type, Incubator source, bool overwrite = true)
+        {
+            if (!_typeInstanceDictionary.ContainsKey(type) || overwrite)
+            {
+                _typeInstanceDictionary[type] = source._typeInstanceDictionary[type];
+            }
+            string className = type.Name;
+            if (!_classNameTypeDictionary.ContainsKey(className) || overwrite)
+            {
+                _classNameTypeDictionary[className] = source._classNameTypeDictionary[className];
+            }
+        }
+
+        /// <summary>
         /// Constructs an instance of type T by finding a constructor
         /// that can take objects of types that have already been 
         /// constructed or set.  If the constructor parameters have not

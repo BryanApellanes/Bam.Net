@@ -21,10 +21,17 @@ namespace Bam.Net.Services
 
         public void RegisterServices(ServiceRegistry serviceRegistry, bool requireApiKeyResover = false)
         {
-            ServiceRegistry = serviceRegistry;
+            ServiceRegistry = new WebServiceRegistry(serviceRegistry);
             Responder.ClearCommonServices();
             Responder.ClearAppServices();
-            ServiceRegistry.MappedTypes.Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).Each(t => AddService(t));
+            Responder.SetCommonWebServices(ServiceRegistry);
+            foreach(Type type in ServiceRegistry.MappedTypes)
+            {
+                if(type.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+                {
+                    ServiceSubdomains.Add(attr);
+                }
+            }
             SetApiKeyResolver(serviceRegistry, requireApiKeyResover ? ApiKeyResolver.Default : null);
         }
 
@@ -42,17 +49,8 @@ namespace Bam.Net.Services
             base.Start();
         }
 
-        public void AddService(Type serviceType)
-        {
-            Responder.AddCommonService(serviceType, () => ServiceRegistry.Get(serviceType));
-            if(serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
-            {
-                ServiceSubdomains.Add(attr);
-            }
-        }
-
         public HashSet<ServiceSubdomainAttribute> ServiceSubdomains { get; set; }
-        protected ServiceRegistry ServiceRegistry { get; set; }
+        protected WebServiceRegistry ServiceRegistry { get; set; }
 
         protected void SetApiKeyResolver(ServiceRegistry registry, IApiKeyResolver ifNull)
         {
