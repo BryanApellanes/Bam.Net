@@ -636,6 +636,7 @@
     <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionData.cs" />
     <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionRequestData.cs" />
     <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionResponseData.cs" />
+    <Compile Include="_fx\_Services\_Clients\CoreClient.cs" />
     <Compile Include="_fx\_Services\_DataReplication\FileSequenceProvider.cs" />
     <Compile Include="_fx\_Services\_DataReplication\InfoAttribute.cs" />
     <Compile Include="_fx\_Services\_DataReplication\JournalEntry.cs" />

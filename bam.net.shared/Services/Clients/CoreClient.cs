@@ -30,7 +30,7 @@ namespace Bam.Net.Services.Clients
     /// <seealso cref="Bam.Net.ServiceProxy.Secure.IApiKeyResolver" />
     /// <seealso cref="Bam.Net.ServiceProxy.Secure.IApiKeyProvider" />
     /// <seealso cref="Bam.Net.IApplicationNameProvider" />
-    public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
+    public partial class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         internal CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
         {
@@ -569,21 +569,6 @@ namespace Bam.Net.Services.Clients
                     }
                 });
             };
-        }
-
-        private void SetDownloadedServiceProxies()
-        {
-            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port, Logger);
-            ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>(HostName, Port, Logger);
-            DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>(HostName, Port, Logger);
-            LoggerService = ProxyFactory.GetProxy<SystemLoggerService>(HostName, Port, Logger);
-            UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>(HostName, Port, Logger);
-            RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port, Logger);
-            OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port, Logger);
-            ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port, Logger);
-            SystemLogReaderService = ProxyFactory.GetProxy<SystemLogReaderService>(HostName, Port, Logger);
-            OAuthSettingsService = ProxyFactory.GetProxy<OAuthSettingsService>(HostName, Port, Logger);
-            ProxyAssemblyGeneratorService = ProxyFactory.GetProxy<ProxyAssemblyGeneratorService>(HostName, Port, Logger);
         }
 
         private void SetLocalServiceProxies()
