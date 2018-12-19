@@ -79,7 +79,7 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureChannelMessage<ClientSessionInfo> message = server.InitSession(new Instant());
             ClientSessionInfo sessionInfo = message.Data;
 
-            SecureSession created = SecureSession.OneWhere(c => c.Id == sessionInfo.SessionId);
+            SecureSession created = SecureSession.OneWhere(c => c.Id == sessionInfo.SessionId, new SecureSessionDatabase());
             Expect.IsNotNull(created);
             Expect.IsNotNullOrEmpty(created.Identifier, "Identifier was null or empty");
             Expect.AreEqual(created.Identifier, sessionInfo.ClientIdentifier, "ClientIdentifiers didn't match");

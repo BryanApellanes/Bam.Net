@@ -91,23 +91,38 @@ namespace Bam.Net.CoreServices
         {
             foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach(Type type in ass.GetTypes())
+                try
                 {
-                    _assemblies.AddMissing($"{type.Namespace}.{type.Name}", ass);
+                    foreach (Type type in ass.GetTypes())
+                    {
+                        _assemblies.AddMissing($"{type.Namespace}.{type.Name}", ass);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Logger.AddEntry("Exception loading assemblies from {0}: {1}", ex, ass.GetFileInfo()?.FullName, ex.Message);
                 }
             }
         }
 
         private Type GetType(string nameSpace, string typeName)
         {
-            Assembly assembly = GetRealAssembly(nameSpace, typeName);
-            if (assembly == null)
+            try
             {
+                Assembly assembly = GetRealAssembly(nameSpace, typeName);
+                if (assembly == null)
+                {
+                    return null;
+                }
+                return assembly
+                    .GetTypes()
+                    .FirstOrDefault(t => !string.IsNullOrEmpty(t.Namespace) && t.Namespace.Equals(nameSpace, StringComparison.InvariantCultureIgnoreCase) && t.Name.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                Logger.AddEntry("Error getting type {0}.{1}: {2}", ex, nameSpace, typeName, ex.Message);
                 return null;
             }
-            return assembly
-                .GetTypes()
-                .FirstOrDefault(t => t.Namespace.Equals(nameSpace, StringComparison.InvariantCultureIgnoreCase) && t.Name.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));            
         }
     }
 }

@@ -98,6 +98,22 @@ namespace Bam.Net.Incubation
                         this._classNameTypeDictionary[s] = incubator._classNameTypeDictionary[s];
                     }
                 }
+                foreach(Type type in incubator._ctorParams.Keys)
+                {
+                    CopyCtorParams(type, incubator);
+                }
+            }
+        }
+
+        public void CopyCtorParams(Type type, Incubator incubator)
+        {
+            if (incubator._ctorParams.ContainsKey(type))
+            {
+                Dictionary<string, object> ctorArgs = incubator._ctorParams[type];
+                foreach (string parameterName in ctorArgs.Keys)
+                {
+                    SetCtorParam(type, parameterName, ctorArgs[parameterName]);
+                }
             }
         }
 
@@ -123,6 +139,7 @@ namespace Bam.Net.Incubation
             {
                 _classNameTypeDictionary[className] = source._classNameTypeDictionary[className];
             }
+            CopyCtorParams(type, source);
         }
 
         /// <summary>
@@ -158,9 +175,7 @@ namespace Bam.Net.Incubation
         /// <returns></returns>
         public object GetWithoutSet(Type type)
         {
-            ConstructorInfo ctor;
-            List<object> ctorParams;
-            GetCtorAndParams(type, out ctor, out ctorParams);
+            GetCtorAndParams(type, out ConstructorInfo ctor, out List<object> ctorParams);
             return ctor.Invoke(ctorParams.ToArray());
         }
 

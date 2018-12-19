@@ -127,12 +127,16 @@ namespace Bam.Net.Server
 
         public void SetCommonWebServices(WebServiceRegistry webServiceRegistry)
         {
+            webServiceRegistry.Set(typeof(SecureChannel), CommonSecureChannel);
             _commonServiceProvider = webServiceRegistry;
+            CommonSecureChannel.ServiceProvider = webServiceRegistry;
         }
 
         public void SetApplicationWebServices(string applicationName, WebServiceRegistry webServiceRegistry)
         {
+            webServiceRegistry.Set(typeof(SecureChannel), _appSecureChannels[applicationName]);
             _appServiceProviders[applicationName] = webServiceRegistry;
+            _appSecureChannels[applicationName].ServiceProvider = webServiceRegistry;
         }
 
         public void AddClientProxyGenerator<T>(T proxyGenerator, params string[] fileNames) where T : IClientProxyGenerator

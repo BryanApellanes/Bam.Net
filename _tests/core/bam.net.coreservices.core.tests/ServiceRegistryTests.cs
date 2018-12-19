@@ -74,6 +74,24 @@ namespace Bam.Net.CoreServices.Tests
     public class ServiceRegistryTests : CommandLineTestInterface
     {
         [UnitTest]
+        public void HasProxyAssemblyGeneratorServiceClassName()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            WebServiceRegistry webServiceRegistry = WebServiceRegistry.FromRegistry(registry);
+
+            Expect.IsTrue(webServiceRegistry.ClassNames.Contains("ProxyAssemblyGeneratorService"));
+        }
+
+        [UnitTest]
+        public void CanGetProxyAssemblyGeneratorServiceFromWebServiceRegistry()
+        {
+            ServiceRegistry registry = CoreServiceRegistryContainer.Create();
+            WebServiceRegistry webServiceRegistry = WebServiceRegistry.FromRegistry(registry);
+            ProxyAssemblyGeneratorService proxyGenerator = webServiceRegistry.Get<ProxyAssemblyGeneratorService>();
+            Expect.IsNotNull(proxyGenerator);
+        }
+
+        [UnitTest]
         public void WebServiceRegistryFromServiceRegistryOnlyGetsProxies()
         {
             ServiceRegistry registry = ServiceRegistry.Create()
