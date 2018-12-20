@@ -667,6 +667,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGeneratorService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaPropertyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\CookieData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\Generated_Dao\CookieData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\Generated_Dao\CookieDataCollection.cs" />
@@ -3191,6 +3195,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\ApplicationRegistrationService_Http_core.bamapps.net_80_Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\ConfigurationService_Http_core.bamapps.net_80_Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\DiagnosticService_Http_core.bamapps.net_80_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)_Generated\OAuthService_Http_core.bamapps.net_80_Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\OAuthSettingsService_Http_core.bamapps.net_80_Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\ProxyAssemblyGeneratorService_Http_core.bamapps.net_80_Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)_Generated\RoleService_Http_core.bamapps.net_80_Proxy.cs" />
