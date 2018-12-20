@@ -507,6 +507,7 @@ namespace Bam.Net.Services.Clients
                 yield return DiagnosticService;
                 yield return ServiceRegistryService;
                 yield return SystemLogReaderService;
+                yield return OAuthService;
                 yield return OAuthSettingsService;
                 yield return ProxyAssemblyGeneratorService;
             }
@@ -524,6 +525,7 @@ namespace Bam.Net.Services.Clients
                 yield return typeof(DiagnosticService);
                 yield return typeof(ServiceRegistryService);
                 yield return typeof(SystemLogReaderService);
+                yield return typeof(OAuthService);
                 yield return typeof(OAuthSettingsService);
                 yield return typeof(ProxyAssemblyGeneratorService);
             }

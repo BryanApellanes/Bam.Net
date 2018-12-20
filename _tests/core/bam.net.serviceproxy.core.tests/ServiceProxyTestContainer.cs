@@ -136,7 +136,6 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.IsNotNull(((ApiKeyResolver)client.ApiKeyResolver).ApiKeyProvider, "ApiKeyProvider was null");
         }
 
-
         [UnitTest]
         public void SecureServiceProxyClientBaseAddressShouldBeSet()
         {

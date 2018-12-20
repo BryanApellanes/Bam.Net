@@ -155,6 +155,28 @@ namespace Bam.Net.Application
             registry.ToJsonFile(path);           
         }
 
+        [ConsoleAction("downloadProxyCode", "Generate proxies for a running service proxy host")]
+        public void GenerateProxies()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            ProxyFactory proxyFactory = new ProxyFactory(logger);
+            string host = GetArgument("host", "Please specify the host to download proxy code from");
+            int port = GetArgument("port", "Please specify the host to download proxy code from").ToInt(80);
+            string nameSpace = GetArgument("nameSpace", "Please specify the namespace of the type to get code for");
+            string typeName = GetArgument("typeName", "Please specify the name of the type to get code for");
+            string directory = GetArgument("output", "Please specify the directory to write downloaded source to");
+            ProxyAssemblyGeneratorService genSvc = proxyFactory.GetProxy<ProxyAssemblyGeneratorService>(host, port, logger);
+            Services.ServiceResponse response = genSvc.GetProxyCode(nameSpace, typeName);
+            if (!response.Success)
+            {
+                Warn(response.Message);
+                Exit(1);
+            }
+            string filePath = Path.Combine(directory, $"{typeName}_{proxyFactory.DefaultSettings.Protocol.ToString()}_{host}_{port}_Proxy.cs");
+            response.Data.ToString().SafeWriteToFile(filePath);
+            OutLineFormat("Wrote file {0}", filePath);
+        }
+
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]
         public void ServeCsGloo()
         {
