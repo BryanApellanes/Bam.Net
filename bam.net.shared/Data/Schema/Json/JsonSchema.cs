@@ -48,6 +48,17 @@ namespace Bam.Net.Data.Schema.Json
         public static JsonSchema FromDao<T>() where T: Dao
         {
             Type daoType = typeof(T);
+            return FromDao(daoType);
+        }
+
+        public static JsonSchema FromDao(object instance)
+        {
+            Args.ThrowIfNull(instance);
+            return FromDao(instance.GetType());
+        }
+
+        public static JsonSchema FromDao(Type daoType)
+        {
             string tableName = Dao.TableName(daoType);
             return new JsonSchema()
             {
@@ -56,7 +67,7 @@ namespace Bam.Net.Data.Schema.Json
                 Title = tableName,
                 Type = JsonSchemaProperty.TranslateType(daoType),
                 Properties = JsonSchemaProperty.FromDaoType(daoType)
-            }; 
+            };
         }
     }
 }
