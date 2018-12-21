@@ -1739,9 +1739,11 @@ namespace Bam.Net
         public static string ToJson(this object value, bool pretty, NullValueHandling nullValueHandling = NullValueHandling.Ignore)
         {
             Newtonsoft.Json.Formatting formatting = pretty ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None;
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Formatting = formatting;
-            settings.NullValueHandling = nullValueHandling;
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = formatting,
+                NullValueHandling = nullValueHandling
+            };
             return value.ToJson(settings);
         }
 
@@ -3106,6 +3108,21 @@ namespace Bam.Net
                     || value is decimal;
         }
 
+        public static bool IsNumberType(this Type type)
+        {
+            return type == typeof(sbyte)
+                || type == typeof(byte)
+                || type == typeof(short)
+                || type == typeof(ushort)
+                || type == typeof(int)
+                || type == typeof(uint)
+                || type == typeof(long)
+                || type == typeof(ulong)
+                || type == typeof(float)
+                || type == typeof(double)
+                || type == typeof(decimal);
+        }
+
         public static bool IsLetter(this char c)
         {
             int val = Convert.ToInt32(c);
@@ -3588,9 +3605,38 @@ namespace Bam.Net
             return type.IsPrimitive || Nullable.GetUnderlyingType(type).IsPrimitive;
         }
 
+        public static bool IsNullable(this Type type, out Type underlyingType)
+        {
+            underlyingType = Nullable.GetUnderlyingType(type);
+            return underlyingType != null;
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is nullable of the specified
+        /// generic argument.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified type is nullable; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsNullable<T>(this Type type)
         {
-            Type underlyingType = Nullable.GetUnderlyingType(type);
+            return IsNullable<T>(type);
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is nullable of the specified generic argument.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="underlyingType">Type of the underlying.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified underlying type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullable<T>(this Type type, out Type underlyingType)
+        {
+            underlyingType = Nullable.GetUnderlyingType(type);
             if(underlyingType != null)
             {
                 return underlyingType == typeof(T);
