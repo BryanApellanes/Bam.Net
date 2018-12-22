@@ -40,7 +40,8 @@ namespace Bam.Net.Data.Schema.Json
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore
             };
             return result.ToJson(settings);
         }
@@ -51,23 +52,47 @@ namespace Bam.Net.Data.Schema.Json
             return FromDao(daoType);
         }
 
+        public static JsonSchema FromInstance(object instance)
+        {
+            Args.ThrowIfNull(instance);
+            return FromType(instance.GetType());
+        }
+
+        public static JsonSchema FromType(Type type)
+        {
+            return new JsonSchema()
+            {
+                Schema = DefaultSchema,
+                Id = GetSchemaId(type),
+                Title = type.Name,
+                Type = JsonSchemaProperty.TranslateType(type),
+                Properties = JsonSchemaProperty.PropertyDictionaryFromType(type)
+            };
+        }
+
         public static JsonSchema FromDao(object instance)
         {
             Args.ThrowIfNull(instance);
             return FromDao(instance.GetType());
         }
-
+        
         public static JsonSchema FromDao(Type daoType)
         {
             string tableName = Dao.TableName(daoType);
             return new JsonSchema()
             {
                 Schema = DefaultSchema,
-                Id = $"{IdBase}/{tableName}.schema.json",
+                Id = GetSchemaId(daoType),
                 Title = tableName,
                 Type = JsonSchemaProperty.TranslateType(daoType),
                 Properties = JsonSchemaProperty.FromDaoType(daoType)
             };
+        }
+
+        public static string GetSchemaId(Type type)
+        {
+            string name = Dao.TableName(type).Or(type.Name);
+            return $"{IdBase}/{name}.schema.json";
         }
     }
 }

@@ -264,7 +264,7 @@ namespace Bam.Net
 
         public static object ToDynamicData(this object instance, string typeName)
         {
-            Type type = instance.ToDynamicType(typeName, DataTypeFilter);
+            Type type = instance.ToDynamicType(typeName, PropertyDataTypeFilter);
             object temp = type.Construct();
             temp.CopyProperties(instance);
             return temp;

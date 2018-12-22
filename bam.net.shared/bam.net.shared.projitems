@@ -668,7 +668,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ProxyAssemblyGeneratorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaArrayItemType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaArrayProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Schema\Json\JsonSchemaTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\CookieData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Http\Data\Generated_Dao\CookieData.cs" />

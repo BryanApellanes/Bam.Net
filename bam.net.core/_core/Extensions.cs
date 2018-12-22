@@ -28,7 +28,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance);
             Type type = instance.GetType();
             JObject jObject = new JObject();
-            foreach(PropertyInfo prop in type.GetProperties().Where(DataTypeFilter))
+            foreach(PropertyInfo prop in type.GetProperties().Where(PropertyDataTypeFilter))
             {
                 jObject.Add(prop.Name, new JObject(prop.GetValue(instance)));
             }

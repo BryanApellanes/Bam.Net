@@ -3582,7 +3582,16 @@ namespace Bam.Net
                                 Nullable.GetUnderlyingType(sourceProp.PropertyType) == destProp.PropertyType)
                                 && destProp.CanWrite;
         }
-        
+
+        /// <summary>
+        /// Determines whether the specified type is compatible with the specified other type.
+        /// Compatibility means that they are of the same type or same nullable type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="otherType">Type of the other.</param>
+        /// <returns>
+        ///   <c>true</c> if [is compatible with] [the specified other type]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsCompatibleWith(this Type type, Type otherType)
         {
             return AreCompatibleTypes(type, otherType);
@@ -3611,6 +3620,36 @@ namespace Bam.Net
             return underlyingType != null;
         }
 
+        public static bool IsForEachable(this Type type)
+        {
+            return IsForEachable(type, out Type ignore);
+        }
+        /// <summary>
+        /// Determines whether the specified type is a list like type, like an array or generic
+        /// List.  Excludes string.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [is for eachable] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsForEachable(this Type type, out Type underlyingType)
+        {
+            underlyingType = null;
+            if (type == typeof(string))
+            {
+                return false;
+            }
+
+            if (type.IsArray)
+            {
+                underlyingType = type.GetElementType();
+                return true;
+            }
+            
+            underlyingType = type.GetGenericArguments().FirstOrDefault();
+            return type.GetInterfaces().Contains(typeof(IEnumerable));
+        }
+        
         /// <summary>
         /// Determines whether the specified type is nullable of the specified
         /// generic argument.
@@ -3651,8 +3690,10 @@ namespace Bam.Net
 
         public static DateTime DropMilliseconds(this DateTime dateTime)
         {
-            Instant instant = new Instant(dateTime);
-            instant.Millisecond = 0;
+            Instant instant = new Instant(dateTime)
+            {
+                Millisecond = 0
+            };
             return instant.ToDateTime();
         }
 
@@ -3685,7 +3726,12 @@ namespace Bam.Net
 
             return destination;
         }
-        
+
+        /// <summary>
+        /// Gets the properties where the type is a value type.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public static PropertyInfo[] GetValueProperties(this object instance)
         {
             return instance.GetType().GetProperties().Where(pi => pi.PropertyType.IsValueType).ToArray();
@@ -3827,8 +3873,13 @@ namespace Bam.Net
             return result;
         }
 
-        // TODO: rename this to PropertyDataTypeFilter
-        private static bool DataTypeFilter(PropertyInfo prop)
+        /// <summary>
+        /// Used as a filter for the specified property to determine apprpriateness
+        /// of it's type for use as a property. 
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        /// <returns></returns>
+        public static bool PropertyDataTypeFilter(PropertyInfo prop)
         {
             return prop.PropertyType == typeof(string) ||
                         prop.PropertyType == typeof(bool) ||
@@ -3842,6 +3893,7 @@ namespace Bam.Net
                         prop.PropertyType == typeof(decimal) ||
                         prop.PropertyType == typeof(decimal?) ||
                         prop.PropertyType == typeof(byte[]) ||
+                        prop.PropertyType == typeof(byte?[]) ||
                         prop.PropertyType == typeof(DateTime) ||
                         prop.PropertyType == typeof(DateTime?);
         }

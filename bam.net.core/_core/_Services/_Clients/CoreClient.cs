@@ -41,12 +41,11 @@ namespace Bam.Net.Services.Clients
             UserRegistryService = new UserRegistryServiceProxy();
             RoleService = new RoleServiceProxy();
 
-            //OAuthService = new OAuthServiceProxy();
+            OAuthService = new OAuthServiceProxy();
             ServiceRegistryService = new ServiceRegistryServiceProxy();
             SystemLogReaderService = new SystemLogReaderServiceProxy();
             OAuthSettingsService = new OAuthSettingsServiceProxy();
             ProxyAssemblyGeneratorService = new ProxyAssemblyGeneratorServiceProxy();
-            throw new NotImplementedException(); // generate proxy for OAuthService
         }
     }
 }
