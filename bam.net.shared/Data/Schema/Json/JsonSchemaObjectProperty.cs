@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace Bam.Net.Data.Schema.Json
 {
-    public class JsonSchemaType
+    public class JsonSchemaObjectProperty : JsonSchemaProperty
     {
-        public JsonSchemaType(Type systemType, Func<PropertyInfo, bool>  requiredPredicate = null)
+        public JsonSchemaObjectProperty(Type systemType, Func<PropertyInfo, bool>  requiredPredicate = null)
         {
             SystemType = systemType;
-            Type = JsonSchemaProperty.TranslateType(systemType);
+            Type = TranslateType(systemType).ToString().ToLowerInvariant();
             if(requiredPredicate != null)
             {
                 Required = SystemType.GetProperties().Where(requiredPredicate).Select(pi => pi.Name).ToList();
@@ -19,7 +19,6 @@ namespace Bam.Net.Data.Schema.Json
         }
 
         protected internal Type SystemType { get; set; }
-        public JsonSchemaTypes Type { get; set; }
 
         Dictionary<string, JsonSchemaProperty> _properties;
         object _propLock = new object();
@@ -27,7 +26,7 @@ namespace Bam.Net.Data.Schema.Json
         {
             get
             {
-                return _propLock.DoubleCheckLock(ref _properties, () => JsonSchemaProperty.PropertyDictionaryFromType(SystemType));
+                return _propLock.DoubleCheckLock(ref _properties, () => PropertyDictionaryFromType(SystemType));
             }
             set
             {

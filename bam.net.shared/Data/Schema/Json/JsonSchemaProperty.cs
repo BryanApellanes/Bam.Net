@@ -4,17 +4,24 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using Bam.Net;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Data.Schema.Json
 {
     public class JsonSchemaProperty
     {
+        static JsonSchemaProperty()
+        {
+            RequiredPropertyFilters = new Dictionary<Type, Func<PropertyInfo, bool>>();
+        }
+
         public string Description { get; set; }
         public string Type { get; set; }
-
-        public string ToJson()
+        
+        public static Dictionary<Type, Func<PropertyInfo, bool>> RequiredPropertyFilters
         {
-            return new { description = Description, type = Type }.ToJson();
+            get;
+            set;
         }
 
         public static Dictionary<string, JsonSchemaProperty> PropertyDictionaryFromType<T>()
@@ -25,7 +32,12 @@ namespace Bam.Net.Data.Schema.Json
         public static Dictionary<string, JsonSchemaProperty> PropertyDictionaryFromType(Type type)
         {
             Args.ThrowIfNull(type);
-            return PropertyDictionaryFromType(type, pi => Extensions.PropertyDataTypeFilter(pi) || pi.PropertyType.IsForEachable());
+            return PropertyDictionaryFromType(type, pi => 
+                pi.PropertyType.HasCustomAttributeOfType<JsonSchemaAttribute>() || 
+                Extensions.PropertyDataTypeFilter(pi) || 
+                pi.PropertyType.IsForEachable() ||
+                pi.PropertyType.IsSubclassOf(typeof(RepoData))
+            );
         }
 
         public static Dictionary<string, JsonSchemaProperty> FromDaoType<T>() where T : Dao
@@ -40,17 +52,17 @@ namespace Bam.Net.Data.Schema.Json
             return PropertyDictionaryFromType(type, pi => pi.HasCustomAttributeOfType<ColumnAttribute>());
         }
 
-        public static Dictionary<string, JsonSchemaProperty> PropertyDictionaryFromType(Type type, Func<PropertyInfo, bool> predicate)
+        public static Dictionary<string, JsonSchemaProperty> PropertyDictionaryFromType(Type type, Func<PropertyInfo, bool> propertyPredicate)
         {
             Dictionary<string, JsonSchemaProperty> result = new Dictionary<string, JsonSchemaProperty>();
-            foreach (PropertyInfo prop in type.GetProperties().Where(predicate))
+            foreach (PropertyInfo prop in type.GetProperties().Where(propertyPredicate))
             {
                 result.Add(prop.Name, FromPropertyInfo(prop));
             }
             return result;
         }
 
-        public static JsonSchemaProperty FromPropertyInfo(PropertyInfo prop)
+        public static JsonSchemaProperty FromPropertyInfo(PropertyInfo prop, Func<PropertyInfo, bool> requiredPropertyPredicate = null)
         {
             Type type = prop.PropertyType;
             if (type.IsNullable(out Type underlyingType))
@@ -66,6 +78,21 @@ namespace Bam.Net.Data.Schema.Json
                     Description = description,
                     Type = jsonSchemaTypes.ToString().ToLowerInvariant(),
                     Items = GetArrayItemType(elementType)
+                };
+            }
+            if(jsonSchemaTypes == JsonSchemaTypes.Object)
+            {
+                if(requiredPropertyPredicate == null)
+                {
+                    if (RequiredPropertyFilters.ContainsKey(type))
+                    {
+                        requiredPropertyPredicate = RequiredPropertyFilters[type];
+                    }
+                }
+                return new JsonSchemaObjectProperty(type, requiredPropertyPredicate)
+                {
+                    Description = description,
+                    Type = jsonSchemaTypes.ToString().ToLowerInvariant(),                    
                 };
             }
             return new JsonSchemaProperty
@@ -107,11 +134,11 @@ namespace Bam.Net.Data.Schema.Json
             {
                 return JsonSchemaTypes.Null;
             }
-            else if (type == typeof(int) || type == typeof(uint))
+            else if (type == typeof(int) || type == typeof(uint) || type == typeof(int?) || type == typeof(uint?))
             {
                 return JsonSchemaTypes.Integer;
             }
-            else if (type.IsNumberType())
+            else if (type.IsNumberType() || type.IsNullableNumberType())
             {
                 return JsonSchemaTypes.Number;
             }
@@ -119,7 +146,7 @@ namespace Bam.Net.Data.Schema.Json
             {
                 return JsonSchemaTypes.Boolean;
             }
-            else if(type == typeof(string))
+            else if(type == typeof(string) || type == typeof(DateTime) || type == typeof(DateTime?))
             {
                 return JsonSchemaTypes.String;
             }

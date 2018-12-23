@@ -11,10 +11,24 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Data.Tests
 {
+    [JsonSchema]
+    public class TestContainer
+    {
+        public string Name { get; set; }
+        public DateTime Created { get; set; }
+    }
+
+    public class AnotherClass: AuditRepoData
+    {
+        public string Name { get; set; }
+        public string SomeOtherProperty { get; set; }
+    }
+
     public class TestParentRepoData: RepoData
     {
         public string Name { get; set; }
-
+        public TestContainer Container { get; set; }
+        public AnotherClass AnotherClass { get; set; }
         public List<TestChild> Children { get; set; }
     }
 
@@ -40,7 +54,7 @@ namespace Bam.Net.Data.Tests
             JsonSchema schema = JsonSchema.FromType(typeof(TestParentRepoData));
             OutLine(schema.ToJson(true));
         }
-
+        
         [UnitTest]
         public void JsonSchemaDictionary()
         {

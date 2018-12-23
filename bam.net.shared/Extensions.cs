@@ -3123,6 +3123,21 @@ namespace Bam.Net
                 || type == typeof(decimal);
         }
 
+        public static bool IsNullableNumberType(this Type type)
+        {
+            return type == typeof(sbyte?)
+                || type == typeof(byte?)
+                || type == typeof(short?)
+                || type == typeof(ushort?)
+                || type == typeof(int?)
+                || type == typeof(uint?)
+                || type == typeof(long?)
+                || type == typeof(ulong?)
+                || type == typeof(float?)
+                || type == typeof(double?)
+                || type == typeof(decimal?);
+        }
+
         public static bool IsLetter(this char c)
         {
             int val = Convert.ToInt32(c);
