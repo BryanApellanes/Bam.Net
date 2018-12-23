@@ -653,7 +653,7 @@ namespace Bam.Net.Caching
             await Task.Run(() =>
             {
                 HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-                Parallel.ForEach(new Action[] 
+                Parallel.ForEach(new Action[]
                 {
                     () =>
                     {
@@ -682,7 +682,20 @@ namespace Bam.Net.Caching
                     },
                     () =>
                     {
-                        Dictionary<string, CacheItem> itemsByName = itemsCopy.ToDictionary(ci=> ci.Property<string>("Name", false) ?? ci.Uuid);
+                        Dictionary<string, CacheItem> itemsByName = new Dictionary<string, CacheItem>();
+                        foreach(CacheItem item in itemsCopy)
+                        {
+                            string name = item.Property<string>("Name", false).Or(item.Uuid);
+                            if (itemsByName.ContainsKey(name))
+                            {
+                                Log.Warn("Multiple cache items with the same name: {0} ({1}) and ({2})", name, itemsByName[name].Uuid, item.Uuid);
+                                itemsByName[name] = item;
+                            }
+                            else
+                            {
+                                itemsByName.Add(name, item);
+                            }
+                        }
                         ItemsByName = itemsByName;
                     }
                 }, action => action());
