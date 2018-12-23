@@ -414,6 +414,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SourcedConfigurationSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\StaticApplicationNameProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\AccessControl\Resource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\AccessControl\PermissionSpecification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreServices\AccessControl\Permissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ApplicationConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ApplicationNameNotSpecifiedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreServices\ApplicationProxyableService.cs" />
