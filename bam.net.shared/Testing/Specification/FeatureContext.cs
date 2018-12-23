@@ -13,8 +13,8 @@ namespace Bam.Net.Testing.Specification
 	{
 		public FeatureContext()
 		{
-			this.Features = new Queue<Feature>();
+			this.Features = new Queue<FeatureAction>();
 		}
-		public Queue<Feature> Features { get; set; }
+		public Queue<FeatureAction> Features { get; set; }
 	}
 }

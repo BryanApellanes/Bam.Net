@@ -9,6 +9,5 @@ namespace Bam.Net.Services.DataReplication
 {
     public class JournalResponse: SecureStreamingResponse
     {
-        public string Message { get; set; }
     }
 }

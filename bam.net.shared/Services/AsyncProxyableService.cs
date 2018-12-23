@@ -20,7 +20,9 @@ using System.Reflection;
 namespace Bam.Net.Services
 {
     /// <summary>
-    /// 
+    /// An extension to the ApplicationProxyableService that can make host to host asynchronous calls.  Not to be confused with a
+    /// local thread pool, asynchronous calls in this context refers to non blocking http requests made to other service proxy end points.
+    /// This component can optionally wait for responses in a non blocking way using Tasks.
     /// </summary>
     /// <seealso cref="Bam.Net.CoreServices.ApplicationProxyableService" />
     /// <seealso cref="Bam.Net.ServiceProxy.IHasServiceProvider" />
@@ -151,7 +153,5 @@ namespace Bam.Net.Services
             CallbackService.RegisterPendingAsyncExecutionRequest(request, responseHandler);
             ExecuteRemoteAsync(request);
         }
-
-
     }
 }

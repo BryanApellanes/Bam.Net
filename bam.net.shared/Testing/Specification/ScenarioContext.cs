@@ -15,6 +15,27 @@ namespace Bam.Net.Testing.Specification
 		{
 			this.Scenarios = new Queue<Scenario>();
 		}
+
 		public Queue<Scenario> Scenarios { get; set; }
-	}
+
+        //public ScenarioContext And(string and, Action andAction)
+        //{
+        //    return this;
+        //}
+
+        //public ScenarioContext When(string when, Action whenAction)
+        //{
+        //    return this;
+        //}
+
+        //public ScenarioContext Then(string then, Action thenAction)
+        //{
+        //    return this;
+        //}
+
+        //public ScenarioContext But(string but, Action butAction)
+        //{
+        //    return this;
+        //}
+    }
 }

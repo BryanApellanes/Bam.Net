@@ -4,11 +4,9 @@ using System.Text;
 
 namespace Bam.Net.CoreServices.AccessControl
 {
-    public enum Permissions
+    public class ResourceInfo
     {
-        Invalid,
-        Read,
-        Write,
-        Execute
+        public string Path { get; set; }
+        public List<string> Permissions { get; set; }
     }
 }

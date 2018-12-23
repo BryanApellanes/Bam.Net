@@ -9,15 +9,39 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Specification
 {
-	public class Scenario
+	public class Scenario: SpecificationTestAction<Scenario>
 	{
+        StepContext _steps;
 		public Scenario(string scenario, Action scenarioAction)
 		{
 			this.Description = scenario;
 			this.Action = scenarioAction;
+            _steps = new StepContext();
 		}
+        
+        public override bool TryAction()
+        {
+            return TryAction((f, e) => { });
+        }
 
-		public string Description { get; set; }
-		public Action Action { get; set; }
-	}
+        public override bool TryAction(Action<Scenario, Exception> exceptionHandler)
+        {
+            return base.TryAction(this, exceptionHandler);
+        }
+
+        public StepContext And(string and, Action andAction)
+        {
+            return _steps.And(and, andAction);            
+        }
+
+        public StepContext When(string when, Action whenAction)
+        {
+            return _steps.When(when, whenAction);
+        }
+
+        public StepContext Then(string then, Action thenAction)
+        {
+            return _steps.Then(then, thenAction);
+        }
+    }
 }

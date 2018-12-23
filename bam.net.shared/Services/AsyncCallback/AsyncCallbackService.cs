@@ -84,7 +84,7 @@ namespace Bam.Net.Services
             Args.ThrowIfNull(response, "result");
             Args.ThrowIfNull(response.Request, "result.Request");
             string cuid = response.Request.Cuid;
-            Action<AsyncExecutionResponse> action = ((r) => { });
+            Action<AsyncExecutionResponse> action = ((r) => { }); // in case out parameter below fails
 
             if (_pendingRequests.ContainsKey(cuid))
             {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bam.Net.CoreServices.AccessControl
+namespace Bam.Net.CoreServices.AccessControl.Data
 {
     [Serializable]
     public class PermissionSpecification : AuditRepoData

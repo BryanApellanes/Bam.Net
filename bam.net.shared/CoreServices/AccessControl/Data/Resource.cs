@@ -6,12 +6,13 @@ using System.Text;
 using System.IO;
 using System.Linq;
 
-namespace Bam.Net.CoreServices.AccessControl
+namespace Bam.Net.CoreServices.AccessControl.Data
 {
     public class Resource: AuditRepoData
     {
         public string Name { get; set; }
-        public Resource Parent { get; set; }
+        public virtual ResourceHost Host { get; set; }
+        public virtual Resource Parent { get; set; }
 
         HashSet<PermissionSpecification> _permissions;
         public virtual List<PermissionSpecification> Permissions
