@@ -15,6 +15,7 @@ using Bam.Net.ExceptionHandling;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
 using System.Diagnostics;
+using Bam.Net.Testing.Specification;
 
 namespace Bam.Net.Testing
 {
@@ -24,6 +25,7 @@ namespace Bam.Net.Testing
         static CommandLineTestInterface()
         {
             GetUnitTestRunListeners = () => new List<ITestRunListener<UnitTestMethod>>();
+            GetSpecTestRunListeners = ()=> new List<ITestRunListener<SpecTestMethod>>();
             InitLogger();
         }
         
@@ -64,6 +66,7 @@ namespace Bam.Net.Testing
 			AddValidArgument("?", true, description: "Show usage");
 			AddValidArgument("t", true, description: "Run all unit tests");
             AddValidArgument("it", true, description: "Run all integration tests");
+            AddValidArgument("spec", true, description: "Run all specification tests");
             AddValidArgument("tag", false, description: "Specify a tag to associate with test executions");
 
 			ParseArgs(args);
@@ -81,6 +84,11 @@ namespace Bam.Net.Testing
             else if (Arguments.Contains("t"))
             {
                 RunAllUnitTests(Assembly.GetEntryAssembly());
+                return;
+            }
+            else if (Arguments.Contains("spec"))
+            {
+                RunAllSpecTests(Assembly.GetEntryAssembly());
                 return;
             }
             else if (Arguments.Contains("it"))
@@ -199,18 +207,11 @@ namespace Bam.Net.Testing
             }
         }
 
-        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null, EventHandler failedHandler = null)
+        public static void RunAllSpecTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null, EventHandler failedHandler = null)
         {
-            ITestRunner<UnitTestMethod> runner = GetUnitTestRunner(assembly, logger);
-            if(passedHandler != null)
-            {
-                runner.TestPassed += passedHandler;
-            }
-            if(failedHandler != null)
-            {
-                runner.TestFailed += failedHandler;
-            }
-            foreach(ITestRunListener<UnitTestMethod> listener in GetUnitTestRunListeners())
+            ITestRunner<SpecTestMethod> runner = GetSpecTestRunner(assembly, logger);
+            AttachHandlers<SpecTestMethod>(passedHandler, failedHandler, runner);
+            foreach (ITestRunListener<SpecTestMethod> listener in GetSpecTestRunListeners())
             {
                 listener.Tag = runner.Tag;
                 listener.Listen(runner);
@@ -218,9 +219,45 @@ namespace Bam.Net.Testing
             runner.RunAllTests();
         }
 
+        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null, EventHandler failedHandler = null)
+        {
+            ITestRunner<UnitTestMethod> runner = GetUnitTestRunner(assembly, logger);
+            AttachHandlers<UnitTestMethod>(passedHandler, failedHandler, runner);
+            foreach (ITestRunListener<UnitTestMethod> listener in GetUnitTestRunListeners())
+            {
+                listener.Tag = runner.Tag;
+                listener.Listen(runner);
+            }
+            runner.RunAllTests();
+        }
+
+        private static void AttachHandlers<TTestMethod>(EventHandler passedHandler, EventHandler failedHandler, ITestRunner<TTestMethod> runner) where TTestMethod : TestMethod
+        {
+            if (passedHandler != null)
+            {
+                runner.TestPassed += passedHandler;
+            }
+            if (failedHandler != null)
+            {
+                runner.TestFailed += failedHandler;
+            }
+        }
+
         protected internal static Func<IEnumerable<ITestRunListener<UnitTestMethod>>> GetUnitTestRunListeners
         {
-            get;set;
+            get;
+            set;
+        }
+
+        protected internal static Func<IEnumerable<ITestRunListener<SpecTestMethod>>> GetSpecTestRunListeners
+        {
+            get;
+            set;
+        }
+
+        protected internal static ITestRunner<SpecTestMethod> GetSpecTestRunner(Assembly assembly, ILogger logger)
+        {
+            return GetTestRunner<SpecTestMethod>(assembly, logger);
         }
 
         protected internal static ITestRunner<UnitTestMethod> GetUnitTestRunner(Assembly assembly, ILogger logger)

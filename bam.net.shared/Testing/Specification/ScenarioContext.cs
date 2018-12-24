@@ -11,31 +11,19 @@ namespace Bam.Net.Testing.Specification
 {
 	public class ScenarioContext
 	{
-		public ScenarioContext()
-		{
-			this.Scenarios = new Queue<Scenario>();
-		}
+        public ScenarioContext()
+        {
+            Scenarios = new Queue<Scenario>();
+        }
+        public Queue<Scenario> Scenarios { get; set; }
+        public Scenario CurrentScenario { get; set; }
 
-		public Queue<Scenario> Scenarios { get; set; }
-
-        //public ScenarioContext And(string and, Action andAction)
-        //{
-        //    return this;
-        //}
-
-        //public ScenarioContext When(string when, Action whenAction)
-        //{
-        //    return this;
-        //}
-
-        //public ScenarioContext Then(string then, Action thenAction)
-        //{
-        //    return this;
-        //}
-
-        //public ScenarioContext But(string but, Action butAction)
-        //{
-        //    return this;
-        //}
-    }
+        public Scenario AddScenario(string scenarioDescription, Action scenarioSetup)
+        {
+            Scenario scenario = new Scenario(scenarioDescription, scenarioSetup);
+            Scenarios.Enqueue(scenario);
+            CurrentScenario = scenario;
+            return scenario;
+        }
+	}
 }

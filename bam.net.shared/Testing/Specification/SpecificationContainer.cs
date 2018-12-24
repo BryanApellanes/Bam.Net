@@ -1,6 +1,8 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net.CommandLine;
+using Bam.Net.CoreServices;
 using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
@@ -12,53 +14,74 @@ namespace Bam.Net.Testing.Specification
 {
 	public class SpecificationContainer: CommandLineTestInterface
 	{
-		public SpecificationContainer()
+        Dictionary<Type, SpecificationContainer> _specContainers;
+        public SpecificationContainer()
         {
-            CurrentFeatureContext = new FeatureContext();
-            CurrentScenarioContext = new ScenarioContext();
+            FeatureContext = new FeatureContext();
+            ScenarioContext = new ScenarioContext();
+            SpecificationTestRegistry = new ServiceRegistry();
+            _specContainers = new Dictionary<Type, SpecificationContainer>();
         }
 
-        internal FeatureContext CurrentFeatureContext { get; set; }
-        internal ScenarioContext CurrentScenarioContext { get; set; }
+        public ServiceRegistry SpecificationTestRegistry { get; set; }
+        internal FeatureContext FeatureContext { get; set; }
+        internal ScenarioContext ScenarioContext { get; set; }
 
-        [AfterUnitTests]
-        public void RunSpecificationTests()
+        FeatureSetup _currentFeature;
+        Scenario _currentScenario;
+
+        public virtual void Setup() { }
+        public virtual void TearDown() { }
+
+        public void RunSpecTest(SpecificationContainer container, SpecTestMethod testMethod)
         {
-            FeatureAction feature = null;
-            Scenario scenario = null;
-            while(CurrentFeatureContext.Features.Count > 0)
+            testMethod.Provider = container;
+            testMethod.Invoke();
+            while(container.FeatureContext.Features.Count > 0)
             {
-                feature = CurrentFeatureContext.Features.Dequeue();
-                if (!feature.TryAction((f, x) => Logger.AddEntry("Feature ({0}) failed: {1}", x, f.Description, x.Message)))
+                _currentFeature = container.FeatureContext.Features.Dequeue();
+                if (!_currentFeature.TryAction((f, x) => Logger.AddEntry("Feature ({0}) failed: {1}", x, f.Description, x.Message)))
                 {
                     Logger.Error("Feature prep failed");
                     break;
                 }
-            }
-            while(CurrentScenarioContext.Scenarios.Count > 0)
-            {
-                scenario = CurrentScenarioContext.Scenarios.Dequeue();
-                if (!scenario.TryAction((s, x) => Logger.AddEntry("Scenario ({0}) failed: {1}\r\n{2}", x, s.Description, x.Message)))
+                else
                 {
-                    Logger.Error("Scenario prep failed");
-                    break;
+                    while (ScenarioContext.Scenarios.Count > 0)
+                    {
+                        _currentScenario = ScenarioContext.Scenarios.Dequeue();
+                        _currentScenario.FeatureContext = container.FeatureContext;
+                        _currentScenario.CurrentFeature = _currentFeature;
+                        _currentScenario.Execute();
+                    }
                 }
+
             }
         }
-        		
+
 		public void Feature(string feature, Action featureAction)
 		{
-			CurrentFeatureContext.Features.Enqueue(new FeatureAction(feature, featureAction));
+			FeatureContext.Features.Enqueue(new FeatureSetup(feature, featureAction));
 		}
 
-		public void Scenario(string scenario, Action scenarioAction)
+		public Scenario Scenario(string scenario, Action scenarioAction)
 		{
-			CurrentScenarioContext.Scenarios.Enqueue(new Scenario(scenario, scenarioAction));
+            return ScenarioContext.AddScenario(scenario, scenarioAction);
 		}
 			
-		public StepContext Given(string given, Action givenAction)
+		public Scenario Given(string given, Action givenAction)
 		{
-            return new StepContext(given, givenAction);
+            return ScenarioContext.CurrentScenario.Given(given, givenAction);
 		}
-	}
+        
+        private SpecificationContainer GetContainer(TestMethod test)
+        {
+            Type type = test.Method.DeclaringType;
+            if (!_specContainers.ContainsKey(type))
+            {
+                _specContainers.Add(type, type.Construct<SpecificationContainer>());
+            }
+            return _specContainers[type];
+        }
+    }
 }

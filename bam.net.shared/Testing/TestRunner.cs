@@ -1,6 +1,7 @@
 ﻿using Bam.Net.CommandLine;
 using Bam.Net.ExceptionHandling;
 using Bam.Net.Logging;
+using Bam.Net.Testing.Specification;
 using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,11 @@ namespace Bam.Net.Testing
         {
             _factory = new Dictionary<Type, Func<Assembly, ILogger, ITestRunner<TTestMethod>>>
             {
-                { typeof(UnitTestMethod), (a, l)=> (ITestRunner<TTestMethod>)new UnitTestRunner(a, l) }
-                // TODO: add IntegrationTest here
+                { typeof(UnitTestMethod), (a, l) => (ITestRunner<TTestMethod>)new UnitTestRunner(a, l) },
+                { typeof(SpecTestMethod), (a, l )=> (ITestRunner<TTestMethod>)new SpecTestRunner(a, l) }
+                // TODO: 
+                // refactor Integration test handling to match established convention for Unit and Spec then 
+                // add IntegrationTest here
             };
         }
 
@@ -164,9 +168,9 @@ namespace Bam.Net.Testing
         }
 
         [DebuggerStepThrough]
-        public void RunTest(TestMethod test)
+        public virtual void RunTest(TestMethod test)
         {
-            if(test.Attribute is UnitTestAttribute testAttribute)
+            if (test.Attribute is UnitTestAttribute testAttribute)
             {
                 if (testAttribute.Ignore)
                 {
@@ -174,8 +178,7 @@ namespace Bam.Net.Testing
                     return;
                 }
             }
-            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag, Assembly = test.Method.DeclaringType.Assembly };
-            FireEvent(TestStarting, args);
+            TestEventArgs<TTestMethod> args = FireTestStarting(test);
             try
             {
                 InvokeTest(test, IsolateMethodCalls);
@@ -184,17 +187,33 @@ namespace Bam.Net.Testing
             }
             catch (ReflectionTypeLoadException rtle)
             {
-                Exception ex = new ReflectionTypeLoadAggregateException(rtle);
-                TestSummary.FailedTests.Add(new FailedTest { Test = test, Exception = ex });
-                FireEvent(TestFailed, new TestExceptionEventArgs(test, ex));
+                FireTestFailed(test, rtle);
             }
             catch (Exception ex)
             {
                 ex = ex.GetInnerException();
-                TestSummary.FailedTests.Add(new FailedTest { Test = test, Exception = ex });
-                FireEvent(TestFailed, new TestExceptionEventArgs(test, ex));
+                FireTestFailed(test, ex);
             }
             FireEvent(TestFinished, args);
+        }
+        
+        protected void FireTestFailed(TestMethod test, ReflectionTypeLoadException rtle)
+        {
+            Exception ex = new ReflectionTypeLoadAggregateException(rtle);
+            FireTestFailed(test, ex);
+        }
+
+        protected void FireTestFailed(TestMethod test, Exception ex)
+        {
+            TestSummary.FailedTests.Add(new FailedTest { Test = test, Exception = ex });
+            FireEvent(TestFailed, new TestExceptionEventArgs(test, ex));
+        }
+
+        protected TestEventArgs<TTestMethod> FireTestStarting(TestMethod test)
+        {
+            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag, Assembly = test.Method.DeclaringType.Assembly };
+            FireEvent(TestStarting, args);
+            return args;
         }
 
         protected Assembly Assembly { get; set; }

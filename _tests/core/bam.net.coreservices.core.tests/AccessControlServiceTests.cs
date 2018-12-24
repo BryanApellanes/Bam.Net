@@ -1,8 +1,10 @@
-﻿using Bam.Net.Testing;
+﻿using Bam.Net.CommandLine;
+using Bam.Net.Testing;
 using Bam.Net.Testing.Specification;
 using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Bam.Net.Tests
@@ -10,8 +12,15 @@ namespace Bam.Net.Tests
     [Serializable]
     public class AccessControlServiceTests : SpecificationContainer
     {
-        [UnitTest]
-        public void GherkinLikeDelegatesTest()
+        [ConsoleAction]
+        public void RunSpecificationTests()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            RunAllSpecTests(Assembly.GetEntryAssembly(), logger);
+        }
+
+        [Spec]
+        public void SpecificationTest()
         {
             //Feature: Serve coffee
             //  In order to earn money
@@ -23,32 +32,34 @@ namespace Bam.Net.Tests
             //	And I have deposited 1 dollar
             //	When I press the coffee button
             //Then I should be served a coffee
+            Console.WriteLine("spec test");
             Feature("Serve coffee in order to earn money " +
-                "Customers should be able to buy coffee at all times", () =>
+            "Customers should be able to buy coffee at all times", () =>
+            {
+                Scenario("Buy last coffee", () =>
                 {
-                    Scenario("Buy last coffee", () =>
+                    Given("there are 1 coffees left in the machine", () =>
                     {
-                        Given("there are 1 coffees left in the machine", () =>
-                        {
-
-                        })
-                        .And("I have deposited 1 dollar", () =>
-                        {
-
-                        })
-                        .When("I press the coffee button", () =>
-                        {
-
-                        })
-                        .Then("I should be served a coffee", () =>
-                        {
-
-                        })
-                        .But("I should not be sad", () =>
-                        {
-                        });
+                        Console.WriteLine("given --");
+                    })
+                    .And("I have deposited 1 dollar", () =>
+                    {
+                        Console.WriteLine("and --");
+                    })
+                    .When("I press the coffee button", () =>
+                    {
+                        Console.WriteLine("when -- ");
+                    })
+                    .Then("I should be served a coffee", () =>
+                    {
+                        Console.WriteLine("then");
+                    })
+                    .But("I should not be sad", () =>
+                    {
+                        Console.WriteLine("but");
                     });
                 });
+            });
         }
 
         [UnitTest]
