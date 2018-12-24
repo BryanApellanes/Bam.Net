@@ -83,6 +83,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="prod-svcinfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="int-svcinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

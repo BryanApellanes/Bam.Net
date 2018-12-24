@@ -2938,7 +2938,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Testing\ITestRunListener.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\ITestRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\SetupContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Testing\Specification\ITestAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\Specification\SetupAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\Specification\ButAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Testing\Specification\FeatureSetup.cs" />
