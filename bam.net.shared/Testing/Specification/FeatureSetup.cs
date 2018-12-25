@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Specification
 {
-	public class FeatureSetup: SpecificationTestAction<FeatureSetup>
+	public class FeatureSetup: SpecTestContextSetupAction<FeatureSetup>
 	{
 		public FeatureSetup(string featureDescription, Action action)
 		{
 			this.Description = featureDescription;
-			this.Action = action;
+			this.SetupAction = action;
 		}
         
-        public override bool TryAction()
+        public override bool TrySetup()
         {
-            return TryAction((f,e)=> { });
+            return TrySetup((f,e)=> { });
         }
 
-        public override bool TryAction(Action<FeatureSetup, Exception> exceptionHandler)
+        public override bool TrySetup(Action<FeatureSetup, Exception> exceptionHandler)
         {
-            return base.TryAction(this, exceptionHandler);
+            return base.TrySetup(this, exceptionHandler);
         }
     }
 }

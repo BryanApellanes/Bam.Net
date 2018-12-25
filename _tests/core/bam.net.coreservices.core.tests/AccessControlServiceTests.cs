@@ -1,4 +1,6 @@
 ﻿using Bam.Net.CommandLine;
+using Bam.Net.CoreServices.AccessControl;
+using Bam.Net.CoreServices.AccessControl.Data;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Specification;
 using Bam.Net.Testing.Unit;
@@ -19,7 +21,7 @@ namespace Bam.Net.Tests
             RunAllSpecTests(Assembly.GetEntryAssembly(), logger);
         }
 
-        [Spec]
+        [SpecTest]
         public void SpecificationTest()
         {
             //Feature: Serve coffee
@@ -32,6 +34,9 @@ namespace Bam.Net.Tests
             //	And I have deposited 1 dollar
             //	When I press the coffee button
             //Then I should be served a coffee
+            AccessControlService svc = new AccessControlService();
+            ulong testResourceId = 555;
+            PermissionSpecification permSpec = new PermissionSpecification();
             Console.WriteLine("spec test");
             Feature("Serve coffee in order to earn money " +
             "Customers should be able to buy coffee at all times", () =>
@@ -50,11 +55,18 @@ namespace Bam.Net.Tests
                     {
                         Console.WriteLine("when -- ");
                     })
-                    .Then("I should be served a coffee", () =>
+                    .Then("I should be served a coffee", (it) =>
                     {
+                        it(svc)
+                            .Should("add resource permission", () => svc.AddResourcePermission(testResourceId, permSpec))
+                            .WithoutThrowing();
+
+                        it(svc).IsEqualTo(svc);
+                        it(true).IsTrue();
+
                         Console.WriteLine("then");
                     })
-                    .But("I should not be sad", () =>
+                    .But("I should not be sad", (it) =>
                     {
                         Console.WriteLine("but");
                     });

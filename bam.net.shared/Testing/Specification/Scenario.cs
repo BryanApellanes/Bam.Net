@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Specification
 {
-	public class Scenario: SpecificationTestAction<Scenario>
+	public class Scenario: SpecTestContextSetupAction<Scenario>
 	{
         Queue<SetupAction> _setupActions;
         Queue<ThenAction> _thenActions;
@@ -18,7 +18,7 @@ namespace Bam.Net.Testing.Specification
         public Scenario(string scenario, Action setupScenario, ILogger logger = null)
 		{
 			this.Description = scenario;
-			this.Action = setupScenario;
+			this.SetupAction = setupScenario;
             _setupActions = new Queue<SetupAction>();
             _thenActions = new Queue<ThenAction>();
             _butActions = new Queue<ButAction>();
@@ -29,11 +29,21 @@ namespace Bam.Net.Testing.Specification
         public FeatureSetup CurrentFeature { get; set; }
         public ILogger Logger { get; set; }
 
+        ItContext _assertionContext;
+        object _assertionContextLock = new object();
+        public ItContext AssertionContext
+        {
+            get
+            {
+                return _assertionContextLock.DoubleCheckLock(ref _assertionContext, () => new ItContext());
+            }
+        }
+
         public WhenAction TestAction { get; set; }
 
-        public override bool TryAction()
+        public override bool TrySetup()
         {
-            return TryAction((f, e) => { });
+            return TrySetup((f, e) => { });
         }
 
         /// <summary>
@@ -41,9 +51,9 @@ namespace Bam.Net.Testing.Specification
         /// </summary>
         /// <param name="exceptionHandler">The exception handler.</param>
         /// <returns></returns>
-        public override bool TryAction(Action<Scenario, Exception> exceptionHandler)
+        public override bool TrySetup(Action<Scenario, Exception> exceptionHandler)
         {
-            return base.TryAction(this, exceptionHandler);
+            return base.TrySetup(this, exceptionHandler);
         }
 
         public Scenario Given(string given, Action givenAction)
@@ -68,21 +78,21 @@ namespace Bam.Net.Testing.Specification
             return this;
         }
 
-        public Scenario Then(string then, Action thenAction)
+        public Scenario Then(string then, Action<ThenDelegate> thenAction)
         {
             _thenActions.Enqueue(new ThenAction { Description = then, Action = thenAction });
             return this;
         }
 
-        public Scenario But(string but, Action butAction)
+        public Scenario But(string but, Action<ButDelegate> butAction)
         {
             _butActions.Enqueue(new ButAction { Description = but, Action = butAction });
             return this;
         }
 
-        public bool Execute()
+        public bool Execute() // TODO: define scenario runner that collects and reports results
         {
-            if (!TryAction())
+            if (!TrySetup())
             {
                 Logger.AddEntry("Failed to setup scenario");
                 return false;
@@ -115,7 +125,7 @@ namespace Bam.Net.Testing.Specification
                 {
                     ThenAction action = _thenActions.Dequeue();
                     Console.WriteLine(action.Description);
-                    action.Action();
+                    action.Action(o => AssertionContext.It(o));
                 }
                 catch (Exception ex)
                 {
@@ -128,7 +138,7 @@ namespace Bam.Net.Testing.Specification
                 {
                     ButAction action = _butActions.Dequeue();
                     Console.WriteLine(action.Description);
-                    action.Action();
+                    action.Action(o => AssertionContext.It(o));
                 }
                 catch (Exception ex)
                 {
@@ -137,5 +147,7 @@ namespace Bam.Net.Testing.Specification
             }
             return true;
         }
+
+        
     }
 }

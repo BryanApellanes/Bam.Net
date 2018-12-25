@@ -28,7 +28,7 @@ namespace Bam.Net.Testing.Specification
         public static List<SpecTestMethod> FromAssembly(Assembly assembly)
         {
             List<SpecTestMethod> tests = new List<SpecTestMethod>();
-            tests.AddRange(FromAssembly<SpecTestMethod>(assembly, typeof(SpecAttribute)));
+            tests.AddRange(FromAssembly<SpecTestMethod>(assembly, typeof(SpecTestAttribute)));
             tests.Sort((l, r) => l.Information.CompareTo(r.Information));
             return tests;
         }

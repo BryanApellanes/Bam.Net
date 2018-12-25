@@ -13,7 +13,7 @@ namespace Bam.Net.Testing.Specification
 {
 
 	[AttributeUsage(AttributeTargets.Method)]
-	public class SpecAttribute: ConsoleActionAttribute
+	public class SpecTestAttribute: ConsoleActionAttribute
     {
 	}
 }

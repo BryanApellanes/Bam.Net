@@ -40,7 +40,7 @@ namespace Bam.Net.Testing.Specification
             while(container.FeatureContext.Features.Count > 0)
             {
                 _currentFeature = container.FeatureContext.Features.Dequeue();
-                if (!_currentFeature.TryAction((f, x) => Logger.AddEntry("Feature ({0}) failed: {1}", x, f.Description, x.Message)))
+                if (!_currentFeature.TrySetup((f, x) => Logger.AddEntry("Feature ({0}) failed: {1}", x, f.Description, x.Message)))
                 {
                     Logger.Error("Feature prep failed");
                     break;
@@ -55,7 +55,6 @@ namespace Bam.Net.Testing.Specification
                         _currentScenario.Execute();
                     }
                 }
-
             }
         }
 
