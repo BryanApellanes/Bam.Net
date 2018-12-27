@@ -12,7 +12,7 @@ using System.Text;
 namespace Bam.Net.Tests
 {
     [Serializable]
-    public class AccessControlServiceTests : SpecificationContainer
+    public class AccessControlServiceTests : SpecTestContainer
     {
         [ConsoleAction]
         public void RunSpecificationTests()
@@ -34,28 +34,31 @@ namespace Bam.Net.Tests
             //	And I have deposited 1 dollar
             //	When I press the coffee button
             //Then I should be served a coffee
-            AccessControlService svc = new AccessControlService();
             ulong testResourceId = 555;
+            string testUser = "testUser";
             PermissionSpecification permSpec = new PermissionSpecification();
             Console.WriteLine("spec test");
-            Feature("Serve coffee in order to earn money " +
-            "Customers should be able to buy coffee at all times", () =>
+            Feature<AccessControlService>("Set permissions to restrict access to resources", (svc) =>
             {
-                Scenario("Buy last coffee", () =>
+                Expect.IsInstanceOfType<AccessControlService>(svc);
+                Scenario("Set deny permission on resource", () =>
                 {
-                    Given("there are 1 coffees left in the machine", () =>
+                    Given("I have been denied access to a resource", () =>
                     {
-                        Console.WriteLine("given --");
+                        svc.Deny(testResourceId, testUser);
+                        Console.WriteLine("body of given --");
                     })
-                    .And("I have deposited 1 dollar", () =>
+                    .And("I am logged in", () =>
                     {
-                        Console.WriteLine("and --");
+                        // TODO: setup logged in user
+                        Console.WriteLine("body of and --");
                     })
-                    .When("I press the coffee button", () =>
+                    .When("I request the resource", () =>
                     {
-                        Console.WriteLine("when -- ");
+                        // TODO: request resource
+                        Console.WriteLine("body of when -- ");
                     })
-                    .Then("I should be served a coffee", (it) =>
+                    .Then("I should be denied access", (it) =>
                     {
                         it(svc)
                             .Should("add resource permission", () => svc.AddResourcePermission(testResourceId, permSpec))
@@ -65,10 +68,6 @@ namespace Bam.Net.Tests
                         it(true).IsTrue();
 
                         Console.WriteLine("then");
-                    })
-                    .But("I should not be sad", (it) =>
-                    {
-                        Console.WriteLine("but");
                     });
                 });
             });

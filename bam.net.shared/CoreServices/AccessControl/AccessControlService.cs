@@ -25,6 +25,14 @@ namespace Bam.Net.CoreServices.AccessControl
             }
         }
 
+        public ServiceResponse Deny(ulong resourceId, string userIdentifier)
+        {
+            throw new NotImplementedException();
+            //return AddResourcePermission(resourceId, new PermissionSpecification { ResourceId = resourceId, Permission = Permissions.None });
+        }
+
+
+
         public ServiceResponse AddResourcePermission(ulong resourceId, PermissionSpecification permission)
         {
             try

@@ -6,7 +6,7 @@ namespace Bam.Net.CoreServices.AccessControl.Data
 {
     public enum Permissions
     {
-        Invalid,
+        None,
         Read,
         Write,
         Execute

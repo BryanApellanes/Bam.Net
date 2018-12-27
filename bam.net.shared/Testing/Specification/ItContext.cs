@@ -11,6 +11,7 @@ namespace Bam.Net.Testing.Specification
         public ItContext()
         {
             _shouldQueue = new Queue<AssertionAction>();
+            Assertions = new List<Assertion>();
         }
 
         public object AssertionTarget { get; set; }

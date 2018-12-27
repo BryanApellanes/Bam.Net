@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bam.Net.Testing.Specification
 {
-    public class SetupAction
+    public class ScenarioSetupAction
     {
         public string Description { get; set; }
         public Action Action { get; set; }

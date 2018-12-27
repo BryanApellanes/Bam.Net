@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Specification
 {
-	internal class FeatureContext
+	public class FeatureContext
 	{
 		public FeatureContext()
 		{
-			this.Features = new Queue<FeatureSetup>();
+			this.Features = new Queue<FeatureContextSetup>();
 		}
-		public Queue<FeatureSetup> Features { get; set; }
+		public Queue<FeatureContextSetup> Features { get; set; }
 	}
 }

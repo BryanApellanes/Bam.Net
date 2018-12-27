@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Bam.Net.Testing.Specification
 {
-    public interface ISpecTestContextSetupAction<T>
+    public interface ISpecTestContextSetupAction
     {
         string Description { get; set; }
         Action SetupAction { get; set; }
-        bool TrySetup(T context);
-        bool TrySetup(T context, Action<T, Exception> exceptionHandler);
+        bool TrySetup();
+        bool TrySetup(Action<ISpecTestContextSetupAction, Exception> exceptionHandler);
     }
 }
