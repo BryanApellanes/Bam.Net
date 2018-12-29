@@ -42,15 +42,6 @@ namespace Bam.Net.Testing.Specification
                 return false;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the specification container where the feature is defined.  THis property is
-        /// set by the container when the feature is setup.
-        /// </summary>
-        /// <value>
-        /// The specification container.
-        /// </value>
-        protected internal SpecTestContainer SpecTestContainer { get; set; }
     }
 
 	public class FeatureContextSetup: SpecTestContextSetup
@@ -60,5 +51,14 @@ namespace Bam.Net.Testing.Specification
 			Description = featureDescription;
 			SetupAction = setupAction;
 		}
+
+        /// <summary>
+        /// Gets or sets the specification container where the feature is defined.  THis property is
+        /// set by the container when the feature is setup.
+        /// </summary>
+        /// <value>
+        /// The specification container.
+        /// </value>
+        protected internal SpecTestContainer SpecTestContainer { get; set; }
     }
 }

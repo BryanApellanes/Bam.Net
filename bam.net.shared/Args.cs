@@ -10,7 +10,7 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net
 {
-    public class Args
+    public static class Args
     {
 		public static void ThrowIf(bool condition, string messageFormat, params object[] args)
 		{
@@ -126,7 +126,7 @@ namespace Bam.Net
 			return stackTrace.ToString();
 		}
 
-		public static string GetMessageAndStackTrace(Exception ex)
+		public static string GetMessageAndStackTrace(this Exception ex)
 		{
 			StringBuilder message = new StringBuilder();
 			StringBuilder stackTrace = new StringBuilder();

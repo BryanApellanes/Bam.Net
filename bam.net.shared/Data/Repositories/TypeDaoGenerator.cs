@@ -196,8 +196,6 @@ namespace Bam.Net.Data.Repositories
                 throw new NoIdPropertyException(type);
             }
 
-            // TODO: Investigate if this is necessary.  Can a type have children that are 
-            // of the same type as itself
             if (type.HasEnumerableOfMe(type))
             {
                 throw new NotSupportedException("Storable types cannot have enumerable properties that are of the same type as themselves.");

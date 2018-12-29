@@ -18,25 +18,31 @@ namespace Bam.Net.Tests
         public void RunSpecificationTests()
         {
             ConsoleLogger logger = new ConsoleLogger();
+            
             RunAllSpecTests(Assembly.GetEntryAssembly(), logger);
         }
 
-        [SpecTest]
-        public void SpecificationTest()
+        [UnitTest]
+        public void ResourceUriTest()
         {
-            //Feature: Serve coffee
-            //  In order to earn money
-            //  Customers should be able to
-            //  buy coffee at all times
+            ResourceUri uri = new ResourceUri("b://hostName/parent/child");
+            Expect.AreEqual("b://", uri.Scheme);
+            Expect.AreEqual("hostName", uri.Host);
+            Expect.AreEqual("/parent/child", uri.Path);
 
-            //  Scenario: Buy last coffee
-            //	Given there are 1 coffees left in the machine
-            //	And I have deposited 1 dollar
-            //	When I press the coffee button
-            //Then I should be served a coffee
+            ResourceUri uri2 = new ResourceUri("b://hostName/parent/child?param1=baloney&monkey=true");
+            Expect.AreEqual("param1=baloney&monkey=true", uri2.QueryString);
+            Expect.AreEqual("baloney", uri2.QueryParams["param1"]);
+            Expect.AreEqual("true", uri2.QueryParams["monkey"]);
+        }
+
+        [SpecTest]
+        public void AccessControlSpecificationTest()
+        {
             ulong testResourceId = 555;
             string testUser = "testUser";
             PermissionSpecification permSpec = new PermissionSpecification();
+            SpecTestRegistry.For<SpecTestReporter>().Use<ConsoleSpecTestReporter>();
             Console.WriteLine("spec test");
             Feature<AccessControlService>("Set permissions to restrict access to resources", (svc) =>
             {
@@ -46,7 +52,6 @@ namespace Bam.Net.Tests
                     Given("I have been denied access to a resource", () =>
                     {
                         svc.Deny(testResourceId, testUser);
-                        Console.WriteLine("body of given --");
                     })
                     .And("I am logged in", () =>
                     {
@@ -60,6 +65,7 @@ namespace Bam.Net.Tests
                     })
                     .Then("I should be denied access", (it) =>
                     {
+                        Expect.Fail("not done");
                         it(svc)
                             .Should("add resource permission", () => svc.AddResourcePermission(testResourceId, permSpec))
                             .WithoutThrowing();

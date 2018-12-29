@@ -30,7 +30,7 @@ namespace Bam.Net.Testing.Specification
         internal SpecTestReporter SpecTestResults;
 
         FeatureContextSetup _currentFeatureSetupContext;
-        ScenarioContextSetup _currentScenarioContextSetup;
+        ScenarioSetupContext _currentScenarioContextSetup;
 
         public virtual void Setup() { }
         public virtual void TearDown() { }
@@ -42,10 +42,11 @@ namespace Bam.Net.Testing.Specification
             while(container.FeatureContext.Features.Count > 0)
             {
                 _currentFeatureSetupContext = container.FeatureContext.Features.Dequeue();
+                _currentFeatureSetupContext.SpecTestContainer = this;
                 if (!_currentFeatureSetupContext.TrySetup((f, x) => Logger.AddEntry("Feature ({0}) failed: {1}", x, f.Description, x.Message)))
                 {
                     Logger.Error("Feature prep failed");
-                    break;
+                    throw new FeatureSetupFailedException(_currentFeatureSetupContext.Description);
                 }
                 else
                 {
@@ -55,7 +56,11 @@ namespace Bam.Net.Testing.Specification
                         _currentScenarioContextSetup.FeatureContext = container.FeatureContext;
                         _currentScenarioContextSetup.CurrentFeature = _currentFeatureSetupContext;
                         _currentScenarioContextSetup.SpecTestContainer = this;
-                        _currentScenarioContextSetup.Execute();
+                        bool success = _currentScenarioContextSetup.Execute();
+                        if (!success)
+                        {
+                            throw new SpecTestFailedException(_currentScenarioContextSetup.Description);
+                        }
                     }
                 }
             }
@@ -71,16 +76,20 @@ namespace Bam.Net.Testing.Specification
 			FeatureContext.Features.Enqueue(new FeatureContextSetup(feature, featureAction));
 		}
 
-		public ScenarioContextSetup Scenario(string scenario, Action scenarioAction)
+		public ScenarioSetupContext Scenario(string scenario, Action scenarioAction)
 		{
             return ScenarioContext.AddScenario(scenario, scenarioAction);
 		}
 			
-		public ScenarioContextSetup Given(string given, Action givenAction)
+		public ScenarioSetupContext Given(string given, Action givenAction)
 		{
             return ScenarioContext.CurrentScenario.Given(given, givenAction);
 		}
 
+        /// <summary>
+        /// Gets the reporter from the SpecTestRegistry if it exists, otherwise returns a new SpecTestReporter.
+        /// </summary>
+        /// <returns></returns>
         public SpecTestReporter GetReporter()
         {
             if(SpecTestRegistry.TryGet<SpecTestReporter>(out SpecTestReporter reporter))

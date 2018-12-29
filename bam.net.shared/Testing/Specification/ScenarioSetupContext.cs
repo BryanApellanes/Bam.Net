@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Specification
 {
-	public class ScenarioContextSetup: SpecTestContextSetup
+	public class ScenarioSetupContext: SpecTestContextSetup
 	{
         Queue<ScenarioSetupAction> _setupActions;
         Queue<ThenAction> _assertionActions;
-        public ScenarioContextSetup(string scenario, Action setupScenario, ILogger logger = null)
+        public ScenarioSetupContext(string scenario, Action setupScenario, ILogger logger = null)
 		{
 			this.Description = scenario;
 			this.SetupAction = setupScenario;
@@ -40,19 +40,19 @@ namespace Bam.Net.Testing.Specification
 
         public WhenAction TestAction { get; set; }
 
-        public ScenarioContextSetup Given(string given, Action givenAction)
+        public ScenarioSetupContext Given(string given, Action givenAction)
         {
             _setupActions.Enqueue(new ScenarioSetupAction { Description = given, Action = givenAction });
             return this;
         }
 
-        public ScenarioContextSetup And(string and, Action andAction)
+        public ScenarioSetupContext And(string and, Action andAction)
         {
             _setupActions.Enqueue(new ScenarioSetupAction { Description = and, Action = andAction });
             return this;
         }
 
-        public ScenarioContextSetup When(string when, Action whenAction)
+        public ScenarioSetupContext When(string when, Action whenAction)
         {
             if(TestAction != null)
             {
@@ -62,7 +62,7 @@ namespace Bam.Net.Testing.Specification
             return this;
         }
 
-        public ScenarioContextSetup Then(string then, Action<ThenDelegate> thenAction)
+        public ScenarioSetupContext Then(string then, Action<ThenDelegate> thenAction)
         {
             _assertionActions.Enqueue(new ThenAction { Description = then, Action = thenAction });
             return this;
@@ -78,63 +78,68 @@ namespace Bam.Net.Testing.Specification
         public EventHandler ScenarioTest;
         public EventHandler ScenarioTestFailed;
 
+        public EventHandler AssertionPassed;
         public EventHandler AssertionFailed;
 
         public EventHandler ScenarioExecuted;
 
         public bool Execute() 
         {
-            FireEvent(ScenarioExecuting);
+            FireEvent(ScenarioExecuting, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
             SpecTestReporter reporter = SpecTestContainer.GetReporter();
             if (!TrySetup())
             {
                 reporter.AddWarningMessage("Failed to setup scenario: ({0})", Description);
-                FireEvent(ScenarioSetupFailed);
+                FireEvent(ScenarioSetupFailed, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
                 return false;
             }
             reporter.AddMessage("Scenario: {0}", Description);
-            FireEvent(ScenarioSetup);
+            FireEvent(ScenarioSetup, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
             while(_setupActions.Count > 0)
             {
+                ScenarioSetupAction action = _setupActions.Dequeue();
                 try
                 {
-                    ScenarioSetupAction action = _setupActions.Dequeue();
                     LogMessage infoMessage = reporter.AddMessage(action.Description);                    
                     action.Action();
-                    FireEvent(ScenarioSetupStep);
+                    FireEvent(ScenarioSetupStep, new SpecTestEventArgs { ScenarioSetupContext = this, ScenarioSetupAction = action, TestAction = TestAction });
                 }
                 catch (Exception ex)
                 {
-                    reporter.AddErrorMessage("Error setting up scenario ({0}): {1}", ex, Description, ex.Message);                    
-                    FireEvent(ScenarioSetupStepFailed);
+                    reporter.AddErrorMessage("Error setting up scenario ({0})\r\n\t{1}: {2}", ex, Description, action.Description, ex.Message);
+                    FireEvent(ScenarioSetupStepFailed, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction, Exception = ex });
                     return false;
                 }
             }
             try
             {
                 TestAction.Action();
-                FireEvent(ScenarioTest);
+                reporter.AddMessage("{0} executed", TestAction.Description);
+                FireEvent(ScenarioTest, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
             }
             catch (Exception ex)
             {
                 reporter.AddErrorMessage("Error running scenario ({0}): {1}", ex, Description, ex.Message);
-                FireEvent(ScenarioTestFailed);
+                FireEvent(ScenarioTestFailed, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
+                return false;
             }
             while (_assertionActions.Count > 0)
             {
+                ThenAction action = _assertionActions.Dequeue();
                 try
-                {
-                    ThenAction action = _assertionActions.Dequeue();
+                {                    
                     reporter.AddMessage(action.Description);
                     action.Action(o => AssertionContext.It(o));
+                    FireEvent(AssertionPassed, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction, AssertionAction = action });
                 }
                 catch (Exception ex)
                 {
                     reporter.AddErrorMessage("Error running assertions for scenario ({0}): {1}", ex, Description, ex.Message);
-                    FireEvent(AssertionFailed);
+                    FireEvent(AssertionFailed, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction, Exception = ex, AssertionAction = action });
+                    return false;
                 }
             }
-            FireEvent(ScenarioExecuted);
+            FireEvent(ScenarioExecuted, new SpecTestEventArgs { ScenarioSetupContext = this, TestAction = TestAction });
             return true;
         }
 

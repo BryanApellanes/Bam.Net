@@ -13,14 +13,14 @@ namespace Bam.Net.Testing.Specification
 	{
         public ScenarioContext()
         {
-            Scenarios = new Queue<ScenarioContextSetup>();
+            Scenarios = new Queue<ScenarioSetupContext>();
         }
-        public Queue<ScenarioContextSetup> Scenarios { get; set; }
-        public ScenarioContextSetup CurrentScenario { get; set; }
+        public Queue<ScenarioSetupContext> Scenarios { get; set; }
+        public ScenarioSetupContext CurrentScenario { get; set; }
 
-        public ScenarioContextSetup AddScenario(string scenarioDescription, Action scenarioSetup)
+        public ScenarioSetupContext AddScenario(string scenarioDescription, Action scenarioSetup)
         {
-            ScenarioContextSetup scenario = new ScenarioContextSetup(scenarioDescription, scenarioSetup);
+            ScenarioSetupContext scenario = new ScenarioSetupContext(scenarioDescription, scenarioSetup);
             Scenarios.Enqueue(scenario);
             CurrentScenario = scenario;
             return scenario;

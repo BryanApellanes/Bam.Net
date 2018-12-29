@@ -9,5 +9,7 @@ namespace Bam.Net.CoreServices.AccessControl.Data
     public class ResourceHost: AuditRepoData
     {
         public string Name { get; set; }
+
+        public virtual List<Resource> Resources { get; set; }
     }
 }

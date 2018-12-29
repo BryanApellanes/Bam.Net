@@ -554,10 +554,12 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Delete((object)toDelete);
 		}
+
         public override bool Delete(object toDelete)
         {
             return Delete(toDelete.GetType(), toDelete);
         }
+
         public override bool Delete(Type type, object toDelete)
 		{
 			try

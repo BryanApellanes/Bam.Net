@@ -6,7 +6,8 @@ namespace Bam.Net.CoreServices.AccessControl
 {
     public class ResourceInfo
     {
+        public string Uri { get; set; }
         public string Path { get; set; }
-        public List<string> Permissions { get; set; }
+        public List<PermissionSpecificationInfo> Permissions { get; set; }
     }
 }
