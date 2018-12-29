@@ -25,6 +25,7 @@ namespace Bam.Net.Testing.Specification
             SpecTestContainer specContainer = GetContainer(test);
             specContainer.Setup();
             specContainer.RunSpecTest(specContainer, (SpecTestMethod)test);
+            TestSummary.PassedTests.Add(test);
             specContainer.TearDown();
         }
 
