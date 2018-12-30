@@ -1,0 +1,37 @@
+﻿@page
+@model Bam.Net.Web.Pages.SignInModel
+@{
+    ViewData["Title"] = "SignIn";
+}
+
+<h2>Sign In</h2>
+
+<div class="bam-template login-container container" id="login-form">
+    <form class="login-form" method="post" action="/api/forms/login">
+        <div class="login-wrap">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text" class="form-control" placeholder="@Model.UserNamePlaceHolder" autofocus>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input type="password" class="form-control" placeholder="@Model.PasswordPlaceHolder">
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> @Model.RememberMeText
+                <span class="pull-right"> <a href="#"> @Model.ForgotPasswordText</a></span>
+            </label>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">@Model.LoginText</button>
+            <button class="btn btn-info btn-lg btn-block" type="submit">@Model.SignupText</button>
+            <hr />
+            @if (Model.ShowOAuthOptions)
+            {
+                foreach(Bam.Net.Presentation.OAuthSetting setting in Model.OAuthSettings)
+                {
+                    <a href="@setting.LoginUrl" class="btn btn-primary btn-lg btn-block">@setting.ButtonText</a>
+                }
+            }            
+        </div>
+    </form>
+</div>
+

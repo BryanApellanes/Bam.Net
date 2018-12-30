@@ -24,8 +24,7 @@ write less and do more through the use of Bam.Net's extensive .Net extension met
 library and code generators.  BAM and you're done!
 
 ### Where to start?
-- [Data Access Object (Dao) Generation](./Products/LaoTze/) with laotze.exe
-- [Data Access Object (Dao) Generation](./Products/LaoTzu/) with laotzu.exe
-- [Repositories with Troo.exe](./Products/Tvg/troo/)
-- [Templating with Vyoo.exe](./Products/Tvg/vyoo)
-- [Web Services with Gloo.exe](./Products/Tvg/gloo/)
+- [Data Access Object (Dao) Generation](./_tools/LaoTze/) with laotze.exe
+- [Data Access Object (Dao) Generation](./_tools/LaoTzu/) with laotzu.exe
+- [Repositories with Troo.exe](./_tools/troo/)
+- [Web Services with Gloo.exe](./_tools/gloo/)

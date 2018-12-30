@@ -1,0 +1,13 @@
+﻿{
+  "Host": "integration",
+  "Name": "Heart",
+  "FileName": "heart.exe",
+  "AppSettings": {
+    "HostNames": "int-heart.bamapps.net,int-heart.threeheadz.io,int-core.bamapps.net,int-core.threeheadz.io",
+    "Ssl": false,
+    "Port": 9101,
+    "ApplicationName": "int-heart.bamapps.net",
+    "ProcessMode": "Test",
+    "LogType": "Windows"
+  }
+}

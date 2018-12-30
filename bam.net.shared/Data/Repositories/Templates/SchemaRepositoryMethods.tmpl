@@ -1,0 +1,115 @@
+﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
+		{
+			@(Model.DaoNamespace).@(Model.Type.Name).SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where, out @(Model.Type.FullName) result)
+		{
+			@(Model.DaoNamespace).@(Model.Type.Name).SetOneWhere(where, out @(Model.DaoNamespace).@(Model.Type.Name) daoResult, Database);
+			result = daoResult.CopyAs<@(Model.Type.FullName)>();
+		}
+
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public @(Model.Type.FullName) GetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
+		{
+			Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
+			return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// single @(Model.Type.Name) instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a @(Model.Type.Name)Columns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between @(Model.Type.Name)Columns and other values
+		/// </param>
+		public @(Model.Type.FullName) One@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
+        {
+            Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
+            return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).OneWhere(where, Database)?.CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a @(Model.Type.FullName)Columns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between @(Model.Type.FullName)Columns and other values
+		/// </param>
+		public IEnumerable<@(Model.Type.FullName)> @(Model.Type.Name.Pluralize())Where(WhereDelegate<@(Model.Type.Name)Columns> where, OrderBy<@(Model.Type.Name)Columns> orderBy = null)
+        {
+            return Wrap<@(Model.Type.FullName)>(@(Model.DaoNamespace).@(Model.Type.Name).Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a @(Model.Type.Name)Columns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between @(Model.Type.Name)Columns and other values
+		/// </param>
+		public IEnumerable<@(Model.Type.FullName)> Top@(Model.Type.Name.Pluralize())Where(int count, WhereDelegate<@(Model.Type.Name)Columns> where)
+        {
+            return Wrap<@(Model.Type.FullName)>(@(Model.DaoNamespace).@(Model.Type.Name).Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of @(Model.Type.Name.Pluralize())
+		/// </summary>
+		public long Count@(Model.Type.Name.Pluralize())()
+        {
+            return @(Model.DaoNamespace).@(Model.Type.Name).Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a @(Model.Type.Name)Columns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between @(Model.Type.Name)Columns and other values
+		/// </param>
+        public long Count@(Model.Type.Name.Pluralize())Where(WhereDelegate<@(Model.Type.Name)Columns> where)
+        {
+            return @(Model.DaoNamespace).@(Model.Type.Name).Count(where, Database);
+        }
+        
+        public async Task BatchQuery@(Model.Type.Name.Pluralize())(int batchSize, WhereDelegate<@(Model.Type.Name)Columns> where, Action<IEnumerable<@(Model.Type.FullName)>> batchProcessor)
+        {
+            await @(Model.DaoNamespace).@(Model.Type.Name).BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<@(Model.Type.FullName)>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAll@(Model.Type.Name.Pluralize())(int batchSize, Action<IEnumerable<@(Model.Type.FullName)>> batchProcessor)
+        {
+            await @(Model.DaoNamespace).@(Model.Type.Name).BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<@(Model.Type.FullName)>(batch));
+            }, Database);
+        }
+

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4336C78F-986A-41B8-9798-EBD1B9B06269}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>bam.net.data.repositories.schemarepositorygenerator.tests</RootNamespace>
+    <AssemblyName>bam.net.data.repositories.schemarepositorygenerator.tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.2\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClrTypes\Daughter.cs" />
+    <Compile Include="ClrTypes\House.cs" />
+    <Compile Include="ClrTypes\Parent.cs" />
+    <Compile Include="ClrTypes\Son.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaRepositoryGeneratorUnitTests.cs" />
+    <Compile Include="TestDaoRepository.cs" />
+    <Compile Include="TestDaos_Generated\Daughter.cs" />
+    <Compile Include="TestDaos_Generated\DaughterCollection.cs" />
+    <Compile Include="TestDaos_Generated\DaughterColumns.cs" />
+    <Compile Include="TestDaos_Generated\DaughterPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\DaughterQuery.cs" />
+    <Compile Include="TestDaos_Generated\DaughterWrapper.cs" />
+    <Compile Include="TestDaos_Generated\House.cs" />
+    <Compile Include="TestDaos_Generated\HouseCollection.cs" />
+    <Compile Include="TestDaos_Generated\HouseColumns.cs" />
+    <Compile Include="TestDaos_Generated\HousePagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseParent.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentCollection.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentColumns.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseWrapper.cs" />
+    <Compile Include="TestDaos_Generated\Parent.cs" />
+    <Compile Include="TestDaos_Generated\ParentCollection.cs" />
+    <Compile Include="TestDaos_Generated\ParentColumns.cs" />
+    <Compile Include="TestDaos_Generated\ParentPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\ParentQuery.cs" />
+    <Compile Include="TestDaos_Generated\ParentWrapper.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Daughter.cs" />
+    <Compile Include="TestDaos_Generated\Qi\House.cs" />
+    <Compile Include="TestDaos_Generated\Qi\HouseParent.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Parent.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Son.cs" />
+    <Compile Include="TestDaos_Generated\Son.cs" />
+    <Compile Include="TestDaos_Generated\SonCollection.cs" />
+    <Compile Include="TestDaos_Generated\SonColumns.cs" />
+    <Compile Include="TestDaos_Generated\SonPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\SonQuery.cs" />
+    <Compile Include="TestDaos_Generated\SonWrapper.cs" />
+    <Compile Include="TestDaos_Generated\TestDaoSchemaContext.cs" />
+    <Compile Include="TestDaos_Generated\TestDaoSchemaRepository.cs" />
+    <Compile Include="UnitTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bam.net\bam.net.csproj">
+      <Project>{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}</Project>
+      <Name>bam.net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+</Project>

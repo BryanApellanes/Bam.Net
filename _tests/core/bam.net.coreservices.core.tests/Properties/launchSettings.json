@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bam.net.coreservices.core.tests": {
+      "commandName": "Project",
+      "commandLineArgs": "/i"
+    }
+  }
+}

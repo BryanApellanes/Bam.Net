@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NCuid</name>
+    </assembly>
+    <members>
+        <member name="T:NCuid.Cuid">
+            <summary>
+            Utility class to generate CUIDs see https://github.com/dilvie/cuid for complete manifesto
+            </summary>
+        </member>
+        <member name="M:NCuid.Cuid.Generate(NCuid.RandomSource)">
+            <summary>
+            Returns a short sequential random string with some collision-busting measures (a CUID)
+            </summary>
+            <param name="rs">Type of the random source to use, if not specified <see cref="F:NCuid.RandomSource.Simple"/> is used.</param>
+            <returns>A 25 characters string</returns>
+        </member>
+        <member name="M:NCuid.Cuid.Slug(NCuid.RandomSource)">
+            <summary>
+            Return a short (slugged) version of a CUID, likely to be less sequential
+            </summary>
+            <param name="rs">Type of the random source to use, if not specified <see cref="F:NCuid.RandomSource.Simple"/> is used.</param>
+            <returns>A 7 to 10 characters string (depending of the internal counter value)</returns>
+        </member>
+        <member name="M:NCuid.Cuid.FingerPrint">
+            <summary>
+            Generates a host fingerprint, using when possible the machine name and the current process pid.
+            If access to the machine name is refused by the framework, a random number based machine name is generated once,
+            and kept for further calls.
+            </summary>
+            <returns>A 4 character string</returns>
+        </member>
+        <member name="T:NCuid.RandomSource">
+            <summary>
+            When generating CUIDs, specifes which kind of random number source will be used. 
+            </summary>
+        </member>
+        <member name="F:NCuid.RandomSource.Simple">
+            <summary>
+            Numbers generated will emanate from <see cref="T:System.Random"/>
+            </summary>
+        </member>
+        <member name="F:NCuid.RandomSource.Secure">
+            <summary>
+            Number generated will emanate from the slower and more secure <see cref="T:System.Security.Cryptography.RNGCryptoServiceProvider"/>
+            </summary>
+        </member>
+    </members>
+</doc>

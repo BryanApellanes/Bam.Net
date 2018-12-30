@@ -1,0 +1,17 @@
+﻿{
+  "repoRoot": "git@github.com:BryanApellanes",
+  "repoName": "Bam.Net",
+  "packageRestorePath": "C:\\bam\\nuget\\packages",
+  "branch": "next",
+  "clean": false,
+  "buildName": "next.debug",
+  "projectFile": "bam.net\\Bam.Net.csproj",
+  "restoreReference": "bam.net\\Bam.Net.csproj",
+  "outputPath":  "C:\\bam\\build\\",
+  "msbuildPath": "C:\\bam\\bot\\tools\\MSBuild\\MSBuild.exe",
+  "config": "Debug",
+  "frameworkVersion": "v4.7.2",
+  "platform": "x64",
+  "bamBotRoot": "C:\\bam\\bot",
+  "legacyBuildScriptsPath": "Z:\\Workspace\\Build"
+}

@@ -1,115 +1,243 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8794C09D-D72C-420C-812F-BFDA251B64C9}</ProjectGuid>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8AC4E2B4-0F3B-4A65-A097-5816EF6EA263}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bam.Net</RootNamespace>
-    <AssemblyName>Bam.Net</AssemblyName>
+    <AssemblyName>bam.net</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\bam\build\latest\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>signing.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="BoneSoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\BoneSoft.CSS.1.0.0\lib\BoneSoft.CSS.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.2.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>C:\bam\nuget\packages\BouncyCastle.1.8.3\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.AspNet, Version=1.6.7.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\dotless.AspNetHandler.1.6.7\lib\net461\dotless.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.Core, Version=1.6.7.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\dotless.Core.1.6.7\lib\net47\dotless.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\EcmaScript.NET.2.0.0\lib\net45\EcmaScript.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=6.3.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\FirebirdSql.Data.FirebirdClient.6.3.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="Handlebars, Version=1.9.5.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Handlebars.Net.1.9.5\lib\net452\Handlebars.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="InterSystems.Data.CacheClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=ad350a26c4a4447c, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\InterSystemsCache.1.0.4\lib\netstandard2.0\InterSystems.Data.CacheClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.Build.Framework.15.8.166\lib\net46\Microsoft.Build.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.Common.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.CSharp.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.VisualBasic.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.2.9.0\lib\netstandard1.3\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.Workspaces.Common.2.9.0\lib\net46\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.CodeAnalysis.Workspaces.Common.2.9.0\lib\net46\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Unofficial.Microsoft.SQLServer.SMO.11.0.3000.0\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.Web.Xdt.2.1.2\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\MongoDB.Bson.2.7.0\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\MongoDB.Driver.2.7.0\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\MongoDB.Driver.Core.2.7.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\mongocsharpdriver.2.7.0\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\MySql.Data.8.0.12\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NCuid, Version=1.0.0.23490, Culture=neutral, PublicKeyToken=73c58d802958a09f, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\QRCoder.1.3.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a84b7dcfb1391f7f, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\net45\SQLitePCLRaw.batteries_green.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SQLitePCLRaw.bundle_green.1.1.2\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SQLitePCLRaw.core.1.1.2\lib\net45\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\SQLitePCLRaw.provider.e_sqlite3.net45.1.1.2\lib\net45\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Composition.Convention.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Composition.Hosting.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Composition.Runtime.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.1\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Drawing.Common.4.5.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.FtpClient, Version=1.0.5824.34026, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Net.FtpClient.1.0.5824.34026\lib\net40\System.Net.FtpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection.Metadata, Version=1.4.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.Threading.Tasks.Extensions.4.5.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -129,203 +257,533 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\QRCoder.1.3.3\lib\net40\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.Data.3.2.6\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Microsoft.AspNet.WebPages.WebData.3.2.6\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\YUICompressor.NET.3.0.0\lib\net452\Yahoo.Yui.Compressor.dll</HintPath>
+    </Reference>
     <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdHocCSharpCompiler.cs" />
-    <Compile Include="ApplicationNameProvider.cs" />
-    <Compile Include="ApplicationSettings.cs" />
-    <Compile Include="Args.cs" />
-    <Compile Include="AssemblyResolve.cs" />
-    <Compile Include="BackgroundThreadQueue.cs" />
-    <Compile Include="BackgroundThreadQueueEventArgs.cs" />
-    <Compile Include="Comparer.cs" />
-    <Compile Include="Data\DataPaths.cs" />
-    <Compile Include="Data\IDataDirectoryProvider.cs" />
-    <Compile Include="Encryption\CredentialInfo.cs" />
-    <Compile Include="Encryption\CredentialProvider.cs" />
-    <Compile Include="Encryption\DefaultConfigurationCredentialProvider.cs" />
-    <Compile Include="Encryption\ICredentialManager.cs" />
-    <Compile Include="Encryption\IServiceCredentialProvider.cs" />
-    <Compile Include="Encryption\ICredentialProvider.cs" />
-    <Compile Include="Encryption\INamedCredentialProvider.cs" />
-    <Compile Include="Encryption\ISaltProvider.cs" />
-    <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
-    <Compile Include="Logging\Counters\Counter.cs" />
-    <Compile Include="Logging\Counters\Stats.cs" />
-    <Compile Include="Logging\Counters\Timer.cs" />
-    <Compile Include="Sleep.cs" />
-    <Compile Include="SystemPaths.cs" />
-    <Compile Include="Logging\DefaultConfigurationLoggerProvider.cs" />
-    <Compile Include="Logging\ILoggerProvider.cs" />
-    <Compile Include="Paths.cs" />
-    <Compile Include="TypeResolver.cs" />
-    <Compile Include="CompilationException.cs" />
-    <Compile Include="Configuration\Configurable.cs" />
-    <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
-    <Compile Include="Configuration\DefaultConfigurationOrganizationNameProvider.cs" />
-    <Compile Include="Configuration\DefaultConfigurationService.cs" />
-    <Compile Include="Configuration\IConfigurationService.cs" />
-    <Compile Include="Configuration\IConfigurer.cs" />
-    <Compile Include="Configuration\DefaultConfiguration.cs" />
-    <Compile Include="Configuration\DefaultConfigurer.cs" />
-    <Compile Include="Configuration\IConfigurable.cs" />
-    <Compile Include="Configuration\IHasRequiredProperties.cs" />
-    <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
-    <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
-    <Compile Include="Configuration\RuntimeSettings.cs" />
-    <Compile Include="Configuration\StaticApplicationNameProvider.cs" />
-    <Compile Include="CsvPropertyAttribute.cs" />
-    <Compile Include="CustomAttributeTypeDescriptor.cs" />
-    <Compile Include="Date.cs" />
-    <Compile Include="Documentation\doc.cs" />
-    <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />
-    <Compile Include="EncryptAttribute.cs" />
-    <Compile Include="Encryption\Rsa.cs" />
-    <Compile Include="Encryption\RSAKeyValue.cs" />
-    <Compile Include="EventSubscription.cs" />
-    <Compile Include="ExceptionHandling\ExceptionArbiter.cs" />
-    <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
-    <Compile Include="ExceptionHandling\ReflectionTypeLoadAggregateException.cs" />
-    <Compile Include="ExcludeAttribute.cs" />
-    <Compile Include="ExistingFileAction.cs" />
-    <Compile Include="FileLock.cs" />
-    <Compile Include="FileSystemWatchingExtensions.cs" />
-    <Compile Include="GeneratedAssemblies.cs" />
-    <Compile Include="GeneratedAssemblyInfo.cs" />
-    <Compile Include="IApplicationNameProvider.cs" />
-    <Compile Include="IAssemblyGenerator.cs" />
-    <Compile Include="IIpcMessageStore.cs" />
-    <Compile Include="IJsonable.cs" />
-    <Compile Include="Instant.cs" />
-    <Compile Include="IOrganizationNameProvider.cs" />
-    <Compile Include="IpcMessageLockInfo.cs" />
-    <Compile Include="IRenderable.cs" />
-    <Compile Include="IStreamRenderer.cs" />
-    <Compile Include="ITypeResolver.cs" />
-    <Compile Include="IWriteSource.cs" />
-    <Compile Include="LocalAttribute.cs" />
-    <Compile Include="Logging\ClientLogger.cs" />
-    <Compile Include="ApplicationDiagnosticInfo.cs" />
-    <Compile Include="Logging\IEventIdProvider.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\ILogEventCommitter.cs" />
-    <Compile Include="Logging\ILoggable.cs" />
-    <Compile Include="Logging\Loggable.cs" />
-    <Compile Include="Logging\VerbosityAttribute.cs" />
-    <Compile Include="Logging\Severity.cs" />
-    <Compile Include="Logging\VerbosityLevel.cs" />
-    <Compile Include="IpcMessage.cs" />
-    <Compile Include="LocalIpcMessageStore.cs" />
-    <Compile Include="Month.cs" />
-    <Compile Include="NamedThread.cs" />
-    <Compile Include="NetworkExtensions.cs" />
-    <Compile Include="ProcessInfo.cs" />
-    <Compile Include="ProcessMode.cs" />
-    <Compile Include="Razor\RazorBaseTemplate.cs" />
-    <Compile Include="Razor\RazorParser.cs" />
-    <Compile Include="Razor\RazorRenderer.cs" />
-    <Compile Include="Razor\RazorTemplate.cs" />
-    <Compile Include="Resolver.cs" />
-    <Compile Include="SerializationFormat.cs" />
-    <Compile Include="ServiceProxy\Method.cs" />
-    <Compile Include="Timed.cs" />
-    <Compile Include="Validate.cs" />
-    <Compile Include="Web\CookieEnabledWebClient.cs">
+    <Compile Include="_fx\AdHocCSharpCompiler.cs" />
+    <Compile Include="_fx\ApplicationDiagnosticInfo.cs" />
+    <Compile Include="_fx\CompilationException.cs" />
+    <Compile Include="_fx\IIpcMessageStore.cs" />
+    <Compile Include="_fx\Providers.cs" />
+    <Compile Include="_fx\UserUtil.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Category.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\ClickCounter.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Counter.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Crawler.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\CustomTimer.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Domain.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Feature.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Fragment.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Image.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\ImageTag.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\LoadCounter.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\LoadTimer.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\LoginCounter.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\MethodCounter.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\MethodTimer.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Path.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Port.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Protocol.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\QueryString.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Tag.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Timer.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\Url.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\UrlTag.cs" />
+    <Compile Include="_fx\_Analytics\_Analytics_Generated\_Qi\UserIdentifier.cs" />
+    <Compile Include="_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Definition.cs" />
+    <Compile Include="_fx\_Analytics\_EnglishDictionary\_EnglishDictionary_Generated\_Qi\Word.cs" />
+    <Compile Include="_fx\_Automation\AssemblyAttributeInfo.cs" />
+    <Compile Include="_fx\_Automation\CredentialEventArgs.cs" />
+    <Compile Include="_fx\_Automation\DaemonServiceDeployer.cs" />
+    <Compile Include="_fx\_Automation\JobManagerService.cs" />
+    <Compile Include="_fx\_Automation\SuspendedJob.cs" />
+    <Compile Include="_fx\_Automation\SuspendJobWorker.cs" />
+    <Compile Include="_fx\_Automation\WindowsAppSettingsWriter.cs" />
+    <Compile Include="_fx\_Automation\WindowsRemoteFileHandler.cs" />
+    <Compile Include="_fx\_Automation\WindowsServiceDeployer.cs" />
+    <Compile Include="_fx\_Automation\_Nuget\conventionbasedpackage.cs" />
+    <Compile Include="_fx\_Automation\_Nuget\NugetPackageIdentifier.cs" />
+    <Compile Include="_fx\_Automation\_Nuget\NuspecFile.cs" />
+    <Compile Include="_fx\_Automation\_Nuget\package.cs" />
+    <Compile Include="_fx\_Automation\_Nuget\packages.cs">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="_fx\_Automation\_Nuget\packages.Designer.cs">
+      <DependentUpon>packages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="_fx\_Automation\_Nuget\packages1.Designer.cs">
+      <DependentUpon>packages.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="_fx\_Automation\_Nuget\PackageVersion.cs" />
+    <Compile Include="_fx\_Automation\_SourceControl\GitReleaseNotes.cs" />
+    <Compile Include="_fx\_Automation\_Testing\TestReportService.cs" />
+    <Compile Include="_fx\_CommandLine\CommandLineInterface.cs" />
+    <Compile Include="_fx\_Configuration\ConfigurationResolver.cs" />
+    <Compile Include="_fx\RuntimeSettings.cs" />
+    <Compile Include="_fx\_CoreServices\CompositeRepository.cs" />
+    <Compile Include="_fx\_CoreServices\ProxyableService.cs" />
+    <Compile Include="_fx\_CoreServices\ProxyAssemblyGenerator.cs" />
+    <Compile Include="_fx\_CoreServices\ProxyTemplateResources.cs" />
+    <Compile Include="_fx\_CoreServices\ServiceRegistry.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\ApplicationRegistrationService.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ActiveApiKeyIndex.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ApiKey.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Application.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ApplicationMachine.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Client.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ClientServerConnection.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Configuration.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ConfigurationSetting.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostAddress.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostDomain.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\HostDomainApplication.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Machine.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Nic.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Organization.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\OrganizationUser.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\ProcessDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\Subscription.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\User.cs" />
+    <Compile Include="_fx\_CoreServices\_ApplicationRegistration\_Data\_Generated_Dao\_Qi\UserSetting.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyDescriptorProcessRuntimeDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyReferenceDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\AssemblyRevision.cs" />
+    <Compile Include="_fx\_CoreServices\_AssemblyManagement\_Data\_GeneratedDao\_Qi\ProcessRuntimeDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_Diagnostic\DiagnosticInfo.cs" />
+    <Compile Include="_fx\_CoreServices\_OAuth\_Data\_Generated_Dao\_Qi\OAuthSettingsData.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\MachineRegistries.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceDescriptorServiceRegistryDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceRegistryDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceRegistryLoaderDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceRegistryLock.cs" />
+    <Compile Include="_fx\_CoreServices\_ServiceRegistration\_Data\_Generated_Dao\_Qi\ServiceTypeIdentifier.cs" />
+    <Compile Include="_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookCall.cs" />
+    <Compile Include="_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookDescriptor.cs" />
+    <Compile Include="_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookDescriptorWebHookSubscriber.cs" />
+    <Compile Include="_fx\_CoreServices\_WebHooks\_Data\_Generated_Dao\_Qi\WebHookSubscriber.cs" />
+    <Compile Include="_fx\_Data\Dao.cs" />
+    <Compile Include="_fx\_Data\DaoController.cs" />
+    <Compile Include="_fx\_Data\DaoProxyRegistrationInfo.cs" />
+    <Compile Include="_fx\_Data\DaoProxyResult.cs" />
+    <Compile Include="_fx\_Data\DaoProxySystem.cs" />
+    <Compile Include="_fx\_Data\Database.cs" />
+    <Compile Include="_fx\_Data\DaoProxyRegistration.cs" />
+    <Compile Include="_fx\_Data\DataExtensions.cs" />
+    <Compile Include="_fx\_Data\SchemaTemplateResources.cs" />
+    <Compile Include="_fx\_Data\Sql.cs" />
+    <Compile Include="_fx\_Data\SqlStringBuilder.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\DaoAssemblyGenerator.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\DynamicDatabase.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\Reflect.cs" />
+    <Compile Include="_fx\_Data\_Repositories\BackedupDatabase.cs" />
+    <Compile Include="_fx\_Data\_Repositories\DaoBackup.cs" />
+    <Compile Include="_fx\_Data\_Repositories\DaoToDtoGenerator.cs" />
+    <Compile Include="_fx\_Data\_Repositories\DatabaseFactory.cs" />
+    <Compile Include="_fx\_Data\_Repositories\DefaultDataDirectoryProvider.cs" />
+    <Compile Include="_fx\_Data\_Repositories\DtoModel.cs" />
+    <Compile Include="_fx\_Data\_Repositories\FsRepository.cs" />
+    <Compile Include="_fx\_Data\_Repositories\LuceneIndexExtensions.cs" />
+    <Compile Include="_fx\_Data\_Repositories\Meta.cs" />
+    <Compile Include="_fx\_Data\_Repositories\MongoObjectReaderWriter.cs" />
+    <Compile Include="_fx\_Data\_Repositories\ObjectPersister.cs" />
+    <Compile Include="_fx\_Data\_Repositories\ObjectPersisterDirectoryProvider.cs" />
+    <Compile Include="_fx\_Data\_Repositories\ObjectReader.cs" />
+    <Compile Include="_fx\_Data\_Repositories\ObjectRepository.cs" />
+    <Compile Include="_fx\_Data\_Repositories\SchemaRepositoryTemplate.cs" />
+    <Compile Include="_fx\Extensions.cs" />
+    <Compile Include="_fx\HashExtensions.cs" />
+    <Compile Include="_fx\_Data\_Schema\SchemaManager.cs" />
+    <Compile Include="_fx\_Data\_SQLite\SQLiteConnectionStringResolver.cs" />
+    <Compile Include="_fx\_Documentation\DocInfoResult.cs" />
+    <Compile Include="_fx\_Encryption\_Encryption_Generated\_Qi\Vault.cs" />
+    <Compile Include="_fx\_Encryption\_Encryption_Generated\_Qi\VaultItem.cs" />
+    <Compile Include="_fx\_Encryption\_Encryption_Generated\_Qi\VaultKey.cs" />
+    <Compile Include="_fx\_Incubation\_Mvc\BamControllerFactory.cs" />
+    <Compile Include="_fx\_Incubation\_Mvc\BamDepencyResolver.cs" />
+    <Compile Include="_fx\_Automation\_Automation_Generated\_Qi\DeferredJobData.cs" />
+    <Compile Include="_fx\_Automation\_Automation_Generated\_Qi\JobData.cs" />
+    <Compile Include="_fx\_Automation\_Automation_Generated\_Qi\JobRunData.cs" />
+    <Compile Include="_fx\_Automation\_Testing\_Data\_Generated_Dao\_Qi\NotificationSubscription.cs" />
+    <Compile Include="_fx\_Automation\_Testing\_Data\_Generated_Dao\_Qi\TestDefinition.cs" />
+    <Compile Include="_fx\_Automation\_Testing\_Data\_Generated_Dao\_Qi\TestExecution.cs" />
+    <Compile Include="_fx\_Automation\_Testing\_Data\_Generated_Dao\_Qi\TestSuiteDefinition.cs" />
+    <Compile Include="_fx\_Automation\_Testing\_Data\_Generated_Dao\_Qi\TestSuiteExecutionSummary.cs" />
+    <Compile Include="_fx\CustomPropertyInfo.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\DataInstance.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\DataInstancePropertyValue.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\DynamicNamespaceDescriptor.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\DynamicTypeDescriptor.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\DynamicTypePropertyDescriptor.cs" />
+    <Compile Include="_fx\_Data\_Dynamic\_Data\_Generated_Dao\_Qi\RootDocument.cs" />
+    <Compile Include="_fx\_Data\_Model\_Windows\FormModelBinder.cs" />
+    <Compile Include="_fx\_Data\_MsSql\Extensions.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlConnectionStringResolver.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlCredentials.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlDatabase.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlDatabaseInitializer.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlDataTypeTranslator.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlJavscriptSqlProvider.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlParameterBuilder.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlQuerySet.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlRegistrar.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlRegistrarCaller.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlSchemaExtractor.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlSmoSchemaExtractor.cs" />
+    <Compile Include="_fx\_Data\_MsSql\MsSqlSqlStringBuilder.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbConnectionStringResolver.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbDatabase.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbDatabaseInitializer.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbJavscriptSqlProvider.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbParameterBuilder.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbQuerySet.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbRegistrar.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbRegistrarCaller.cs" />
+    <Compile Include="_fx\_Data\_OleDb\OleDbSqlStringBuilder.cs" />
+    <Compile Include="_fx\DynamicTypeInfo.cs" />
+    <Compile Include="_fx\DynamicTypeStore.cs" />
+    <Compile Include="_fx\_Javascript\JavascriptSqlProvider.cs" />
+    <Compile Include="_fx\_Javascript\ScriptsController.cs" />
+    <Compile Include="_fx\_Logging\Log.cs" />
+    <Compile Include="_fx\_Logging\ObjectRepositoryLogger.cs" />
+    <Compile Include="_fx\_Logging\ObjectRepositoryLoggerLogReader.cs" />
+    <Compile Include="_fx\_Logging\WindowsEventIdProvider.cs" />
+    <Compile Include="_fx\_Logging\WindowsLogger.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\CategoryName.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\ComputerName.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\Event.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\EventParam.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\Param.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\Signature.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\SourceName.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger2_Generated\_Qi\UserName.cs" />
+    <Compile Include="_fx\_Logging\_DaoLogger_Generated\_Qi\LogEvent.cs" />
+    <Compile Include="_fx\_Messaging\HandlebarsEmailComposer.cs" />
+    <Compile Include="_fx\_Messaging\_Messaging_Generated\_Qi\DirectMessage.cs" />
+    <Compile Include="_fx\_Messaging\_Messaging_Generated\_Qi\EmailMessage.cs" />
+    <Compile Include="_fx\_Messaging\_Messaging_Generated\_Qi\Message.cs" />
+    <Compile Include="_fx\_Presentation\GoogleHelper.cs" />
+    <Compile Include="_fx\_Presentation\ImageMagick.cs" />
+    <Compile Include="_fx\_Presentation\Inkscape.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\Dust.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustController.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustException.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustTemplate.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustTemplateResult.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustView.cs" />
+    <Compile Include="_fx\_Presentation\_Dust\DustViewEngine.cs" />
+    <Compile Include="_fx\ExpectFailedException.cs" />
+    <Compile Include="_fx\_Presentation\_Emoji_Generated\_Qi\Category.cs" />
+    <Compile Include="_fx\_Presentation\_Emoji_Generated\_Qi\Code.cs" />
+    <Compile Include="_fx\_Presentation\_Emoji_Generated\_Qi\Emoji.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Css.cs" />
+    <Compile Include="_fx\_Presentation\_Html\CustomInputBuilder.cs" />
+    <Compile Include="_fx\_Presentation\_Html\DeferredView.cs" />
+    <Compile Include="_fx\_Presentation\_Html\DeferredViewController.cs" />
+    <Compile Include="_fx\_Presentation\_Html\DeferredViewState.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Extensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\HtmlHelperExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Img.cs" />
+    <Compile Include="_fx\_Presentation\_Html\InputFormBuilder.cs" />
+    <Compile Include="_fx\_Presentation\_Html\JsTag.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Tag.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Js\DataSetTagBuilderExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\MethodFormResult.cs" />
+    <Compile Include="_fx\_Presentation\_Html\ParameterLayouts.cs" />
+    <Compile Include="_fx\_Presentation\_Html\RadioList.cs" />
+    <Compile Include="_fx\_Presentation\_Html\Select.cs" />
+    <Compile Include="_fx\_Presentation\_Html\ServiceProxyWebViewPageExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\StringBuilderExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\TagBuilderDelegate.cs" />
+    <Compile Include="_fx\_Presentation\_Html\TagBuilderExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\UrlHelperExtensions.cs" />
+    <Compile Include="_fx\IpcMessage.cs" />
+    <Compile Include="_fx\IpcMessageLockInfo.cs" />
+    <Compile Include="_fx\LocalIpcMessageStore.cs" />
+    <Compile Include="_fx\NamedFormatter.cs" />
+    <Compile Include="_fx\_Net\ANameRecord.cs" />
+    <Compile Include="_fx\_Net\_Dfs\Dfs.cs" />
+    <Compile Include="_fx\_Net\_Dfs\NetDfsAddFlags.cs" />
+    <Compile Include="_fx\_Net\DnsClient.cs" />
+    <Compile Include="_fx\_Net\DnsRequest.cs" />
+    <Compile Include="_fx\_Net\DnsResponse.cs" />
+    <Compile Include="_fx\_Net\DnsServerNotFoundException.cs" />
+    <Compile Include="_fx\_Net\Enums.cs" />
+    <Compile Include="_fx\_Net\InvalidResponseException.cs" />
+    <Compile Include="_fx\_Net\MXRecord.cs" />
+    <Compile Include="_fx\_Net\NoResponseException.cs" />
+    <Compile Include="_fx\_Net\NSRecord.cs" />
+    <Compile Include="_fx\_Net\_Ping\Constants.cs" />
+    <Compile Include="_fx\_Net\_Ping\IcmpPacket.cs" />
+    <Compile Include="_fx\_Net\_Ping\InternetConnectionStateType.cs" />
+    <Compile Include="_fx\_Net\_Ping\NetworkUtilities.cs" />
+    <Compile Include="_fx\_Net\_Ping\Ping.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Web\FormParameterExtensions.cs" />
-    <Compile Include="Web\Headers.cs" />
-    <Compile Include="Web\Http.cs" />
-    <Compile Include="Logging\CsvLogger.cs" />
-    <Compile Include="ReflectionExtensions.cs" />
-    <Compile Include="SerializationExtensions.cs" />
-    <Compile Include="CustomAttributeExtension.cs" />
-    <Compile Include="CustomPropertyInfo.cs" />
-    <Compile Include="DynamicTypeInfo.cs" />
-    <Compile Include="DynamicTypeStore.cs" />
-    <Compile Include="Email.cs" />
-    <Compile Include="Encryption\Aes.cs" />
-    <Compile Include="Encryption\AesKeyVectorPair.cs" />
-    <Compile Include="Encryption\RsaKeyPair.cs" />
-    <Compile Include="ExceptionHandling\ExceptionEventArgs.cs" />
-    <Compile Include="ExceptionHandling\ExceptionHandler.cs" />
-    <Compile Include="ExceptionHelper.cs" />
-    <Compile Include="Expect.cs" />
-    <Compile Include="ExpectFailedException.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="HashAlgorithms.cs" />
-    <Compile Include="RandomNumber.cs" />
-    <Compile Include="JulianDate.cs" />
-    <Compile Include="Logging\BlockingLogger.cs" />
-    <Compile Include="Logging\HashingEventIdProvider.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Logging\LogEntryAddedListener.cs" />
-    <Compile Include="Logging\LogEvent.cs" />
-    <Compile Include="Logging\LogEventCollection.cs" />
-    <Compile Include="Logging\LogEventType.cs" />
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\MultiTargetLogger.cs" />
-    <Compile Include="Logging\NamespaceDoc.cs" />
-    <Compile Include="Logging\NullLogger.cs" />
-    <Compile Include="Logging\TextFileLogger.cs" />
-    <Compile Include="Logging\WindowsEventIdProvider.cs" />
-    <Compile Include="Logging\WindowsLogger.cs" />
-    <Compile Include="Logging\XmlLogger.cs" />
-    <Compile Include="MethodCase.cs" />
-    <Compile Include="NamedFormatter.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingCompletedEventArgs.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingErrorEventArgs.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingResponse.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingResponseEventArgs.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingResponseType.cs" />
+    <Compile Include="_fx\_Net\_Ping\PingStartedEventArgs.cs" />
+    <Compile Include="_fx\_Net\_Ping\Validation.cs" />
+    <Compile Include="_fx\_Net\Pointer.cs" />
+    <Compile Include="_fx\_Net\Question.cs" />
+    <Compile Include="_fx\_Net\RecordBase.cs" />
+    <Compile Include="_fx\_Net\ResourceRecord.cs" />
+    <Compile Include="_fx\_Net\_Share\CreateShareResultType.cs" />
+    <Compile Include="_fx\_Net\_Share\GetShareInfoResultType.cs" />
+    <Compile Include="_fx\_Net\_Share\Smb.cs" />
+    <Compile Include="_fx\_Net\SoaRecord.cs" />
+    <Compile Include="_fx\_OAuth\Extensions.cs" />
+    <Compile Include="_fx\_OAuth\FacebookOAuthResult.cs" />
+    <Compile Include="_fx\_OAuth\FacebookPermissions.cs" />
+    <Compile Include="_fx\_OAuth\FacebookPrincipal.cs" />
+    <Compile Include="_fx\_OAuth\JObjectEventArgs.cs" />
+    <Compile Include="_fx\_OAuth\OAuthController.cs" />
+    <Compile Include="_fx\_OAuth\OAuthResult.cs" />
+    <Compile Include="_fx\_OAuth\QueryStringParameter.cs" />
+    <Compile Include="_fx\_OAuth\ServiceProxyProfileExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Pdf\Pdf.cs" />
+    <Compile Include="_fx\_Presentation\_Pdf\PdfOrientation.cs" />
+    <Compile Include="_fx\_Presentation\_Pdf\PdfOutput.cs" />
+    <Compile Include="_fx\RoleRequiredAttribute.cs" />
+    <Compile Include="_fx\_Server\AppContentResponder.cs" />
+    <Compile Include="_fx\_Server\BamSettings.cs" />
+    <Compile Include="_fx\_Server\BamController.cs" />
+    <Compile Include="_fx\_Server\BamServer.cs" />
+    <Compile Include="_fx\_Server\ContentResponder.cs" />
+    <Compile Include="_fx\_Server\DesignController.cs" />
+    <Compile Include="_fx\_Server\DocsController.cs" />
+    <Compile Include="_fx\_Server\Fs.cs" />
+    <Compile Include="_fx\_Server\IContent.cs" />
+    <Compile Include="_fx\_Server\IncludeOrder.cs" />
+    <Compile Include="_fx\_Server\Includes.cs" />
+    <Compile Include="_fx\_Server\LayoutConf.cs" />
+    <Compile Include="_fx\_Server\PageResult.cs" />
+    <Compile Include="_fx\_Server\ServiceProxyResponder.cs" />
+    <Compile Include="_fx\_Server\TemplateInitializer.cs" />
+    <Compile Include="_fx\_Server\_JsonRpc\JsonRpcNotification.cs" />
+    <Compile Include="_fx\_Server\_Renderers\AppDustRenderer.cs" />
+    <Compile Include="_fx\_Server\_Renderers\CommonTemplateRenderer.cs" />
+    <Compile Include="_fx\_Server\_Renderers\RendererFactory.cs" />
+    <Compile Include="_fx\_Server\_Renderers\YamlRenderer.cs" />
+    <Compile Include="_fx\_Server\WindowsServices\PollingService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_fx\_Server\WindowsServices\PollRequest.cs" />
+    <Compile Include="_fx\_Server\WindowsServices\PollResponse.cs" />
+    <Compile Include="_fx\ServiceExe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_fx\ServiceInfo.cs" />
+    <Compile Include="_fx\ServiceInstallHandler.cs" />
+    <Compile Include="_fx\_Server\_Rest\RestResponder.cs" />
+    <Compile Include="_fx\_ServiceProxy\BaseController.cs" />
+    <Compile Include="_fx\_ServiceProxy\DefaultRoleResolver.cs" />
+    <Compile Include="_fx\_ServiceProxy\ExecutionRequest.cs" />
+    <Compile Include="_fx\_ServiceProxy\ExecutionResultDelegate.cs" />
+    <Compile Include="_fx\_ServiceProxy\ScriptResourcePaths.cs" />
+    <Compile Include="_fx\_ServiceProxy\SecureChannel.cs" />
+    <Compile Include="_fx\_ServiceProxy\ServiceProxySystem.cs" />
+    <Compile Include="_fx\_ServiceProxy\HttpContextWrapper.cs" />
+    <Compile Include="_fx\_ServiceProxy\JsProxyResult.cs" />
+    <Compile Include="_fx\_ServiceProxy\RequestWrapper.cs" />
+    <Compile Include="_fx\_ServiceProxy\ResponseWrapper.cs" />
+    <Compile Include="_fx\_ServiceProxy\CSharpProxyResult.cs" />
+    <Compile Include="_fx\_ServiceProxy\CsvResult.cs" />
+    <Compile Include="_fx\_ServiceProxy\JsonpResult.cs" />
+    <Compile Include="_fx\_ServiceProxy\RolesController.cs" />
+    <Compile Include="_fx\_ServiceProxy\ApiKeyResolver.cs" />
+    <Compile Include="_fx\_ServiceProxy\_SecureServiceProxy_Generated\_Qi\ApiKey.cs" />
+    <Compile Include="_fx\_ServiceProxy\_SecureServiceProxy_Generated\_Qi\Application.cs" />
+    <Compile Include="_fx\_ServiceProxy\_SecureServiceProxy_Generated\_Qi\ConfigSetting.cs" />
+    <Compile Include="_fx\_ServiceProxy\_SecureServiceProxy_Generated\_Qi\Configuration.cs" />
+    <Compile Include="_fx\_ServiceProxy\_SecureServiceProxy_Generated\_Qi\SecureSession.cs" />
+    <Compile Include="_fx\_ServiceProxy\ServiceProxyController.cs" />
+    <Compile Include="_fx\_ServiceProxy\ServiceProxyWebViewPage.cs" />
+    <Compile Include="_fx\_ServiceProxy\UrlHelperExtensions.cs" />
+    <Compile Include="_fx\_ServiceProxy\ValidationResult.cs" />
+    <Compile Include="_fx\_ServiceProxy\XmlResult.cs" />
+    <Compile Include="_fx\_Services\AsyncProxyableService.cs" />
+    <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionData.cs" />
+    <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionRequestData.cs" />
+    <Compile Include="_fx\_Services\_AsyncCallback\_Data\_Generated_Dao\_Qi\AsyncExecutionResponseData.cs" />
+    <Compile Include="_fx\_Services\_Clients\CoreClient.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\FileSequenceProvider.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\InfoAttribute.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\JournalEntry.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\JournalRegistryContainer.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\JournalTypeMap.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\SequenceFile.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\CreateOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DataPoint.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DataProperty.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DataRelationship.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DeleteEvent.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\DeleteOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\QueryOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\ReplicationOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\RetrieveOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\SaveOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\UpdateOperation.cs" />
+    <Compile Include="_fx\_Services\_DataReplication\_Generated_Dao\_Qi\WriteEvent.cs" />
+    <Compile Include="_fx\_Services\_KeyValueStore\_KeyValueStore_Generated\_Qi\KeyValuePair.cs" />
+    <Compile Include="_fx\_Services\_OpenApi\OpenApiTemplateResources.cs" />
+    <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\FixedField.cs" />
+    <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\ObjectDescriptor.cs" />
+    <Compile Include="_fx\_Services\_OpenApi\_OpenApi_Generated\_Qi\PatternedField.cs" />
+    <Compile Include="_fx\_System\Extensions.cs" />
+    <Compile Include="_fx\_System\IRunAsCredentials.cs" />
+    <Compile Include="_fx\_System\RunAs.cs" />
+    <Compile Include="_fx\_System\RunAsContext.cs" />
+    <Compile Include="_fx\_System\WmiExtensions.cs" />
+    <Compile Include="_fx\_Translation\Culture.cs" />
+    <Compile Include="_fx\_Translation\_DetectLanguage\DetectLanguageLanguageDetector.cs" />
+    <Compile Include="_fx\_Translation\_MyMemory\MyMemoryTranslationProvider.cs" />
+    <Compile Include="_fx\_Translation\_Yandex\YandexTranslationProvider.cs" />
+    <Compile Include="_fx\_UserAccounts\DaomembershipProvider.cs" />
+    <Compile Include="_fx\_UserAccounts\DaoMembershipUser.cs" />
+    <Compile Include="_fx\_UserAccounts\DaoPrincipal.cs" />
+    <Compile Include="_fx\_UserAccounts\DaoRoleProvider.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ActiveDirectoryAuthenticator.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ActiveDirectoryCredentials.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ActiveDirectoryEventArgs.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ActiveDirectoryReader.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ActiveDirectoryRoleReader.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\DomainControllerInfo.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\Extensions.cs" />
+    <Compile Include="_fx\_UserAccounts\_DirectoryServices\ResultantGroupMemberResolver.cs" />
+    <Compile Include="_fx\_UserAccounts\IWebUserResolver.cs" />
+    <Compile Include="_fx\_UserAccounts\User.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Account.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Group.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\GroupPermission.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\LockOut.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Login.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Password.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\PasswordFailure.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\PasswordQuestion.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\PasswordReset.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Permission.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Role.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Session.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\SessionState.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\Setting.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\TreeNode.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\User.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\UserBehavior.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\UserGroup.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\UserPermission.cs" />
+    <Compile Include="_fx\_UserAccounts\_UserAccounts_Generated\_Qi\UserRole.cs" />
+    <Compile Include="_fx\_UserAccounts\UserInfo.cs" />
+    <Compile Include="_fx\_UserAccounts\UserNameInUseException.cs" />
+    <Compile Include="_fx\_Windows\Extensions.cs" />
+    <Compile Include="_fx\_Windows\IRunAsCredentials.cs" />
+    <Compile Include="_fx\_Windows\RunAs.cs" />
+    <Compile Include="_fx\_Windows\RunAsContext.cs" />
+    <Compile Include="_fx\_Windows\WmiExtensions.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\DropDown.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\Hidden.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\Password.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\ReadOnly.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\StringInput.cs" />
+    <Compile Include="_fx\_Presentation\_Html\_Attributes\TextArea.cs" />
+    <Compile Include="_fx\_Yaml\ServiceProxySystemYaml.cs" />
+    <Compile Include="_fx\_Yaml\YamlDaoGenerator.cs" />
+    <Compile Include="_fx\_Yaml\YamlDeserializationFailure.cs" />
+    <Compile Include="_fx\_Yaml\YamlEventArgs.cs" />
+    <Compile Include="_fx\_Yaml\YamlFile.cs" />
+    <Compile Include="_fx\_Yaml\YamlResult.cs" />
+    <Compile Include="_fx\_Yaml\YamlSchema.cs" />
+    <Compile Include="_fx\_Yaml\_Data\YamlDataDirectory.cs" />
+    <Compile Include="_fx\_Yaml\_Data\YamlDataFile.cs" />
+    <Compile Include="_fx\_Yaml\_Data\YamlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderAlreadySetException.cs" />
-    <Compile Include="Providers.cs" />
-    <Compile Include="ProxyAttribute.cs" />
-    <Compile Include="RandomHelper.cs" />
-    <Compile Include="ResourceTextFiles.cs" />
-    <Compile Include="RoleRequiredAttribute.cs" />
-    <Compile Include="ServiceExe.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ServiceInfo.cs" />
-    <Compile Include="ServiceInstallHandler.cs" />
-    <Compile Include="Smtp.cs" />
-    <Compile Include="Exec.cs" />
-    <Compile Include="ToDelimitedDelegate.cs" />
-    <Compile Include="Web\HttpArgs.cs" />
-    <Compile Include="Web\ProxyAlias.cs" />
-    <Compile Include="Web\QueryStringParameter.cs" />
-    <Compile Include="Web\UserAgents.cs" />
-    <Compile Include="UserUtil.cs" />
-    <Compile Include="YamlExtensions.cs" />
-    <Compile Include="_.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Bam.Net.nuspec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="App.config" />
+    <None Include="_fx\_Automation\_Nuget\packages.xsc">
+      <DependentUpon>packages.xsd</DependentUpon>
     </None>
-    <None Include="Bam.Net.ruleset" />
-    <None Include="Documentation\XmlDocumentation.xsd">
-      <SubType>Designer</SubType>
+    <None Include="_fx\_Automation\_Nuget\packages.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>packages1.Designer.cs</LastGenOutput>
     </None>
+    <None Include="_fx\_Automation\_Nuget\packages.xss">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </None>
+    <None Include="_fx\_Presentation\_Dust\test.dust" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="signing.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\OleDb\empty.accdb" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\dust-full-0.3.0.js" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\dust.custom.js" />
+    <Content Include="_fx\_Presentation\_Dust\feather.js" />
+    <EmbeddedResource Include="_fx\_Presentation\_Dust\json2.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_fx\_Net\_Ping\Ping.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\bam\nuget\packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="C:\bam\nuget\packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ActiveDs">
+      <Guid>{97D25DB0-0363-11CF-ABC4-02608C9E7553}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <ItemGroup />
+  <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Import Project="C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets'))" />
+    <Error Condition="!Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets'))" />
+    <Error Condition="!Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets'))" />
+    <Error Condition="!Exists('C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets" Condition="Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" />
+  <Import Project="C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets" Condition="Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" />
+  <Import Project="C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('C:\bam\nuget\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
 </Project>

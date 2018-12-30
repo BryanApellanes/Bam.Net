@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>PackageId</id>
+    <version>1.16.1</version>
+    <title>Package Title</title>
+    <authors>Package Authors</authors>
+    <owners>Package Owners</owners>
+    <description>Package Description</description>
+    <releaseNotes>Version 1.16.1
+</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <dependencies>
+      <dependency id="CsQuery" version="1.3.4" />
+      <dependency id="dotless" version="1.6.4" />
+      <dependency id="dotless.AspNetHandler" version="1.6.4" />
+      <dependency id="dotless.Core" version="1.6.4" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
+      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.1.1" />
+    </dependencies>
+  </metadata>
+</package>

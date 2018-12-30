@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en" bam-model="LoginPage" bam-props="FaviconUrl, Title, UserNamePlaceHolder, PasswordPlaceHolder">
+<head>
+
+    <meta name="generator" content='bam.net' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{Description}}">
+    <meta name="author" content="{{Author}}">
+    <meta name="keyword" content="{{Keywords}}">
+    <link rel="shortcut icon" href="{{FaviconUrl}}">
+
+    <title>{{Title}}</title>
+</head>
+<body>
+
+    <div class="bam-template login-container container" id="login-form">
+        <form class="login-form" action="/forms/login">
+            <div class="login-wrap">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_profile"></i></span>
+                    <input type="text" class="form-control" placeholder="{{UserNamePlaceHolder}}" autofocus>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    <input type="password" class="form-control" placeholder="{{PasswordPlaceHolder}}">
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me"> {{RememberMeText}}
+                    <span class="pull-right"> <a href="#"> {{ForgotPasswordText}}</a></span>
+                </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">{{LoginText}}</button>
+                <button class="btn btn-info btn-lg btn-block" type="submit">{{SignupText}}</button>
+                <hr />
+                {{##each OAuthProviders}}
+                <a href="{{{LoginUrl}}}" class="btn btn-primary btn-lg btn-block" type="submit">{{ButtonText}}</a>
+                {{/each}}
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

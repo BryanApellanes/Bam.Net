@@ -1,0 +1,14 @@
+﻿[
+  {
+    "UserName": "UserNameValue1",
+    "Password": "PasswordValue1",
+    "TargetService": "ServiceName1",
+    "MachineName": "HostName1"
+  },
+  {
+    "UserName": "UserNameValue2",
+    "Password": "PasswordValue2",
+    "TargetService": "ServiceName2",
+    "MachineName": null
+  }
+]

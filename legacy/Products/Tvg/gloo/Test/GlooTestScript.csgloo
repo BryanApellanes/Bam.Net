@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Bam.Net;
+using Bam.Net.ServiceProxy.Secure;
+
+namespace Bam.Net.Application
+{
+    public class GlooMonkey
+    {
+        public string Name { get; set; }
+        public bool HasTail { get; set; }
+        public DateTime Birthday { get; set; }
+    }
+
+    [Encrypt]
+    [Proxy("encryptedTest")]
+    public class EncryptedTest
+    {
+        public object GetValue(string input)
+        {
+            return new
+            {
+                Input = input,
+                ABooleanValue = true,
+                AnIntValue = 5
+            };
+        }
+    }
+
+    [Proxy("glooTest")]
+    public class GlooTestScript
+    {
+        public string Echo(string value)
+        {
+            return value;
+        }
+
+        public GlooMonkey GetTestMonkey(string name)
+        {
+            return new GlooMonkey
+            {
+                Name = name,
+                Birthday = DateTime.UtcNow.Subtract(TimeSpan.FromDays(365 * RandomNumber.Between(10, 150))),
+                HasTail = RandomHelper.Bool()
+            };
+        }
+
+        public GlooMonkey SetTestMonkey(GlooMonkey monkey)
+        {
+            return monkey;
+        }
+
+        [ApiKeyRequired]
+        public GlooMonkey ApiKeyRequiredTest(GlooMonkey monkey)
+        {
+            return monkey;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "bam.net.serviceproxy.core.tests": {
+      "commandName": "Project",
+      "commandLineArgs": "/i"
+    }
+  }
+}
