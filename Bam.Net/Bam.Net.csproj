@@ -771,7 +771,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="..\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
+  <Import Project="..\shared\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
+  <Import Project="..\shared\bam.net.schema.org\bam.net.schema.org.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('C:\bam\nuget\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
