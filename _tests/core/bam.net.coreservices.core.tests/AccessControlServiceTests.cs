@@ -23,6 +23,12 @@ namespace Bam.Net.Tests
         }
 
         [UnitTest]
+        public void HomeDirTest()
+        {
+            Console.WriteLine($"Homedir = {RuntimeSettings.ProcessHomeDir}");
+        }
+
+        [UnitTest]
         public void ResourceUriTest()
         {
             ResourceUri uri = new ResourceUri("b://hostName/parent/child");

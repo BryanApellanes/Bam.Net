@@ -410,7 +410,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IHasRequiredProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\RequiredPropertiesNotSetException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Configuration\RuntimeSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SourcedConfigurationSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\StaticApplicationNameProvider.cs" />

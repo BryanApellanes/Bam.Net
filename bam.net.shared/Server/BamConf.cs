@@ -44,9 +44,7 @@ namespace Bam.Net.Server
             this.ServiceSearchPattern = "*Services.dll,*Proxyables.dll";
             this.ServerEventListenerSearchPath = "c:\\bam\\content\\server-listeners,c:\\bam\\content\\server-listeners-temp";
             this.ServerEventListenerAssemblySearchPattern = "*ServerListeners.dll,*ServerEventListeners.dll";
-            this.MainLoggerName = "ConsoleLogger";
-            this.InitializeFileSystemFromEnum = InitializeFrom.Resource;
-            this.ZipPath = "~/bkg/content.root";
+            this.MainLoggerName = "ConsoleLogger";          
 
             List<SchemaInitializer> schemaInitInfos = new List<SchemaInitializer>();
             schemaInitInfos.Add(new SchemaInitializer(typeof(UserAccountsContext), typeof(SQLiteRegistrarCaller)));
@@ -107,44 +105,6 @@ namespace Bam.Net.Server
         {
             get;
             set;
-        }
-
-        InitializeFrom _initializeFrom;
-        protected internal InitializeFrom InitializeFileSystemFromEnum
-        {
-            get
-            {
-                return _initializeFrom;
-            }
-            set
-            {
-                _initializeFrom = value;
-            }
-        }
-
-        public string InitializeFileSystemFrom
-        {
-            get
-            {
-                return InitializeFileSystemFromEnum.ToString();
-            }
-            set
-            {
-                Enum.TryParse<InitializeFrom>(value, out _initializeFrom);
-            }
-        }
-
-        string _zipPath;
-        public string ZipPath
-        {
-            get
-            {
-                return _zipPath;
-            }
-            set
-            {
-                _zipPath = Fs.GetAbsolutePath(value);
-            }
         }
 
         public bool InitializeTemplates
