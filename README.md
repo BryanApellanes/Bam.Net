@@ -25,6 +25,6 @@ library and code generators.  BAM and you're done!
 
 ### Where to start?
 - [Data Access Object (Dao) Generation](./_tools/laotze/) with laotze.exe
-- [Data Access Object (Dao) Generation](./_tools/laotze/) with laotzu.exe
+- [Data Access Object (Dao) Generation](./_tools/laotzu/) with laotzu.exe
 - [Repositories with Troo.exe](./_tools/troo/)
 - [Web Services with Gloo.exe](./_tools/gloo/)
