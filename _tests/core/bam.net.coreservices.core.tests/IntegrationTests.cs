@@ -170,7 +170,7 @@ namespace Bam.Net.CoreServices.Tests
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
-            CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
+            CoreClient client = new CoreClient("Bam.Net", "CoreServicesTestApp", "localhost", 9100, logger);
             client.LocalCoreRegistryRepository = repo;
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Expect.IsTrue(registrationResponse.Success, registrationResponse.Message);
@@ -188,7 +188,7 @@ namespace Bam.Net.CoreServices.Tests
             logger.StartLoggingThread();
             // get proxies
             ProxyFactory factory = new ProxyFactory();
-            CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 80, logger);
+            CoreClient coreClient = new CoreClient("Bam.Net", "CoreServicesTestApp", "localhost", 80, logger);
 
             UserRegistryService userService = coreClient.UserRegistryService;
             Expect.IsNotNull(userService);
