@@ -212,7 +212,7 @@ namespace Bam.Net.Services.Clients
                 else
                 {
                     FireEvent(ApiKeyFileNotFound);
-                    _apiKeyInfo = ApplicationRegistryService.GetClientApiKeyInfo();
+                    _apiKeyInfo = ApplicationRegistrationService.GetClientApiKeyInfo();
                     _apiKeyInfo.ApplicationName = nameProvider.GetApplicationName();
                     FireEvent(WritingApiKeyFile);
                     EnsureApiKeyFileDirectory();
@@ -225,12 +225,12 @@ namespace Bam.Net.Services.Clients
 
         public ApiKeyInfo AddApiKey()
         {
-            return ApplicationRegistryService.AddApiKey();
+            return ApplicationRegistrationService.AddApiKey();
         }
 
         public ApiKeyInfo SetActiveApiKeyIndex(int index)
         {
-            return ApplicationRegistryService.SetActiveApiKeyIndex(index);
+            return ApplicationRegistrationService.SetActiveApiKeyIndex(index);
         }
 
         public string GetApplicationApiKey(string applicationClientId, int index) // index ignored in this implementation //TODO: take into account the index
@@ -286,12 +286,12 @@ namespace Bam.Net.Services.Clients
 
         public CoreServices.ApplicationRegistration.Data.Application RegisterApplication(string applicationName)
         {
-            //CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(applicationName);
-            //if (response.Success)
-            //{
-
-            //}
-            throw new NotImplementedException();
+            CoreServiceResponse response = ApplicationRegistrationService.RegisterApplication(applicationName);
+            if (response.Success)
+            {
+                return ApplicationRegistrationService.ApplicationRegistrationRepository.OneApplicationWhere(a => a.Name == applicationName);
+            }
+            throw new ApplicationException(response.Message);
         }
 
         public ApiKeyInfo GetCurrentApplicationApiKeyInfo()
@@ -317,7 +317,7 @@ namespace Bam.Net.Services.Clients
                 if (!IsInitialized)
                 {
                     FireEvent(Initializing);
-                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplicationProcess(ProcessDescriptor);
+                    CoreServiceResponse response = ApplicationRegistrationService.RegisterApplicationProcess(ProcessDescriptor);
                     ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
                     if (response.Success)
                     {
@@ -384,7 +384,7 @@ namespace Bam.Net.Services.Clients
         public CoreServiceResponse RegisterClient()
         {
             Client client = Client.Of(LocalCoreRegistryRepository, ApplicationName, HostName, Port);            
-            CoreServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(client);
+            CoreServiceResponse registrationResponse = ApplicationRegistrationService.RegisterClient(client);
             if (registrationResponse == null || !registrationResponse.Success)
             {
                 throw new ClientRegistrationFailedException(registrationResponse);
@@ -483,7 +483,7 @@ namespace Bam.Net.Services.Clients
         public UserRegistryService UserRegistryService { get; set; }
         protected internal RoleService RoleService { get; set; }
         protected internal OAuthService OAuthService { get; set; }
-        protected internal ApplicationRegistrationService ApplicationRegistryService { get; set; } // TODO: rename this to ApplicationRegistrationService and test
+        protected internal ApplicationRegistrationService ApplicationRegistrationService { get; set; } // TODO: rename this to ApplicationRegistrationService and test
         protected internal ConfigurationService ConfigurationService { get; set; }
         protected internal SystemLoggerService LoggerService { get; set; }
         protected internal DiagnosticService DiagnosticService { get; set; }
@@ -500,7 +500,7 @@ namespace Bam.Net.Services.Clients
             get
             {
                 yield return UserRegistryService;
-                yield return ApplicationRegistryService;                
+                yield return ApplicationRegistrationService;                
                 yield return ConfigurationService;
                 yield return LoggerService;
                 yield return RoleService;
@@ -575,7 +575,7 @@ namespace Bam.Net.Services.Clients
 
         private void SetLocalServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>();
+            ApplicationRegistrationService = ProxyFactory.GetProxy<ApplicationRegistrationService>();
             ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>();
             DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>();
             LoggerService = ProxyFactory.GetProxy<SystemLoggerService>();
@@ -630,7 +630,7 @@ namespace Bam.Net.Services.Clients
 
         private void SetProperty(string propertyName)
         {
-            ApplicationRegistryService.Property(propertyName, this);
+            ApplicationRegistrationService.Property(propertyName, this);
             ConfigurationService.Property(propertyName, this);
             DiagnosticService.Property(propertyName, this);
             LoggerService.Property(propertyName, this);

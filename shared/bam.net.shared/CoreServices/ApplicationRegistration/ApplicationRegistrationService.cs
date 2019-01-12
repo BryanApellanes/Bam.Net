@@ -406,7 +406,7 @@ namespace Bam.Net.CoreServices
             return user;
         }
 
-        private static CoreServiceResponse GetApplicationRegistrationSuccessResult(CoreServiceResponse<CoreServices.ApplicationRegistration.Data.Application> appResponse)
+        private static CoreServiceResponse<ApplicationRegistrationResult> GetApplicationRegistrationSuccessResult(CoreServiceResponse<CoreServices.ApplicationRegistration.Data.Application> appResponse)
         {
             CoreServices.ApplicationRegistration.Data.Application app = appResponse.TypedData();
             return new CoreServiceResponse<ApplicationRegistrationResult>(
