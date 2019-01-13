@@ -9,7 +9,7 @@ namespace Bam.Net.Services
 {
     /// <summary>
     /// A service registry for the currently running application process.  The application name is
-    /// determined by the default configuration file (app.config or web.config) where the 
+    /// determined by the default configuration file (app.config or web.config).
     /// </summary>
     public class ApplicationServiceRegistry: ServiceRegistry
     {

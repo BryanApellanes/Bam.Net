@@ -1909,6 +1909,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\InjectAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\LocalServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationContext.cs" />

@@ -143,6 +143,7 @@ namespace Bam.Net.CoreServices
         {
             return UserManager.ForgotPassword(emailAddress);
         }
+
         [Exclude]
         public User GetUser(IHttpContext context)
         {

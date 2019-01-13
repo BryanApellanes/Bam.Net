@@ -7,10 +7,35 @@
     <partial name="_JQueryUICss" />
 }
 
-<h1>Admin</h1>
-
-
 
 @section Scripts {
-
+<script src="~/js/jquery-ui/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#admin-tabs").tabs();
+    })
+</script>
 }
+
+<h1>Bamf Admin</h1>
+
+<div id="admin-tabs">
+    <ul>
+        <li><a href="#tab-models">Models</a></li>
+        <li><a href="#tab-views">Views</a></li>
+        <li><a href="#tab-view-models">View Models</a></li>
+    </ul>
+    <div id="tab-models">
+        <h2>Persistence Models</h2>
+
+    </div>
+    <div id="tab-views">
+        <h2>Views</h2>
+    </div>
+    <div id="tab-view-models">
+        <h2>View Models</h2>
+    </div>
+</div>
+
+
+<div style="height: 200px;"></div>

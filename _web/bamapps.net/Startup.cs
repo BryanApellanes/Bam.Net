@@ -41,7 +41,8 @@ namespace Bam.Net.Web
             {                
                 // Configure the Bam appRegistry here
                 appRegistry
-                    .For<ConfigurationResolver>().Use(ConfigurationResolver.Current)
+                    .For<IConfiguration>().Use(Configuration)
+                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration))
                     .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
 
                 appRegistry

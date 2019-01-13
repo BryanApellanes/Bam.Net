@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,20 @@ namespace Bam.Net.Presentation
 {
     public class ApplicationModel
     {
+        public ApplicationModel(ApplicationServiceRegistry applicationServiceRegistry)
+        {
+            ApplicationServiceRegistry = applicationServiceRegistry;
+            //ApplicationName = DefaultConfiguration
+        }
+
         public string ApplicationName { get; set; }
 
+        public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
+
+        [Inject]
         public IViewModelProvider ViewModelProvider { get; set; }
 
+        [Inject]
         public IPersistenceModelProvider PersistenceModelProvider { get; set; }
 
         public PersistenceModel GetPersistenceModel(string persistenceModelName)

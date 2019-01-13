@@ -8,6 +8,7 @@ using System.Text;
 using System.Reflection;
 using Bam.Net;
 using System.Diagnostics;
+using Bam.Net.Services;
 
 namespace Bam.Net.Incubation
 {
@@ -208,9 +209,19 @@ namespace Bam.Net.Incubation
                 object value = this[prop.PropertyType];
                 Delegate getter = value as Delegate;
                 value = getter != null ? getter.DynamicInvoke() : value;
-                // TODO: if value is null add a check for a 
-                // custom attribute (not yet defined) to determine if we should do
-                // Get(prop.PropertyType)
+
+                if (value == null && prop.HasCustomAttributeOfType(out InjectAttribute attr))
+                {
+                    Type tryType = attr.TypeToUse ?? prop.PropertyType;
+                    value = Get(tryType);
+                    if(value == null && attr.Required)
+                    {
+                        string msgFormat = "Unable to construct required injection property: Name = {0}, Type = {1}";
+                        string message = string.Format(msgFormat, $"{prop.DeclaringType.Name}.{prop.Name}", tryType.FullName);
+                        throw new InvalidOperationException(message);
+                    }
+                }
+
                 if (prop.CanWrite && value != null)
                 {
                     prop.SetValue(instance, value, null);
