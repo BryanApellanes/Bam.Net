@@ -19,4 +19,59 @@
     <Folder Include="Models\Persistence\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\bam.js\.git" />
+    <None Include="wwwroot\bam.js\.gitignore" />
+    <None Include="wwwroot\bam.js\configs\main.webpack.config.js" />
+    <None Include="wwwroot\bam.js\configs\monaco.webpack.config.js" />
+    <None Include="wwwroot\bam.js\configs\tests.webpack.config.js" />
+    <None Include="wwwroot\bam.js\data\csv.js" />
+    <None Include="wwwroot\bam.js\data\dao.js" />
+    <None Include="wwwroot\bam.js\data\database.db.js" />
+    <None Include="wwwroot\bam.js\data\dataset.js" />
+    <None Include="wwwroot\bam.js\data\dbs.js" />
+    <None Include="wwwroot\bam.js\data\observer.js" />
+    <None Include="wwwroot\bam.js\data\qi.js" />
+    <None Include="wwwroot\bam.js\data\sdo.js" />
+    <None Include="wwwroot\bam.js\monaco-main.js" />
+    <None Include="wwwroot\bam.js\README.md" />
+    <None Include="wwwroot\bam.js\system\bam.js" />
+    <None Include="wwwroot\bam.js\system\cookies.js" />
+    <None Include="wwwroot\bam.js\system\fs.js" />
+    <None Include="wwwroot\bam.js\system\proxyclient.js" />
+    <None Include="wwwroot\bam.js\system\querystring.js" />
+    <None Include="wwwroot\bam.js\system\secureChannel.js" />
+    <None Include="wwwroot\bam.js\system\using.js" />
+    <None Include="wwwroot\bam.js\system\xhr.js" />
+    <None Include="wwwroot\bam.js\tests-main.js" />
+    <None Include="wwwroot\bam.js\test\legacy\DaoTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\DataBindTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\HtmlTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\SdoTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\ServiceProxyTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\SlideShowTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\templateTests.js" />
+    <None Include="wwwroot\bam.js\test\legacy\ValidatableTests.js" />
+    <None Include="wwwroot\bam.js\test\setup-test.js" />
+    <None Include="wwwroot\bam.js\ui\bs.typeahead.util.js" />
+    <None Include="wwwroot\bam.js\ui\captureLinks.js" />
+    <None Include="wwwroot\bam.js\ui\codeEditor.js" />
+    <None Include="wwwroot\bam.js\ui\colorscheme.js" />
+    <None Include="wwwroot\bam.js\ui\deferredview.js" />
+    <None Include="wwwroot\bam.js\ui\design.js" />
+    <None Include="wwwroot\bam.js\ui\designable.js" />
+    <None Include="wwwroot\bam.js\ui\edit.js" />
+    <None Include="wwwroot\bam.js\ui\enterkey.js" />
+    <None Include="wwwroot\bam.js\ui\friendlyDate.js" />
+    <None Include="wwwroot\bam.js\ui\fstree.js" />
+    <None Include="wwwroot\bam.js\ui\html.js" />
+    <None Include="wwwroot\bam.js\ui\orient.js" />
+    <None Include="wwwroot\bam.js\ui\overlay.js" />
+    <None Include="wwwroot\bam.js\ui\percentarc.js" />
+    <None Include="wwwroot\bam.js\ui\slideshow.js" />
+    <None Include="wwwroot\bam.js\ui\sortchildren.js" />
+    <None Include="wwwroot\bam.js\ui\spa.js" />
+    <None Include="wwwroot\bam.js\ui\validatable.js" />
+  </ItemGroup>
+
 </Project>
