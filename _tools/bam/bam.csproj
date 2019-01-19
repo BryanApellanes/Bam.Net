@@ -53,6 +53,7 @@
     <Compile Include="RemoteRegistrationActions.cs" />
     <Compile Include="ServiceTools.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="WebActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
