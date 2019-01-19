@@ -46,8 +46,12 @@ namespace Bam.Net.Web
                     .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
 
                 appRegistry
-                    .RegisterAppModules()
-                    .AddServices(services);
+                    .RegisterAppModules();
+
+                appRegistry
+                    .For<WebServiceRegistry>().Use(WebServiceRegistry.FromRegistry(appRegistry));
+
+                appRegistry.AddServices(services);
             }));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
