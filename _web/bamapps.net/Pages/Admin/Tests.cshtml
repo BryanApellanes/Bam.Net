@@ -41,7 +41,7 @@
 <script>mocha.setup('bdd')</script>
 @foreach(string testFile in Model.TestFileNames)
 {
-    <script src="/js/browser-tests/@(testFile).js"></script>
+    <script src="~/js/browser-tests/@(testFile).js"></script>
 }
 
 <script>
