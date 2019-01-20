@@ -8,7 +8,13 @@ namespace Bam.Net
     {
         static void Main(string[] args)
         {
+            AddArguments();
             Initialize(args);
+        }
+
+        public static void AddArguments()
+        {
+
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿const path = require('path');
+
+module.exports = {
+	mode: 'development',
+	entry: {
+		"{{PageName}}": './pages/{{PageName}}.js',
+	},
+	output: {
+		filename: '[name].bundle.js',
+		path: '{{Wwwroot}}{{pageName}}'
+	}
+};

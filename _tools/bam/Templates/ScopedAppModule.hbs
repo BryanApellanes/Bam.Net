@@ -1,11 +1,11 @@
 ﻿using Bam.Net.Services;
 
-namespace Bam.Net.Web.AppModules
+namespace {{BaseNamespace}}.AppModules
 {
-    [Transient]
-    public class TestTransientAppModule
+    [Scoped]
+    public class {{AppModuleName}}ScopedAppModule
     {
-        public TestTransientAppModule()
+        public {{AppModuleName}}ScopedAppModule()
         {
         }
 

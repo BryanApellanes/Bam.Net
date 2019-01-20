@@ -1,7 +1,7 @@
-using Bam.Net.Services;
+﻿using Bam.Net.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Bam.Net.Web.Pages.Api
+namespace {{BaseNamespace}}.Pages.Api
 {
     public class V1Model : PageModel
     {
@@ -12,8 +12,9 @@ namespace Bam.Net.Web.Pages.Api
 
         public WebServiceRegistry WebServiceRegistry { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return Page();
         }
     }
 }

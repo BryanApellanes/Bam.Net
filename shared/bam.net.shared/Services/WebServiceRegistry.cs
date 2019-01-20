@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Bam.Net.Services
 {
+    /// <summary>
+    /// A service registry for proxyable services.
+    /// </summary>
     public class WebServiceRegistry: ServiceRegistry
     {
         public WebServiceRegistry() { }

@@ -19,7 +19,6 @@ namespace Bam.Net.Presentation.Handlebars
         {
             FileExtension = "hbs";
             Directory = directory;
-            _templates = new Dictionary<string, Func<object, string>>();
         }
 
         public HandlebarsDirectory(string directoryPath): this(new DirectoryInfo(directoryPath))
@@ -68,6 +67,10 @@ namespace Bam.Net.Presentation.Handlebars
 
         public string Render(string templateName, object data)
         {
+            if (!_loaded)
+            {
+                Reload();
+            }
             if (Templates.ContainsKey(templateName))
             {
                 return Templates[templateName](data);
@@ -94,13 +97,14 @@ namespace Bam.Net.Presentation.Handlebars
         public string FileExtension { get; set; }
         public DirectoryInfo PartialsDirectory { get; set; }
         object _reloadLock = new object();
+        bool _loaded = false;
         public void Reload()
         {
             lock (_reloadLock)
             {
+                _templates = new Dictionary<string, Func<object, string>>();
                 if (PartialsDirectory != null)
                 {
-                    _templates = new Dictionary<string, Func<object, string>>();
                     foreach (FileInfo partial in PartialsDirectory.GetFiles($"*.{FileExtension}"))
                     {
                         string name = Path.GetFileNameWithoutExtension(partial.FullName);
@@ -115,6 +119,7 @@ namespace Bam.Net.Presentation.Handlebars
                         _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(file.ReadAllText()));
                     }
                 }
+                _loaded = true;
             }
         }
         private void SetDirectory(DirectoryInfo directory)

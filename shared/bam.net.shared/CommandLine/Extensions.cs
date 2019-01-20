@@ -129,7 +129,8 @@ namespace Bam.Net.CommandLine
 
         /// <summary>
         /// Run the specified command in a separate process capturing the output
-        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// and error streams if any. This method will block if a timeout is specified,
+        /// which it is by default, it will
         /// not block if timeout is null.
         /// </summary>
         /// <param name="command">The command.</param>

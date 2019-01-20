@@ -23,7 +23,6 @@
     <None Include="wwwroot\bam.js\.git" />
     <None Include="wwwroot\bam.js\.gitignore" />
     <None Include="wwwroot\bam.js\configs\main.webpack.config.js" />
-    <None Include="wwwroot\bam.js\configs\monaco.webpack.config.js" />
     <None Include="wwwroot\bam.js\configs\tests.webpack.config.js" />
     <None Include="wwwroot\bam.js\data\csv.js" />
     <None Include="wwwroot\bam.js\data\dao.js" />
@@ -33,9 +32,7 @@
     <None Include="wwwroot\bam.js\data\observer.js" />
     <None Include="wwwroot\bam.js\data\qi.js" />
     <None Include="wwwroot\bam.js\data\sdo.js" />
-    <None Include="wwwroot\bam.js\monaco-main.js" />
     <None Include="wwwroot\bam.js\README.md" />
-    <None Include="wwwroot\bam.js\system\bam.js" />
     <None Include="wwwroot\bam.js\system\cookies.js" />
     <None Include="wwwroot\bam.js\system\fs.js" />
     <None Include="wwwroot\bam.js\system\proxyclient.js" />
@@ -43,7 +40,6 @@
     <None Include="wwwroot\bam.js\system\secureChannel.js" />
     <None Include="wwwroot\bam.js\system\using.js" />
     <None Include="wwwroot\bam.js\system\xhr.js" />
-    <None Include="wwwroot\bam.js\tests-main.js" />
     <None Include="wwwroot\bam.js\test\legacy\DaoTests.js" />
     <None Include="wwwroot\bam.js\test\legacy\DataBindTests.js" />
     <None Include="wwwroot\bam.js\test\legacy\HtmlTests.js" />
