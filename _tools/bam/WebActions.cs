@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Automation.MSBuild;
 using Bam.Net.Presentation.Handlebars;
+using System.Yaml;
 
 namespace Bam.Net.Application
 {
