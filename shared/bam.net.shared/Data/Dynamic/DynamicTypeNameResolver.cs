@@ -21,6 +21,26 @@ namespace Bam.Net.Data.Dynamic
             set;
         }
 
+        public static string[] ResolveYamlTypeNames(string yaml, params string[] typeNameProperties)
+        {
+            DynamicTypeNameResolver resolver = new DynamicTypeNameResolver();
+            if(typeNameProperties.Length > 0)
+            {
+                resolver.TypeNameFields = new HashSet<string>(typeNameProperties);
+            }
+            return resolver.ResolveYamlTypeNames(yaml);
+        }
+
+        public static string ResolveJsonTypeName(string json, params string[] typeNameProperties)
+        {
+            DynamicTypeNameResolver resolver = new DynamicTypeNameResolver();
+            if(typeNameProperties.Length > 0)
+            {
+                resolver.TypeNameFields = new HashSet<string>(typeNameProperties);
+            }
+            return resolver.ResolveJsonTypeName(json);
+        }
+
         public string ResolveJsonTypeName(string json)
         {
             JObject jobject = (JObject)JsonConvert.DeserializeObject(json);
@@ -73,6 +93,5 @@ namespace Bam.Net.Data.Dynamic
             }
             return properties.ToArray();
         }
-
     }
 }
