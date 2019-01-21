@@ -61,7 +61,7 @@ namespace Bam.Net.Data.Dynamic
                 }
             }
 
-            return string.Join(",", GetPropertyDescriptors(jobject).Select(pd => pd.ToString()).ToArray());
+            return string.Join(",", GetPropertyDescriptors(jobject).Select(pd => pd.ToString()).ToArray()).Sha256();
         }
         
         public string[] ResolveYamlTypeNames(string yaml)
