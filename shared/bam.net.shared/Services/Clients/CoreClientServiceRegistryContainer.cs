@@ -12,6 +12,8 @@ using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.UserAccounts;
 using Bam.Net.Services.Clients;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Services.Clients
 {
@@ -83,6 +85,7 @@ namespace Bam.Net.Services.Clients
                 .For<ILogger>().Use<ApplicationLogger>()
                 .For<ILog>().Use<ApplicationLogger>()
                 .For<IConfigurationService>().Use<ApplicationConfigurationProvider>()
+                .For<IDataDirectoryProvider>().Use(DefaultDataDirectoryProvider.Current)
                 .For<IUserManager>().Use(coreClient.UserRegistryService);
         }
     }

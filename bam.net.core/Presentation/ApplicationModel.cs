@@ -1,4 +1,5 @@
-﻿using Bam.Net.Services;
+﻿using Bam.Net.ServiceProxy;
+using Bam.Net.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,24 @@ namespace Bam.Net.Presentation
         public ApplicationModel(ApplicationServiceRegistry applicationServiceRegistry)
         {
             ApplicationServiceRegistry = applicationServiceRegistry;
-            //ApplicationName = DefaultConfiguration
+            WebServiceRegistry = WebServiceRegistry.FromRegistry(ApplicationServiceRegistry);
+            ApplicationName = ApplicationServiceRegistry.Get<IApplicationNameProvider>().GetApplicationName();
+            ApplicationServiceRegistry.SetInjectionProperties(this);
         }
 
         public string ApplicationName { get; set; }
 
         public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
+        public WebServiceRegistry WebServiceRegistry { get; set; }
 
         [Inject]
         public IViewModelProvider ViewModelProvider { get; set; }
 
         [Inject]
         public IPersistenceModelProvider PersistenceModelProvider { get; set; }
+
+        [Inject]
+        public IExecutionRequestResolver ExecutionRequestResolver { get; set; }
 
         public PersistenceModel GetPersistenceModel(string persistenceModelName)
         {

@@ -10,6 +10,7 @@ using CsQuery;
 
 namespace Bam.Net.Server.Meta
 {
+    [Obsolete("This class is obsolete, use Bam.Net.Presentation.WebBook instead.")]
 	public class WebBook
 	{
         public WebBook()

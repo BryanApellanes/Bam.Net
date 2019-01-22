@@ -32,18 +32,18 @@ namespace Bam.Net.Web
             });
 
             services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
-            {                
+            {
                 // Configure the Bam appRegistry here
                 appRegistry
                     .For<IConfiguration>().Use(Configuration)
-                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration))
-                    .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
+                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));
+                    
 
                 appRegistry
                     .RegisterAppModules();
 
                 appRegistry
-                    .For<WebServiceRegistry>().Use(WebServiceRegistry.FromRegistry(appRegistry));
+                    .For<WebServiceRegistry>().Use(WebServiceRegistry.ForCurrentApplication(appRegistry));
 
                 appRegistry.AddServices(services);
             }));

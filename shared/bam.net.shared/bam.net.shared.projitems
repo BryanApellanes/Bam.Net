@@ -1549,7 +1549,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)NamedThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetworkExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Paths.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\ApplicationModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\ColorPalette.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\Dimensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\Extensions.cs" />
@@ -1600,7 +1599,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\PipeTableDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\OAuthSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\PersistenceModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Profiguration\AppSettings.cs" />

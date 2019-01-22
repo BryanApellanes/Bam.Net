@@ -1,5 +1,6 @@
 ﻿using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
+using Bam.Net.Presentation;
 using Bam.Net.Services.Clients;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 namespace Bam.Net.Services
 {
     /// <summary>
-    /// A service registry for the currently running application process.  The application name is
+    /// A service registry (or dependency injection container) for the currently running application process.  The application name is
     /// determined by the default configuration file (app.config or web.config).
     /// </summary>
     public class ApplicationServiceRegistry: ServiceRegistry
@@ -35,13 +36,17 @@ namespace Bam.Net.Services
         public static ApplicationServiceRegistry Configure(Action<ApplicationServiceRegistry> configure)
         {
             Configurer = configure;
-            ApplicationServiceRegistry result = new ApplicationServiceRegistry();
-            result.CombineWith(CoreClientServiceRegistryContainer.Current);
-            result.For<IApplicationNameProvider>().Use<DefaultConfigurationApplicationNameProvider>();
-            configure(result);
-            result.CoreClient = result.Get<CoreClient>();
-            Current = result;
-            return result;
+            ApplicationServiceRegistry appRegistry = new ApplicationServiceRegistry();
+            appRegistry.CombineWith(CoreClientServiceRegistryContainer.Current);
+            appRegistry
+                .For<IApplicationNameProvider>().Use<DefaultConfigurationApplicationNameProvider>()
+                .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>()
+                .For<ApplicationModel>().Use(() => new ApplicationModel(appRegistry));
+
+            configure(appRegistry);
+            appRegistry.CoreClient = appRegistry.Get<CoreClient>();
+            Current = appRegistry;
+            return appRegistry;
         }
     }
 }

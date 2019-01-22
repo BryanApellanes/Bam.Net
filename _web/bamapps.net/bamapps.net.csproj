@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Persistence\" />
+    <Folder Include="AppData\csv\" />
+    <Folder Include="AppData\xml\" />
+    <Folder Include="AppData\txt\" />
+    <Folder Include="Models\Rest\" />
   </ItemGroup>
 
   <ItemGroup>

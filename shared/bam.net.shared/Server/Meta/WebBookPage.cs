@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Meta
-{
+{    
+    [Obsolete("This class is obsolete; use Bam.Net.Presentation.WebBookPage instead.")]
     public class WebBookPage
     {
         public WebBookPage()

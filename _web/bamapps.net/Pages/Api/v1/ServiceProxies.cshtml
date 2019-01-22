@@ -1,0 +1,13 @@
+﻿@page
+@model ServiceProxiesModel
+@{
+}
+
+<h1>Service Proxies</h1>
+
+<ul>
+    @foreach(string className in Model.ApplicationModel.WebServiceRegistry.ClassNames)
+    {
+        <li>@className</li>
+    }
+</ul>

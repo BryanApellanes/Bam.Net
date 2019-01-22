@@ -201,8 +201,7 @@ namespace Bam.Net.Incubation
         /// <param name="instance"></param>
         public void SetProperties(object instance)
         {
-            Type type = instance.GetType();
-            
+            Type type = instance.GetType();            
             PropertyInfo[] properties = type.GetProperties();
             foreach (PropertyInfo prop in properties)
             {
@@ -212,14 +211,7 @@ namespace Bam.Net.Incubation
 
                 if (value == null && prop.HasCustomAttributeOfType(out InjectAttribute attr))
                 {
-                    Type tryType = attr.TypeToUse ?? prop.PropertyType;
-                    value = Get(tryType);
-                    if(value == null && attr.Required)
-                    {
-                        string msgFormat = "Unable to construct required injection property: Name = {0}, Type = {1}";
-                        string message = string.Format(msgFormat, $"{prop.DeclaringType.Name}.{prop.Name}", tryType.FullName);
-                        throw new InvalidOperationException(message);
-                    }
+                    value = GetInjectValue(prop, attr);
                 }
 
                 if (prop.CanWrite && value != null)
@@ -227,6 +219,39 @@ namespace Bam.Net.Incubation
                     prop.SetValue(instance, value, null);
                 }
             }
+        }
+
+        public void SetInjectionProperties(object instance)
+        {
+            Type type = instance.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+            foreach (PropertyInfo prop in properties)
+            {
+                if(prop.HasCustomAttributeOfType(out InjectAttribute attr))
+                {
+                    if (!prop.CanWrite)
+                    {
+                        Logging.Log.Warn("Property {0}.{1} is addorned with the Inject attribute but it is read only");
+                        continue;
+                    }
+                    prop.SetValue(instance, GetInjectValue(prop, attr));
+                }
+            }
+        }
+
+        private object GetInjectValue(PropertyInfo prop, InjectAttribute attr)
+        {
+            object value;
+            Type tryType = attr.TypeToUse ?? prop.PropertyType;
+            value = Get(tryType);
+            if (value == null && attr.Required)
+            {
+                string msgFormat = "Unable to construct required injection property: Name = {0}, Type = {1}";
+                string message = string.Format(msgFormat, $"{prop.DeclaringType.Name}.{prop.Name}", tryType.FullName);
+                throw new InvalidOperationException(message);
+            }
+
+            return value;
         }
 
         /// <summary>

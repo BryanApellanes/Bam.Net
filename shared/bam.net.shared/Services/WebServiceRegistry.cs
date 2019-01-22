@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace Bam.Net.Services
 {
@@ -19,7 +20,7 @@ namespace Bam.Net.Services
             CopyWebServices(registry);
         }
 
-        public void CopyWebServices(Incubator registry)
+        public WebServiceRegistry CopyWebServices(Incubator registry)
         {
             foreach (string className in registry.ClassNames)
             {
@@ -44,6 +45,32 @@ namespace Bam.Net.Services
                     }
                 }
             }
+            return this;
+        }
+
+        public static WebServiceRegistry ForCurrentApplication(ApplicationServiceRegistry applicationServiceRegistry)
+        {
+            WebServiceRegistry fromAssembly = FromEntryAssembly(applicationServiceRegistry);
+            return fromAssembly.CopyWebServices(applicationServiceRegistry);
+        }
+
+        public static WebServiceRegistry FromEntryAssembly(ServiceRegistry serviceRegistry = null)
+        {
+            WebServiceRegistry webServiceRegistry = new WebServiceRegistry();
+            foreach (Type type in Assembly.GetEntryAssembly()
+                .GetTypes()
+                .Where(type => type.HasCustomAttributeOfType(out ProxyAttribute proxyAttribute)).ToArray())
+            {
+                if (serviceRegistry != null)
+                {
+                    webServiceRegistry.Set(type, serviceRegistry.Get(type));
+                }
+                else
+                {
+                    webServiceRegistry.Set(type, type.Construct());
+                }
+            }
+            return webServiceRegistry;
         }
 
         public static WebServiceRegistry FromRegistry(ServiceRegistry registry)

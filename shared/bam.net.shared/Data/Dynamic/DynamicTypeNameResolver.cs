@@ -31,6 +31,15 @@ namespace Bam.Net.Data.Dynamic
             return resolver.ResolveYamlTypeNames(yaml);
         }
 
+        /// <summary>
+        /// Resolves the name of the type for the specified json by first checking for a value
+        /// in any of the properties specified by typeNameProperties.  If the specified json 
+        /// doesn't have any of the specified properties, the Sha256 hash of the comma concatenated list of
+        /// property descriptors is returned.
+        /// </summary>
+        /// <param name="json">The json.</param>
+        /// <param name="typeNameProperties">The type name properties.</param>
+        /// <returns></returns>
         public static string ResolveJsonTypeName(string json, params string[] typeNameProperties)
         {
             DynamicTypeNameResolver resolver = new DynamicTypeNameResolver();
