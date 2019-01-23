@@ -20,6 +20,7 @@
     <Folder Include="AppData\xml\" />
     <Folder Include="AppData\txt\" />
     <Folder Include="Models\Rest\" />
+    <Folder Include="wwwroot\handlebars\" />
   </ItemGroup>
 
   <ItemGroup>

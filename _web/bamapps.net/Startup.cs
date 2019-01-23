@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Bam.Net.Services;
 using Bam.Net.CoreServices;
 using Bam.Net.Configuration;
+using Bam.Net.Presentation;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Web
 {
@@ -36,13 +38,15 @@ namespace Bam.Net.Web
                 // Configure the Bam appRegistry here
                 appRegistry
                     .For<IConfiguration>().Use(Configuration)
-                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));
-                    
+                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));                    
 
                 appRegistry
                     .RegisterAppModules();
 
                 appRegistry
+                    .For<IViewModelProvider>().Use<DefaultViewModelProvider>()
+                    .For<IPersistenceModelProvider>().Use<DefaultPersistenceModelProvider>()
+                    .For<IExecutionRequestResolver>().Use<ExecutionRequestResolver>()
                     .For<WebServiceRegistry>().Use(WebServiceRegistry.ForCurrentApplication(appRegistry));
 
                 appRegistry.AddServices(services);

@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using Bam.Net.Presentation.Handlebars;
 using Bam.Net.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,14 @@ namespace Bam.Net.Presentation
         public ApplicationModel ApplicationModel { get; set; }
 
         public IHostingEnvironment HostingEnvironment { get; set; }
+
+        public HandlebarsDirectory HandlebarsDirectory
+        {
+            get
+            {
+                return new HandlebarsDirectory(Path.Combine(HostingEnvironment.ContentRootPath, "wwwroot", "handlebars"));
+            }
+        }
 
         protected List<string> ExtensionsToLoad
         {

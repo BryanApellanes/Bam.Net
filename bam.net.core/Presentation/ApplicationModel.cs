@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Presentation
 {
+    [Singleton]
     public class ApplicationModel
     {
         public ApplicationModel(ApplicationServiceRegistry applicationServiceRegistry)
         {
             ApplicationServiceRegistry = applicationServiceRegistry;
-            WebServiceRegistry = WebServiceRegistry.FromRegistry(ApplicationServiceRegistry);
+            WebServiceRegistry = applicationServiceRegistry.Get<WebServiceRegistry>();
             ApplicationName = ApplicationServiceRegistry.Get<IApplicationNameProvider>().GetApplicationName();
             ApplicationServiceRegistry.SetInjectionProperties(this);
         }

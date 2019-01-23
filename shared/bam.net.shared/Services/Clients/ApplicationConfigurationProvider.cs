@@ -5,6 +5,7 @@ using Bam.Net.CoreServices;
 using Bam.Net.Services.Clients;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Clients
 {
@@ -53,20 +54,28 @@ namespace Bam.Net.Services.Clients
             return CoreClient.ConfigurationService.GetConfiguration(ApplicationName, Machine.Current.Name, configurationName);
         }
 
+        bool _defaultConfigurationSaved;
         protected void SaveDefaultConfiguration()
         {
-            string appNameKey = "ApplicationName";
-            NameValueCollection defaultConfig = DefaultConfiguration.GetAppSettings();
-            string appName = DefaultConfiguration.GetAppSetting(appNameKey, "UNKNOWN");
-            Dictionary<string, string> settings = new Dictionary<string, string>();
-            foreach (string key in defaultConfig.AllKeys)
+            if (!_defaultConfigurationSaved)
             {
-                if (!key.Equals(appNameKey))
+                _defaultConfigurationSaved = true;
+                Task.Run(() =>
                 {
-                    settings.Add(key, defaultConfig[key]);
-                }
+                    string appNameKey = "ApplicationName";
+                    NameValueCollection defaultConfig = DefaultConfiguration.GetAppSettings();
+                    string appName = DefaultConfiguration.GetAppSetting(appNameKey, "UNKNOWN");
+                    Dictionary<string, string> settings = new Dictionary<string, string>();
+                    foreach (string key in defaultConfig.AllKeys)
+                    {
+                        if (!key.Equals(appNameKey))
+                        {
+                            settings.Add(key, defaultConfig[key]);
+                        }
+                    }
+                    SetApplicationConfiguration(appName, settings, "Default");
+                });
             }
-            SetApplicationConfiguration(appName, settings, "Default");
         }
 
         /// <summary>

@@ -41,7 +41,8 @@ namespace Bam.Net.Services
             appRegistry
                 .For<IApplicationNameProvider>().Use<DefaultConfigurationApplicationNameProvider>()
                 .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>()
-                .For<ApplicationModel>().Use(() => new ApplicationModel(appRegistry));
+                .For<ApplicationServiceRegistry>().Use(appRegistry)
+                .For<ApplicationModel>().Use<ApplicationModel>();
 
             configure(appRegistry);
             appRegistry.CoreClient = appRegistry.Get<CoreClient>();
