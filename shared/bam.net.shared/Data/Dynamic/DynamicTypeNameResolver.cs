@@ -52,12 +52,23 @@ namespace Bam.Net.Data.Dynamic
 
         public string ResolveJsonTypeName(string json)
         {
+            return ResolveJsonTypeName(json, out bool ignore);
+        }
+
+        public string ResolveJsonTypeName(string json, out bool isDefault)
+        {
             JObject jobject = (JObject)JsonConvert.DeserializeObject(json);
-            return ResolveTypeName(jobject);
+            return ResolveTypeName(jobject, out isDefault);
         }
 
         public string ResolveTypeName(JObject jobject)
         {
+            return ResolveTypeName(jobject, out bool ignore);
+        }
+
+        public string ResolveTypeName(JObject jobject, out bool isDefault)
+        {
+            isDefault = false;
             if(jobject.Type != JTokenType.Object)
             {
                 return jobject.Type.ToString();
@@ -70,7 +81,9 @@ namespace Bam.Net.Data.Dynamic
                 }
             }
 
-            return string.Join(",", GetPropertyDescriptors(jobject).Select(pd => pd.ToString()).ToArray()).Sha256();
+            string defaultTypeName = string.Join(",", GetPropertyDescriptors(jobject).Select(pd => pd.ToString()).ToArray()).Sha256();
+            isDefault = true;
+            return defaultTypeName;
         }
         
         public string[] ResolveYamlTypeNames(string yaml)

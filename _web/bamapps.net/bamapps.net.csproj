@@ -17,9 +17,11 @@
 
   <ItemGroup>
     <Folder Include="AppData\csv\" />
+    <Folder Include="AppData\cs\" />
+    <Folder Include="AppData\_gen\" />
     <Folder Include="AppData\xml\" />
     <Folder Include="AppData\txt\" />
-    <Folder Include="Models\Rest\" />
+    <Folder Include="AppModules\WebServices\Rest\" />
     <Folder Include="wwwroot\handlebars\" />
   </ItemGroup>
 

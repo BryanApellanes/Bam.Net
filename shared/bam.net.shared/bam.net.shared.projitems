@@ -413,6 +413,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\IDynamicTypeNameResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SourcedConfigurationSetting.cs" />
@@ -1588,17 +1589,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Js\DataSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ICompiledTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IPersistenceModelProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ITemplateManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IViewModelProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\LayoutModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\IDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\PipeTableDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\OAuthSetting.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\PersistenceModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Profiguration\AppSettings.cs" />

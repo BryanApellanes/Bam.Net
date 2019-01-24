@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Yaml;
 
 namespace Bam.Net.Data.Dynamic
 {
@@ -21,7 +22,7 @@ namespace Bam.Net.Data.Dynamic
     /// </summary>
     public class DynamicTypeManager: Loggable
     {
-        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataDirectoryProvider settings) 
+        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings) 
         {
             DataSettings = settings;
             JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager));
@@ -38,11 +39,34 @@ namespace Bam.Net.Data.Dynamic
                     ProcessJsonFile(df.TypeName, df.FileInfo);
                 }
             };
+            YamlFileProcessor = new BackgroundThreadQueue<DataFile>()
+            {
+                Process = (df) =>
+                {
+                    ProcessYamlFile(df.FileInfo);
+                }
+            };
         }
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+        public IDataDirectoryProvider DataSettings { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
+        public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
+
+        public void SaveYaml(string yaml)
+        {
+            YamlNode[] yamlNodes = YamlNode.FromYaml(yaml);
+            foreach(YamlNode yamlNode in yamlNodes)
+            {
+                SaveJson(yamlNode.ToString());
+            }
+        }
+
+        public void SaveJson(string json)
+        {
+            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
+            SaveJson(typeNameResolver.ResolveJsonTypeName(json), json);
+        }
 
         public void SaveJson(string typeName, string json)
         {
@@ -167,11 +191,27 @@ namespace Bam.Net.Data.Dynamic
             return jsonPropertyName.PascalCase(true, new string[] { " ", "_" });
         }
 
+        protected void ProcessYamlFile(FileInfo yamlFile, string nameSpace = null)
+        {
+            string yaml = yamlFile.ReadAllText();
+            string rootHash = yaml.Sha256();
+            DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = yamlFile.Name, Content = yaml, ContentHash = rootHash });
+            YamlNode[] yamlNodes = YamlNode.FromYaml(yaml);
+            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
+            foreach(YamlNode yamlNode in yamlNodes)
+            {
+                string json = yamlNode.ToString();
+                JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
+                Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
+                SaveRootData(rootHash, typeNameResolver.ResolveJsonTypeName(json), valueDictionary, nameSpace);
+            }
+        }
+
         protected void ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
         {
             // read the json
             string json = jsonFile.ReadAllText();
-            string rootHash = json.Sha1();
+            string rootHash = json.Sha256();
             DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = jsonFile.Name, Content = json, ContentHash = rootHash });
             JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
             Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();

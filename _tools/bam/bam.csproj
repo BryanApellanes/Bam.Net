@@ -58,43 +58,38 @@
     <Compile Include="LocalUserAdministrationActions.cs" />
     <Compile Include="RemoteRegistrationActions.cs" />
     <Compile Include="ServiceTools.cs" />
-    <None Include="Templates\PageCshtml.hbs">
+    <None Include="Templates\Page.cshtml.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\PageCodeBehind.hbs">
+    <None Include="Templates\Page.cshtml.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="UserInfo.cs" />
-    <Compile Include="WebActions.cs" />
+    <Compile Include="NetCoreActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Templates\AppModule.hbs">
+    <None Include="Templates\AppModule.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\PageJs.hbs">
+    <None Include="Templates\Page.js.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ScopedAppModule.hbs">
+    <None Include="Templates\Program.cs.hbs" />
+    <None Include="Templates\ScopedAppModule.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\SingletonAppModule.hbs">
+    <None Include="Templates\SingletonAppModule.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Startup.hbs">
+    <None Include="Templates\Startup.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\TransientAppModule.hbs">
+    <None Include="Templates\TransientAppModule.cs.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\V1cshtml_cs.hbs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\V1cshtml.hbs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\WebpackConfig.hbs">
+    <None Include="Templates\Webpack.config.js.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -103,6 +98,11 @@
       <Project>{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}</Project>
       <Name>bam.net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Test.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

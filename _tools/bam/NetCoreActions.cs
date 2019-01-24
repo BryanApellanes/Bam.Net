@@ -11,11 +11,14 @@ using System.Threading.Tasks;
 using Bam.Net.Automation.MSBuild;
 using Bam.Net.Presentation.Handlebars;
 using System.Yaml;
+using System.Threading;
+using System.Reflection;
+using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Application
 {
     [Serializable]
-    public class WebActions : CommandLineTestInterface
+    public class NetCoreActions : CommandLineTestInterface
     {
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
@@ -25,10 +28,13 @@ namespace Bam.Net.Application
             // - clone bam.js into wwwroot/bam.js
             // - add Pages/Api/V1.cshtml
             // - add Pages/Api/V1.cshtml.cs
+            Console.WriteLine("yo");
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
             if(csprojFile == null)
             {
                 OutLine("Can't find csproj file", ConsoleColor.Magenta);
+                
+                Thread.Sleep(3000);
                 Exit(1);
             }
             DirectoryInfo wwwroot = new DirectoryInfo(Path.Combine(projectParent.FullName, "wwwroot"));
@@ -46,8 +52,7 @@ namespace Bam.Net.Application
             }
 
             WriteStartupCs(csprojFile);
-            WriteBaseAppModules(csprojFile);
-            WriteApiPage(csprojFile);            
+            WriteBaseAppModules(csprojFile);          
         }
 
         [ConsoleAction("addPage", "Add a page to the current BamFramework project")]
@@ -117,28 +122,22 @@ namespace Bam.Net.Application
             Environment.CurrentDirectory = startDir;
         }
 
-        private void WriteApiPage(FileInfo csprojFile)
+        [ConsoleAction("gen")]
+        public void GenerateDataModels()
         {
-            DirectoryInfo projectParent = csprojFile.Directory;
-            string appName = Path.GetFileNameWithoutExtension(csprojFile.Name);
-            string pageName = "Api/V1";
-            DirectoryInfo pagesDirectory = new DirectoryInfo(Path.Combine(projectParent.FullName, "Pages"));
-            PageRenderModel pageRenderModel = new PageRenderModel { BaseNamespace = $"{appName}", PageName = pageName };
-            HandlebarsDirectory handlebarsDirectory = new HandlebarsDirectory(Path.Combine(projectParent.FullName, "Templates"));
-
-            string csHtmlFilePath = Path.Combine(pagesDirectory.FullName, $"{pageName}.cshtml");
-            if (!File.Exists(csHtmlFilePath))
+            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
+            DirectoryInfo dir = new DirectoryInfo(Path.Combine(".", "AppData", "json"));
+            if (!dir.Exists)
             {
-                EnsureDirectoryExists(csHtmlFilePath);
-                string pageContent = handlebarsDirectory.Render("V1cshtml", pageRenderModel);
-                pageContent.SafeWriteToFile(csHtmlFilePath, true);
+                OutLineFormat("{0} folder doesn't exist", dir.FullName);
             }
-            string csHtmlcsFilePath = $"{csHtmlFilePath}.cs";
-            if (!File.Exists(csHtmlcsFilePath))
+            foreach(FileInfo jsonFile in dir.GetFiles("*.json"))
             {
-                EnsureDirectoryExists(csHtmlcsFilePath);
-                string codeBehindContent = handlebarsDirectory.Render("V1cshtml_cs", pageRenderModel);
-                codeBehindContent.SafeWriteToFile(csHtmlcsFilePath, true);
+                string typeName = typeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText(), out bool isDefault);
+                if (isDefault)
+                {
+                    OutLineFormat("Unable to determine type name for json file {0}, using default {1}", ConsoleColor.Yellow, jsonFile.FullName, typeName);
+                }
             }
         }
 
@@ -149,13 +148,13 @@ namespace Bam.Net.Application
             DirectoryInfo pagesDirectory = new DirectoryInfo(Path.Combine(projectParent.FullName, "Pages"));
             PageRenderModel pageRenderModel = new PageRenderModel { BaseNamespace = $"{appName}", PageName = pageName };
 
-            HandlebarsDirectory handlebarsDirectory = new HandlebarsDirectory(Path.Combine(projectParent.FullName, "Templates"));
+            HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
 
             string csHtmlFilePath = Path.Combine(pagesDirectory.FullName, $"{pageName}.cshtml");            
             if (!File.Exists(csHtmlFilePath))
             {
                 EnsureDirectoryExists(csHtmlFilePath);
-                string pageContent = handlebarsDirectory.Render("PageCshtml", pageRenderModel);
+                string pageContent = handlebarsDirectory.Render("Page.cshtml", pageRenderModel);
                 pageContent.SafeWriteToFile(csHtmlFilePath, true);
             }
 
@@ -163,7 +162,7 @@ namespace Bam.Net.Application
             if (!File.Exists(csHtmlcsFilePath))
             {
                 EnsureDirectoryExists(csHtmlcsFilePath);
-                string codeBehindContent = handlebarsDirectory.Render("PageCodeBehind", pageRenderModel);
+                string codeBehindContent = handlebarsDirectory.Render("Page.cshtml.cs", pageRenderModel);
                 codeBehindContent.SafeWriteToFile(csHtmlcsFilePath, true);
             }
 
@@ -191,7 +190,7 @@ namespace Bam.Net.Application
             }
             PageRenderModel pageRenderModel = new PageRenderModel { BaseNamespace = $"{appName}", PageName = pageName, WwwRoot = wwwrootPath };
 
-            HandlebarsDirectory handlebarsDirectory = new HandlebarsDirectory(Path.Combine(projectParent.FullName, "Templates"));
+            HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
             string pageJsPath = Path.Combine(wwwroot.FullName, "bam.js", "pages", $"{pageName}.js");
             string webPackConfigPath = Path.Combine(wwwroot.FullName, "bam.js", "configs", pageName, "webpack.config.js");
             if (!File.Exists(pageJsPath))
@@ -208,13 +207,17 @@ namespace Bam.Net.Application
         {
             DirectoryInfo projectParent = csprojFile.Directory;
             DirectoryInfo appModules = new DirectoryInfo(Path.Combine(projectParent.FullName, "AppModules"));
-            HandlebarsDirectory handlebarsDirectory = new HandlebarsDirectory(Path.Combine(projectParent.FullName, "Templates"));
+            HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
             string appName = Path.GetFileNameWithoutExtension(csprojFile.Name);
 
             AppModuleRenderModel model = new AppModuleRenderModel { BaseNamespace = $"{appName}", AppModuleName = appName };
             foreach(string moduleType in new string[] { "AppModule", "ScopedAppModule", "SingletonAppModule", "TransientAppModule" })
             {
-                string moduleContent = handlebarsDirectory.Render(moduleType, model);
+                string moduleContent = handlebarsDirectory.Render($"{moduleType}.cs", model);
+                if (string.IsNullOrEmpty(moduleContent))
+                {
+                    OutLineFormat("{0}: Template for {1} is empty", handlebarsDirectory.Directory.FullName, moduleType);
+                }
                 string filePath = Path.Combine(appModules.FullName, $"{appName}{moduleType}.cs");
                 if (!File.Exists(filePath))
                 {
@@ -234,8 +237,15 @@ namespace Bam.Net.Application
                 File.Move(startupCs.FullName, moveTo);
                 OutLineFormat("Moved existing Startup.cs file to {0}", ConsoleColor.Yellow, moveTo);
             }
-            HandlebarsDirectory handlebarsDirectory = new HandlebarsDirectory(Path.Combine(projectParent.FullName, "Templates"));
-            handlebarsDirectory.Render("Startup", new { BaseNamespace = Path.GetFileNameWithoutExtension(csprojFile.Name) }).SafeWriteToFile(startupCs.FullName, true);
+
+            HandlebarsDirectory handlebarsDirectory = GetHandlebarsDirectory();
+            handlebarsDirectory.Render("Startup.cs", new { BaseNamespace = Path.GetFileNameWithoutExtension(csprojFile.Name) }).SafeWriteToFile(startupCs.FullName, true);
+        }
+
+        private HandlebarsDirectory GetHandlebarsDirectory()
+        {
+            DirectoryInfo bamDir = Assembly.GetExecutingAssembly().GetFileInfo().Directory;
+            return new HandlebarsDirectory(Path.Combine(bamDir.FullName, "Templates"));
         }
 
         private DirectoryInfo FindProjectParent(out FileInfo csprojFile)
