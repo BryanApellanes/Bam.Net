@@ -50,6 +50,7 @@ namespace Bam.Net.Data.Dynamic
         public IDataDirectoryProvider DataSettings { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
+        public DirectoryInfo YamlDirectory { get; set; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
         public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
 
