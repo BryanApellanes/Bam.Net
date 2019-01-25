@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4DD891BD-EA30-42C2-83ED-8A5259135237}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>daoref.fx</RootNamespace>
+    <AssemblyName>daoref.fx</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DaoRefContext.cs" />
+    <Compile Include="DaoReferenceObject.cs" />
+    <Compile Include="DaoReferenceObjectCollection.cs" />
+    <Compile Include="DaoReferenceObjectColumns.cs" />
+    <Compile Include="DaoReferenceObjectPagedQuery.cs" />
+    <Compile Include="DaoReferenceObjectQuery.cs" />
+    <Compile Include="DaoReferenceObjectWithForeignKey.cs" />
+    <Compile Include="DaoReferenceObjectWithForeignKeyCollection.cs" />
+    <Compile Include="DaoReferenceObjectWithForeignKeyColumns.cs" />
+    <Compile Include="DaoReferenceObjectWithForeignKeyPagedQuery.cs" />
+    <Compile Include="DaoReferenceObjectWithForeignKeyQuery.cs" />
+    <Compile Include="Left.cs" />
+    <Compile Include="LeftCollection.cs" />
+    <Compile Include="LeftColumns.cs" />
+    <Compile Include="LeftPagedQuery.cs" />
+    <Compile Include="LeftQuery.cs" />
+    <Compile Include="LeftRight.cs" />
+    <Compile Include="LeftRightCollection.cs" />
+    <Compile Include="LeftRightColumns.cs" />
+    <Compile Include="LeftRightPagedQuery.cs" />
+    <Compile Include="LeftRightQuery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Right.cs" />
+    <Compile Include="RightCollection.cs" />
+    <Compile Include="RightColumns.cs" />
+    <Compile Include="RightPagedQuery.cs" />
+    <Compile Include="RightQuery.cs" />
+    <Compile Include="TestFkTable.cs" />
+    <Compile Include="TestFkTableCollection.cs" />
+    <Compile Include="TestFkTableColumns.cs" />
+    <Compile Include="TestFkTablePagedQuery.cs" />
+    <Compile Include="TestFkTableQuery.cs" />
+    <Compile Include="TestTable.cs" />
+    <Compile Include="TestTableCollection.cs" />
+    <Compile Include="TestTableColumns.cs" />
+    <Compile Include="TestTablePagedQuery.cs" />
+    <Compile Include="TestTableQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bam.net\bam.net.csproj">
+      <Project>{8ac4e2b4-0f3b-4a65-a097-5816ef6ea263}</Project>
+      <Name>bam.net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
