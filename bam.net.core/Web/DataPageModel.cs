@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CoreServices;
+using Bam.Net.Presentation;
 using Bam.Net.Services;
 using Bam.Net.Services.Clients;
 using Microsoft.AspNetCore.Hosting;
@@ -11,16 +12,16 @@ using System.Text;
 
 namespace Bam.Net.Web
 {
-    public class BamPageModel : PageModel
+    public class DataPageModel : BamPageModel
     {
         public const string AppDataFolder = "AppData";
 
-        public BamPageModel(ApplicationServiceRegistry serviceRegistry, IHostingEnvironment hostingEnvironment) : 
-            this(serviceRegistry, hostingEnvironment, "json", "yaml")
+        public DataPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel serviceRegistry) : 
+            this(hostingEnvironment, serviceRegistry, "json", "yaml")
         {
         }
 
-        public BamPageModel(ApplicationServiceRegistry serviceRegistry, IHostingEnvironment hostingEnvironment, params string[] extensionsToLoad)
+        public DataPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel, params string[] extensionsToLoad) : base(hostingEnvironment, appModel)
         {
             HostingEnvironment = hostingEnvironment;
             ExtensionsToLoad = new List<string>();
@@ -28,14 +29,30 @@ namespace Bam.Net.Web
             Files = new Dictionary<string, string>();
             JsonFiles = new Dictionary<string, string>();
             YamlFiles = new Dictionary<string, string>();
-            CoreClient = new CoreClient();
             SetFileContents();
             SetFileContents(JsonFiles, "json");
             SetFileContents(YamlFiles, "yaml");
         }
 
+
         public virtual ActionResult OnGet()
         {
+            foreach (string extension in ExtensionsToLoad)
+            {
+                SetFileContents(Files, extension);
+            }
+            if (ExtensionsToLoad.Contains("json"))
+            {
+                SetFileContents(JsonFiles, "json");
+            }
+            if (ExtensionsToLoad.Contains("yaml"))
+            {
+                SetFileContents(YamlFiles, "yaml");
+            }
+            if (ExtensionsToLoad.Contains("csv"))
+            {
+                SetFileContents(CsvFiles, "csv");
+            }
             return Page();
         }
 
@@ -44,10 +61,14 @@ namespace Bam.Net.Web
             get;
             set;
         }
-
-        public CoreClient CoreClient { get; }
-
+        
         public Dictionary<string, string> Files
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, string> CsvFiles
         {
             get;
             set;
@@ -64,13 +85,7 @@ namespace Bam.Net.Web
             get;
             set;
         }
-        
-        
-
-        public IHostingEnvironment HostingEnvironment { get; set; }
-
-        public string Message { get; set; }
-
+                
         private void SetFileContents()
         {
             SetFileContents(Files, "json");

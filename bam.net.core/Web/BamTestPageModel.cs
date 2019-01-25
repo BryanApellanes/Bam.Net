@@ -1,4 +1,5 @@
-﻿using Bam.Net.Services;
+﻿using Bam.Net.Presentation;
+using Bam.Net.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,10 +9,10 @@ using System.Text;
 
 namespace Bam.Net.Web
 {
-    public class BamTestPageModel: BamPageModel
+    public class BamTestPageModel: DataPageModel
     {
-        public BamTestPageModel(ApplicationServiceRegistry applicationRegistry, IHostingEnvironment hostingEnvironment, string[] testFileNames)
-            : base(applicationRegistry, hostingEnvironment, "json", "yaml", "txt", "js")
+        public BamTestPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel, string[] testFileNames)
+            : base(hostingEnvironment, appModel, "json", "yaml", "txt", "js")
         {
             TestFileNames = new List<string>(testFileNames);
         }

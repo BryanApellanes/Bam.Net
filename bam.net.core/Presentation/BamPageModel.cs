@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Bam.Net.Presentation.Handlebars;
 using Bam.Net.Services;
+using Bam.Net.Services.Clients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,23 +19,14 @@ namespace Bam.Net.Presentation
 
         public BamPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel applicationModel, params string[] extensionsToLoad)
         {
+            CoreClient = new CoreClient();
             ApplicationModel = applicationModel;
-            HostingEnvironment = hostingEnvironment;
-            ExtensionsToLoad = new List<string>();
-            ExtensionsToLoad.AddRange(extensionsToLoad);
-            Files = new Dictionary<string, string>();
-            JsonFiles = new Dictionary<string, string>();
-            YamlFiles = new Dictionary<string, string>();
-            CsvFiles = new Dictionary<string, string>();
-            TestFileNames = new List<string>();
-        }
-
-        public BamPageModel(IHostingEnvironment hostingEnvironment, ApplicationModel applicationModel, string[] testFileNames, params string[] extensionsToLoad): this(hostingEnvironment, applicationModel, extensionsToLoad)
-        {
-            TestFileNames.AddRange(testFileNames);
+            HostingEnvironment = hostingEnvironment;            
         }
         
         public string Message { get; set; }
+
+        public CoreClient CoreClient { get; }
 
         public ApplicationModel ApplicationModel { get; set; }
 
@@ -48,64 +40,12 @@ namespace Bam.Net.Presentation
             }
         }
 
-        protected List<string> ExtensionsToLoad
-        {
-            get;
-            set;
-        }
-
-        public Dictionary<string, string> Files
-        {
-            get;
-            set;
-        }
-
-        public Dictionary<string, string> JsonFiles
-        {
-            get;
-            set;
-        }
-
-        public Dictionary<string, string> YamlFiles
-        {
-            get;
-            set;
-        }
-
-        public Dictionary<string, string> CsvFiles
-        {
-            get;
-            set;
-        }
-
-        public List<string> TestFileNames
-        {
-            get;
-            set;
-        }
-
         public virtual ActionResult OnGet()
         {
-            foreach(string extension in ExtensionsToLoad)
-            {
-                SetFileContents(Files, extension);
-            }
-            if(ExtensionsToLoad.Contains("json"))
-            {
-                SetFileContents(JsonFiles, "json");
-            }
-            if(ExtensionsToLoad.Contains("yaml"))
-            {
-                SetFileContents(YamlFiles, "yaml");
-            }
-            if(ExtensionsToLoad.Contains("csv"))
-            {
-                SetFileContents(CsvFiles, "csv");
-            }
             return Page();
         }
 
-        private void SetFileContents(Dictionary<string, string> container, string fileType)
+        protected void SetFileContents(Dictionary<string, string> container, string fileType)
         {
             container.Clear();
             DirectoryInfo dataDir = new DirectoryInfo(Path.Combine(HostingEnvironment.ContentRootPath, "AppData"));

@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using Bam.Net.Services;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Web.Pages.Admin
 {
     public class TestsModel : BamTestPageModel
     {
-        public TestsModel(ApplicationServiceRegistry applicationRegistry, IHostingEnvironment hostingEnvironment): base(applicationRegistry, hostingEnvironment, new string[] { "basetests/base-tests", "basetests/another" })
+        public TestsModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel) : base(hostingEnvironment, appModel, new string[] { "basetests/base-tests", "basetests/another" })
         {
 
         }
