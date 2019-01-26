@@ -58,18 +58,18 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("DataInstancePropertyValue_DataInstanceId", new DataInstancePropertyValueCollection(Database.GetQuery<DataInstancePropertyValueColumns, DataInstancePropertyValue>((c) => c.DataInstanceId == GetLongValue("Id")), this, "DataInstanceId"));				
+				this.ChildCollections.Add("DataInstancePropertyValue_DataInstanceId", new DataInstancePropertyValueCollection(Database.GetQuery<DataInstancePropertyValueColumns, DataInstancePropertyValue>((c) => c.DataInstanceId == GetULongValue("Id")), this, "DataInstanceId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -327,12 +327,22 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			});			
 		}
 
+		public static DataInstance GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DataInstance GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DataInstance GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DataInstance GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
@@ -454,6 +464,28 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			WhereDelegate<DataInstanceColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstanceColumns> where, Database database = null)
+		{
+			SetOneWhere(where, out DataInstance ignore, database);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstanceColumns> where, out DataInstance result, Database database = null)
+		{
+			result = GetOneWhere(where, database);
 		}
 
 		/// <summary>

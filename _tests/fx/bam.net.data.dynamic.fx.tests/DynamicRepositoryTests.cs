@@ -158,7 +158,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             AutoResetEvent wait = new AutoResetEvent(false);
             string json = "\\\\core\\data\\events\\github\\04feeb057e9eba4a6ace6413af475f819b54ad0c.json".SafeReadFile();
             DynamicTypeManager typeManager = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Instance);
-            typeManager.SaveJson("GitHubEvent", json);
+            typeManager.ProcessJson("GitHubEvent", json);
             typeManager.JsonFileProcessor.QueueEmptied += (s, a) => wait.Set();
             OutLine(typeManager.DynamicTypeDataRepository.Database.ConnectionString);            
             wait.WaitOne();

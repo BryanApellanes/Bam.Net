@@ -12,7 +12,8 @@ namespace Bam.Net.Web.Pages.Docs
 {
     public class AccessControlModel : DataPageModel
     {
-        public AccessControlModel(IHostingEnvironment hostingEnvironment, ApplicationModel serviceRegistry) : base(hostingEnvironment, serviceRegistry)
+        public AccessControlModel(IHostingEnvironment hostingEnvironment, ApplicationModel appModel) : 
+            base(hostingEnvironment, appModel)
         {
         }
     }

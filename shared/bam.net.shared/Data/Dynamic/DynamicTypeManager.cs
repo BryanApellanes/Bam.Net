@@ -12,7 +12,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Yaml;
+using YamlDotNet.Serialization;
 
 namespace Bam.Net.Data.Dynamic
 {
@@ -22,15 +24,25 @@ namespace Bam.Net.Data.Dynamic
     /// </summary>
     public class DynamicTypeManager: Loggable
     {
+        public DynamicTypeManager() : this(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Current)
+        { }
+
         public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings) 
         {
             DataSettings = settings;
-            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager));
+            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "json");
             if (!JsonDirectory.Exists)
             {
                 JsonDirectory.Create();
             }
+            YamlDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "yaml");
+            if (!YamlDirectory.Exists)
+            {
+                YamlDirectory.Create();
+            }
+            
             descriptorRepository.EnsureDaoAssemblyAndSchema();
+            DynamicTypeNameResolver = new DynamicTypeNameResolver();
             DynamicTypeDataRepository = descriptorRepository;
             JsonFileProcessor = new BackgroundThreadQueue<DataFile>()
             {
@@ -47,33 +59,73 @@ namespace Bam.Net.Data.Dynamic
                 }
             };
         }
+
         public IDataDirectoryProvider DataSettings { get; set; }
+        public DynamicTypeNameResolver DynamicTypeNameResolver { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
         public DirectoryInfo YamlDirectory { get; set; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
         public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
 
-        public void SaveYaml(string yaml)
+        public Assembly Generate(DirectoryInfo appData, string nameSpace = null)
         {
-            YamlNode[] yamlNodes = YamlNode.FromYaml(yaml);
-            foreach(YamlNode yamlNode in yamlNodes)
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            bool jsonEmptied = false;
+            bool yamlEmptied = false;
+            JsonFileProcessor.QueueEmptied += (o, e) =>
             {
-                SaveJson(yamlNode.ToString());
+                jsonEmptied = true;
+                if (yamlEmptied)
+                {
+                    blocker.Set();
+                }
+            };
+            YamlFileProcessor.QueueEmptied += (o, e) =>
+            {
+                yamlEmptied = true;
+                if (jsonEmptied)
+                {
+                    blocker.Set();
+                }
+            };
+            DirectoryInfo jsonDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "json"));
+            foreach(FileInfo jsonFile in jsonDirectory.GetFiles("*.json"))
+            {
+                ProcessJson(File.ReadAllText(jsonFile.FullName));
             }
+            DirectoryInfo yamlDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "yaml"));
+            foreach (FileInfo yamlFile in yamlDirectory.GetFiles("*.yaml"))
+            {
+                ProcessYaml(File.ReadAllText(yamlFile.FullName));
+            }
+
+            blocker.WaitOne();
+            return GetAssembly(nameSpace);
         }
 
-        public void SaveJson(string json)
+        public void ProcessYaml(string yaml)
         {
-            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
-            SaveJson(typeNameResolver.ResolveJsonTypeName(json), json);
+            ProcessYaml(DynamicTypeNameResolver.ResolveYamlTypeName(yaml), yaml);
         }
 
-        public void SaveJson(string typeName, string json)
+        public void ProcessJson(string json)
         {
-            string filePath = Path.Combine(JsonDirectory.FullName, $"{json.Sha1()}.json").GetNextFileName();
+            ProcessJson(DynamicTypeNameResolver.ResolveJsonTypeName(json), json);
+        }
+
+        public void ProcessJson(string typeName, string json)
+        {
+            string filePath = Path.Combine(JsonDirectory.FullName, $"{json.Sha512()}.json").GetNextFileName();
             json.SafeWriteToFile(filePath);
             JsonFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
+        }
+
+        public void ProcessYaml(string typeName, string yaml)
+        {
+            string filePath = Path.Combine(YamlDirectory.FullName, $"{yaml.Sha512()}.yaml").GetNextFileName();
+            yaml.SafeWriteToFile(filePath);
+            YamlFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
         }
 
         public DynamicTypeDescriptor AddType(string typeName, string nameSpace = null)
@@ -144,7 +196,7 @@ namespace Bam.Net.Data.Dynamic
         {
             List<DynamicTypeDescriptor> types = new List<DynamicTypeDescriptor>();
             DynamicNamespaceDescriptor ns = null;
-            if(nameSpace != null)
+            if(!string.IsNullOrEmpty(nameSpace))
             {
                 ns = GetNamespaceDescriptor(nameSpace);
             }
@@ -197,15 +249,11 @@ namespace Bam.Net.Data.Dynamic
             string yaml = yamlFile.ReadAllText();
             string rootHash = yaml.Sha256();
             DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = yamlFile.Name, Content = yaml, ContentHash = rootHash });
-            YamlNode[] yamlNodes = YamlNode.FromYaml(yaml);
-            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
-            foreach(YamlNode yamlNode in yamlNodes)
-            {
-                string json = yamlNode.ToString();
-                JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
-                Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
-                SaveRootData(rootHash, typeNameResolver.ResolveJsonTypeName(json), valueDictionary, nameSpace);
-            }
+            string json = yaml.YamlToJson();
+            
+            JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
+            Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
+            SaveRootData(rootHash, DynamicTypeNameResolver.ResolveJsonTypeName(json), valueDictionary, nameSpace);
         }
 
         protected void ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
@@ -288,10 +336,12 @@ namespace Bam.Net.Data.Dynamic
 
             return DynamicTypeDataRepository.Retrieve<DynamicTypeDescriptor>(descriptor.Id);
         }
+
         protected DataInstance SaveDataInstance(string rootHash, string typeName, Dictionary<object, object> valueDictionary)
         {
             return SaveDataInstance(rootHash, rootHash, typeName, valueDictionary);
         }
+
         static Dictionary<string, object> _parentLocks = new Dictionary<string, object>();
         protected DataInstance SaveDataInstance(string rootHash, string parentHash, string typeName, Dictionary<object, object> valueDictionary)
         {
@@ -402,7 +452,7 @@ namespace Bam.Net.Data.Dynamic
             {
                 nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
                 DynamicNamespaceDescriptor nspace = DynamicTypeDataRepository.Query<DynamicNamespaceDescriptor>(ns => ns.Namespace == nameSpace).FirstOrDefault();
-                if (nspace == null)
+                if (nspace == null || nspace.Id <= 0)
                 {
                     nspace = new DynamicNamespaceDescriptor()
                     {

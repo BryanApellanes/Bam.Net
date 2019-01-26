@@ -61,11 +61,11 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -197,11 +197,11 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="DataInstance",
 		Suffix="1")]
-	public long? DataInstanceId
+	public ulong? DataInstanceId
 	{
 		get
 		{
-			return GetLongValue("DataInstanceId");
+			return GetULongValue("DataInstanceId");
 		}
 		set
 		{
@@ -348,12 +348,22 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			});			
 		}
 
+		public static DataInstancePropertyValue GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DataInstancePropertyValue GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DataInstancePropertyValue GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DataInstancePropertyValue GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
@@ -475,6 +485,28 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			WhereDelegate<DataInstancePropertyValueColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstancePropertyValueColumns> where, Database database = null)
+		{
+			SetOneWhere(where, out DataInstancePropertyValue ignore, database);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstancePropertyValueColumns> where, out DataInstancePropertyValue result, Database database = null)
+		{
+			result = GetOneWhere(where, database);
 		}
 
 		/// <summary>

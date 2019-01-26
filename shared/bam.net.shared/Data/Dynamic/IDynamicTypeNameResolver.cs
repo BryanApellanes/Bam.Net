@@ -9,8 +9,7 @@ namespace Bam.Net.Data.Dynamic
     public interface IDynamicTypeNameResolver
     {
         string ResolveJsonTypeName(string json);
-        string[] ResolveYamlTypeNames(string yaml);
+        string ResolveYamlTypeName(string yaml);
         string ResolveTypeName(JObject jobject);
-        string ResolveTypeName(YamlNode yaml);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Logging;
+using Bam.Net.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,11 @@ namespace Bam.Net.Configuration
 
         public IConfiguration NetCoreConfiguration { get; set; }
         public NameValueCollection DefaultConfiguration { get; set; }
+
+        [Inject]
         public ILogger Logger { get; set; }
+
+        [Inject]
         public IConfigurationService ConfigurationService { get; set; }
 
         public string this[string key, bool callConfigService = false]

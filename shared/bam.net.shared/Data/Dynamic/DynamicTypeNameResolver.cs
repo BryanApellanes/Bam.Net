@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Yaml;
+using Bam.Net.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Bam.Net.Data.Dynamic
 {
-    public class DynamicTypeNameResolver : IDynamicTypeNameResolver
+    public class DynamicTypeNameResolver : Loggable, IDynamicTypeNameResolver
     {
         public DynamicTypeNameResolver()
         {
@@ -21,14 +22,13 @@ namespace Bam.Net.Data.Dynamic
             set;
         }
 
-        public static string[] ResolveYamlTypeNames(string yaml, params string[] typeNameProperties)
+        public static string ResolveYamlTypeName(string yaml, params string[] typeNameProperties)
         {
-            DynamicTypeNameResolver resolver = new DynamicTypeNameResolver();
-            if(typeNameProperties.Length > 0)
+            DynamicTypeNameResolver resolver = new DynamicTypeNameResolver
             {
-                resolver.TypeNameFields = new HashSet<string>(typeNameProperties);
-            }
-            return resolver.ResolveYamlTypeNames(yaml);
+                TypeNameFields = new HashSet<string>(typeNameProperties)
+            };
+            return resolver.ResolveJsonTypeName(yaml.YamlToJson());
         }
 
         /// <summary>
@@ -50,6 +50,39 @@ namespace Bam.Net.Data.Dynamic
             return resolver.ResolveJsonTypeName(json);
         }
 
+        public event EventHandler InvalidFormatSpecified;
+        public event EventHandler JsonTypeNameResovled;
+        public event EventHandler YamlTypeNameResolved;
+        public event EventHandler CsvTypeNameResolved;
+
+        public string ResolveTypeName(string input, DynamicTypeFormats format)
+        {
+            switch (format)
+            {
+                case DynamicTypeFormats.Invalid:
+                    string hash = input.Sha256();
+                    FireEvent(InvalidFormatSpecified, new DynamicTypeNameEventArgs { Input = input, Format = format, ResolvedTypeName = hash});
+                    return hash;
+                case DynamicTypeFormats.Json:
+                    string jsonTypeName = ResolveJsonTypeName(input);
+                    FireEvent(JsonTypeNameResovled, new DynamicTypeNameEventArgs { Input = input, Format = format, ResolvedTypeName = jsonTypeName });
+                    return jsonTypeName;
+                case DynamicTypeFormats.Yaml:
+                    string yamlTypeName = ResolveYamlTypeName(input);
+                    FireEvent(YamlTypeNameResolved, new DynamicTypeNameEventArgs { Input = input, Format = format, ResolvedTypeName = yamlTypeName });
+                    return yamlTypeName;
+                case DynamicTypeFormats.Csv:
+                    string firstLine = input.DelimitSplit("\r", "\n").First();
+                    string typeName = string.Join(",", GetPropertyDescriptors(firstLine).Select(pd => pd.ToString()).ToArray()).Sha256();
+                    FireEvent(CsvTypeNameResolved, new DynamicTypeNameEventArgs { Input = input, Format = format, ResolvedTypeName = typeName });
+                    return typeName;
+                default:
+                    break;
+            }
+
+            return input.Sha256();
+        }
+
         public string ResolveJsonTypeName(string json)
         {
             return ResolveJsonTypeName(json, out bool ignore);
@@ -66,6 +99,13 @@ namespace Bam.Net.Data.Dynamic
             return ResolveTypeName(jobject, out bool ignore);
         }
 
+        /// <summary>
+        /// Resolves the name of the type by looking for a property named in TypeNameFields
+        /// and return the result.
+        /// </summary>
+        /// <param name="jobject">The jobject.</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
+        /// <returns></returns>
         public string ResolveTypeName(JObject jobject, out bool isDefault)
         {
             isDefault = false;
@@ -77,7 +117,7 @@ namespace Bam.Net.Data.Dynamic
             {
                 if (TypeNameFields.Contains(prop.Name))
                 {
-                    return prop.Name;
+                    return (prop.Value)?.ToString();
                 }
             }
 
@@ -86,19 +126,9 @@ namespace Bam.Net.Data.Dynamic
             return defaultTypeName;
         }
         
-        public string[] ResolveYamlTypeNames(string yaml)
+        public string ResolveYamlTypeName(string yaml)
         {
-            List<string> typeNames = new List<string>();
-            foreach(YamlNode node in YamlNode.FromYaml(yaml))
-            {
-                typeNames.Add(ResolveTypeName(node));
-            }
-            return typeNames.ToArray();
-        }
-
-        public string ResolveTypeName(YamlNode yamlNode)
-        {
-            return ResolveJsonTypeName(yamlNode.ToString());
+            return ResolveJsonTypeName(yaml.YamlToJson());
         }
 
         public PropertyDescriptor[] GetPropertyDescriptors(JObject jObject)
@@ -114,6 +144,12 @@ namespace Bam.Net.Data.Dynamic
                 properties.Add(new PropertyDescriptor { Name = prop.Name, Type = propType });
             }
             return properties.ToArray();
+        }
+
+        public PropertyDescriptor[] GetPropertyDescriptors(string csvHeader)
+        {
+            string[] split = csvHeader.DelimitSplit(",");
+            return split.Select(pn => new PropertyDescriptor { Name = pn, Type = "string" }).ToArray();
         }
     }
 }

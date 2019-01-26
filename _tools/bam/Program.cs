@@ -19,7 +19,7 @@ namespace Bam.Net
 
         public static void AddArguments()
         {
-            AddSwitches(typeof(NetCoreActions));
+            AddSwitches(typeof(WebActions));
         }
 
         #region do not modify
@@ -30,7 +30,7 @@ namespace Bam.Net
                 AddDetails = false
             };
             logger.StartLoggingThread();
-            if (ExecuteSwitches(Arguments, typeof(NetCoreActions), false, logger))
+            if (ExecuteSwitches(Arguments, typeof(WebActions), false, logger))
             {
                 logger.BlockUntilEventQueueIsEmpty();
                 if (Arguments.Contains("pause"))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
@@ -70,6 +71,12 @@ namespace Bam.Net.Data.Repositories
 
         static DefaultDataDirectoryProvider _default;
         static object _defaultLock = new object();
+        /// <summary>
+        /// Gets the default instance.
+        /// </summary>
+        /// <value>
+        /// The instance.
+        /// </value>
         public static DefaultDataDirectoryProvider Instance
         {
             get
@@ -80,6 +87,12 @@ namespace Bam.Net.Data.Repositories
 
         static DefaultDataDirectoryProvider _fromConfig;
         static object _fromConfigLock = new object();
+        /// <summary>
+        /// Gets the current instance configured for the current ProcessMode.
+        /// </summary>
+        /// <value>
+        /// The current.
+        /// </value>
         public static DefaultDataDirectoryProvider Current
         {
             get
@@ -116,9 +129,14 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(DataRootDirectory, ProcessMode.ToString()));
         }
 
-        public DirectoryInfo GetRootDataDirectory(string directoryName)
+        public DirectoryInfo GetRootDataDirectory(params string[] pathSegments)
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
+            List<string> segments = new List<string>
+            {
+                GetRootDataDirectory().FullName
+            };
+            segments.AddRange(pathSegments);
+            return new DirectoryInfo(Path.Combine(segments.ToArray()));
         }
 
         public DirectoryInfo GetSysDataDirectory()
@@ -126,9 +144,14 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, SysDataDirectory));
         }
 
-        public DirectoryInfo GetSysDataDirectory(string directoryName)
+        public DirectoryInfo GetSysDataDirectory(params string[] pathSegments)
         {
-            return new DirectoryInfo(Path.Combine(GetSysDataDirectory().FullName, directoryName));
+            List<string> segments = new List<string>
+            {
+                GetSysDataDirectory().FullName
+            };
+            segments.AddRange(pathSegments);
+            return new DirectoryInfo(Path.Combine(segments.ToArray()));
         }
 
         public DirectoryInfo GetSysUsersDataDirectory()

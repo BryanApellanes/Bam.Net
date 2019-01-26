@@ -18,8 +18,31 @@ using Bam.Net.Data.Dynamic;
 namespace Bam.Net.Application
 {
     [Serializable]
-    public class NetCoreActions : CommandLineTestInterface
+    public class WebActions : CommandLineTestInterface
     {
+        public const string AppDataFolderName = "AppData";
+        public const string GenerationOutputFolderName = "_gen";
+
+        static DirectoryInfo _appData;
+        static object _appDataLock = new object();
+        static DirectoryInfo AppData
+        {
+            get
+            {
+                return _appDataLock.DoubleCheckLock(ref _appData, () => new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, AppDataFolderName)));
+            }
+        }
+
+        static DirectoryInfo _generationOutput;
+        static object _generationOutputLock = new object();
+        static DirectoryInfo GenerationOutput
+        {
+            get
+            {
+                return _generationOutputLock.DoubleCheckLock(ref _generationOutput, () => new DirectoryInfo(Path.Combine(AppData.FullName, GenerationOutputFolderName)));
+            }
+        }
+
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
         {
@@ -28,7 +51,6 @@ namespace Bam.Net.Application
             // - clone bam.js into wwwroot/bam.js
             // - add Pages/Api/V1.cshtml
             // - add Pages/Api/V1.cshtml.cs
-            Console.WriteLine("yo");
             DirectoryInfo projectParent = FindProjectParent(out FileInfo csprojFile);
             if(csprojFile == null)
             {
@@ -80,6 +102,21 @@ namespace Bam.Net.Application
             AddPage(csprojFile, pageName);
         }
 
+        [ConsoleAction("gen", "Generate a dynamic type assembly for json and yaml data")]
+        public void GenerateDataModels()
+        {
+            DynamicTypeManager dynamicTypeManager = new DynamicTypeManager();
+            OutLineFormat("Generating dynamic types from json ({0}) and yaml ({1}).", Path.Combine(AppData.FullName, "json"), Path.Combine(AppData.FullName, "yaml"));
+            Assembly assembly = dynamicTypeManager.Generate(AppData);
+            Expect.IsNotNull(assembly);
+            Expect.IsGreaterThan(assembly.GetTypes().Length, 0);   
+            
+            foreach(Type type in assembly.GetTypes())
+            {
+                OutLineFormat("{0}.{1}", ConsoleColor.Cyan, type.Namespace, type.Name);
+            }
+        }
+
         [ConsoleAction("webpack", "WebPack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs")]
         public void WebPack()
         {
@@ -121,26 +158,7 @@ namespace Bam.Net.Application
             }
             Environment.CurrentDirectory = startDir;
         }
-
-        [ConsoleAction("gen")]
-        public void GenerateDataModels()
-        {
-            DynamicTypeNameResolver typeNameResolver = new DynamicTypeNameResolver();
-            DirectoryInfo dir = new DirectoryInfo(Path.Combine(".", "AppData", "json"));
-            if (!dir.Exists)
-            {
-                OutLineFormat("{0} folder doesn't exist", dir.FullName);
-            }
-            foreach(FileInfo jsonFile in dir.GetFiles("*.json"))
-            {
-                string typeName = typeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText(), out bool isDefault);
-                if (isDefault)
-                {
-                    OutLineFormat("Unable to determine type name for json file {0}, using default {1}", ConsoleColor.Yellow, jsonFile.FullName, typeName);
-                }
-            }
-        }
-
+        
         private void AddPage(FileInfo csprojFile, string pageName)
         {
             DirectoryInfo projectParent = csprojFile.Directory;

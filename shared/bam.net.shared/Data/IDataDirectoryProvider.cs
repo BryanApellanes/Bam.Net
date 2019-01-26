@@ -25,8 +25,8 @@ namespace Bam.Net.Data
         /// </summary>
         /// <param name="directoryName">Name of the directory.</param>
         /// <returns></returns>
-        DirectoryInfo GetSysDataDirectory(string directoryName);
+        DirectoryInfo GetSysDataDirectory(params string[] directoryName);
 
-        DirectoryInfo GetRootDataDirectory(string directoryName);
+        DirectoryInfo GetRootDataDirectory(params string[] directoryName);
     }
 }

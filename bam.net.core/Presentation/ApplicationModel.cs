@@ -1,4 +1,5 @@
-﻿using Bam.Net.ServiceProxy;
+﻿using Bam.Net.Data.Dynamic;
+using Bam.Net.ServiceProxy;
 using Bam.Net.Services;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace Bam.Net.Presentation
 
         public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
         public WebServiceRegistry WebServiceRegistry { get; set; }
+
+        public DynamicTypeManager DynamicTypeManager { get; set; }
 
         [Inject]
         public IViewModelProvider ViewModelProvider { get; set; }

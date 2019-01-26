@@ -27,8 +27,8 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 			AddType<Bam.Net.Data.Dynamic.Data.DataInstance>();﻿			
 			AddType<Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue>();﻿			
 			AddType<Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor>();﻿			
-			AddType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();﻿			
 			AddType<Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor>();﻿			
+			AddType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();﻿			
 			AddType<Bam.Net.Data.Dynamic.Data.RootDocument>();
 			DaoAssembly = typeof(DynamicTypeDataRepository).Assembly;
 		}
@@ -45,6 +45,27 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 
 ﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDataInstanceWhere(WhereDelegate<DataInstanceColumns> where)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DataInstance.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDataInstanceWhere(WhereDelegate<DataInstanceColumns> where, out Bam.Net.Data.Dynamic.Data.DataInstance result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DataInstance.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.DataInstance daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.DataInstance>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -53,13 +74,12 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DataInstance GetOneDataInstanceWhere(WhereDelegate<DataInstanceColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DataInstance>();
-			return (Bam.Net.Data.Dynamic.Data.DataInstance)Bam.Net.Data.Dynamic.Data.Dao.DataInstance.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Data.Dynamic.Data.DataInstance)Bam.Net.Data.Dynamic.Data.Dao.DataInstance.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single DataInstance instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a DataInstanceColumns 
@@ -69,7 +89,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DataInstance OneDataInstanceWhere(WhereDelegate<DataInstanceColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DataInstance>();
-            return (Bam.Net.Data.Dynamic.Data.DataInstance)Bam.Net.Data.Dynamic.Data.Dao.DataInstance.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Data.Dynamic.Data.DataInstance)Bam.Net.Data.Dynamic.Data.Dao.DataInstance.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -138,6 +158,27 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDataInstancePropertyValueWhere(WhereDelegate<DataInstancePropertyValueColumns> where)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDataInstancePropertyValueWhere(WhereDelegate<DataInstancePropertyValueColumns> where, out Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -146,13 +187,12 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue GetOneDataInstancePropertyValueWhere(WhereDelegate<DataInstancePropertyValueColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue>();
-			return (Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue)Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue)Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single DataInstancePropertyValue instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a DataInstancePropertyValueColumns 
@@ -162,7 +202,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue OneDataInstancePropertyValueWhere(WhereDelegate<DataInstancePropertyValueColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue>();
-            return (Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue)Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Data.Dynamic.Data.DataInstancePropertyValue)Bam.Net.Data.Dynamic.Data.Dao.DataInstancePropertyValue.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -231,6 +271,27 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDynamicNamespaceDescriptorWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDynamicNamespaceDescriptorWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where, out Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -239,13 +300,12 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor GetOneDynamicNamespaceDescriptorWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor>();
-			return (Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single DynamicNamespaceDescriptor instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a DynamicNamespaceDescriptorColumns 
@@ -255,7 +315,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor OneDynamicNamespaceDescriptorWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor>();
-            return (Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Data.Dynamic.Data.DynamicNamespaceDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicNamespaceDescriptor.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -324,98 +384,26 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
-		/// Get one entry matching the specified filter.  If none exists 
+		/// Set one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
-		/// <param name="where"></param>
-		public Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor GetOneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+		public void SetOneDynamicTypeDescriptorWhere(WhereDelegate<DynamicTypeDescriptorColumns> where)
 		{
-			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();
-			return (Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.SetOneWhere(where, Database);
 		}
 
-		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
-		/// single DynamicTypePropertyDescriptor instance by its Id/Key value
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between DynamicTypePropertyDescriptorColumns and other values
-		/// </param>
-		public Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor OneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
-        {
-            Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();
-            return (Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.OneWhere(where, Database).CopyAs(wrapperType, this);
-        }
+		public void SetOneDynamicTypeDescriptorWhere(WhereDelegate<DynamicTypeDescriptorColumns> where, out Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor>();
+		}
 
-		/// <summary>
-		/// Execute a query and return the results. 
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptorColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor> DynamicTypePropertyDescriptorsWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where, OrderBy<DynamicTypePropertyDescriptorColumns> orderBy = null)
-        {
-            return Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Where(where, orderBy, Database));
-        }
-		
-		/// <summary>
-		/// Execute a query and return the specified number
-		/// of values. This method will issue a sql TOP clause so only the 
-		/// specified number of values will be returned.
-		/// </summary>
-		/// <param name="count">The number of values to return.
-		/// This value is used in the sql query so no more than this 
-		/// number of values will be returned by the database.
-		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between DynamicTypePropertyDescriptorColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor> TopDynamicTypePropertyDescriptorsWhere(int count, WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
-        {
-            return Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Top(count, where, Database));
-        }
-
-		/// <summary>
-		/// Return the count of DynamicTypePropertyDescriptors
-		/// </summary>
-		public long CountDynamicTypePropertyDescriptors()
-        {
-            return Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Count(Database);
-        }
-
-		/// <summary>
-		/// Execute a query and return the number of results
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between DynamicTypePropertyDescriptorColumns and other values
-		/// </param>
-        public long CountDynamicTypePropertyDescriptorsWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
-        {
-            return Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Count(where, Database);
-        }
-        
-        public async Task BatchQueryDynamicTypePropertyDescriptors(int batchSize, WhereDelegate<DynamicTypePropertyDescriptorColumns> where, Action<IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>> batchProcessor)
-        {
-            await Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.BatchQuery(batchSize, where, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(batch));
-            }, Database);
-        }
-		
-        public async Task BatchAllDynamicTypePropertyDescriptors(int batchSize, Action<IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>> batchProcessor)
-        {
-            await Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.BatchAll(batchSize, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(batch));
-            }, Database);
-        }﻿		
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
@@ -425,13 +413,12 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor GetOneDynamicTypeDescriptorWhere(WhereDelegate<DynamicTypeDescriptorColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor>();
-			return (Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single DynamicTypeDescriptor instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a DynamicTypeDescriptorColumns 
@@ -441,7 +428,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor OneDynamicTypeDescriptorWhere(WhereDelegate<DynamicTypeDescriptorColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor>();
-            return (Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Data.Dynamic.Data.DynamicTypeDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypeDescriptor.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -510,6 +497,140 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
             }, Database);
         }﻿		
 		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where, out Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();
+		}
+
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor GetOneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();
+			return (Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
+		/// single DynamicTypePropertyDescriptor instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between DynamicTypePropertyDescriptorColumns and other values
+		/// </param>
+		public Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor OneDynamicTypePropertyDescriptorWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>();
+            return (Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor)Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.OneWhere(where, Database)?.CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptorColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptorColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor> DynamicTypePropertyDescriptorsWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where, OrderBy<DynamicTypePropertyDescriptorColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between DynamicTypePropertyDescriptorColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor> TopDynamicTypePropertyDescriptorsWhere(int count, WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+        {
+            return Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of DynamicTypePropertyDescriptors
+		/// </summary>
+		public long CountDynamicTypePropertyDescriptors()
+        {
+            return Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a DynamicTypePropertyDescriptorColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between DynamicTypePropertyDescriptorColumns and other values
+		/// </param>
+        public long CountDynamicTypePropertyDescriptorsWhere(WhereDelegate<DynamicTypePropertyDescriptorColumns> where)
+        {
+            return Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.Count(where, Database);
+        }
+        
+        public async Task BatchQueryDynamicTypePropertyDescriptors(int batchSize, WhereDelegate<DynamicTypePropertyDescriptorColumns> where, Action<IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>> batchProcessor)
+        {
+            await Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllDynamicTypePropertyDescriptors(int batchSize, Action<IEnumerable<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>> batchProcessor)
+        {
+            await Bam.Net.Data.Dynamic.Data.Dao.DynamicTypePropertyDescriptor.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.Data.Dynamic.Data.DynamicTypePropertyDescriptor>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneRootDocumentWhere(WhereDelegate<RootDocumentColumns> where)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.RootDocument.SetOneWhere(where, Database);
+		}
+
+				/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		public void SetOneRootDocumentWhere(WhereDelegate<RootDocumentColumns> where, out Bam.Net.Data.Dynamic.Data.RootDocument result)
+		{
+			Bam.Net.Data.Dynamic.Data.Dao.RootDocument.SetOneWhere(where, out Bam.Net.Data.Dynamic.Data.Dao.RootDocument daoResult, Database);
+			result = daoResult.CopyAs<Bam.Net.Data.Dynamic.Data.RootDocument>();
+		}
+
+		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
@@ -518,13 +639,12 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.RootDocument GetOneRootDocumentWhere(WhereDelegate<RootDocumentColumns> where)
 		{
 			Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.RootDocument>();
-			return (Bam.Net.Data.Dynamic.Data.RootDocument)Bam.Net.Data.Dynamic.Data.Dao.RootDocument.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			return (Bam.Net.Data.Dynamic.Data.RootDocument)Bam.Net.Data.Dynamic.Data.Dao.RootDocument.GetOneWhere(where, Database)?.CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
+		/// Execute a query that should return only one result.  If no result is found null is returned.  If more
+		/// than one result is returned a MultipleEntriesFoundException is thrown.  This method is most commonly used to retrieve a
 		/// single RootDocument instance by its Id/Key value
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a RootDocumentColumns 
@@ -534,7 +654,7 @@ namespace Bam.Net.Data.Dynamic.Data.Dao.Repository
 		public Bam.Net.Data.Dynamic.Data.RootDocument OneRootDocumentWhere(WhereDelegate<RootDocumentColumns> where)
         {
             Type wrapperType = GetWrapperType<Bam.Net.Data.Dynamic.Data.RootDocument>();
-            return (Bam.Net.Data.Dynamic.Data.RootDocument)Bam.Net.Data.Dynamic.Data.Dao.RootDocument.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (Bam.Net.Data.Dynamic.Data.RootDocument)Bam.Net.Data.Dynamic.Data.Dao.RootDocument.OneWhere(where, Database)?.CopyAs(wrapperType, this);
         }
 
 		/// <summary>

@@ -58,18 +58,18 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 
 			if(_database != null)
 			{
-				this.ChildCollections.Add("DynamicTypeDescriptor_DynamicNamespaceDescriptorId", new DynamicTypeDescriptorCollection(Database.GetQuery<DynamicTypeDescriptorColumns, DynamicTypeDescriptor>((c) => c.DynamicNamespaceDescriptorId == GetLongValue("Id")), this, "DynamicNamespaceDescriptorId"));				
+				this.ChildCollections.Add("DynamicTypeDescriptor_DynamicNamespaceDescriptorId", new DynamicTypeDescriptorCollection(Database.GetQuery<DynamicTypeDescriptorColumns, DynamicTypeDescriptor>((c) => c.DynamicNamespaceDescriptorId == GetULongValue("Id")), this, "DynamicNamespaceDescriptorId"));				
 			}						
 		}
 
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -285,12 +285,22 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			});			
 		}
 
+		public static DynamicNamespaceDescriptor GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DynamicNamespaceDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DynamicNamespaceDescriptor GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DynamicNamespaceDescriptor GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
@@ -412,6 +422,28 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			WhereDelegate<DynamicNamespaceDescriptorColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where, Database database = null)
+		{
+			SetOneWhere(where, out DynamicNamespaceDescriptor ignore, database);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DynamicNamespaceDescriptorColumns> where, out DynamicNamespaceDescriptor result, Database database = null)
+		{
+			result = GetOneWhere(where, database);
 		}
 
 		/// <summary>
