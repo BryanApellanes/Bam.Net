@@ -104,6 +104,17 @@ namespace Bam.Net.Data.Dynamic
             return GetAssembly(nameSpace);
         }
 
+        public void ProcessJson(DirectoryInfo appData, string nameSpace = null)
+        {
+            DirectoryInfo jsonDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "json"));
+            foreach(FileInfo jsonFile in jsonDirectory.GetFiles("*.json"))
+            {
+                string typeName = DynamicTypeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText());
+                JsonFileProcessor.Enqueue(new DataFile { Namespace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace, TypeName = typeName, FileInfo = jsonFile });
+            }
+            //JsonFileProcessor.Enqueue(new DataF)
+        }
+
         public void ProcessYaml(string yaml)
         {
             ProcessYaml(DynamicTypeNameResolver.ResolveYamlTypeName(yaml), yaml);
@@ -116,9 +127,15 @@ namespace Bam.Net.Data.Dynamic
 
         public void ProcessJson(string typeName, string json)
         {
+            string filePath = WriteJsonFile(json);
+            JsonFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
+        }
+
+        protected string WriteJsonFile(string json)
+        {
             string filePath = Path.Combine(JsonDirectory.FullName, $"{json.Sha512()}.json").GetNextFileName();
             json.SafeWriteToFile(filePath);
-            JsonFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
+            return filePath;
         }
 
         public void ProcessYaml(string typeName, string yaml)
