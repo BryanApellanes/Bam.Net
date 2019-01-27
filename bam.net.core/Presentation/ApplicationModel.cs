@@ -1,4 +1,5 @@
 ﻿using Bam.Net.Data.Dynamic;
+using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Services;
 using System;
@@ -15,12 +16,21 @@ namespace Bam.Net.Presentation
         public ApplicationModel(ApplicationServiceRegistry applicationServiceRegistry)
         {
             ApplicationServiceRegistry = applicationServiceRegistry;
+            Log = ApplicationServiceRegistry.Get<ILog>();
+            ApplicationServiceRegistry.Get("Startup", out Type startupType);
+            if(startupType != null)
+            {
+                ApplicationNameSpace = startupType.Namespace;
+            }
             WebServiceRegistry = applicationServiceRegistry.Get<WebServiceRegistry>();
             ApplicationName = ApplicationServiceRegistry.Get<IApplicationNameProvider>().GetApplicationName();
             ApplicationServiceRegistry.SetInjectionProperties(this);
         }
 
+        public string ApplicationNameSpace { get; set; }
         public string ApplicationName { get; set; }
+
+        public ILog Log { get; set; }
 
         public ApplicationServiceRegistry ApplicationServiceRegistry { get; set; }
         public WebServiceRegistry WebServiceRegistry { get; set; }

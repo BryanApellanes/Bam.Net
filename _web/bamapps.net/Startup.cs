@@ -37,6 +37,7 @@ namespace Bam.Net.Web
             {
                 // Configure the Bam appRegistry here
                 appRegistry
+                    .For<Startup>().Use(this)
                     .For<IConfiguration>().Use(Configuration)
                     .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));                    
 

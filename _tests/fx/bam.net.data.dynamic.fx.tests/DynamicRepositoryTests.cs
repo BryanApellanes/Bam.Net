@@ -245,7 +245,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             DynamicTypePropertyDescriptor prop = mgr.AddProperty(testType, testProperty, "String");
             DynamicTypePropertyDescriptor prop2 = mgr.AddProperty(testType, testProperty2, "Boolean");
 
-            Assembly ass = mgr.GetAssembly();
+            Assembly ass = mgr.GenerateAssembly();
             Expect.IsNotNull(ass);
         }
 

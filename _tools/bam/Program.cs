@@ -20,6 +20,7 @@ namespace Bam.Net
         public static void AddArguments()
         {
             AddSwitches(typeof(WebActions));
+            AddValidArgument("schemaName", false, addAcronym: true, description: "The name to use for the generated schema");
         }
 
         #region do not modify
@@ -30,13 +31,13 @@ namespace Bam.Net
                 AddDetails = false
             };
             logger.StartLoggingThread();
+            if (Arguments.Contains("pause"))
+            {
+                Pause("paused..."); // for debugging
+            }
             if (ExecuteSwitches(Arguments, typeof(WebActions), false, logger))
             {
-                logger.BlockUntilEventQueueIsEmpty();
-                if (Arguments.Contains("pause"))
-                {
-                    Pause();
-                }
+                logger.BlockUntilEventQueueIsEmpty();                
             }
             else
             {

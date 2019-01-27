@@ -14,6 +14,7 @@ using System.Yaml;
 using System.Threading;
 using System.Reflection;
 using Bam.Net.Data.Dynamic;
+using Bam.Net.Data.Dynamic.Data;
 
 namespace Bam.Net.Application
 {
@@ -22,7 +23,7 @@ namespace Bam.Net.Application
     {
         public const string AppDataFolderName = "AppData";
         public const string GenerationOutputFolderName = "_gen";
-
+        
         static DirectoryInfo _appData;
         static object _appDataLock = new object();
         static DirectoryInfo AppData
@@ -31,17 +32,7 @@ namespace Bam.Net.Application
             {
                 return _appDataLock.DoubleCheckLock(ref _appData, () => new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, AppDataFolderName)));
             }
-        }
-
-        static DirectoryInfo _generationOutput;
-        static object _generationOutputLock = new object();
-        static DirectoryInfo GenerationOutput
-        {
-            get
-            {
-                return _generationOutputLock.DoubleCheckLock(ref _generationOutput, () => new DirectoryInfo(Path.Combine(AppData.FullName, GenerationOutputFolderName)));
-            }
-        }
+        }        
 
         [ConsoleAction("init", "Add BamFramework to the current csproj")]
         public void Init()
@@ -102,27 +93,48 @@ namespace Bam.Net.Application
             AddPage(csprojFile, pageName);
         }
 
-        [ConsoleAction("gen", "Generate a dynamic type assembly for json and yaml data")]
+        [ConsoleAction("gen", "src|bin|dbjs|repo|all", "Generate a dynamic type assembly for json and yaml data")]
         public void GenerateDataModels()
-        {
-            DynamicTypeManager dynamicTypeManager = new DynamicTypeManager();
-            OutLineFormat("Generating dynamic types from json ({0}) and yaml ({1}).", Path.Combine(AppData.FullName, "json"), Path.Combine(AppData.FullName, "yaml"));
-
-            // TOOD: change this to only write files without compiling
-            Assembly assembly = dynamicTypeManager.Generate(AppData);
-
-            Expect.IsNotNull(assembly);
-            Expect.IsGreaterThan(assembly.GetTypes().Length, 0);
-
-            // TODO: add a call to troo, example: troo.exe /gsr /ta:.\bam.net.dll /sn:DynamicTypeData /fns:Bam.Net.Data.Dynamic.Data /cfi:yes /uis:no /ws:C:\bam\src\_gen\Bam.Net.Data.Dynamic\Data\Generated_Dao
-            // TODO: add a call to laotze to process any db.js files
-
-            foreach (Type type in assembly.GetTypes())
+        {   
+            GenerationTargets target = Arguments["gen"].ToEnum<GenerationTargets>();
+            switch (target)
             {
-                OutLineFormat("{0}.{1}", ConsoleColor.Cyan, type.Namespace, type.Name);
+                case GenerationTargets.Invalid:
+                    throw new InvalidOperationException("Invalid generation target specified");
+                case GenerationTargets.src:
+                    GenerateDynamicTypeSource();
+                    break;
+                case GenerationTargets.bin:
+                    GenerateDynamicTypeAssemblies();
+                    break;
+                case GenerationTargets.dbjs:
+                    GenerateDaoFromDbJsFiles();
+                    break;
+                case GenerationTargets.repo:
+                    GenerateSchemaRepository();
+                    break;
+                case GenerationTargets.all:
+                default:
+                    GenerateDynamicTypeSource();
+                    GenerateDaoFromDbJsFiles();
+                    GenerateDynamicTypeAssemblies();
+                    GenerateSchemaRepository();
+                    break;
             }
+
         }
 
+        [ConsoleAction("clean", "Clear all dynamic types and namespaces from the dynamic type manager")]
+        public void CleanGeneratedTypes()
+        {
+            OutLine("Deleting ALL dynamic types from the local DynamicTypeManager", ConsoleColor.Yellow);
+            DynamicTypeManager mgr = new DynamicTypeManager();
+            mgr.DynamicTypeDataRepository.Query<DynamicTypePropertyDescriptor>(p => p.Id > 0).Each(p => mgr.DynamicTypeDataRepository.Delete(p));
+            mgr.DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
+            mgr.DynamicTypeDataRepository.Query<DynamicNamespaceDescriptor>(d => d.Id > 0).Each(d => mgr.DynamicTypeDataRepository.Delete(d));
+            OutLine("Done", ConsoleColor.DarkYellow);
+        }
+        
         [ConsoleAction("webpack", "WebPack each bam.js page found in wwwroot/bam.js/pages using corresponding configs found in wwwroot/bam.js/configs")]
         public void WebPack()
         {
@@ -164,7 +176,85 @@ namespace Bam.Net.Application
             }
             Environment.CurrentDirectory = startDir;
         }
-        
+
+        private void GenerateDaoFromDbJsFiles()
+        {
+            //laotze.exe / root:[PATH-TO-DIRECTORY-CONTAINING-DBJS] /keep /s
+            string writeTo = new DirectoryInfo(Path.Combine(AppData.FullName, "_gen", "src", "dao")).FullName;
+            ProcessOutput output = $"laotze.exe /root:\"{AppData.FullName}\" /gen:\"{writeTo}\" /keep /s".Run(o => OutLine(o, ConsoleColor.DarkCyan), 100000);
+
+            if (output.ExitCode != 0)
+            {
+                OutLineFormat("Dao generation from *.db.js files exited with code {0}: {1}", ConsoleColor.Yellow, output.ExitCode, output.StandardError.Substring(output.StandardError.Length - 300));
+            }
+        }
+
+        private void GenerateSchemaRepository()
+        {
+            OutLineFormat("Generating Dao repository for AppModels", ConsoleColor.Cyan);
+            FileInfo csprojFile = FindProjectFile();
+            string schemaName = $"{Path.GetFileNameWithoutExtension(csprojFile.Name).Replace("_", "").Replace("-", "").Replace(".", "")}Schema";
+            string dotnetTemp = new DirectoryInfo(Path.Combine(csprojFile.Directory.FullName, "AppData", "_gen", "dotnet")).FullName;
+            ProcessOutput dotnetOutput = $"dotnet publish --output \"{dotnetTemp}\"".Run(o => OutLine(o, ConsoleColor.DarkGray), 100000);
+            Assembly dotnetAssembly = Assembly.LoadFile(Path.Combine(dotnetTemp, $"{Path.GetFileNameWithoutExtension(csprojFile.Name)}.dll"));
+
+            string fromNamespace = GetAppModelsNamespace(dotnetAssembly);
+            if (string.IsNullOrEmpty(fromNamespace))
+            {
+                return;
+            }
+            string toNamespace = $"{fromNamespace}.GeneratedDao";
+            GenerationSettings generationSettings = new GenerationSettings
+            {
+                Assembly = dotnetAssembly,
+                SchemaName = schemaName,
+                UseInheritanceSchema = false,
+                FromNameSpace = fromNamespace,
+                ToNameSpace = toNamespace,
+                WriteSourceTo = Path.Combine(AppData.FullName, "_gen", "src", $"{schemaName}_Dao")
+            };
+            GenerateSchemaRepository(generationSettings);
+        }
+
+        private void GenerateSchemaRepository(GenerationSettings generationSettings)
+        {
+            ProcessOutput output = $"troo.exe /generateSchemaRepository /typeAssembly:\"{generationSettings.Assembly.GetFilePath()}\" /schemaName:{generationSettings.SchemaName} /fromNameSpace:{generationSettings.FromNameSpace} /checkForIds:yes /useInhertianceSchema:{generationSettings.UseInheritanceSchema.ToString()} /writeSource:\"{generationSettings.WriteSourceTo}\"".Run(o => OutLine(o, ConsoleColor.DarkGreen), 100000);
+
+            if (output.ExitCode != 0)
+            {
+                OutLineFormat("Schema generation exited with code {0}: {1}", ConsoleColor.Yellow, output.ExitCode, output.StandardError.Substring(output.StandardError.Length - 300));
+            }
+        }
+
+        private void GenerateDynamicTypeSource()
+        {
+            OutLineFormat("Generating dynamic types from json ({0}) and yaml ({1}).", Path.Combine(AppData.FullName, "json"), Path.Combine(AppData.FullName, "yaml"));
+            DynamicTypeManager dynamicTypeManager = new DynamicTypeManager();
+            FileInfo csprojFile = FindProjectFile();
+            if (csprojFile == null)
+            {
+                throw new InvalidOperationException("Couldn't find project file");
+            }
+            string source = dynamicTypeManager.GenerateSource(AppData, Path.GetFileNameWithoutExtension(csprojFile.Name));
+            Expect.IsNotNullOrEmpty(source, "Source was not generated");
+
+            OutLineFormat("Generated source: {0}", ConsoleColor.DarkCyan, source.Sha256());
+        }
+
+        private void GenerateDynamicTypeAssemblies()
+        {
+            DynamicTypeManager dynamicTypeManager = new DynamicTypeManager();
+            Assembly assembly = dynamicTypeManager.GenerateAssembly(AppData);
+
+            Expect.IsNotNull(assembly, "Assembly was not generated");
+            Expect.IsGreaterThan(assembly.GetTypes().Length, 0, "No types were found in the generated assembly");
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                OutLineFormat("{0}.{1}", ConsoleColor.Cyan, type.Namespace, type.Name);
+            }
+        }
+
         private void AddPage(FileInfo csprojFile, string pageName)
         {
             DirectoryInfo projectParent = csprojFile.Directory;
@@ -272,6 +362,12 @@ namespace Bam.Net.Application
             return new HandlebarsDirectory(Path.Combine(bamDir.FullName, "Templates"));
         }
 
+        private FileInfo FindProjectFile()
+        {
+            FindProjectParent(out FileInfo csprojFile);
+            return csprojFile;
+        }
+
         private DirectoryInfo FindProjectParent(out FileInfo csprojFile)
         {
             string startDir = Environment.CurrentDirectory;
@@ -302,5 +398,19 @@ namespace Bam.Net.Application
             }
             return projectParent;
         }
+
+        private string GetAppModelsNamespace(Assembly assembly)
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.Namespace.EndsWith("AppModels"))
+                {
+                    return type.Namespace;
+                }
+            }
+            OutLineFormat("No AppModels namespaces found", ConsoleColor.Yellow);
+            return string.Empty;
+        }
+
     }
 }

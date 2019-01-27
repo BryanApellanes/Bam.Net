@@ -13,7 +13,7 @@ namespace Bam.Net.Data.Dynamic
     {
         public DynamicTypeNameResolver()
         {
-            TypeNameFields = new HashSet<string>(new string[] { "typeName", "TypeName", "class", "Class", "className", "ClassName" });
+            TypeNameFields = new HashSet<string>(new string[] { "type", "Type", "typeName", "TypeName", "class", "Class", "className", "ClassName" });
         }
 
         public HashSet<string> TypeNameFields
@@ -90,6 +90,11 @@ namespace Bam.Net.Data.Dynamic
 
         public string ResolveJsonTypeName(string json, out bool isDefault)
         {
+            if (string.IsNullOrEmpty(json))
+            {
+                isDefault = false;
+                return "object";
+            }
             JObject jobject = (JObject)JsonConvert.DeserializeObject(json);
             return ResolveTypeName(jobject, out isDefault);
         }
@@ -109,6 +114,10 @@ namespace Bam.Net.Data.Dynamic
         public string ResolveTypeName(JObject jobject, out bool isDefault)
         {
             isDefault = false;
+            if(jobject == null)
+            {
+                return "object";
+            }
             if(jobject.Type != JTokenType.Object)
             {
                 return jobject.Type.ToString();

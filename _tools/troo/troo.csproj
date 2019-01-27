@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="ArgumentAdder.cs" />
     <Compile Include="ConsoleActions.cs" />
-    <Compile Include="GenerationInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrooResponder.cs" />

@@ -71,11 +71,18 @@ namespace laotze
                     if (dbjs.Length > 1)
                     {
                         OutLine("Multiple *.db.js files found", ConsoleColor.Red);
-                        OutLineFormat("{0}", ConsoleColor.Yellow, dbjs.ToDelimited<FileInfo>(f => f.FullName, "\r\n"));
-                        string answer = Prompt("Process each? [y N]", ConsoleColor.Yellow);
-                        if (!answer.ToLowerInvariant().Equals("y"))
+                        if (!Arguments.Contains("s"))
                         {
-                            Exit(1);
+                            OutLineFormat("{0}", ConsoleColor.Yellow, dbjs.ToDelimited<FileInfo>(f => f.FullName, "\r\n"));
+                            string answer = Prompt("Process each? [y N]", ConsoleColor.Yellow);
+                            if (!answer.ToLowerInvariant().Equals("y"))
+                            {
+                                Exit(1);
+                            }
+                        }
+                        else
+                        {
+                            OutLineFormat("Processing each: {0}", ConsoleColor.Yellow, dbjs.ToDelimited<FileInfo>(f => f.FullName, "\r\n\t"));
                         }
                     }
 

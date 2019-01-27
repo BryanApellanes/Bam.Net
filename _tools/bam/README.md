@@ -6,6 +6,7 @@ TL;DR
 
 - bam /init
 - bam /addPage:[pageName]
+- bam /addModel:[modelName],[type1:propertyName1],[type2:propertyName2]...
 - bam /gen
 - bam /webpack
 - dotnet build

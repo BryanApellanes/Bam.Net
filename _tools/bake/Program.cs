@@ -72,7 +72,7 @@ namespace Bam.Net.Automation
                 logger.BlockUntilEventQueueIsEmpty();
                 if (Arguments.Contains("pause"))
                 {
-                    Pause();
+                    Pause("paused...");
                 }
             }
             else

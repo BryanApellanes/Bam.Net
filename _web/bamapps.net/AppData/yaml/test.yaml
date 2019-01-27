@@ -1,6 +1,7 @@
-﻿name: test yaml file
+﻿type: YamlTest
+name: test yaml file
 values:
     - name: one
-	  id: 1
-	- name: two
-	  id: 2
+      id: 1
+    - name: two
+      id: 2

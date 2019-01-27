@@ -199,6 +199,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonServiceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DeployInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\AssemblyReference.cs" />
@@ -410,6 +411,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IHasRequiredProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\RequiredPropertiesNotSetException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeFormats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameResolver.cs" />

@@ -19,7 +19,7 @@ namespace Bam.Net.Application
         [ConsoleAction("generateSchemaRepository", "Generate a schema specific DaoRepository")]
         public static void GenerateSchemaRepository()
         {
-            GenerationInfo genInfo = GetDaoGenerationInfo();
+            GenerationSettings genInfo = GetDaoGenerationSettings();
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
             SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger)
@@ -57,7 +57,7 @@ namespace Bam.Net.Application
         [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assembly for types")]
         public static void GenerateDaoForTypes()
         {
-            GenerationInfo genInfo = GetDaoGenerationInfo();
+            GenerationSettings genInfo = GetDaoGenerationSettings();
             Assembly typeAssembly = genInfo.Assembly;
             string schemaName = genInfo.SchemaName;
             string fromNameSpace = genInfo.FromNameSpace;
@@ -77,7 +77,7 @@ namespace Bam.Net.Application
         [ConsoleAction("generateDaoCodeForTypes", "Generate Dao code for types")]
         public static void GenerateDaoCodeForTypes()
         {
-            GenerationInfo genInfo = GetDaoGenerationInfo();
+            GenerationSettings genInfo = GetDaoGenerationSettings();
             Assembly typeAssembly = genInfo.Assembly;
             string schemaName = genInfo.SchemaName;
             string fromNameSpace = genInfo.FromNameSpace;
@@ -146,7 +146,7 @@ namespace Bam.Net.Application
 
         private static void GenerateProtoBuf<T>() where T: ProtocolBuffersAssemblyGenerator, new()
         {
-            GenerationInfo genInfo = GetProtoBufGenerationInfo();
+            GenerationSettings genInfo = GetProtoBufGenerationSettings();
             Type[] types = genInfo.Assembly.GetTypes().Where(t => !t.IsNested &&  !string.IsNullOrEmpty(t.Namespace) && t.Namespace.Equals(genInfo.FromNameSpace)).ToArray();
             T generator = GetGenerator<T>($"{genInfo.ToNameSpace}.dll", types);
             string defaultPath = $".\\{genInfo.ToNameSpace}_Protobuf_Generated";
@@ -162,21 +162,21 @@ namespace Bam.Net.Application
             return generator;
         }
 
-        private static GenerationInfo GetDaoGenerationInfo()
+        private static GenerationSettings GetDaoGenerationSettings()
         {
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
             string toNameSpace = $"{fromNameSpace}.Dao";
-            return GetGenerationInfo(fromNameSpace, toNameSpace);
+            return GetGenerationSettings(fromNameSpace, toNameSpace);
         }
 
-        private static GenerationInfo GetProtoBufGenerationInfo()
+        private static GenerationSettings GetProtoBufGenerationSettings()
         {
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate ProtoBuf classes for");
             string toNameSpace = $"{fromNameSpace}.ProtoBuf";
-            return GetGenerationInfo(fromNameSpace, toNameSpace, false);
+            return GetGenerationSettings(fromNameSpace, toNameSpace, false);
         }
 
-        private static GenerationInfo GetGenerationInfo(string fromNameSpace, string toNameSpace, bool setSchemaName = true)
+        private static GenerationSettings GetGenerationSettings(string fromNameSpace, string toNameSpace, bool setSchemaName = true)
         {
             Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
             string schemaName = string.Empty;
@@ -184,7 +184,7 @@ namespace Bam.Net.Application
             {
                 schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
             }
-            GenerationInfo result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };
+            GenerationSettings result = new GenerationSettings { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };
             return result;
         }
     }

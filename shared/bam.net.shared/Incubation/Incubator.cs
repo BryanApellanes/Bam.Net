@@ -311,19 +311,19 @@ namespace Bam.Net.Incubation
         /// <returns></returns>
         public T Construct<T>(params Type[] ctorParamTypes)
         {
-            object[] ctorParams = GetInstancesFromTypes(ctorParamTypes);
+            object[] ctorParams = GetCtorArgumentsFromTypes(ctorParamTypes);
 
             return Construct<T>(ctorParams);
         }
 
         public object Construct(Type type, Type[] ctorParamTypes)
         {
-            object[] ctorParams = GetInstancesFromTypes(ctorParamTypes);
+            object[] ctorParams = GetCtorArgumentsFromTypes(ctorParamTypes);
 
             return Construct(type, ctorParams);
         }
 
-        private object[] GetInstancesFromTypes(Type[] ctorParamTypes)
+        private object[] GetCtorArgumentsFromTypes(Type[] ctorParamTypes)
         {
             if (ctorParamTypes == null)
             {
@@ -339,16 +339,13 @@ namespace Bam.Net.Incubation
             return ctorParams;
         }
 
-        object _getLock = new object();
         private T GetInternal<T>()
         {
-            Func<T> f = this[typeof(T)] as Func<T>;
-            Func<Type, T> fp = this[typeof(T)] as Func<Type, T>;
-            if (f != null)
+            if (this[typeof(T)] is Func<T> f)
             {
                 return f();
             }
-            else if (fp != null)
+            else if (this[typeof(T)] is Func<Type, T> fp)
             {
                 return fp(typeof(T));
             }
@@ -404,6 +401,10 @@ namespace Bam.Net.Incubation
                 {
                     return fn() ?? Get(type, GetCtorParams(type));
                 }
+                else if(result is Func<Type, object> typeFn)
+                {
+                    return typeFn(type) ?? Get(type, GetCtorParams(type));
+                }
                 else if(result == null)
                 {
                     result = Get(type, GetCtorParams(type));
@@ -446,9 +447,8 @@ namespace Bam.Net.Incubation
 
 		public bool TryGet<T>(out T value)
 		{
-			Exception ignore;
-			return TryGet<T>(out value, out ignore);
-		}
+            return TryGet<T>(out value, out Exception ignore);
+        }
 
 		public bool TryGet<T>(out T value, out Exception ex)
 		{
