@@ -107,11 +107,17 @@ namespace Bam.Net.Application
         {
             DynamicTypeManager dynamicTypeManager = new DynamicTypeManager();
             OutLineFormat("Generating dynamic types from json ({0}) and yaml ({1}).", Path.Combine(AppData.FullName, "json"), Path.Combine(AppData.FullName, "yaml"));
+
+            // TOOD: change this to only write files without compiling
             Assembly assembly = dynamicTypeManager.Generate(AppData);
+
             Expect.IsNotNull(assembly);
-            Expect.IsGreaterThan(assembly.GetTypes().Length, 0);   
-            
-            foreach(Type type in assembly.GetTypes())
+            Expect.IsGreaterThan(assembly.GetTypes().Length, 0);
+
+            // TODO: add a call to troo, example: troo.exe /gsr /ta:.\bam.net.dll /sn:DynamicTypeData /fns:Bam.Net.Data.Dynamic.Data /cfi:yes /uis:no /ws:C:\bam\src\_gen\Bam.Net.Data.Dynamic\Data\Generated_Dao
+            // TODO: add a call to laotze to process any db.js files
+
+            foreach (Type type in assembly.GetTypes())
             {
                 OutLineFormat("{0}.{1}", ConsoleColor.Cyan, type.Namespace, type.Name);
             }

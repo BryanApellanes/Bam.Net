@@ -1,7 +1,7 @@
 ﻿{
   "typeName": "JsonTest",
   "name": "test json file",
-  "value": [
+  "arrayProperty": [
     {
       "name": "one",
       "id": 1

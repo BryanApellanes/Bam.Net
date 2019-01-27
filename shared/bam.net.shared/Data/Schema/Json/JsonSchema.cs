@@ -27,6 +27,10 @@ namespace Bam.Net.Data.Schema.Json
         
         public virtual string ToJson(bool pretty = false)
         {
+            // TODO: define a JsonSchemaTypeDefinition which is a dictionary like object
+            // define JsonSchema as {string Schema, JsonSchemaTypeDefinition[] Definitions
+            // move all JsonSchema properties into JsonSchemaTypeDefinition except $schema and $id
+            // https://json-schema.org/understanding-json-schema/structuring.html#structuring
             Dictionary<string, object> result = new Dictionary<string, object>()
             {
                 { "$schema", Schema},

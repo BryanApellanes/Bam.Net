@@ -19,8 +19,7 @@ using YamlDotNet.Serialization;
 namespace Bam.Net.Data.Dynamic
 {
     /// <summary>
-    /// Manages dynamic types.  Can create types for 
-    /// json strings
+    /// Creates type definitions for json and yaml strings.
     /// </summary>
     public class DynamicTypeManager: Loggable
     {
@@ -55,7 +54,7 @@ namespace Bam.Net.Data.Dynamic
             {
                 Process = (df) =>
                 {
-                    ProcessYamlFile(df.FileInfo);
+                    ProcessYamlFile(df.TypeName, df.FileInfo);
                 }
             };
         }
@@ -68,40 +67,38 @@ namespace Bam.Net.Data.Dynamic
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
         public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
 
+        /// <summary>
+        /// Generates classes to represent data found in AppData/json and AppData/yaml.
+        /// </summary>
+        /// <param name="appData">The application data.</param>
+        /// <param name="nameSpace">The name space.</param>
+        /// <returns></returns>
         public Assembly Generate(DirectoryInfo appData, string nameSpace = null)
         {
-            AutoResetEvent blocker = new AutoResetEvent(false);
-            bool jsonEmptied = false;
-            bool yamlEmptied = false;
-            JsonFileProcessor.QueueEmptied += (o, e) =>
+            nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
+            ProcessJson(appData, nameSpace);
+            ProcessYaml(appData, nameSpace);
+            DirectoryInfo srcDir = new DirectoryInfo(Path.Combine(appData.FullName, "_gen", "src"));
+            if (!srcDir.Exists)
             {
-                jsonEmptied = true;
-                if (yamlEmptied)
-                {
-                    blocker.Set();
-                }
-            };
-            YamlFileProcessor.QueueEmptied += (o, e) =>
-            {
-                yamlEmptied = true;
-                if (jsonEmptied)
-                {
-                    blocker.Set();
-                }
-            };
-            DirectoryInfo jsonDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "json"));
-            foreach(FileInfo jsonFile in jsonDirectory.GetFiles("*.json"))
-            {
-                ProcessJson(File.ReadAllText(jsonFile.FullName));
+                srcDir.Create();
             }
-            DirectoryInfo yamlDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "yaml"));
-            foreach (FileInfo yamlFile in yamlDirectory.GetFiles("*.yaml"))
+            DirectoryInfo binDir = new DirectoryInfo(Path.Combine(appData.FullName, "_gen", "bin"));
+            if (!binDir.Exists)
             {
-                ProcessYaml(File.ReadAllText(yamlFile.FullName));
+                binDir.Create();
             }
-
-            blocker.WaitOne();
-            return GetAssembly(nameSpace);
+            Assembly assembly = GetAssembly(out string src, nameSpace);
+            FileInfo assemblyFile = assembly.GetFileInfo();
+            string dllFilePath = Path.Combine(binDir.FullName, assemblyFile.Name);
+            if (File.Exists(dllFilePath))
+            {
+                File.Move(dllFilePath, dllFilePath.GetNextFileName());
+            }
+            assemblyFile.MoveTo(dllFilePath);
+            FileInfo sourceFile = new FileInfo(Path.Combine(srcDir.FullName, $"{src.Sha256()}.cs"));
+            src.SafeWriteToFile(sourceFile.FullName, true);
+            return assembly;
         }
 
         public void ProcessJson(DirectoryInfo appData, string nameSpace = null)
@@ -109,10 +106,19 @@ namespace Bam.Net.Data.Dynamic
             DirectoryInfo jsonDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "json"));
             foreach(FileInfo jsonFile in jsonDirectory.GetFiles("*.json"))
             {
-                string typeName = DynamicTypeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText());
-                JsonFileProcessor.Enqueue(new DataFile { Namespace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace, TypeName = typeName, FileInfo = jsonFile });
+                string typeName = DynamicTypeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText());                
+                ProcessJsonFile(typeName, jsonFile, nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace);
             }
-            //JsonFileProcessor.Enqueue(new DataF)
+        }
+
+        public void ProcessYaml(DirectoryInfo appData, string nameSpace = null)
+        {
+            DirectoryInfo yamlDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "yaml"));
+            foreach(FileInfo yamlFile in yamlDirectory.GetFiles("*.yaml"))
+            {
+                string typeName = DynamicTypeNameResolver.ResolveYamlTypeName(yamlFile.ReadAllText());
+                ProcessYamlFile(typeName, yamlFile, nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace);
+            }
         }
 
         public void ProcessYaml(string yaml)
@@ -211,6 +217,11 @@ namespace Bam.Net.Data.Dynamic
 
         public Assembly GetAssembly(string nameSpace = null)
         {
+            return GetAssembly(out string ignore, nameSpace);
+        }
+
+        public Assembly GetAssembly(out string source, string nameSpace = null)
+        {
             List<DynamicTypeDescriptor> types = new List<DynamicTypeDescriptor>();
             DynamicNamespaceDescriptor ns = null;
             if(!string.IsNullOrEmpty(nameSpace))
@@ -233,12 +244,13 @@ namespace Bam.Net.Data.Dynamic
                 );
                 src.AppendLine(dto.Render());
             }
-
-            CompilerResults results = AdHocCSharpCompiler.CompileSource(src.ToString(), $"{ns.Namespace}.dll");
+            source = src.ToString();
+            CompilerResults results = AdHocCSharpCompiler.CompileSource(source, $"{ns.Namespace}.dll");
             if (results.Errors.Count > 0)
             {
                 throw new CompilationException(results);
             }
+            
             return results.CompiledAssembly;
         }
 
@@ -261,7 +273,7 @@ namespace Bam.Net.Data.Dynamic
             return jsonPropertyName.PascalCase(true, new string[] { " ", "_" });
         }
 
-        protected void ProcessYamlFile(FileInfo yamlFile, string nameSpace = null)
+        protected void ProcessYamlFile(string typeName, FileInfo yamlFile, string nameSpace = null)
         {
             string yaml = yamlFile.ReadAllText();
             string rootHash = yaml.Sha256();
@@ -270,7 +282,7 @@ namespace Bam.Net.Data.Dynamic
             
             JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
             Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
-            SaveRootData(rootHash, DynamicTypeNameResolver.ResolveJsonTypeName(json), valueDictionary, nameSpace);
+            SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
         }
 
         protected void ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
@@ -447,7 +459,7 @@ namespace Bam.Net.Data.Dynamic
         {
             lock (_typeDescriptorLock)
             {
-                DynamicTypeDescriptor descriptor = DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(td => td.TypeName == typeName).FirstOrDefault();
+                DynamicTypeDescriptor descriptor = DynamicTypeDataRepository.OneDynamicTypeDescriptorWhere(td => td.TypeName == typeName && td.DynamicNamespaceDescriptorId == nspace.Id);
                 if (descriptor == null)
                 {
                     descriptor = new DynamicTypeDescriptor()
