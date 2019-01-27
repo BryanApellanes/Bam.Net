@@ -8,4 +8,4 @@ TL;DR
 - bam /addPage:[pageName]
 - bam /gen
 - bam /webpack
-- bam /build
+- dotnet build
