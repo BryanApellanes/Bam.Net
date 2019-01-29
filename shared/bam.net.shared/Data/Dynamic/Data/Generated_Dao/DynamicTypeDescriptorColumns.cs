@@ -49,6 +49,41 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
                 return new DynamicTypeDescriptorColumns("TypeName");
             }
         }
+        public DynamicTypeDescriptorColumns Key
+        {
+            get
+            {
+                return new DynamicTypeDescriptorColumns("Key");
+            }
+        }
+        public DynamicTypeDescriptorColumns CreatedBy
+        {
+            get
+            {
+                return new DynamicTypeDescriptorColumns("CreatedBy");
+            }
+        }
+        public DynamicTypeDescriptorColumns ModifiedBy
+        {
+            get
+            {
+                return new DynamicTypeDescriptorColumns("ModifiedBy");
+            }
+        }
+        public DynamicTypeDescriptorColumns Modified
+        {
+            get
+            {
+                return new DynamicTypeDescriptorColumns("Modified");
+            }
+        }
+        public DynamicTypeDescriptorColumns Deleted
+        {
+            get
+            {
+                return new DynamicTypeDescriptorColumns("Deleted");
+            }
+        }
         public DynamicTypeDescriptorColumns Created
         {
             get

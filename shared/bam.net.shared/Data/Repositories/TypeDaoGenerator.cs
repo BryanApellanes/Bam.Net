@@ -322,6 +322,7 @@ namespace Bam.Net.Data.Repositories
         {
             get; set;
         }
+
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
         public event EventHandler SchemaWarning;
         
@@ -347,6 +348,7 @@ namespace Bam.Net.Data.Repositories
                 }
             }
         }
+
         public void ThrowWarningsIfWarningsAsErrors()
         {
             if (MissingColumns && WarningsAsErrors)

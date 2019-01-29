@@ -1,0 +1,11 @@
+﻿%YAML 1.2
+---
+!Bam.Net.Application.GenerationConfig
+WriteSrc: .\Data\Generated_Dao
+FromNameSpace: Bam.Net.Data.Dynamic.Data
+SchemaRepositoryName: SchemaRepositoryName
+SchemaName: DynamicTypeData
+CheckForIds: True
+UseInheritanceSchema: False
+TypeAssembly: C:\bam\toolkit\bam.net.dll
+...

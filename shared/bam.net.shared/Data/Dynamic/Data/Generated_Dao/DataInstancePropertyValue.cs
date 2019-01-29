@@ -129,6 +129,20 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		}
 	}
 
+	// property:ParentTypeNamespace, columnName:ParentTypeNamespace	
+	[Bam.Net.Data.Column(Name="ParentTypeNamespace", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ParentTypeNamespace
+	{
+		get
+		{
+			return GetStringValue("ParentTypeNamespace");
+		}
+		set
+		{
+			SetValue("ParentTypeNamespace", value);
+		}
+	}
+
 	// property:ParentTypeName, columnName:ParentTypeName	
 	[Bam.Net.Data.Column(Name="ParentTypeName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string ParentTypeName
@@ -168,6 +182,76 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		set
 		{
 			SetValue("Value", value);
+		}
+	}
+
+	// property:Key, columnName:Key	
+	[Bam.Net.Data.Column(Name="Key", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public ulong? Key
+	{
+		get
+		{
+			return GetULongValue("Key");
+		}
+		set
+		{
+			SetValue("Key", value);
+		}
+	}
+
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
+		}
+	}
+
+	// property:ModifiedBy, columnName:ModifiedBy	
+	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ModifiedBy
+	{
+		get
+		{
+			return GetStringValue("ModifiedBy");
+		}
+		set
+		{
+			SetValue("ModifiedBy", value);
+		}
+	}
+
+	// property:Modified, columnName:Modified	
+	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Modified
+	{
+		get
+		{
+			return GetDateTimeValue("Modified");
+		}
+		set
+		{
+			SetValue("Modified", value);
+		}
+	}
+
+	// property:Deleted, columnName:Deleted	
+	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Deleted
+	{
+		get
+		{
+			return GetDateTimeValue("Deleted");
+		}
+		set
+		{
+			SetValue("Deleted", value);
 		}
 	}
 

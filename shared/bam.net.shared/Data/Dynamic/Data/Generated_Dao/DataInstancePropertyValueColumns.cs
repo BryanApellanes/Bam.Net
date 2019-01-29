@@ -56,6 +56,13 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
                 return new DataInstancePropertyValueColumns("InstanceHash");
             }
         }
+        public DataInstancePropertyValueColumns ParentTypeNamespace
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("ParentTypeNamespace");
+            }
+        }
         public DataInstancePropertyValueColumns ParentTypeName
         {
             get
@@ -75,6 +82,41 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
             get
             {
                 return new DataInstancePropertyValueColumns("Value");
+            }
+        }
+        public DataInstancePropertyValueColumns Key
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("Key");
+            }
+        }
+        public DataInstancePropertyValueColumns CreatedBy
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("CreatedBy");
+            }
+        }
+        public DataInstancePropertyValueColumns ModifiedBy
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("ModifiedBy");
+            }
+        }
+        public DataInstancePropertyValueColumns Modified
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("Modified");
+            }
+        }
+        public DataInstancePropertyValueColumns Deleted
+        {
+            get
+            {
+                return new DataInstancePropertyValueColumns("Deleted");
             }
         }
         public DataInstancePropertyValueColumns Created

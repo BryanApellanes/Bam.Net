@@ -15,26 +15,54 @@ namespace Bam.Net.Application
     [Serializable]
     public class UtilityActions : CommandLineTestInterface
     {
-        static FileInfo LastGenerationInfo = new FileInfo(".\\troo_generation_info.json");
         [ConsoleAction("generateSchemaRepository", "Generate a schema specific DaoRepository")]
         public static void GenerateSchemaRepository()
         {
-            GenerationSettings genInfo = GetDaoGenerationSettings();
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
-            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger)
+
+            GenerationConfig config = new GenerationConfig();
+            if (Arguments.Contains("config"))
             {
-                CheckIdField = GetArgument("checkForIds", "Check for Id field?").IsAffirmative(),
-                BaseRepositoryType = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative() ? "DatabaseRepository" : "DaoRepository"
+                FileInfo configFile = new FileInfo(Arguments["config"]);
+                if (!configFile.Exists)
+                {
+                    OutLineFormat("Config file not found: {0}", ConsoleColor.Magenta, configFile.FullName);
+                    Exit(1);
+                }
+                logger.Info("using config: {0}", configFile.FullName);
+                string ext = Path.GetExtension(configFile.FullName).ToLowerInvariant();
+                if (ext.Equals(".json"))
+                {
+                    config = configFile.FromJsonFile<GenerationConfig>();
+                }
+                else if (ext.Equals(".yaml") || ext.Equals(".yml"))
+                {
+                    config = configFile.FromYamlFile<GenerationConfig>();
+                }
+                logger.Info(config.ToJson(true));
+            }
+            else
+            {
+                GenerationSettings genInfo = GetDaoGenerationSettings();
+                config = genInfo.ToConfig();
+                config.UseInheritanceSchema = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative();
+                config.CheckForIds = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
+                config.WriteSrc = GetArgument("writeSrc", "Please enter the directory to write source to");
+            }
+            
+            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(Assembly.LoadFrom(config.TypeAssembly), config.FromNameSpace, logger)
+            {
+                CheckIdField = config.CheckForIds,
+                BaseRepositoryType = config.UseInheritanceSchema ? "DatabaseRepository" : "DaoRepository"
             };
-            string targetDir = GetArgument("writeSrc", "Please enter the directory to write source to");
+            string targetDir = config.WriteSrc;
             if (Directory.Exists(targetDir))
             {
                 Directory.Move(targetDir, targetDir.GetNextDirectoryName());
             }
-            schemaGen.GenerateRepositorySource(
-                targetDir,
-                genInfo.SchemaName);
+
+            schemaGen.GenerateRepositorySource(targetDir, config.SchemaName);
 
             if(schemaGen.Warnings.MissingKeyColumns.Length > 0)
             {
@@ -44,6 +72,7 @@ namespace Bam.Net.Application
                     OutLineFormat("\t{0}", kc.TableClassName, ConsoleColor.DarkYellow);
                 });
             }
+
             if(schemaGen.Warnings.MissingForeignKeyColumns.Length > 0)
             {
                 OutLine("Missing ForeignKey columns", ConsoleColor.Cyan);
@@ -63,8 +92,10 @@ namespace Bam.Net.Application
             string fromNameSpace = genInfo.FromNameSpace;
             string toNameSpace = genInfo.ToNameSpace;
 
-            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), new ConsoleLogger(), schemaName);
-            repo.DaoNamespace = toNameSpace;
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), new ConsoleLogger(), schemaName)
+            {
+                DaoNamespace = toNameSpace
+            };
             repo.AddNamespace(typeAssembly, fromNameSpace);
             Assembly daoAssembly = repo.GenerateDaoAssembly(false);
             FileInfo fileInfo = daoAssembly.GetFileInfo();

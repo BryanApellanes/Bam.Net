@@ -13,5 +13,19 @@ namespace Bam.Net.Application
 
         public bool UseInheritanceSchema { get; set; }
         public string WriteSourceTo { get; set; }
+
+        public GenerationConfig ToConfig()
+        {
+            return new GenerationConfig
+            {
+                TypeAssembly = Assembly.GetFilePath(),
+                SchemaName = SchemaName,
+                FromNameSpace = FromNameSpace,
+                ToNameSpace = ToNameSpace,
+                WriteSrc = WriteSourceTo,
+                UseInheritanceSchema = UseInheritanceSchema,
+                CheckForIds = true
+            };
+        }
     }
 }

@@ -1,1 +1,1 @@
-﻿troo.exe /gsr /ta:.\bam.net.dll /sn:DynamicTypeData /fns:Bam.Net.Data.Dynamic.Data /cfi:yes /uis:no /ws:C:\bam\src\_gen\Bam.Net.Data.Dynamic\Data\Generated_Dao
+﻿troo.exe /gsr /config:.\dynamic_type_data_gen_config.yaml
