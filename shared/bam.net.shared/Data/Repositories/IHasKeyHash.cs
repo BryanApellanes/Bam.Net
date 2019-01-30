@@ -15,6 +15,6 @@ namespace Bam.Net.Data.Repositories
     {
         string[] CompositeKeyProperties { get; set; }
         int GetIntKeyHash();
-        long GetLongKeyHash();
+        ulong GetULongKeyHash();
     }
 }

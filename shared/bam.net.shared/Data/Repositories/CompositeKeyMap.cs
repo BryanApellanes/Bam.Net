@@ -16,13 +16,11 @@ namespace Bam.Net.Data.Repositories
         public CompositeKeyMap(IHasKeyHash instance)
         {
             Instance = instance;
-            LongCompositeKey = instance.GetLongKeyHash();
-            IntCompositeKey = instance.GetIntKeyHash();
+            ULongCompositeKey = instance.GetULongKeyHash();
             ReferencedCuid = instance.Property<string>("Cuid", true);
         }
         protected IHasKeyHash Instance { get; set; }
-        public long LongCompositeKey { get; set; }
-        public int IntCompositeKey { get; set; }
+        public ulong ULongCompositeKey { get; set; }
         public string ReferencedCuid { get; set; }
 
         /// <summary>

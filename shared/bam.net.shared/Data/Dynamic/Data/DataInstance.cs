@@ -10,7 +10,22 @@ namespace Bam.Net.Data.Dynamic.Data
     [Serializable]
     public class DataInstance: CompositeKeyRepoData
     {
+        public ulong DynamicNameSpaceDescriptorId { get; set; }
+        public virtual DynamicNamespaceDescriptor DynamicNamespaceDescriptor { get; set; }
+
+        [CompositeKey]
         public string TypeName { get; set; }
+
+
+        [CompositeKey]
+        public string Namespace
+        {
+            get
+            {
+                return DynamicNamespaceDescriptor?.Namespace;
+            }
+        }
+
         /// <summary>
         /// The Sha256 of the original json or yaml data
         /// </summary>
@@ -22,6 +37,7 @@ namespace Bam.Net.Data.Dynamic.Data
         /// <summary>
         /// The Sha256 of this instances json
         /// </summary>
+        [CompositeKey]
         public string Instancehash { get; set; }
 
         public virtual List<DataInstancePropertyValue> Properties { get; set; }

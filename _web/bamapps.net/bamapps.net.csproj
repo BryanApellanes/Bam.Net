@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="AppData\csv\" />
-    <Folder Include="AppData\_gen\" />
     <Folder Include="AppData\xml\" />
     <Folder Include="AppData\txt\" />
     <Folder Include="AppModules\WebServices\Rest\" />
