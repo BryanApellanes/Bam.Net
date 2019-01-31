@@ -14,10 +14,12 @@ using Bam.Net.Data.Dynamic.Data;
 using Bam.Net.Testing.Integration;
 using System.Threading;
 using Bam.Net.CommandLine;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Test.DataBanana;
+using Bam.Net.Test.DataBanana.Dao;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {
-
     [Serializable]
     public class DynamicRepositoryTests: CommandLineTestInterface
     {
@@ -49,6 +51,28 @@ namespace Bam.Net.Data.Dynamic.Tests
                 string value = "commit_author";
                 Expect.AreEqual("CommitAuthor", GetClrPropertyName(value));
             }
+        }
+
+        [UnitTest]
+        public void TestULongSaveAndRetrieve()
+        {
+            ulong val = 18446744073709551615;
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            SQLiteDatabase db = new SQLiteDatabase(".", "TestDatabase");
+            SQLiteRegistrar.Register(db);
+            db.TryEnsureSchema<TestClass>();
+            TestClass testClass = new TestClass();
+            testClass.Value = val;
+            testClass.Save(db);
+            TestClass retrieved = TestClass.OneWhere(c => c.Id == testClass.Id, db);
+            Expect.AreEqual(val, retrieved.Value);
+            //TestClass saved = repo.Save(new TestClass { Value = val });//
+            //TestClass retrieved = repo.Retrieve<TestClass>(saved.Id);
+
+            //Expect.AreEqual(val, saved.Value);
+            //Expect.AreEqual(val, retrieved.Value);
+            OutLineFormat(db.ConnectionString);
         }
 
         [ConsoleAction]

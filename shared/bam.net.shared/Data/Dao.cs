@@ -1466,11 +1466,25 @@ namespace Bam.Net.Data
             return new long?();
         }
 
+        internal static long MapUlongToLong(ulong ulongValue)
+        {
+            return unchecked((long)ulongValue + long.MinValue);
+        }
+
+        internal static ulong MapLongToUlong(long longValue)
+        {
+            return unchecked((ulong)(longValue - long.MinValue));
+        }
+
         protected ulong? GetULongValue(string columnName)
         {
             object val = GetCurrentValue(columnName);
             if (val != null && val != DBNull.Value)
             {
+                if(val is long longVal)
+                {
+                    return new ulong?(MapLongToUlong(longVal));
+                }
                 return new ulong?(Convert.ToUInt64(val));
             }
 

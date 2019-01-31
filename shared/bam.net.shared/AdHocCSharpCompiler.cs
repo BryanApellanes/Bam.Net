@@ -122,7 +122,7 @@ namespace Bam.Net
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();
             CompilerParameters parameters = GetCompilerParameters(assemblyFileName, referenceAssemblies, executable);
 
-            List<string> fileNames = new List<string>();
+            HashSet<string> fileNames = new HashSet<string>();
 
             foreach (DirectoryInfo directory in directories)
             {

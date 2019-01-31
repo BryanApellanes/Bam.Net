@@ -84,6 +84,11 @@ namespace Bam.Net.Data.Repositories
             return KeyHashProvider.GetULongKeyHash(this, PropertyDelimiter, CompositeKeyProperties);
         }
 
+        public long GetLongKeyHash()
+        {
+            return KeyHashProvider.GetLongKeyHash(this, PropertyDelimiter, CompositeKeyProperties);
+        }
+
         protected string PropertyDelimiter { get; set; }
 
         public override int GetHashCode()
