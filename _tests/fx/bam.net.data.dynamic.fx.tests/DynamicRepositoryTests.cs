@@ -62,16 +62,14 @@ namespace Bam.Net.Data.Dynamic.Tests
             SQLiteDatabase db = new SQLiteDatabase(".", "TestDatabase");
             SQLiteRegistrar.Register(db);
             db.TryEnsureSchema<TestClass>();
-            TestClass testClass = new TestClass();
-            testClass.Value = val;
+            TestClass testClass = new TestClass
+            {
+                Value = val
+            };
             testClass.Save(db);
             TestClass retrieved = TestClass.OneWhere(c => c.Id == testClass.Id, db);
             Expect.AreEqual(val, retrieved.Value);
-            //TestClass saved = repo.Save(new TestClass { Value = val });//
-            //TestClass retrieved = repo.Retrieve<TestClass>(saved.Id);
-
-            //Expect.AreEqual(val, saved.Value);
-            //Expect.AreEqual(val, retrieved.Value);
+            
             OutLineFormat(db.ConnectionString);
         }
 

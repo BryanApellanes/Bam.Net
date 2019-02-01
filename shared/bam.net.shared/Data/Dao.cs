@@ -1567,6 +1567,10 @@ namespace Bam.Net.Data
 
         protected internal void SetValue(string columnName, object value)
         {
+            if(value is ulong ulongVal)
+            {
+                value = MapUlongToLong(ulongVal);
+            }
             // Note To Self: Please don't mess with this logic.  You've faced the consequences of that decision 
             // too many times now.  Trust that this moronic looking logic is needed for all to function correctly.
             // - BA (07/14/2018)
