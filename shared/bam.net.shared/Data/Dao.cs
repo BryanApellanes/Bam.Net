@@ -1466,11 +1466,25 @@ namespace Bam.Net.Data
             return new long?();
         }
 
+        internal static long MapUlongToLong(ulong ulongValue)
+        {
+            return unchecked((long)ulongValue + long.MinValue);
+        }
+
+        internal static ulong MapLongToUlong(long longValue)
+        {
+            return unchecked((ulong)(longValue - long.MinValue));
+        }
+
         protected ulong? GetULongValue(string columnName)
         {
             object val = GetCurrentValue(columnName);
             if (val != null && val != DBNull.Value)
             {
+                if(val is long longVal)
+                {
+                    return new ulong?(MapLongToUlong(longVal));
+                }
                 return new ulong?(Convert.ToUInt64(val));
             }
 
@@ -1553,6 +1567,10 @@ namespace Bam.Net.Data
 
         protected internal void SetValue(string columnName, object value)
         {
+            if(value is ulong ulongVal)
+            {
+                value = MapUlongToLong(ulongVal);
+            }
             // Note To Self: Please don't mess with this logic.  You've faced the consequences of that decision 
             // too many times now.  Trust that this moronic looking logic is needed for all to function correctly.
             // - BA (07/14/2018)

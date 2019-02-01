@@ -14,45 +14,15 @@ using Bam.Net.Data.Dynamic.Data;
 using Bam.Net.Testing.Integration;
 using System.Threading;
 using Bam.Net.CommandLine;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Test.DataBanana;
+using Bam.Net.Test.DataBanana.Dao;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {
-
     [Serializable]
     public class DynamicRepositoryTests: CommandLineTestInterface
     {
-        [ConsoleAction]
-        [IntegrationTest]
-        public void CanReadUnc()
-        {
-            JObject jobj = (JObject)JsonConvert.DeserializeObject("\\\\core\\data\\events\\github\\24745fe6efe498f79b3b165be27b1feb69a851d0.json".SafeReadFile());
-            Dictionary<object, object> dic = jobj.ToObject<Dictionary<object, object>>();
-            List<object> convertKeys = new List<object>();
-            foreach(object key in dic.Keys)
-            {
-                object val = dic[key];
-                Type type = null;
-                if(val != null)
-                {
-                    type = val.GetType();
-                }
-                string typeName = type == null ? "null" : type.Name;
-                OutLineFormat("{0}: Type = {1}", key, typeName);
-                if(type == typeof(JObject))
-                {
-                    convertKeys.Add(key);                    
-                }
-            }
-
-            convertKeys.Each(k => dic[k] = ((JObject)dic[k]).ToObject<Dictionary<object, object>>());
-            
-            Type dynamicType = dic.ToDynamicType("GitEvent");
-            foreach(PropertyInfo prop in dynamicType.GetProperties())
-            {
-                OutLineFormat("{0}: {1}", ConsoleColor.Cyan, prop.Name, prop.PropertyType.Name);
-            }
-        }
-
         public class TestDynamicTypeManager: DynamicTypeManager
         {
             public TestDynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataDirectoryProvider settings) : base(descriptorRepository, settings)
@@ -81,6 +51,26 @@ namespace Bam.Net.Data.Dynamic.Tests
                 string value = "commit_author";
                 Expect.AreEqual("CommitAuthor", GetClrPropertyName(value));
             }
+        }
+
+        [UnitTest]
+        public void TestULongSaveAndRetrieve()
+        {
+            ulong val = 18446744073709551615;
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            SQLiteDatabase db = new SQLiteDatabase(".", "TestDatabase");
+            SQLiteRegistrar.Register(db);
+            db.TryEnsureSchema<TestClass>();
+            TestClass testClass = new TestClass
+            {
+                Value = val
+            };
+            testClass.Save(db);
+            TestClass retrieved = TestClass.OneWhere(c => c.Id == testClass.Id, db);
+            Expect.AreEqual(val, retrieved.Value);
+            
+            OutLineFormat(db.ConnectionString);
         }
 
         [ConsoleAction]
@@ -156,9 +146,9 @@ namespace Bam.Net.Data.Dynamic.Tests
         public void SaveRealData()
         {
             AutoResetEvent wait = new AutoResetEvent(false);
-            string json = "\\\\core\\data\\events\\github\\04feeb057e9eba4a6ace6413af475f819b54ad0c.json".SafeReadFile();
+            string json = "\\\\core\\share\\events\\github\\04feeb057e9eba4a6ace6413af475f819b54ad0c.json".SafeReadFile();
             DynamicTypeManager typeManager = new DynamicTypeManager(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Instance);
-            typeManager.SaveJson("GitHubEvent", json);
+            typeManager.ProcessJson("GitHubEvent", json);
             typeManager.JsonFileProcessor.QueueEmptied += (s, a) => wait.Set();
             OutLine(typeManager.DynamicTypeDataRepository.Database.ConnectionString);            
             wait.WaitOne();
@@ -245,7 +235,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             DynamicTypePropertyDescriptor prop = mgr.AddProperty(testType, testProperty, "String");
             DynamicTypePropertyDescriptor prop2 = mgr.AddProperty(testType, testProperty2, "Boolean");
 
-            Assembly ass = mgr.GetAssembly();
+            Assembly ass = mgr.GenerateAssembly();
             Expect.IsNotNull(ass);
         }
 

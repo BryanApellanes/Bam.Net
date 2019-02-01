@@ -49,6 +49,41 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
                 return new DynamicNamespaceDescriptorColumns("Namespace");
             }
         }
+        public DynamicNamespaceDescriptorColumns Key
+        {
+            get
+            {
+                return new DynamicNamespaceDescriptorColumns("Key");
+            }
+        }
+        public DynamicNamespaceDescriptorColumns CreatedBy
+        {
+            get
+            {
+                return new DynamicNamespaceDescriptorColumns("CreatedBy");
+            }
+        }
+        public DynamicNamespaceDescriptorColumns ModifiedBy
+        {
+            get
+            {
+                return new DynamicNamespaceDescriptorColumns("ModifiedBy");
+            }
+        }
+        public DynamicNamespaceDescriptorColumns Modified
+        {
+            get
+            {
+                return new DynamicNamespaceDescriptorColumns("Modified");
+            }
+        }
+        public DynamicNamespaceDescriptorColumns Deleted
+        {
+            get
+            {
+                return new DynamicNamespaceDescriptorColumns("Deleted");
+            }
+        }
         public DynamicNamespaceDescriptorColumns Created
         {
             get

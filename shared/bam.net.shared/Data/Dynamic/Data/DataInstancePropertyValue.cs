@@ -8,14 +8,25 @@ using System.Threading.Tasks;
 namespace Bam.Net.Data.Dynamic.Data
 {
     [Serializable]
-    public class DataInstancePropertyValue: RepoData
+    public class DataInstancePropertyValue: CompositeKeyRepoData
     {
-        public long DataInstanceId { get; set; }
+        public ulong DataInstanceId { get; set; }
         public virtual DataInstance DataInstance { get; set; }
         public string RootHash { get; set; }
         public string InstanceHash { get; set; }
+
+        [CompositeKey]
+        public string ParentTypeNamespace { get; set; }
+
+        [CompositeKey]
         public string ParentTypeName { get; set; }
+
+        [CompositeKey]
         public string PropertyName { get; set; }
+
+        [CompositeKey]
         public string Value { get; set; }
+
+
     }
 }

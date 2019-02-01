@@ -8,6 +8,7 @@ using System.Text;
 using System.Reflection;
 using Bam.Net;
 using System.Diagnostics;
+using Bam.Net.Services;
 
 namespace Bam.Net.Incubation
 {
@@ -200,22 +201,57 @@ namespace Bam.Net.Incubation
         /// <param name="instance"></param>
         public void SetProperties(object instance)
         {
-            Type type = instance.GetType();
-            
+            Type type = instance.GetType();            
             PropertyInfo[] properties = type.GetProperties();
             foreach (PropertyInfo prop in properties)
             {
                 object value = this[prop.PropertyType];
                 Delegate getter = value as Delegate;
                 value = getter != null ? getter.DynamicInvoke() : value;
-                // TODO: if value is null add a check for a 
-                // custom attribute (not yet defined) to determine if we should do
-                // Get(prop.PropertyType)
+
+                if (value == null && prop.HasCustomAttributeOfType(out InjectAttribute attr))
+                {
+                    value = GetInjectValue(prop, attr);
+                }
+
                 if (prop.CanWrite && value != null)
                 {
                     prop.SetValue(instance, value, null);
                 }
             }
+        }
+
+        public void SetInjectionProperties(object instance)
+        {
+            Type type = instance.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+            foreach (PropertyInfo prop in properties)
+            {
+                if(prop.HasCustomAttributeOfType(out InjectAttribute attr))
+                {
+                    if (!prop.CanWrite)
+                    {
+                        Logging.Log.Warn("Property {0}.{1} is addorned with the Inject attribute but it is read only");
+                        continue;
+                    }
+                    prop.SetValue(instance, GetInjectValue(prop, attr));
+                }
+            }
+        }
+
+        private object GetInjectValue(PropertyInfo prop, InjectAttribute attr)
+        {
+            object value;
+            Type tryType = attr.TypeToUse ?? prop.PropertyType;
+            value = Get(tryType);
+            if (value == null && attr.Required)
+            {
+                string msgFormat = "Unable to construct required injection property: Name = {0}, Type = {1}";
+                string message = string.Format(msgFormat, $"{prop.DeclaringType.Name}.{prop.Name}", tryType.FullName);
+                throw new InvalidOperationException(message);
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -275,19 +311,19 @@ namespace Bam.Net.Incubation
         /// <returns></returns>
         public T Construct<T>(params Type[] ctorParamTypes)
         {
-            object[] ctorParams = GetInstancesFromTypes(ctorParamTypes);
+            object[] ctorParams = GetCtorArgumentsFromTypes(ctorParamTypes);
 
             return Construct<T>(ctorParams);
         }
 
         public object Construct(Type type, Type[] ctorParamTypes)
         {
-            object[] ctorParams = GetInstancesFromTypes(ctorParamTypes);
+            object[] ctorParams = GetCtorArgumentsFromTypes(ctorParamTypes);
 
             return Construct(type, ctorParams);
         }
 
-        private object[] GetInstancesFromTypes(Type[] ctorParamTypes)
+        private object[] GetCtorArgumentsFromTypes(Type[] ctorParamTypes)
         {
             if (ctorParamTypes == null)
             {
@@ -303,16 +339,13 @@ namespace Bam.Net.Incubation
             return ctorParams;
         }
 
-        object _getLock = new object();
         private T GetInternal<T>()
         {
-            Func<T> f = this[typeof(T)] as Func<T>;
-            Func<Type, T> fp = this[typeof(T)] as Func<Type, T>;
-            if (f != null)
+            if (this[typeof(T)] is Func<T> f)
             {
                 return f();
             }
-            else if (fp != null)
+            else if (this[typeof(T)] is Func<Type, T> fp)
             {
                 return fp(typeof(T));
             }
@@ -368,6 +401,10 @@ namespace Bam.Net.Incubation
                 {
                     return fn() ?? Get(type, GetCtorParams(type));
                 }
+                else if(result is Func<Type, object> typeFn)
+                {
+                    return typeFn(type) ?? Get(type, GetCtorParams(type));
+                }
                 else if(result == null)
                 {
                     result = Get(type, GetCtorParams(type));
@@ -410,9 +447,8 @@ namespace Bam.Net.Incubation
 
 		public bool TryGet<T>(out T value)
 		{
-			Exception ignore;
-			return TryGet<T>(out value, out ignore);
-		}
+            return TryGet<T>(out value, out Exception ignore);
+        }
 
 		public bool TryGet<T>(out T value, out Exception ex)
 		{

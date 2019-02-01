@@ -11,11 +11,21 @@ using System.IO;
 using Bam.Net;
 using System.Reflection;
 using System.Collections;
+using YamlDotNet.Serialization;
 
 namespace Bam.Net
 {
+    // TOOD: replace all uses of YamlSerializer (System.Yaml) with YamlDotNet.  
+    // Convert yaml to json (yaml.YamlToJson) for all significant operations
     public static class YamlExtensions
     {
+        public static string YamlToJson(this string yaml)
+        {
+            Deserializer deserializer = new Deserializer();
+            object dict = deserializer.Deserialize(new StringReader(yaml));
+            return dict.ToJson();
+        }
+
         public static YamlSequence ToYamlSequence(this IEnumerable enumerable)
         {
             YamlSequence seq = new YamlSequence();

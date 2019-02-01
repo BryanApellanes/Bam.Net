@@ -30,6 +30,9 @@ namespace Bam.Net.CoreServices
         static Dictionary<ProcessModes, Func<ServiceRegistry>> _factories;
         static CoreServiceRegistryContainer()
         {
+            ConfigureDev = (sr) => sr;
+            ConfigureTest = (sr) => sr;
+            ConfigureProd = (sr) => sr;
             _factories = new Dictionary<ProcessModes, Func<ServiceRegistry>>
             {
                 { ProcessModes.Dev, Dev },
@@ -54,20 +57,37 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        // place holders for customization if necessary
+        /// <summary>
+        /// Gets or sets the configure dev function.  Used to further configure the service
+        /// registry when in Dev mode.
+        /// </summary>
+        public static Func<ServiceRegistry, ServiceRegistry> ConfigureDev { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configure test.  Used to further configure the service
+        /// registry when in Test mode.
+        /// </summary>
+        public static Func<ServiceRegistry, ServiceRegistry> ConfigureTest { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configure test.  Used to further configure the service
+        /// registry when in Prod mode.
+        /// </summary>
+        public static Func<ServiceRegistry, ServiceRegistry> ConfigureProd { get; set; }
+                
         public static ServiceRegistry Dev()
         {
-            return Create();
+            return ConfigureDev(Create());
         }
 
         public static ServiceRegistry Test()
         {
-            return Create();
+            return ConfigureTest(Create());
         }
 
         public static ServiceRegistry Prod()
         {
-            return Create();
+            return ConfigureProd(Create());
         }
         // --
 

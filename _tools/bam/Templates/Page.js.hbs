@@ -1,0 +1,16 @@
+﻿var {{PageName}} = (function($){
+
+    return function(settings) {
+        var _settings = $.extend({
+            // your settings here
+        }, settings); // or pass them in
+
+        return {
+            test: function() {
+                console.log("test from {{PageName}}");
+            }
+        }                
+    }
+})(jQuery);
+
+module.exports = {{PageName}};

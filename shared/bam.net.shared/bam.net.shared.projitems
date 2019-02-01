@@ -199,6 +199,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonProcessMonitorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DaemonServiceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\DeployInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\GenerationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Args.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Automation\AssemblyReference.cs" />
@@ -410,6 +412,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\IHasRequiredProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\RequiredPropertiesNotSetException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicDataSaveResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeFormats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\DynamicTypeNameResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\IDynamicTypeNameResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Dynamic\PropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Presentation\WebBook.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SettingSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SourcedConfigurationSetting.cs" />
@@ -1546,7 +1555,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)NamedThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetworkExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Paths.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\ApplicationModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\ColorPalette.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\Dimensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Drawing\Extensions.cs" />
@@ -1586,18 +1594,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Js\DataSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ICompiledTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IPersistenceModelProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\ITemplateManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\IViewModelProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\LayoutModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\IDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\Markdown\PipeTableDocumentComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Presentation\OAuthSetting.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\PersistenceModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Presentation\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Profiguration\AppSettings.cs" />
@@ -1909,6 +1913,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Chunking\ChunkServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\InjectAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\LocalServiceRegistryContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationConfigurationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Clients\ApplicationContext.cs" />
@@ -2765,6 +2770,9 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)CoreServices\Templates\Proxy.tmpl" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)CoreServices\Templates\ProxyMethod.tmpl" />
     <None Include="$(MSBuildThisFileDirectory)CoreServices\WebHooks\regen_webhooks_dao.cmd" />
+    <None Include="$(MSBuildThisFileDirectory)Data\Dynamic\dynamic_type_data_gen_config.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="$(MSBuildThisFileDirectory)Data\Dynamic\regen_data_dynamic_dao.cmd" />
     <None Include="$(MSBuildThisFileDirectory)Data\README.md" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Data\Repositories\Templates\ChildPrimaryKeyProperty.tmpl" />

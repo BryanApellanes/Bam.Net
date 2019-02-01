@@ -31,7 +31,7 @@ namespace Bam.Net.Data.Repositories
             List<string> properties = new List<string>();
             foreach(DtoPropertyModel p in propertyModels)
             {
-                properties.Add("\t\tpublic {0} {1} {{get; set;}}"._Format(p.PropertyType, p.PropertyName));
+                properties.Add("\t\tpublic {0} {1} {{get; set;}}\r\n"._Format(p.PropertyType, p.PropertyName));
             }
             TypeName = typeName;
             Properties = properties.ToArray();

@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Bam.Net.Services;
-using Bam.Net.Web.AppModules;
 using Bam.Net.CoreServices;
 using Bam.Net.Configuration;
+using Bam.Net.Presentation;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Web
 {
@@ -38,15 +34,23 @@ namespace Bam.Net.Web
             });
 
             services.AddSingleton(ApplicationServiceRegistry.Configure((appRegistry) =>
-            {                
+            {
                 // Configure the Bam appRegistry here
                 appRegistry
-                    .For<ConfigurationResolver>().Use(ConfigurationResolver.Current)
-                    .For<ProxyAssemblyGeneratorService>().Use<ProxyAssemblyGeneratorServiceProxy>();
+                    .For<Startup>().Use(this)
+                    .For<IConfiguration>().Use(Configuration)
+                    .For<ConfigurationResolver>().Use(new ConfigurationResolver(Configuration));                    
 
                 appRegistry
-                    .RegisterAppModules()
-                    .AddServices(services);
+                    .RegisterAppModules();
+
+                appRegistry
+                    .For<IViewModelProvider>().Use<DefaultViewModelProvider>()
+                    .For<IPersistenceModelProvider>().Use<DefaultPersistenceModelProvider>()
+                    .For<IExecutionRequestResolver>().Use<ExecutionRequestResolver>()
+                    .For<WebServiceRegistry>().Use(WebServiceRegistry.ForCurrentApplication(appRegistry));
+
+                appRegistry.AddServices(services);
             }));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

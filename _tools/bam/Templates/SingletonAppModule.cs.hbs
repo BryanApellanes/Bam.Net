@@ -1,0 +1,17 @@
+﻿using Bam.Net.Services;
+
+namespace {{BaseNamespace}}.AppModules
+{
+    [Singleton]
+    public class {{AppModuleName}}SingletonAppModule
+    {
+        public {{AppModuleName}}SingletonAppModule()
+        {
+        }
+
+        public string GetTestString(string input)
+        {
+            return $"{GetType().Name}: {input}";
+        }
+    }
+}

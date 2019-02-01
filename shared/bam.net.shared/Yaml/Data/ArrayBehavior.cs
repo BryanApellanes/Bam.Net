@@ -20,7 +20,7 @@ namespace Bam.Net.Yaml.Data
         Warn,
         /// <summary>
         /// If a YamlDataFile is read and has more than one
-        /// top level value write each value out to separate
+        /// top level value, write each value out to separate
         /// YamlDataFiles
         /// </summary>
         Normalize

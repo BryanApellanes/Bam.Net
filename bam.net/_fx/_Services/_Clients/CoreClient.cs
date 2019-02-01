@@ -34,7 +34,7 @@ namespace Bam.Net.Services.Clients
     {
         private void SetDownloadedServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port, Logger);
+            ApplicationRegistrationService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port, Logger);
             ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>(HostName, Port, Logger);
             DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>(HostName, Port, Logger);
             LoggerService = ProxyFactory.GetProxy<SystemLoggerService>(HostName, Port, Logger);

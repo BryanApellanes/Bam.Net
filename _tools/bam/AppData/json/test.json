@@ -1,0 +1,14 @@
+﻿{
+  "typeName": "JsonTest",
+  "name": "test json file",
+  "arrayProperty": [
+    {
+      "name": "one",
+      "id": 1
+    },
+    {
+      "name": "two",
+      "id":  2
+    }
+  ]
+}

@@ -12,24 +12,36 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Yaml;
+using YamlDotNet.Serialization;
 
 namespace Bam.Net.Data.Dynamic
 {
     /// <summary>
-    /// Manages dynamic types.  Can create types for 
-    /// json strings
+    /// Creates type definitions for json and yaml strings.
     /// </summary>
     public class DynamicTypeManager: Loggable
     {
-        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DefaultDataDirectoryProvider settings) 
+        public DynamicTypeManager() : this(new DynamicTypeDataRepository(), DefaultDataDirectoryProvider.Current)
+        { }
+
+        public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, IDataDirectoryProvider settings) 
         {
             DataSettings = settings;
-            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager));
+            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "json");
             if (!JsonDirectory.Exists)
             {
                 JsonDirectory.Create();
             }
+            YamlDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager), "yaml");
+            if (!YamlDirectory.Exists)
+            {
+                YamlDirectory.Create();
+            }
+            
             descriptorRepository.EnsureDaoAssemblyAndSchema();
+            DynamicTypeNameResolver = new DynamicTypeNameResolver();
             DynamicTypeDataRepository = descriptorRepository;
             JsonFileProcessor = new BackgroundThreadQueue<DataFile>()
             {
@@ -38,22 +50,164 @@ namespace Bam.Net.Data.Dynamic
                     ProcessJsonFile(df.TypeName, df.FileInfo);
                 }
             };
+            YamlFileProcessor = new BackgroundThreadQueue<DataFile>()
+            {
+                Process = (df) =>
+                {
+                    ProcessYamlFile(df.TypeName, df.FileInfo);
+                }
+            };
         }
-        public DefaultDataDirectoryProvider DataSettings { get; set; }
+
+        public IDataDirectoryProvider DataSettings { get; set; }
+        public DynamicTypeNameResolver DynamicTypeNameResolver { get; set; }
         public DynamicTypeDataRepository DynamicTypeDataRepository { get; set; }
         public DirectoryInfo JsonDirectory { get; set; }
+        public DirectoryInfo YamlDirectory { get; set; }
         public BackgroundThreadQueue<DataFile> JsonFileProcessor { get; }
+        public BackgroundThreadQueue<DataFile> YamlFileProcessor { get; }
 
-        public void SaveJson(string typeName, string json)
+        /// <summary>
+        /// Write source code to the specified appData folder and return
+        /// the source as well.
+        /// </summary>
+        /// <param name="appData">The application data.</param>
+        /// <param name="nameSpace">The name space.</param>
+        /// <returns></returns>
+        public string GenerateSource(DirectoryInfo appData, string nameSpace = null)
         {
-            string filePath = Path.Combine(JsonDirectory.FullName, $"{json.Sha1()}.json").GetNextFileName();
-            json.SafeWriteToFile(filePath);
+            nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
+            List<DynamicDataSaveResult>  results = ProcessDataFiles(appData, nameSpace);
+
+            string source = GenerateSource(nameSpace);
+            WriteSource(appData, source);
+
+            return source;
+        }
+
+        /// <summary>
+        /// Generates classes to represent data found in AppData/json and AppData/yaml placing the assembly 
+        /// fil into the _gen/bin directory of the speicifed appData folder.
+        /// </summary>
+        /// <param name="appData">The application data.</param>
+        /// <param name="nameSpace">The name space.</param>
+        /// <returns></returns>
+        public Assembly GenerateAssembly(DirectoryInfo appData, string nameSpace = null)
+        {
+            nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
+            ProcessDataFiles(appData, nameSpace);
+
+            Assembly assembly = GenerateAssembly(out string src, nameSpace);
+            FileInfo assemblyFile = assembly.GetFileInfo();
+            WriteSource(appData, src);
+
+            WriteAssembly(appData, assemblyFile);
+
+            return assembly;
+        }
+
+        private List<DynamicDataSaveResult> ProcessDataFiles(DirectoryInfo appData, string nameSpace)
+        {
+            List<DynamicDataSaveResult> results = new List<DynamicDataSaveResult>();
+            results.AddRange(ProcessJson(appData, nameSpace));
+            results.AddRange(ProcessYaml(appData, nameSpace));
+            return results;
+        }
+
+        private static void WriteAssembly(DirectoryInfo appData, FileInfo assemblyFile)
+        {
+            DirectoryInfo binDir = new DirectoryInfo(Path.Combine(appData.FullName, "_gen", "bin"));
+            if (!binDir.Exists)
+            {
+                binDir.Create();
+            }
+            string dllFilePath = Path.Combine(binDir.FullName, assemblyFile.Name);
+            if (File.Exists(dllFilePath))
+            {
+                File.Move(dllFilePath, dllFilePath.GetNextFileName());
+            }
+            assemblyFile.MoveTo(dllFilePath);
+        }
+
+        private static void WriteSource(DirectoryInfo appData, string src)
+        {
+            DirectoryInfo srcDir = new DirectoryInfo(Path.Combine(appData.FullName, "_gen", "src"));
+            if (!srcDir.Exists)
+            {
+                srcDir.Create();
+            }
+            FileInfo sourceFile = new FileInfo(Path.Combine(srcDir.FullName, $"{src.Sha256()}.cs"));
+            src.SafeWriteToFile(sourceFile.FullName, true);
+        }
+
+        public List<DynamicDataSaveResult> ProcessJson(DirectoryInfo appData, string nameSpace = null)
+        {
+            DirectoryInfo jsonDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "json"));
+            List<DynamicDataSaveResult> results = new List<DynamicDataSaveResult>();
+            foreach(FileInfo jsonFile in jsonDirectory.GetFiles("*.json"))
+            {
+                string typeName = DynamicTypeNameResolver.ResolveJsonTypeName(jsonFile.ReadAllText());
+                results.Add(ProcessJsonFile(typeName, jsonFile, nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace));
+            }
+            return results;
+        }
+
+        public List<DynamicDataSaveResult> ProcessYaml(DirectoryInfo appData, string nameSpace = null)
+        {
+            DirectoryInfo yamlDirectory = new DirectoryInfo(Path.Combine(appData.FullName, "yaml"));
+            List<DynamicDataSaveResult> results = new List<DynamicDataSaveResult>();
+            foreach (FileInfo yamlFile in yamlDirectory.GetFiles("*.yaml"))
+            {
+                string typeName = DynamicTypeNameResolver.ResolveYamlTypeName(yamlFile.ReadAllText());
+                results.Add(ProcessYamlFile(typeName, yamlFile, nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace));
+            }
+            return results;
+        }
+
+        public void ProcessYaml(string yaml)
+        {
+            ProcessYaml(DynamicTypeNameResolver.ResolveYamlTypeName(yaml), yaml);
+        }
+
+        public void ProcessJson(string json)
+        {
+            ProcessJson(DynamicTypeNameResolver.ResolveJsonTypeName(json), json);
+        }
+
+        public void ProcessJson(string typeName, string json)
+        {
+            string filePath = WriteJsonFile(json);
             JsonFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
         }
 
-        public DynamicTypeDescriptor AddType(string typeName, string nameSpace = null)
+        protected string WriteJsonFile(string json)
         {
-            return EnsureType(typeName, nameSpace);
+            string filePath = Path.Combine(JsonDirectory.FullName, $"{json.Sha512()}.json").GetNextFileName();
+            json.SafeWriteToFile(filePath);
+            return filePath;
+        }
+
+        public void ProcessYaml(string typeName, string yaml)
+        {
+            string filePath = Path.Combine(YamlDirectory.FullName, $"{yaml.Sha512()}.yaml").GetNextFileName();
+            yaml.SafeWriteToFile(filePath);
+            YamlFileProcessor.Enqueue(new DataFile { FileInfo = new FileInfo(filePath), TypeName = typeName });
+        }
+
+        public DynamicTypeDescriptor AddType(string typeName)
+        {
+            return AddType(typeName, null);
+        }
+
+        public DynamicTypeDescriptor AddType(string typeName, string nameSpace)
+        {
+            return AddType(typeName, nameSpace, out DynamicNamespaceDescriptor ignore);
+        }
+
+        public DynamicTypeDescriptor AddType(string typeName, string nameSpace, out DynamicNamespaceDescriptor dynamicNamespaceDescriptor)
+        {
+            nameSpace = string.IsNullOrEmpty(nameSpace) ? DynamicNamespaceDescriptor.DefaultNamespace : nameSpace;
+            return EnsureType(typeName, nameSpace, out dynamicNamespaceDescriptor);
         }
 
         public DynamicTypePropertyDescriptor AddProperty(string typeName, string propertyName, string propertyType, string nameSpace = null)
@@ -107,7 +261,7 @@ namespace Bam.Net.Data.Dynamic
 
         public DynamicNamespaceDescriptor GetNamespaceDescriptor(string nameSpaceName)
         {
-            DynamicNamespaceDescriptor result = DynamicTypeDataRepository.DynamicNamespaceDescriptorsWhere(d => d.Namespace == nameSpaceName).FirstOrDefault();
+            DynamicNamespaceDescriptor result = DynamicTypeDataRepository.GetOneDynamicNamespaceDescriptorWhere(d => d.Namespace == nameSpaceName);
             if(result != null)
             {
                 result = DynamicTypeDataRepository.Retrieve<DynamicNamespaceDescriptor>(result.Id);
@@ -115,11 +269,33 @@ namespace Bam.Net.Data.Dynamic
             return result;
         }
 
-        public Assembly GetAssembly(string nameSpace = null)
+        public Assembly GenerateAssembly(string nameSpace = null)
+        {
+            return GenerateAssembly(out string ignore, nameSpace);
+        }
+
+        public Assembly GenerateAssembly(out string source, string nameSpace = null)
+        {
+            source = GenerateSource(nameSpace, out DynamicNamespaceDescriptor ns);
+            CompilerResults results = AdHocCSharpCompiler.CompileSource(source, $"{ns.Namespace}.dll");
+            if (results.Errors.Count > 0)
+            {
+                throw new CompilationException(results);
+            }
+
+            return results.CompiledAssembly;
+        }
+
+        public string GenerateSource(string nameSpace)
+        {
+            return GenerateSource(nameSpace, out DynamicNamespaceDescriptor ignore);
+        }
+
+        public string GenerateSource(string nameSpace, out DynamicNamespaceDescriptor ns)
         {
             List<DynamicTypeDescriptor> types = new List<DynamicTypeDescriptor>();
-            DynamicNamespaceDescriptor ns = null;
-            if(nameSpace != null)
+            ns = null;
+            if (!string.IsNullOrEmpty(nameSpace))
             {
                 ns = GetNamespaceDescriptor(nameSpace);
             }
@@ -127,25 +303,20 @@ namespace Bam.Net.Data.Dynamic
             {
                 ns = DynamicTypeDataRepository.GetOneDynamicNamespaceDescriptorWhere(d => d.Namespace == DynamicNamespaceDescriptor.DefaultNamespace);
             }
-            types = DynamicTypeDataRepository.DynamicTypeDescriptorsWhere(t => t.DynamicNamespaceDescriptorId == ns.Id).ToList();
+            ulong id = ns.Id;
+            types = DynamicTypeDataRepository.DynamicTypeDescriptorsWhere(t => t.DynamicNamespaceDescriptorId == id).ToList();
             StringBuilder src = new StringBuilder();
-            foreach(DynamicTypeDescriptor typeDescriptor in types)
+            foreach (DynamicTypeDescriptor typeDescriptor in types)
             {
                 DtoModel dto = new DtoModel
                 (
-                    ns.Namespace, 
-                    GetClrTypeName(typeDescriptor.TypeName), 
+                    ns.Namespace,
+                    GetClrTypeName(typeDescriptor.TypeName),
                     typeDescriptor.Properties.Select(p => new DtoPropertyModel { PropertyName = GetClrPropertyName(p.PropertyName), PropertyType = GetClrTypeName(p.PropertyType) }).ToArray()
                 );
                 src.AppendLine(dto.Render());
             }
-
-            CompilerResults results = AdHocCSharpCompiler.CompileSource(src.ToString(), $"{ns.Namespace}.dll");
-            if (results.Errors.Count > 0)
-            {
-                throw new CompilationException(results);
-            }
-            return results.CompiledAssembly;
+            return src.ToString();
         }
 
         protected string GetClrTypeName(string jsonTypePath)
@@ -164,26 +335,42 @@ namespace Bam.Net.Data.Dynamic
 
         protected string GetClrPropertyName(string jsonPropertyName)
         {
-            return jsonPropertyName.PascalCase(true, new string[] { " ", "_" });
+            return jsonPropertyName.PascalCase(true, new string[] { " ", "_", "-" });
         }
 
-        protected void ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
+        protected DynamicDataSaveResult ProcessYamlFile(string typeName, FileInfo yamlFile, string nameSpace = null)
+        {
+            string yaml = yamlFile.ReadAllText();
+            string rootHash = yaml.Sha256();
+            DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = yamlFile.Name, Content = yaml, ContentHash = rootHash });
+            string json = yaml.YamlToJson();
+            
+            JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
+            Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
+            return SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+        }
+
+        protected DynamicDataSaveResult ProcessJsonFile(string typeName, FileInfo jsonFile, string nameSpace = null)
         {
             // read the json
             string json = jsonFile.ReadAllText();
-            string rootHash = json.Sha1();
+            string rootHash = json.Sha256();
             DynamicTypeDataRepository.SaveAsync(new RootDocument { FileName = jsonFile.Name, Content = json, ContentHash = rootHash });
             JObject jobj = (JObject)JsonConvert.DeserializeObject(json);
             Dictionary<object, object> valueDictionary = jobj.ToObject<Dictionary<object, object>>();
-            SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
+            return SaveRootData(rootHash, typeName, valueDictionary, nameSpace);
         }
  
-        protected void SaveRootData(string rootHash, string typeName, Dictionary<object, object> valueDictionary, string nameSpace = null)
+        protected DynamicDataSaveResult SaveRootData(string rootHash, string typeName, Dictionary<object, object> valueDictionary, string nameSpace = null)
         {
-            // 1. save parent descriptor
-            SaveTypeDescriptor(typeName, valueDictionary);
-            // 2. save data
-            SaveDataInstance(rootHash, typeName, valueDictionary);            
+            DynamicDataSaveResult result = new DynamicDataSaveResult
+            {
+                // 1. save parent descriptor            
+                DynamicTypeDescriptor = SaveTypeDescriptor(typeName, valueDictionary, nameSpace),
+                // 2. save data
+                DataInstance = SaveDataInstance(rootHash, typeName, valueDictionary)
+            };
+            return result;
         }
 
         /// <summary>
@@ -195,7 +382,7 @@ namespace Bam.Net.Data.Dynamic
         /// <returns></returns>
         protected DynamicTypeDescriptor SaveTypeDescriptor(string typeName, Dictionary<object, object> valueDictionary, string nameSpace = null)
         {
-            DynamicTypeDescriptor descriptor = EnsureType(typeName, nameSpace);
+            DynamicTypeDescriptor descriptor = EnsureType(typeName, nameSpace, out DynamicNamespaceDescriptor namespaceDescriptor);
 
             foreach (object key in valueDictionary.Keys)
             {
@@ -247,15 +434,18 @@ namespace Bam.Net.Data.Dynamic
 
             return DynamicTypeDataRepository.Retrieve<DynamicTypeDescriptor>(descriptor.Id);
         }
+
         protected DataInstance SaveDataInstance(string rootHash, string typeName, Dictionary<object, object> valueDictionary)
         {
             return SaveDataInstance(rootHash, rootHash, typeName, valueDictionary);
         }
+
         static Dictionary<string, object> _parentLocks = new Dictionary<string, object>();
         protected DataInstance SaveDataInstance(string rootHash, string parentHash, string typeName, Dictionary<object, object> valueDictionary)
         {
-            string instanceHash = valueDictionary.ToJson().Sha1();
-            DataInstance data = DynamicTypeDataRepository.DataInstancesWhere(di => di.RootHash == rootHash && di.ParentHash == parentHash && di.TypeName == typeName).FirstOrDefault();
+            string instanceHash = valueDictionary.ToJson().Sha256();
+            DynamicTypeDescriptor typeDescriptor = GetDynamicTypeDescriptor(typeName, out DynamicNamespaceDescriptor dynamicNamespaceDescriptor);
+            DataInstance data = DynamicTypeDataRepository.DataInstancesWhere(di => di.Instancehash == instanceHash && di.ParentHash == parentHash && di.TypeName == typeName).FirstOrDefault();
             if(data == null)
             {
                 _parentLocks.AddMissing(parentHash, new object());
@@ -298,59 +488,47 @@ namespace Bam.Net.Data.Dynamic
                             }
                             else
                             {
-                                data.Properties.Add(new DataInstancePropertyValue
+                                data.Properties.Add(DynamicTypeDataRepository.Save(new DataInstancePropertyValue
                                 {
                                     RootHash = rootHash,
                                     InstanceHash = instanceHash,
                                     ParentTypeName = typeName,
                                     PropertyName = key.ToString(),
                                     Value = obj.ToString()
-                                });
+                                }));
                             }                           
                         }
                     }
                     else
                     {
-                        data.Properties.Add(new DataInstancePropertyValue
+                        data.Properties.Add(DynamicTypeDataRepository.Save(new DataInstancePropertyValue
                         {
                             RootHash = rootHash,
                             InstanceHash = instanceHash,
                             ParentTypeName = typeName,
                             PropertyName = key.ToString(),
                             Value = value.ToString()
-                        });
+                        }));
                     }
                 }
             }
 
             return DynamicTypeDataRepository.Save(data);
         }
-
-        
+                
         object _typeDescriptorLock = new object();
-        protected DynamicTypeDescriptor EnsureType(string typeName, string nameSpace = null)
+        protected DynamicTypeDescriptor EnsureType(string typeName, string nameSpace, out DynamicNamespaceDescriptor namespaceDescriptor)
         {
-            DynamicNamespaceDescriptor nspace = EnsureNamespace(nameSpace);
+            namespaceDescriptor = EnsureNamespace(nameSpace);
 
-            return EnsureType(typeName, nspace);
+            return EnsureType(typeName, namespaceDescriptor);
         }
 
         protected DynamicTypeDescriptor EnsureType(string typeName, DynamicNamespaceDescriptor nspace)
         {
             lock (_typeDescriptorLock)
             {
-                DynamicTypeDescriptor descriptor = DynamicTypeDataRepository.Query<DynamicTypeDescriptor>(td => td.TypeName == typeName).FirstOrDefault();
-                if (descriptor == null)
-                {
-                    descriptor = new DynamicTypeDescriptor()
-                    {
-                        DynamicNamespaceDescriptorId = nspace.Id,
-                        TypeName = typeName
-                    };
-
-                    descriptor = DynamicTypeDataRepository.Save(descriptor);
-                }
-                return descriptor;
+                return DynamicTypeDataRepository.GetOneDynamicTypeDescriptorWhere(td => td.TypeName == typeName && td.DynamicNamespaceDescriptorId == nspace.Id);                
             }
         }
 
@@ -360,17 +538,7 @@ namespace Bam.Net.Data.Dynamic
             lock (_nameSpaceLock)
             {
                 nameSpace = nameSpace ?? DynamicNamespaceDescriptor.DefaultNamespace;
-                DynamicNamespaceDescriptor nspace = DynamicTypeDataRepository.Query<DynamicNamespaceDescriptor>(ns => ns.Namespace == nameSpace).FirstOrDefault();
-                if (nspace == null)
-                {
-                    nspace = new DynamicNamespaceDescriptor()
-                    {
-                        Namespace = nameSpace
-                    };
-
-                    nspace = DynamicTypeDataRepository.Save(nspace);
-                }
-                return nspace;
+                return DynamicTypeDataRepository.GetOneDynamicNamespaceDescriptorWhere(ns => ns.Namespace == nameSpace);
             }
         }
 
@@ -405,6 +573,31 @@ namespace Bam.Net.Data.Dynamic
         {
             SaveTypeDescriptor(typeName, valueDictionary);
             SaveDataInstance(rootHash, parentHash, typeName, valueDictionary);
+        }
+
+        private DynamicTypeDescriptor GetDynamicTypeDescriptor(string partialOrFullyQualifiedTypeName, out DynamicNamespaceDescriptor namespaceDescriptor)
+        {
+            string typeName = partialOrFullyQualifiedTypeName;
+            if (partialOrFullyQualifiedTypeName.Contains("."))
+            {
+                typeName = partialOrFullyQualifiedTypeName.Substring(partialOrFullyQualifiedTypeName.LastIndexOf("."));
+                string nameSpace = partialOrFullyQualifiedTypeName.Substring(0, partialOrFullyQualifiedTypeName.LastIndexOf("."));
+                namespaceDescriptor = EnsureNamespace(nameSpace);
+                return DynamicTypeDataRepository.GetOneDynamicTypeDescriptorWhere(t => t.TypeName == typeName);
+            }
+            else
+            {
+                DynamicTypeDescriptor typeDescriptor = DynamicTypeDataRepository.GetOneDynamicTypeDescriptorWhere(t => t.TypeName == typeName);
+                if(typeDescriptor.DynamicNamespaceDescriptorId > 0)
+                {
+                    namespaceDescriptor = DynamicTypeDataRepository.GetOneDynamicNamespaceDescriptorWhere(ns => ns.Id == typeDescriptor.DynamicNamespaceDescriptorId);
+                }
+                else
+                {
+                    namespaceDescriptor = DynamicNamespaceDescriptor.GetDefault(DynamicTypeDataRepository);
+                }
+                return typeDescriptor;
+            }
         }
     }
 }

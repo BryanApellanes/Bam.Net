@@ -244,7 +244,11 @@ namespace Bam.Net.Caching
 			return result;
 		}
 
-		[Verbosity(VerbosityLevel.Information, MessageFormat="Different types were found with the same property name and value: \r\n{DifferingTypes}")]
+        /// <summary>
+        /// Occurs when a non typed query is executed which finds multiple entries with the same property name and value where the 
+        /// object types are not the same.
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat="Different types were found with the same property name and value: \r\n{DifferingTypes}")]
 		public event EventHandler DifferringTypesFound;
 
 		public string Types { get; private set; }
@@ -361,7 +365,7 @@ namespace Bam.Net.Caching
 
         /// <summary>
         /// Execute a non typed query against the underlying SourceRepository.
-        /// Does not use the cache
+        /// Does not use the cache.
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
@@ -383,7 +387,7 @@ namespace Bam.Net.Caching
         }
 
         /// <summary>
-        /// Prime the cache with the results of the specified query
+        /// Prime the cache with the results of the specified query.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="predicate"></param>

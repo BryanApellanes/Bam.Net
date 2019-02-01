@@ -1153,7 +1153,6 @@ namespace Bam.Net.Data.Repositories
             object result = ConstructWrapper(objectType);
             result.CopyProperties(daoInstance);
             SetParentProperties(result);
-
             return result;
         }
 

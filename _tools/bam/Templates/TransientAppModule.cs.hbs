@@ -1,0 +1,17 @@
+﻿using Bam.Net.Services;
+
+namespace {{BaseNamespace}}.AppModules
+{
+    [Transient]
+    public class {{AppModuleName}}TransientAppModule
+    {
+        public {{AppModuleName}}TransientAppModule()
+        {
+        }
+
+        public string GetTestString(string input)
+        {
+            return $"{GetType().Name}: {input}";
+        }
+    }
+}

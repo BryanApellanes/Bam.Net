@@ -128,7 +128,7 @@ namespace Bam.Net.Data
             return GetDataTable(db, sql);
         }
 		
-        public DataTable Where(WhereDelegate<C> where, OrderBy<C> orderBy = null, Database db = null)
+        private DataTable Where(WhereDelegate<C> where, OrderBy<C> orderBy = null, Database db = null)
         {
             Establish(where, orderBy, db);
             SqlStringBuilder sql = ToSqlStringBuilder(db);

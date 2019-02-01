@@ -45,6 +45,7 @@
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <PackageReference Include="System.Net.FtpClient" Version="1.0.5824.34026" />
     <PackageReference Include="System.Text.Encodings.Web" Version="4.5.0" />
+    <PackageReference Include="YamlDotNet" Version="5.3.0" />
     <PackageReference Include="YamlSerializer" Version="1.0.0" />
     <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
   </ItemGroup>
@@ -52,6 +53,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Authentication">
       <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.authentication\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.RazorPages">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.razorpages\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.RazorPages.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Options">
       <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>

@@ -134,7 +134,7 @@ namespace Bam.Net.CoreServices.Tests
             string whoAmI = client.UserRegistryService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
 
-            whoAmI = client.ApplicationRegistryService.WhoAmI();
+            whoAmI = client.ApplicationRegistrationService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
 
             whoAmI = client.ConfigurationService.WhoAmI();
@@ -228,7 +228,7 @@ namespace Bam.Net.CoreServices.Tests
             string youSayIAm = userService.WhoAmI();
             Expect.AreEqual(userName, youSayIAm);
 
-            loginResponse = coreClient.ApplicationRegistryService.Login(userName, passHash);
+            loginResponse = coreClient.ApplicationRegistrationService.Login(userName, passHash);
             Expect.IsTrue(loginResponse.Success, "Unable to login to application registry service");
             Expect.IsTrue(coreClient.RegisterApplicationProcess(), coreClient.Message);
             Expect.IsFalse(initFailed.Value);

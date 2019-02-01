@@ -70,6 +70,41 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
                 return new DataInstanceColumns("Instancehash");
             }
         }
+        public DataInstanceColumns Key
+        {
+            get
+            {
+                return new DataInstanceColumns("Key");
+            }
+        }
+        public DataInstanceColumns CreatedBy
+        {
+            get
+            {
+                return new DataInstanceColumns("CreatedBy");
+            }
+        }
+        public DataInstanceColumns ModifiedBy
+        {
+            get
+            {
+                return new DataInstanceColumns("ModifiedBy");
+            }
+        }
+        public DataInstanceColumns Modified
+        {
+            get
+            {
+                return new DataInstanceColumns("Modified");
+            }
+        }
+        public DataInstanceColumns Deleted
+        {
+            get
+            {
+                return new DataInstanceColumns("Deleted");
+            }
+        }
         public DataInstanceColumns Created
         {
             get

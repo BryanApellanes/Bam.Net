@@ -61,11 +61,11 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 	// property:Id, columnName:Id	
 	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
-	public long? Id
+	public ulong? Id
 	{
 		get
 		{
-			return GetLongValue("Id");
+			return GetULongValue("Id");
 		}
 		set
 		{
@@ -129,6 +129,20 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		}
 	}
 
+	// property:ParentTypeNamespace, columnName:ParentTypeNamespace	
+	[Bam.Net.Data.Column(Name="ParentTypeNamespace", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ParentTypeNamespace
+	{
+		get
+		{
+			return GetStringValue("ParentTypeNamespace");
+		}
+		set
+		{
+			SetValue("ParentTypeNamespace", value);
+		}
+	}
+
 	// property:ParentTypeName, columnName:ParentTypeName	
 	[Bam.Net.Data.Column(Name="ParentTypeName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string ParentTypeName
@@ -171,6 +185,76 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		}
 	}
 
+	// property:Key, columnName:Key	
+	[Bam.Net.Data.Column(Name="Key", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public ulong? Key
+	{
+		get
+		{
+			return GetULongValue("Key");
+		}
+		set
+		{
+			SetValue("Key", value);
+		}
+	}
+
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
+		}
+	}
+
+	// property:ModifiedBy, columnName:ModifiedBy	
+	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ModifiedBy
+	{
+		get
+		{
+			return GetStringValue("ModifiedBy");
+		}
+		set
+		{
+			SetValue("ModifiedBy", value);
+		}
+	}
+
+	// property:Modified, columnName:Modified	
+	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Modified
+	{
+		get
+		{
+			return GetDateTimeValue("Modified");
+		}
+		set
+		{
+			SetValue("Modified", value);
+		}
+	}
+
+	// property:Deleted, columnName:Deleted	
+	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Deleted
+	{
+		get
+		{
+			return GetDateTimeValue("Deleted");
+		}
+		set
+		{
+			SetValue("Deleted", value);
+		}
+	}
+
 	// property:Created, columnName:Created	
 	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? Created
@@ -197,11 +281,11 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 		ReferencedKey="Id",
 		ReferencedTable="DataInstance",
 		Suffix="1")]
-	public long? DataInstanceId
+	public ulong? DataInstanceId
 	{
 		get
 		{
-			return GetLongValue("DataInstanceId");
+			return GetULongValue("DataInstanceId");
 		}
 		set
 		{
@@ -348,12 +432,22 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			});			
 		}
 
+		public static DataInstancePropertyValue GetById(uint id, Database database = null)
+		{
+			return GetById((ulong)id, database);
+		}
+
 		public static DataInstancePropertyValue GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
 		public static DataInstancePropertyValue GetById(long id, Database database = null)
+		{
+			return OneWhere(c => c.KeyColumn == id, database);
+		}
+
+		public static DataInstancePropertyValue GetById(ulong id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
@@ -475,6 +569,28 @@ namespace Bam.Net.Data.Dynamic.Data.Dao
 			WhereDelegate<DataInstancePropertyValueColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstancePropertyValueColumns> where, Database database = null)
+		{
+			SetOneWhere(where, out DataInstancePropertyValue ignore, database);
+		}
+
+		/// <summary>
+		/// Set one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static void SetOneWhere(WhereDelegate<DataInstancePropertyValueColumns> where, out DataInstancePropertyValue result, Database database = null)
+		{
+			result = GetOneWhere(where, database);
 		}
 
 		/// <summary>

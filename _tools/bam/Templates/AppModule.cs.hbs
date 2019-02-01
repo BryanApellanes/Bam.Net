@@ -1,0 +1,17 @@
+﻿using Bam.Net.Services;
+
+namespace {{BaseNamespace}}.AppModules
+{
+    [AppModule]
+    public class {{AppModuleName}}AppModule
+    {
+        public {{AppModuleName}}AppModule()
+        {
+        }
+
+        public string GetTestString(string input)
+        {
+            return $"{GetType().Name}: {input}";
+        }
+    }
+}

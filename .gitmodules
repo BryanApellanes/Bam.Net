@@ -1,3 +1,4 @@
-[submodule "_web/bamapps.net/bam.js"]
-	path = _web/bamapps.net/bam.js
-	url = git@github.com:BryanApellanes/bam.js.git
+
+[submodule "_web/bamapps.net/wwwroot/bam.js"]
+	path = _web/bamapps.net/wwwroot/bam.js
+	url = https://github.com/BryanApellanes/bam.js.git

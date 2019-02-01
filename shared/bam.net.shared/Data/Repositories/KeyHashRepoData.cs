@@ -9,6 +9,31 @@ namespace Bam.Net.Data.Repositories
     /// <summary>
     /// Extend this class to define a type that uses multiple properties to determine
     /// persistence instance uniqueness.  Addorn key properties with the CompositeKey
+    /// attribute.  Adds the Key property to KeyHashAuditRepoData.
+    /// </summary>
+    public abstract class CompositeKeyRepoData : KeyHashAuditRepoData
+    {
+        ulong key = Convert.ToUInt64(0);
+        public ulong Key
+        {
+            get
+            {
+                if(key == 0)
+                {
+                    key = GetULongKeyHash();
+                }
+                return key;
+            }
+            set
+            {
+                key = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Extend this class to define a type that uses multiple properties to determine
+    /// persistence instance uniqueness.  Addorn key properties with the CompositeKey
     /// attribute.
     /// </summary>
     /// <seealso cref="Bam.Net.Data.Repositories.RepoData" />
@@ -52,6 +77,11 @@ namespace Bam.Net.Data.Repositories
         public int GetIntKeyHash()
         {
             return KeyHashProvider.GetIntKeyHash(this, PropertyDelimiter, CompositeKeyProperties);
+        }
+
+        public ulong GetULongKeyHash()
+        {
+            return KeyHashProvider.GetULongKeyHash(this, PropertyDelimiter, CompositeKeyProperties);
         }
 
         public long GetLongKeyHash()

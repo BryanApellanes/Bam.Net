@@ -50,19 +50,45 @@ namespace Bam.Net
         {
             lock (_procLock)
             {
-                if (ProcessThread.ThreadState != (ThreadState.Running | ThreadState.Background | ThreadState.WaitSleepJoin))
+                if (Continue)
                 {
-                    _processThread = null;
-                    ProcessThread.Start();
+                    StartProcessThread();
                 }
             }
             
             _processQueue.Enqueue(data);
-            _waitSignal.Set();
+            if (Continue)
+            {
+                _waitSignal.Set();
+            }
+        }
+
+        private void StartProcessThread()
+        {
+            if (ProcessThread.ThreadState != (ThreadState.Running | ThreadState.Background | ThreadState.WaitSleepJoin))
+            {
+                _processThread = null;
+                ProcessThread.Start();
+            }
         }
 
         public event EventHandler Exception;
-        protected bool Continue { get; set; }
+        bool _continue;
+        public bool Continue
+        {
+            get
+            {
+                return _continue;
+            }
+            set
+            {
+                _continue = value;
+                if(_continue && _processQueue.Count > 0)
+                {
+                    StartProcessThread();
+                }
+            }
+        }
         public event EventHandler Waiting;
         public event EventHandler Processing;
         public event EventHandler QueueEmptied;

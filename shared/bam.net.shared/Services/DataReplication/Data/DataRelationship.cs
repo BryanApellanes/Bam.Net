@@ -13,9 +13,9 @@ namespace Bam.Net.Services.DataReplication.Data
     public class DataRelationship: RepoData
     {
         public string LeftCuid { get; set; }
-        public string RightCuid { get; set; }
-        
+        public string RightCuid { get; set; }        
         public  string RelationshipDescription { get; set; }
+
         public override bool Equals(object obj)
         {
             if (obj is DataRelationship other)
