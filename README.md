@@ -1,3 +1,5 @@
+# This project is deprecated in favor of [Bam.Net.Core](https://github.com/BryanApellanes/Bam.Net.Core)
+
 # Bam.Net 
 Bam.Net is a framework and set of tools for rapid application development.  
 It offers data access code generation (using troo.exe), web service generation 
