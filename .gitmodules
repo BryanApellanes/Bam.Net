@@ -2,3 +2,6 @@
 [submodule "_web/bamapps.net/wwwroot/bam.js"]
 	path = _web/bamapps.net/wwwroot/bam.js
 	url = https://github.com/BryanApellanes/bam.js.git
+[submodule "bam.net.core"]
+	path = bam.net.core
+	url = https://github.com/BryanApellanes/Bam.Net.Core.git
