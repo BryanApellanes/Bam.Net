@@ -182,17 +182,5 @@ namespace Bam.Net.Tests
             Expect.AreEqual(expected, hashed);
             Expect.AreEqual(expected, again);
         }
-
-        [UnitTest]
-        public void NLogLogLevelNames()
-        {
-            OutLine(NLog.LogLevel.Trace.Name);
-            OutLine(NLog.LogLevel.Debug.Name);
-            OutLine(NLog.LogLevel.Info.Name);
-            OutLine(NLog.LogLevel.Warn.Name);
-            OutLine(NLog.LogLevel.Error.Name);
-            OutLine(NLog.LogLevel.Fatal.Name);
-            OutLine(NLog.LogLevel.Off.Name);
-        }
     }
 }

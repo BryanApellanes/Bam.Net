@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\bam.net.core\bam.net.core.csproj" />
+    <ProjectReference Include="..\..\bam.net\bam.net.csproj" />
   </ItemGroup>
+
+  <Import Project="..\..\shared\bam.net.shared\bam.net.shared.projitems" Label="Shared" />
+
+  <Import Project="..\..\shared\bam.net.schema.org\bam.net.schema.org.projitems" Label="Shared" />
 
 </Project>
