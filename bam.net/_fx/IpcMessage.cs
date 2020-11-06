@@ -293,7 +293,7 @@ namespace Bam.Net
             }
         }
 
-        static object _lock = new object();
+        static readonly object _lock = new object();
         private bool AcquireLock(int timeoutInMilliseconds)
         {
             try
