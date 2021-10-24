@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Bam.Net.Analytics.Tests</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <IntermediatePackDir>$(HOMEDRIVE)$(HOMEPATH)/.bam/opt/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
+    <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>$(HOMEDRIVE)$(HOMEPATH)\.bam\opt\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\generic-operators.hbs" />
+    <Content Include="Templates\operators.hbs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
+  </ItemGroup>
+  <Target Name="PublishAll" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_TargetFramework Include="$(TargetFrameworks)" />
+      <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Publish" Properties="TargetFramework=%(_TargetFramework.Identity)" />
+    </ItemGroup>
+  </Target>
+</Project>

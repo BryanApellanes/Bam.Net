@@ -1,0 +1,12 @@
+﻿<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>bam.net.coreservices.core.tests</id>
+    <version>1.0.6</version>
+    <authors>Bryan Apellanes</authors>
+    <description>bam.net.coreservices.core.tests</description>
+  </metadata>
+  <files>
+    <file src="_._" target="lib/net5.0" />
+    <file src="$publishdir$\net5.0\**\*" target="tools/net5.0" />
+  </files>
+</package>

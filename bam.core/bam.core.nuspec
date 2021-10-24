@@ -1,0 +1,13 @@
+﻿<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>bam.core</id>
+    <version>2.0.0</version>
+    <authors>Bryan Apellanes</authors>
+    <description>bam.net.core</description>
+    <license type="expression">MIT</license>
+  </metadata>
+  <files>
+    <file src="_._" target="lib/netstandard2.0" />
+    <file src="$publishdir$\**\*" target="tools/net5.0" />
+  </files>
+</package>

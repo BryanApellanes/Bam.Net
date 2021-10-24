@@ -1,0 +1,19 @@
+using System;
+using System.Runtime;
+using Bam.Net.Automation.Scripting;
+namespace Bam.Net.Dynamic
+{
+    public class {{Name}}ScriptContext : CSharpScriptContext
+    {
+        public {{Name}}ScriptContext() : base() {}
+
+{{#each IncludeInstances}}
+        public {{TypeName}} {{ScriptVariable}} { get; set; }
+{{/each}}
+
+        public override void ExecuteScript()
+        {
+{{{Script}}}
+        }
+    }
+}

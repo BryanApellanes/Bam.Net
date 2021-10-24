@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <ApplicationIcon>pie.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Update="recipe.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="bam.net.core" Version="1.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_UnmanagedRegistrationCache Remove="obj\bake.csproj.UnmanagedRegistration.cache" />
+        <_UnmanagedRegistrationCache Remove="obj\bake.csproj.UnmanagedRegistration.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp2.2\bake.csproj.ResolveComReference.cache" />
+        <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp2.2\bake.csproj.ResolveComReference.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <IntermediateAssembly Remove="obj\Debug\netcoreapp2.2\bake.dll" />
+        <IntermediateAssembly Remove="obj\Debug\netcoreapp2.2\bake.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp2.2\bake.pdb" />
+        <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp2.2\bake.pdb" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp2.2\bake.dll" />
+        <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp2.2\bake.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ApplicationManifest Remove="obj\Debug\netcoreapp2.2\bake.dll.manifest" />
+        <ApplicationManifest Remove="obj\Debug\netcoreapp2.2\bake.dll.manifest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <DeployManifest Remove="obj\Debug\netcoreapp2.2\bake.application" />
+        <DeployManifest Remove="obj\Debug\netcoreapp2.2\bake.application" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="test.csproj" />
+    </ItemGroup>
+</Project>

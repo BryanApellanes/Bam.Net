@@ -1,0 +1,5 @@
+ReferenceAssembliesDir: /Users/bapellanes/.bam/bin/ReferenceAssemblies
+GenDir: /Users/bapellanes/.bam/bin/gen
+BamHomeDir: /Users/bapellanes/.bam
+BamDir: /Users/bapellanes/src/BamFrameworkCore/Bam.Net/_tests/core/bam.net.automation.core.tests/.bam
+ProcessHomeDir: /Users/bapellanes

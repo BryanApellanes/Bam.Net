@@ -1,0 +1,8 @@
+﻿READ
+https://www.codeproject.com/Articles/1200545/Writing-custom-Markdig-extensions
+
+Download
+https://github.com/lunet-io/markdig
+
+Implement
+Renderers that render serviceproxy related components; see also, Bam.Net.Server.Renderers

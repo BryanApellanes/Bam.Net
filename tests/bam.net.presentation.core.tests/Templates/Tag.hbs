@@ -1,0 +1,32 @@
+    /// <summary>
+    /// {{Description}}    
+    /// </summary>
+    public static Tag {{TagName}}(Func<Tag> content)
+    {
+        return {{TagName}}(new object(), content);
+    }
+
+    /// <summary>
+    /// {{Description}}
+    /// </summary>
+    public static Tag {{TagName}}(object attributes, Func<Tag> content)
+    {
+        return {{TagName}}(attributes, content()?.Render());
+    }
+
+    /// <summary>
+    /// {{Description}}
+    /// </summary>            
+    public static Tag {{TagName}}(Tag content)
+    {
+        return {{TagName}}(new object(), content.Render());
+    }
+
+    /// <summary>
+    /// {{Description}}
+    /// </summary>
+    public static Tag {{TagName}}(object attributes = null, string content = null)
+    {
+        return TagProvider("{{TagNameLowercased}}", attributes, content);
+    }
+
