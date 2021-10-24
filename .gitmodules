@@ -1,0 +1,3 @@
+[submodule "submodules/bam.net.shared"]
+	path = submodules/bam.net.shared
+	url = git@github.com:BryanApellanes/bam.net.shared.git
