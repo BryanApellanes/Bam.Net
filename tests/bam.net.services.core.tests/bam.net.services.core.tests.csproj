@@ -3,44 +3,25 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IntermediatePackDir>/opt/bam/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'UNIX' ">$(HOME)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>\opt\bam\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="4.2.1" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
   </ItemGroup>
   <ItemGroup>
-    <_UnmanagedRegistrationCache Remove="obj\bam.net.services.core.tests.csproj.UnmanagedRegistration.cache" />
+    <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.csproj.ResolveComReference.cache" />
-  </ItemGroup>
-  <ItemGroup>
-    <IntermediateAssembly Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationManifest Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.dll.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <DeployManifest Remove="obj\Debug\netcoreapp2.2\bam.net.services.core.tests.application" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\_lib\bam.net.core\bam.net.core.csproj" />
-  </ItemGroup>
-  <Import Project="..\..\shared\bam.net.tests.shared\bam.net.tests.shared.projitems" Label="Shared" />
+  <Import Project="..\shared\bam.net.tests.shared\bam.net.tests.shared.projitems" Label="Shared" />
   <Target Name="PublishAll" BeforeTargets="GenerateNuspec">
     <ItemGroup>
       <_TargetFramework Include="$(TargetFrameworks)" />

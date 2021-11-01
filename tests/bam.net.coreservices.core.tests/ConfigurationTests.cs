@@ -218,7 +218,12 @@ namespace Bam.Net.CoreServices.Tests
             string testUserName = $"{testName}_TestUserName";
             Database userDb = new SQLiteDatabase(testName);
             ApplicationRegistrationRepository coreRepo = new ApplicationRegistrationRepository();
-            coreRepo.Database = new SQLiteDatabase($"{testName}_coredb");
+            Database coreDb = new SQLiteDatabase($"{testName}_coredb");
+            EnsureSchemaStatus result = coreDb.TryEnsureSchema<Configuration>();
+
+            Db.For<Configuration>(coreDb);
+            coreRepo.Database = coreDb;
+
             userDb.TryEnsureSchema<UserAccounts.Data.User>();
             Db.For<UserAccounts.Data.User>(userDb);
 

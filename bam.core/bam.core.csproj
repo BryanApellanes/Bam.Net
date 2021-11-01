@@ -10,14 +10,16 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Core of the Bam Framework for .NET</Description>
     <PackageVersion>2.0.0</PackageVersion>
-    <IntermediatePackDir>$(HOMEDRIVE)$(HOMEPATH)/.bam/opt/build/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'UNIX' ">$(HOME)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>bam.core.nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>$(HOMEDRIVE)$(HOMEPATH)/.bam/opt/build/</OutputPath>
+      <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+      <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CsQuery.Core" Version="2.0.1" />

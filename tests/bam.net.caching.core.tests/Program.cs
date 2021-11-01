@@ -8,7 +8,7 @@ namespace Bam.Net.Caching.tests
     {
         static void Main(string[] args)
         {
-            ExecuteMain(args);
+            ExecuteMainOrInteractive(args);
         }
     }
 }

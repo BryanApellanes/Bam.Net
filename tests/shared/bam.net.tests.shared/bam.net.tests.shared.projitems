@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>bb169710-5ce7-4957-a2c7-1f570e2cd9c8</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>bam.net.tests.shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncProxyableEcho.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompositeKeyRepoTestData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceProxyTestHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserTestTools.cs" />
+  </ItemGroup>
+</Project>

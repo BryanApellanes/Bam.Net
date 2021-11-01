@@ -1,0 +1,6 @@
+{
+  "Name": "ExistsShouldBeTrueAfterCreate_JobName_uobd",
+  "WorkerConfs": {},
+  "WorkerFiles": [],
+  "JobDirectory": "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_ExistsShouldBeTrueAfterCreate/ExistsShouldBeTrueAfterCreate_JobName_uobd"
+}

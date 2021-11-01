@@ -3,14 +3,14 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IntermediatePackDir>/opt/bam/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir>$(HOMEDRIVE)$(HOMEPATH)/.bam/opt/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>\opt\bam\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath>$(HOMEDRIVE)$(HOMEPATH)\.bam\opt\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="TestFile1.txt" />
@@ -22,27 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <_UnmanagedRegistrationCache Remove="obj\bam.net.caching.core.tests.csproj.UnmanagedRegistration.cache" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.csproj.ResolveComReference.cache" />
-  </ItemGroup>
-  <ItemGroup>
-    <IntermediateAssembly Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationManifest Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.dll.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <DeployManifest Remove="obj\Debug\netcoreapp2.2\bam.net.caching.core.tests.application" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\bam.core\bam.core.csproj" />

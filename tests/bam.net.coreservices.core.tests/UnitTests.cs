@@ -139,9 +139,10 @@ namespace Bam.Net.CoreServices.Tests
                 return applicationRegistryService.RegisterApplicationProcess(descriptor);
             })
             .TheTest
-            .ShouldPass((because, objectUnderTest) =>
+            .ShouldPass((because, assertionProvider) =>
             {
-                because.ItsTrue($"object under test is of type {nameof(ApplicationRegistryService)}", objectUnderTest.GetType() == typeof(ApplicationRegistryService));
+                because.ItsTrue("the object under test is not null", assertionProvider.Value != null);
+                because.ItsTrue($"object under test is of type {nameof(ApplicationRegistryService)}", assertionProvider.Value.GetType() == typeof(ApplicationRegistryService));
                 CoreServiceResponse result = because.ResultAs<CoreServiceResponse>();
                 because.ItsTrue("the response was not successful", !result.Success, "request should have failed");
                 because.ItsTrue("the message says 'You must be logged in to do that'", result.Message.Equals("You must be logged in to do that"));

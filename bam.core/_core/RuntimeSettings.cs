@@ -23,7 +23,7 @@ namespace Bam.Net
                             path.Append(Path.PathSeparator);
                         }
 
-                        path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + Path.PathSeparator);
+                        path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", ApplicationNameProvider.Default.GetApplicationName()) + Path.PathSeparator);
                         FileInfo fileInfo = new FileInfo(path.ToString());
                         if (!Directory.Exists(fileInfo.Directory.FullName))
                         {

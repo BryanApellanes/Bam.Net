@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
+  </ItemGroup>
+
+</Project>

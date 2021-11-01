@@ -25,7 +25,7 @@ namespace Bam.Net
                         "System.Xml.dll",
                         "System.Data.dll",
                         Path.Combine(folder, "System.Web.Mvc.dll"),
-                        Path.Combine(folder, "bam.net.core.dll")
+                        Path.Combine(folder, "bam.core.dll")
                     };
                     _defaultReferenceAssemblies = defaultAssemblies.ToArray();
                 }

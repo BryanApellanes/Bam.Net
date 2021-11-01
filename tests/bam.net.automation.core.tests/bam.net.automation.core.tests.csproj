@@ -4,14 +4,16 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Bam.Net.Automation.Core.Tests</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IntermediatePackDir>$(HOMEDRIVE)$(HOMEPATH)/.bam/opt/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'UNIX' ">$(HOME)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>$(HOMEDRIVE)$(HOMEPATH)\.bam\opt\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <AnalysisLevel>none</AnalysisLevel>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>

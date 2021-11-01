@@ -11,7 +11,7 @@ namespace Bam.Net.Automation.Tests
         [TestGroup("Recipe")]
         public void CanLoadProject()
         {
-            Project project = "./Project.xml".FromXmlFile<Project>();
+            Project project = "./test_package-project.csproj.xml".FromXmlFile<Project>();
         }
         
         [UnitTest]

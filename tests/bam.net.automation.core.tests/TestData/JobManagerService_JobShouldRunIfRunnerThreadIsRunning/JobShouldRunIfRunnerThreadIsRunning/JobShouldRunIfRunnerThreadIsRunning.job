@@ -1,0 +1,17 @@
+{
+  "Name": "JobShouldRunIfRunnerThreadIsRunning",
+  "WorkerConfs": {
+    "7c6cd7c9-a1c4-4535-866c-92d975c509ae": {
+      "WorkerTypeName": "Bam.Net.Automation.Tests.JobManagerUnitTests+TestWorker, bam.net.automation.core.tests, Version=1.0.6.0, Culture=neutral, PublicKeyToken=null",
+      "StepNumber": 0,
+      "Name": "7c6cd7c9-a1c4-4535-866c-92d975c509ae",
+      "Properties": {
+        "RequiredProperties": "[]"
+      }
+    }
+  },
+  "WorkerFiles": [
+    "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_JobShouldRunIfRunnerThreadIsRunning/JobShouldRunIfRunnerThreadIsRunning/7c6cd7c9-a1c4-4535-866c-92d975c509ae.yaml"
+  ],
+  "JobDirectory": "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_JobShouldRunIfRunnerThreadIsRunning/JobShouldRunIfRunnerThreadIsRunning"
+}

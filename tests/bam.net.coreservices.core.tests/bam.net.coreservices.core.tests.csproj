@@ -3,22 +3,24 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IntermediatePackDir>/opt/bam/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'UNIX' ">$(HOME)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>C:\opt\bam\build\tests\Debug\bam.net.coreservices.core.tests\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\_lib\bam.net.core\bam.net.core.csproj" />
-    <ProjectReference Include="..\..\_lib\daoref\daoref.csproj" />
+    <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
     <ProjectReference Include="..\bam.net.serviceproxy.core.tests\bam.net.serviceproxy.core.tests.csproj" />
+    <ProjectReference Include="..\daoref\daoref.csproj" />
   </ItemGroup>
   <ItemGroup>
     <_UnmanagedRegistrationCache Remove="obj\bam.net.coreservices.core.tests.csproj.UnmanagedRegistration.cache" />

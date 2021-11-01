@@ -1,0 +1,26 @@
+{
+  "Name": "Job_ShouldBeAbleToRunJobWithSpecifiedStepNumber",
+  "WorkerConfs": {
+    "StepTestWorker": {
+      "WorkerTypeName": "Bam.Net.Automation.Tests.JobManagerUnitTests+StepTestWorker, bam.net.automation.core.tests, Version=1.0.6.0, Culture=neutral, PublicKeyToken=null",
+      "StepNumber": 1,
+      "Name": "StepTestWorker",
+      "Properties": {
+        "RequiredProperties": "[]"
+      }
+    },
+    "TestWorker": {
+      "WorkerTypeName": "Bam.Net.Automation.Tests.JobManagerUnitTests+TestWorker, bam.net.automation.core.tests, Version=1.0.6.0, Culture=neutral, PublicKeyToken=null",
+      "StepNumber": 0,
+      "Name": "TestWorker",
+      "Properties": {
+        "RequiredProperties": "[]"
+      }
+    }
+  },
+  "WorkerFiles": [
+    "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_ShouldBeAbleToRunJobWithSpecifiedStepNumber/Job_ShouldBeAbleToRunJobWithSpecifiedStepNumber/StepTestWorker.yaml",
+    "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_ShouldBeAbleToRunJobWithSpecifiedStepNumber/Job_ShouldBeAbleToRunJobWithSpecifiedStepNumber/TestWorker.yaml"
+  ],
+  "JobDirectory": "/mnt/chumbucket4/opt/bam/src/repos/Bam.Core/tests/bam.net.automation.core.tests/TestData/JobManagerService_ShouldBeAbleToRunJobWithSpecifiedStepNumber/Job_ShouldBeAbleToRunJobWithSpecifiedStepNumber"
+}
