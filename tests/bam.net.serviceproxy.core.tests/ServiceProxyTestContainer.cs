@@ -21,7 +21,6 @@ using Bam.Net.Testing.Unit;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Web;
-using Google.Protobuf.WellKnownTypes;
 using NSubstitute;
 using Org.BouncyCastle.Crypto;
 using Type = System.Type;
@@ -95,18 +94,9 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             public TestApiKeyClient() : base("") { }
 
-            public WebRequest TestGetWebRequest()
-            {
-                return GetWebRequest(new Uri("http://test.cxm/"));
-            }
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                return base.GetWebRequest(address);
-            }
-
             public void TestStartSession()
             {
-                base.StartSession();
+                base.StartSessionAsync();
             }
         }
 
@@ -141,17 +131,17 @@ namespace Bam.Net.ServiceProxy.Tests
             bool? firedIngEvent = false;
             bool? firedEdEvent = false;
             
-            sspc.Posting += (s, a) =>
+            sspc.PostStarted += (s, a) =>
             {
                 firedIngEvent = true;
             };
-            sspc.Posted += (s, assembly) =>
+            sspc.PostComplete += (s, assembly) =>
             {
                 firedEdEvent = true;
             };
             try
             {
-                sspc.Post("TestStringParameter", new object[] { "monkey" }); // array forces resolution to the correct method
+                sspc.ReceivePostResponseAsync("TestStringParameter", "monkey").Wait(); 
             }
             catch (Exception ex)
             {
@@ -174,19 +164,19 @@ namespace Bam.Net.ServiceProxy.Tests
 
             bool? firedIngEvent = false;
             bool? firedEdEvent = false;
-            sspc.Posting += (s, a) =>
+            sspc.PostStarted += (s, a) =>
             {
                 firedIngEvent = true;
                 a.CancelInvoke = true; // should cancel the call
             };
-            sspc.Posted += (s,a) =>
+            sspc.PostComplete += (s,a) =>
             {
                 firedEdEvent = true;
             };
 
             try
             {
-                sspc.Post("TestStringParameter", new object[] { "monkey" });
+                sspc.ReceivePostResponseAsync("TestStringParameter", "monkey").Wait();
             }
             catch (Exception ex)
             {
@@ -211,17 +201,17 @@ namespace Bam.Net.ServiceProxy.Tests
             bool? firedIngEvent = false;
             bool? firedEdEvent = false;
 
-            sspc.Getting += (s, a) =>
+            sspc.GetStarted += (s, a) =>
             {
                 firedIngEvent = true;
             };
-            sspc.Got += (s, a) =>
+            sspc.GetComplete += (s, a) =>
             {
                 firedEdEvent = true;
             };
             try
             {
-                sspc.Get("TestStringParameter", new object[] { "monkey" }); // array forces resolution to the correct method
+                sspc.ReceiveGetResponseAsync("TestStringParameter", "monkey").Wait();
             }
             catch (Exception ex)
             {
@@ -247,7 +237,7 @@ namespace Bam.Net.ServiceProxy.Tests
                 sessionStartingCalled = true;
             };
 
-            sspc.Invoke<string>("Send", new object[] { "banana" });
+            sspc.InvokeServiceMethod<string>("Send", new object[] { "banana" });
             server.Stop();
             Expect.IsTrue(sessionStartingCalled.Value, "SessionStarting did not fire");
         }
@@ -256,17 +246,17 @@ namespace Bam.Net.ServiceProxy.Tests
         public void SecureServiceProxyInvokeShouldEstablishSessionIfSecureChannelServerRegistered()
         {
             BamServer server;
-            SecureServiceProxyClient<Echo> sspc;
-            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out sspc);
+            SecureServiceProxyClient<Echo> testSecureServiceProxyClient;
+            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out testSecureServiceProxyClient);
 
-            Expect.IsFalse(sspc.SessionEstablished);
+            Expect.IsFalse(testSecureServiceProxyClient.IsSessionEstablished);
             string value = "InputValue_".RandomLetters(8);
-            string result = sspc.Invoke<string>("Send", new object[] { value });
+            string result = testSecureServiceProxyClient.InvokeServiceMethod<string>("Send", new object[] { value });
             server.Stop();
 
-            string msg = sspc.SessionStartException != null ? sspc.SessionStartException.Message : string.Empty;
-            Expect.IsNull(sspc.SessionStartException, "SessionStartException: {0}"._Format(msg));
-            Expect.IsTrue(sspc.SessionEstablished, "Session was not established");
+            string msg = testSecureServiceProxyClient.SessionStartException != null ? testSecureServiceProxyClient.SessionStartException.Message : string.Empty;
+            Expect.IsNull(testSecureServiceProxyClient.SessionStartException, "SessionStartException: {0}"._Format(msg));
+            Expect.IsTrue(testSecureServiceProxyClient.IsSessionEstablished, "Session was not established");
 
             server.Stop();
         }
@@ -279,7 +269,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out sspc);
 
             string value = "InputValue_".RandomLetters(8);
-            string result = sspc.Invoke<string>("Send", new object[] { value });
+            string result = sspc.InvokeServiceMethod<string>("Send", new object[] { value });
             server.Stop();
             Expect.AreEqual(value, result);
         }
@@ -325,7 +315,7 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureServiceProxyClient<Echo> sspc;
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out sspc);
 
-            sspc.StartSession();
+            sspc.StartSessionAsync();
             server.Stop();
         }
         
@@ -338,20 +328,19 @@ namespace Bam.Net.ServiceProxy.Tests
 
             bool? firedIngEvent = false;
             bool? firedEdEvent = false;
-            sspc.Getting += (s, a) =>
+            sspc.GetStarted += (s, a) =>
             {
                 firedIngEvent = true;
                 a.CancelInvoke = true; // should cancel the call
             };
-            sspc.Got += (s, a) =>
+            sspc.GetComplete += (s, a) =>
             {
                 firedEdEvent = true;
             };
 
             try
             {
-                sspc.Get("TestStringParameter", new object[] { "monkey" });
-
+                sspc.ReceiveGetResponseAsync("TestStringParameter", "monkey").Wait();
             }
             catch (Exception ex)
             {
@@ -554,7 +543,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             ApiKeyResolver resolver = new ApiKeyResolver(new InvalidKeyProvider());
             sspc.ApiKeyResolver = resolver;
-            string result = sspc.Invoke<string>("Send", new object[] { value });            
+            string result = sspc.InvokeServiceMethod<string>("Send", new object[] { value });            
 
             thrown.Value.IsTrue();
 			CleanUp();
@@ -603,7 +592,7 @@ namespace Bam.Net.ServiceProxy.Tests
             };
 
             sspc.ApiKeyResolver = keyResolver;
-            string result = sspc.Invoke<string>("Send", new object[] { value });
+            string result = sspc.InvokeServiceMethod<string>("Send", new object[] { value });
             
             thrown.Value.IsFalse("Exception was thrown");
             Expect.AreEqual(value, result);
@@ -630,7 +619,7 @@ namespace Bam.Net.ServiceProxy.Tests
                 Request = new ServiceProxyTestHelpers.JsonTestRequest()
             };
 
-            string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
+            string data = ApiArguments.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
 
             ValidationResult result = er.Validate();
@@ -651,15 +640,15 @@ namespace Bam.Net.ServiceProxy.Tests
 
             string className = "ApiKeyRequiredEcho";
             string method= "Send";
-            string data = ApiParameters.ParametersToJsonParamsArray("some random data").ToJson();
+            string data = ApiArguments.ArgumentsToJsonArgumentsArray("some random data").ToJson();
             ExecutionRequest er = new ExecutionRequest(className, method, "json")
             {
-                JsonParams = data,
+                ArgumentsAsJsonArrayOfJsonStrings = data,
                 ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
                 Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest()
             };
 
-            er.ApiKeyResolver.SetKeyToken(er.Request.Headers, ApiParameters.GetStringToHash(className, method, data));
+            er.ApiKeyResolver.SetKeyToken(er.Request.Headers, ApiArguments.GetStringToHash(className, method, data));
 
             ValidationResult result = er.Validate();
             Expect.IsTrue(result.Success);
@@ -684,7 +673,7 @@ namespace Bam.Net.ServiceProxy.Tests
                 ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
                 Request = new ServiceProxyTestHelpers.JsonTestRequest()
             };
-            string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
+            string data = ApiArguments.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
             resolver.SetKeyToken(er.Request.Headers, data);
@@ -696,17 +685,6 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.IsFalse(result.Success, "Validation should have failed");
             List<ValidationFailures> failures = new List<ValidationFailures>(result.ValidationFailures);            
             Expect.IsTrue(failures.Contains(ValidationFailures.InvalidApiKeyToken), "ValidationFailure should have been InvalidApiKeyToken");
-        }
-
-        static bool? _registeredDb;
-        public static void RegisterDb()
-        {
-            SQLiteDatabase db = new SQLiteDatabase();
-            Db.For<Secure.Application>(db);
-            Db.For<Account>(UserAccountsDatabase.Default);
-            Db.TryEnsureSchema<Secure.Application>(db);
-            SQLiteRegistrar.Register<Secure.Application>();
-            _registeredDb = true;
         }
 
         [UnitTest]
@@ -795,6 +773,17 @@ namespace Bam.Net.ServiceProxy.Tests
             Out(name);
             name.SafeWriteToFile("./UserAccountsContext", true);
             "notepad ./UserAccountsContext".Run();
+        }
+
+        static bool? _registeredDb;
+        public static void RegisterDb()
+        {
+            SQLiteDatabase db = new SQLiteDatabase();
+            Db.For<Secure.Application>(db);
+            Db.For<Account>(UserAccountsDatabase.Default);
+            Db.TryEnsureSchema<Secure.Application>(db);
+            SQLiteRegistrar.Register<Secure.Application>();
+            _registeredDb = true;
         }
     }
 

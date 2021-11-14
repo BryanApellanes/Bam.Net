@@ -107,8 +107,8 @@ namespace Bam.Net.Services.Tests
 
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
 
-            AssemblyDescriptor one = repo.Save(descriptor);
-            AssemblyDescriptor two = repo.Save(descriptor);
+            AssemblyDescriptor one = descriptor.Save(repo);// repo.Save(descriptor);
+            AssemblyDescriptor two = descriptor.Save(repo);
             Expect.IsNotNull(one, "first save returned null");
             Expect.IsNotNull(two, "second save returned null");
             Expect.AreEqual(one.Id, two.Id, "Ids didn't match");

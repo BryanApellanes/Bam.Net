@@ -9,7 +9,7 @@ namespace Bam.Net.UserAccounts.Tests
     {
         static void Main(string[] args)
         {
-            ExecuteMain(args);
+            ExecuteMainOrInteractive(args);
         }
     }
 }

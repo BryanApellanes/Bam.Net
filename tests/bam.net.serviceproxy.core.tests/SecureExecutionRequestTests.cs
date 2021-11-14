@@ -86,7 +86,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = CreateFakeContext(MethodInfo.GetCurrentMethod().Name);
 
             string input = "monkey";
-            string jsonParams = ApiParameters.ParametersToJsonParamsArray(new object[] { input }).ToJson();
+            string jsonParams = ApiArguments.ArgumentsToJsonArgumentsArray(new object[] { input }).ToJson();//.ParametersToJsonParamsArray(new object[] { input }).ToJson();
 
             Incubator testIncubator = new Incubator();
             testIncubator.Set<Echo>(new Echo());
@@ -119,7 +119,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = A.Fake<IHttpContext>();
             IResponse response = A.Fake<IResponse>();
             response.Headers = new WebHeaderCollection();
-            response.Headers[Headers.SecureSession] = sessionName;
+            response.Headers[Headers.SecureSessionId] = sessionName;
             context.Request = A.Fake<IRequest>();
             context.Response = A.Fake<IResponse>();
             string fileName = MethodInfo.GetCurrentMethod().Name.RandomLetters(6);

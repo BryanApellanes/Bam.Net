@@ -207,7 +207,7 @@ an empty string")]
         private static void OutputInfo(DocInfo info)
         {
             Message.PrintLine("Summary:\r\n{0}", ConsoleColor.Blue, info.Summary);
-            Message.PrintLine("DeclaringTypName: {0}", ConsoleColor.Yellow, info.DeclaringTypeName);
+            Message.PrintLine("DeclaringTypeName: {0}", ConsoleColor.Yellow, info.DeclaringTypeName);
             Message.PrintLine("MemberType: {0}", ConsoleColor.Magenta, info.MemberType.ToString());
             Message.PrintLine("MemberName: {0}", ConsoleColor.Yellow, info.MemberName);
 

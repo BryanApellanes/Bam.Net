@@ -8,7 +8,7 @@ namespace Bam.Net.Translation.Tests
     {
         static void Main(string[] args)
         {
-            Initialize(args);
+            ExecuteMainOrInteractive(args);
         }
     }
 }

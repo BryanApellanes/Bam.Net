@@ -44,7 +44,7 @@ namespace Bam.Net.Services
                     MethodName = request.MethodName,
                     Ext = "json",
                     ServiceProvider = ServiceProvider,
-                    JsonParams = request.JsonParams,
+                    ArgumentsAsJsonArrayOfJsonStrings = request.JsonParams,
                     IsInitialized = true,
                     Context = HttpContext
                 };

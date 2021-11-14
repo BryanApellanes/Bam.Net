@@ -28,12 +28,12 @@ namespace Bam.Net.ServiceProxy.Secure
     /// </summary>
     public partial class SecureChannel : IRequiresHttpContext // fx
     {
-        public SecureChannelMessage<string> Invoke(string className, string methodName, string jsonParams)
+        public SecureChannelMessage<string> Invoke(string className, string methodName, string jsonArrayOfJsonStrings)
         {
-            SecureChannelMessage<string> result = new SecureChannelMessage<string>();
+            SecureChannelMessage<string> response = new SecureChannelMessage<string>();
 
             HttpArgs args = new HttpArgs();
-            args.ParseJson(jsonParams);
+            args.ParseJson(jsonArrayOfJsonStrings);
             string parameters = args["jsonParams"];
             SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters)
             {
@@ -45,12 +45,12 @@ namespace Bam.Net.ServiceProxy.Secure
             string data = request.Result as string;
             if (string.IsNullOrEmpty(data))
             {
-                throw new SecureChannelInvokeException(className, methodName, jsonParams);
+                throw new SecureChannelInvokeException(className, methodName, jsonArrayOfJsonStrings);
             }
-            result.Data = data;
-            result.Success = success;
+            response.Data = data;
+            response.Success = success;
 
-            return result;
+            return response;
         }
     }
 }

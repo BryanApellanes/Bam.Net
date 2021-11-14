@@ -76,7 +76,7 @@ namespace Bam.Net.ServiceProxy.Tests
             server.HttpContext = A.Fake<IHttpContext>();
             server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
 
-            SecureChannelMessage<ClientSessionInfo> message = server.InitSession(new Instant());
+            SecureChannelMessage<ClientSessionInfo> message = server.StartSession(new Instant());
             ClientSessionInfo sessionInfo = message.Data;
 
             SecureSession created = SecureSession.OneWhere(c => c.Id == sessionInfo.SessionId, new SecureSessionDatabase());
@@ -93,8 +93,8 @@ namespace Bam.Net.ServiceProxy.Tests
             server.HttpContext = A.Fake<IHttpContext>();
             server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
 
-            SecureChannelMessage<ClientSessionInfo> one = server.InitSession(new Instant());
-            SecureChannelMessage<ClientSessionInfo> two = server.InitSession(new Instant());
+            SecureChannelMessage<ClientSessionInfo> one = server.StartSession(new Instant());
+            SecureChannelMessage<ClientSessionInfo> two = server.StartSession(new Instant());
 
             Expect.AreEqual(one.Data.SessionId, two.Data.SessionId, "Session Ids didn't match");
         }
@@ -132,15 +132,16 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureChannel server = new SecureChannel();
             server.HttpContext = A.Fake<IHttpContext>();
             server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
-            SecureChannelMessage<ClientSessionInfo> msg = server.InitSession(new Instant());
+            SecureChannelMessage<ClientSessionInfo> msg = server.StartSession(new Instant());
 
             AesKeyVectorPair kvp;
-            SetSessionKeyRequest request;
+            
             SecureServiceProxyClient<Echo> client = new SecureServiceProxyClient<Echo>("http://localhost:8080");
             client.SessionInfo = msg.Data;
-            client.CreateSetSessionKeyRequest(out kvp, out request);
+            SetSessionKeyRequest request = client.CreateSetSessionKeyRequest(out kvp);
 
-            server.SetSessionKey(request);
+            SecureChannelMessage result = server.SetSessionKey(request);
+            Expect.IsTrue(result.Success);
         }
 
         [UnitTest]

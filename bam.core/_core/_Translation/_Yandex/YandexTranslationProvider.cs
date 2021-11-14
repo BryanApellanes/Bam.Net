@@ -18,7 +18,7 @@ namespace Bam.Net.Translation.Yandex
             switch (HttpMethod)
             {
                 case HttpMethod.GET:
-                    response = Http.GetJson<YandexTranslationResponse>(string.Format(ApiGetEndpointNumberedFormat, ApiKey, from, to, Uri.EscapeUriString(text).Replace("%20", "+")));
+                    response = JsonHttp.Get<YandexTranslationResponse>(string.Format(ApiGetEndpointNumberedFormat, ApiKey, from, to, Uri.EscapeUriString(text).Replace("%20", "+")));
                     break;
                 case HttpMethod.POST:
                     var postArgs = new { ApiKey = ApiKey, From = from, To = to, Text = text };

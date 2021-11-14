@@ -52,7 +52,7 @@ namespace Bam.Net.ServiceProxy.Tests
             
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
+            string postString = ApiArguments.ParametersToJsonParamsObjectString("random information");
 
             EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
         }
@@ -73,7 +73,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
+            string postString = ApiArguments.ParametersToJsonParamsObjectString("random information");
 
             EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
 
@@ -81,22 +81,22 @@ namespace Bam.Net.ServiceProxy.Tests
         }
 
         [UnitTest]
-        public void Validation_ShouldBeAbleToSetAndValidateValidationToken()
+        public void Validation_ShouldBeAbleToSetAndValidateValidationTokenHttpHeaders()
         {
             Prepare();
 
             SecureSession session = SecureSession.Get(SecureSession.GenerateId());
 
-            string postString = ApiParameters.ParametersToJsonParamsObjectString("random info");
+            string postString = ApiArguments.ParametersToJsonParamsObjectString("random info");
             SecureServiceProxyClient<Echo> client = new SecureServiceProxyClient<Echo>("http://blah.com");
 
-            HttpWebRequest request = client.GetServiceProxyRequest("Send");
+            HttpWebRequest request = null;// client.GetServiceProxyRequest("Send");
             ApiEncryptionValidation.SetEncryptedValidationToken(request.Headers, postString, session.PublicKey);
 
-            Cookie cookie = new Cookie(SecureSession.CookieName, session.Identifier, "", "blah.cxm");            
+            Cookie cookie = new Cookie(SecureSession.CookieName, session.Identifier, "", "blah.cxm");
             request.CookieContainer.Add(cookie);
-            request.Headers[Headers.SecureSession] = session.Identifier;
-        
+            request.Headers[Headers.SecureSessionId] = session.Identifier;
+
             Expect.IsNotNull(request.Headers);
             Expect.IsNotNull(request.Headers[Headers.Nonce]);
             Expect.IsNotNull(request.Headers[Headers.ValidationToken]);
