@@ -19,7 +19,7 @@ namespace Bam.Net.Services.DataReplication
         {
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType();
-            long typeId = TypeMap.GetTypeId(type);            
+            ulong typeId = TypeMap.GetTypeId(type);            
             instance.Id = instance.GetULongKeyHash();
             foreach (PropertyInfo prop in GetProperties(type))
             {
@@ -32,7 +32,7 @@ namespace Bam.Net.Services.DataReplication
             DirectoryInfo journalDirectory = journal.JournalDirectory;
             TypeMap typeMap = journal.TypeMap;
             IJournalEntryValueLoader loader = journal.Loader;
-            long typeId = TypeMap.GetTypeId(typeof(T));
+            ulong typeId = TypeMap.GetTypeId(typeof(T));
             foreach (PropertyInfo prop in GetProperties(typeof(T)))
             {
                 JournalEntry entry = new JournalEntry { Journal = journal, TypeId = typeId, InstanceId = id, PropertyId = TypeMap.GetPropertyId(prop, out string ignore) };

@@ -38,7 +38,7 @@ namespace Bam.Net.Services
                 // This executes server side after the SecureChannel has decrypted and validated, need to set IsInitialized to true to 
                 // ensure the request doesn't reinitialize to a state where it believes it is an execution request
                 // targeting SecureChannel since that is what is in the HttpContext.Request.Url
-                ExecutionRequest execRequest = new ExecutionRequest
+                ServiceProxyInvocation execRequest = new ServiceProxyInvocation
                 {
                     ClassName = request.ClassName,
                     MethodName = request.MethodName,

@@ -119,7 +119,7 @@ namespace Bam.Net.ServiceProxy.Tests
         static string _failureMessage = "I will never let it happen";
         public class DontAllowAttribute : RequestFilterAttribute
         {
-            public override bool RequestIsAllowed(ExecutionRequest request, out string failureMessage)
+            public override bool RequestIsAllowed(ServiceProxyInvocation request, out string failureMessage)
             {
                 failureMessage = _failureMessage;
                 return false;
@@ -142,7 +142,7 @@ namespace Bam.Net.ServiceProxy.Tests
             RequestWrapper req = new RequestWrapper(new { Headers = new NameValueCollection(), Url = new Uri(url), HttpMethod = "GET", ContentLength = 0, QueryString = new NameValueCollection() });
             ResponseWrapper res = new ResponseWrapper(new object());
 
-            ExecutionRequest execRequest = new ExecutionRequest(req, res);
+            ServiceProxyInvocation execRequest = new ServiceProxyInvocation(req, res);
             execRequest.ServiceProvider.Set(typeof(ClassWithTestFilterOnAMethod), new ClassWithTestFilterOnAMethod());
             ValidationResult validation = execRequest.Validate();
             Expect.AreEqual(_failureMessage, validation.Message);

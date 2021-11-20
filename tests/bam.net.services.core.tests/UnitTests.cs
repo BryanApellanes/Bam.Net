@@ -195,7 +195,7 @@ namespace Bam.Net.Services.Tests
         public void RequestRouterTest()
         {
             RequestRouter router = new RequestRouter("api");
-            RequestRoute route = router.ToRequestRoute("bam://bamapps.net/api/v1/monkey/5?blah=one&blah2=two");
+            RequestRoute route = router.GetRequestRoute("bam://bamapps.net/api/v1/monkey/5?blah=one&blah2=two");
             Expect.AreEqual("bam", route.Protocol);
             Expect.AreEqual("bamapps.net", route.Domain);
             Expect.AreEqual("api", route.PathName);
@@ -229,12 +229,35 @@ namespace Bam.Net.Services.Tests
         public void ServiceRequestRouterTest()
         {
             RequestRouter router = new RequestRouter("api");
-            RequestRoute route = router.ToRequestRoute("http://service.bamapps.net/api/echo/send");
+            RequestRoute route = router.GetRequestRoute("http://service.bamapps.net/api/echo/send");
             Expect.AreEqual("http", route.Protocol);
             Expect.AreEqual("service.bamapps.net", route.Domain);
             Expect.AreEqual("echo/send", route.PathAndQuery);
         }
         
+        [UnitTest]
+        public void PathAndQueryRouteTest()
+        {
+            RouteParser parser = new RouteParser("{ClassName}/{MethodName}?{QueryParameters}");
+            Dictionary<string, string> values = parser.ParseRouteInstance("echo/send");
+            TypeMethodRoute typeMethodRoute = values.ToInstance<TypeMethodRoute>();
+            Expect.AreEqual("echo", typeMethodRoute.ClassName);
+            Expect.AreEqual("send", typeMethodRoute.MethodName);
+            Expect.IsNullOrEmpty(typeMethodRoute.QueryParameters);
+        }
+        
+        [UnitTest]
+        public void TypeMethodRequestRouterTest()
+        {
+            TypeMethodRequestRouter typeMethodRequestRouter = new TypeMethodRequestRouter("serviceproxy");
+            TypeMethodRoute typeMethodRoute = typeMethodRequestRouter.GetTypeMethodRoute("http://service.bamapps.net/serviceproxy/echo/send");
+
+            Expect.AreEqual("echo", typeMethodRoute.ClassName);
+            Expect.AreEqual("send", typeMethodRoute.MethodName);
+            Expect.IsNullOrEmpty(typeMethodRoute.QueryParameters);
+        }
+
+
         [UnitTest]
         public void GetHashThrowsIfNoKeyProperties()
         {

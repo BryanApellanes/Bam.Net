@@ -14,7 +14,7 @@ namespace Bam.Net.Services.DataReplication
 {
     public partial class TypeMap
     {
-        public static long GetTypeId(CompositeKeyAuditRepoData instance, out object dynamicInstance, out Type dynamicType)
+        public static ulong GetTypeId(CompositeKeyAuditRepoData instance, out object dynamicInstance, out Type dynamicType)
         {
             dynamicInstance = instance.ToDictionary();
             Type type = instance.GetType();

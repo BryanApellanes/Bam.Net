@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 namespace Bam.Net.Presentation.Html
 {
-    // or replaced.
     /// <summary>
     /// Used to build input forms for specified 
     /// types, methods and their parameters. 
@@ -126,7 +125,6 @@ namespace Bam.Net.Presentation.Html
             int ignore = -1;
             return MethodForm(methodName, defaults, out ignore);
         }
-
 
         public Tag MethodForm(string methodName, Dictionary<string, object> defaults, out int paramCount)
         {

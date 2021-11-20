@@ -355,7 +355,7 @@ namespace Bam.Net.ServiceProxy.Tests
         }
 
 
-        class TestExecutionRequest: ExecutionRequest
+        class TestExecutionRequest: ServiceProxyInvocation
         {
             public TestExecutionRequest(string c, string m, string f)
                 : base(c, m, f)
@@ -390,7 +390,7 @@ namespace Bam.Net.ServiceProxy.Tests
         [UnitTest]
         public void MissingClassShouldReturnClassNotSpecifiedResult()
         {
-            ExecutionRequest er = new ExecutionRequest(null, "TestMethod", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation(null, "TestMethod", "json");
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ClassNameNotSpecified));
@@ -419,7 +419,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void MissingMethodShouldReturnMethodNotSpecified()
         {
             ServiceProxySystem.Register<TestClass>();
-            ExecutionRequest er = new ExecutionRequest("TestClass", "", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "", "json");
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.MethodNameNotSpecified));
@@ -437,7 +437,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = Substitute.For<IHttpContext>();
             context.Request.Returns(request);
             context.Response.Returns(response);
-            ExecutionRequest er = new ExecutionRequest("TestClass", "LocalMethod", "json") { Context = context };
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "LocalMethod", "json") { Context = context };
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.RemoteExecutionNotAllowed));
@@ -454,7 +454,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = Substitute.For<IHttpContext>();
             context.Request.Returns(request);
             context.Response.Returns(response);
-            ExecutionRequest er = new ExecutionRequest("TestClass", "LocalMethod", "json") { Context = context };
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "LocalMethod", "json") { Context = context };
             ValidationResult result = er.Validate();
             Expect.IsTrue(result.Success);
         }
@@ -463,7 +463,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void UnregisteredClassShoudReturnClassNotRegistered()
         {
 			ServiceProxySystem.Unregister<TestClass>();
-            ExecutionRequest er = new ExecutionRequest("TestClass", "ShouldWork", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "ShouldWork", "json");
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ClassNotRegistered));
@@ -474,7 +474,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void MethodNotFoundShouldBeReturned()
         {
             ServiceProxySystem.Register<TestClass>();
-            ExecutionRequest er = new ExecutionRequest("TestClass", "MissingMethod", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "MissingMethod", "json");
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.MethodNotFound));
@@ -485,7 +485,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void ParameterCountMismatchShouldBeReturned()
         {
             ServiceProxySystem.Register<TestClass>();
-            ExecutionRequest er = new ExecutionRequest("TestClass", "TestMethod", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "TestMethod", "json");
             er.Arguments = new object[] { new { }, new { } };
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
@@ -497,7 +497,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void ExecuteShouldSucceed()
         {
             ServiceProxySystem.Register<TestClass>();
-            ExecutionRequest er = new ExecutionRequest("TestClass", "ShouldWork", "json");
+            ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "ShouldWork", "json");
             ValidationResult result = er.Validate();            
             Expect.IsTrue(result.Success);
             er.Execute();
@@ -613,7 +613,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IApplicationNameProvider nameProvider = new TestApplicationNameProvider(testName.RandomLetters(6));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
-            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json")
+            ServiceProxyInvocation er = new ServiceProxyInvocation("ApiKeyRequiredEcho", "Send", "json")
             {
                 ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
                 Request = new ServiceProxyTestHelpers.JsonTestRequest()
@@ -641,7 +641,7 @@ namespace Bam.Net.ServiceProxy.Tests
             string className = "ApiKeyRequiredEcho";
             string method= "Send";
             string data = ApiArguments.ArgumentsToJsonArgumentsArray("some random data").ToJson();
-            ExecutionRequest er = new ExecutionRequest(className, method, "json")
+            ServiceProxyInvocation er = new ServiceProxyInvocation(className, method, "json")
             {
                 ArgumentsAsJsonArrayOfJsonStrings = data,
                 ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
@@ -668,7 +668,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName.RandomLetters(4));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
-            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json")
+            ServiceProxyInvocation er = new ServiceProxyInvocation("ApiKeyRequiredEcho", "Send", "json")
             {
                 ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
                 Request = new ServiceProxyTestHelpers.JsonTestRequest()

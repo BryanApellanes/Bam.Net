@@ -17,7 +17,6 @@ using Newtonsoft.Json.Schema;
 
 namespace Bam.Net.Presentation.Html
 {
-
     public partial class Tag
     {
         public Tag(string tagName) : this(tagName, new Dictionary<string, object>(), new object())

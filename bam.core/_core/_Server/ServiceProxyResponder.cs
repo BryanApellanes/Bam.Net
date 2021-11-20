@@ -18,6 +18,7 @@ namespace Bam.Net.Server
     {
         private bool SendMethodForm(IHttpContext context)
         {
+            // TODO: use InputFormProvider to send method form
             Logger.AddEntry("{0} method is not supported by this platform", nameof(SendMethodForm));
             return false;
         }

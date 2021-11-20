@@ -30,7 +30,7 @@ namespace Bam.Net.Server.JsonRpc
             }
             else
             {
-                ExecutionRequest execRequest = ExecutionRequest.Create(Incubator, mi, GetInputParameters(mi));
+                ServiceProxyInvocation execRequest = ServiceProxyInvocation.Create(Incubator, mi, GetInputParameters(mi));
                 if (execRequest.Execute())
                 {
                     response.Result = execRequest.Result;
