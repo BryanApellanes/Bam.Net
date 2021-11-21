@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
+using Bam.Net.CoreServices;
 using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Encryption;
@@ -360,10 +362,10 @@ namespace Bam.Net.ServiceProxy.Tests
             public TestExecutionRequest(string c, string m, string f)
                 : base(c, m, f)
             {
-                Incubator inc = new Incubator();
+                ServiceRegistry inc = new ServiceRegistry();
                 inc.Set(new Echo());
                 ServiceProvider = inc;
-                Instance = new Echo();
+                InvocationTarget = new Echo();
                 MethodInfo = typeof(Echo).GetMethod(m);
                 Request = Substitute.For<IRequest>();
                 Request.Url.Returns(new Uri($"http://localhost/{c}/{m}.{f}"));
@@ -371,10 +373,10 @@ namespace Bam.Net.ServiceProxy.Tests
             }
 
             public bool Called { get; set; }
-            public override ValidationResult Validate()
+            public override ServiceProxyInvocationValidationResult Validate()
             {
                 Called = true;
-                return new ValidationResult();
+                return new ServiceProxyInvocationValidationResult();
             }
         }
 
@@ -391,7 +393,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void MissingClassShouldReturnClassNotSpecifiedResult()
         {
             ServiceProxyInvocation er = new ServiceProxyInvocation(null, "TestMethod", "json");
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ClassNameNotSpecified));
             OutFormat(result.Message);
@@ -420,7 +422,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxySystem.Register<TestClass>();
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "", "json");
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.MethodNameNotSpecified));
             Message.PrintLine(result.Message);
@@ -438,7 +440,7 @@ namespace Bam.Net.ServiceProxy.Tests
             context.Request.Returns(request);
             context.Response.Returns(response);
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "LocalMethod", "json") { Context = context };
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.RemoteExecutionNotAllowed));
         }
@@ -455,7 +457,7 @@ namespace Bam.Net.ServiceProxy.Tests
             context.Request.Returns(request);
             context.Response.Returns(response);
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "LocalMethod", "json") { Context = context };
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsTrue(result.Success);
         }
 
@@ -464,7 +466,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
 			ServiceProxySystem.Unregister<TestClass>();
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "ShouldWork", "json");
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ClassNotRegistered));
             Message.PrintLine(result.Message);
@@ -475,7 +477,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxySystem.Register<TestClass>();
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "MissingMethod", "json");
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.MethodNotFound));
             Message.PrintLine(result.Message);
@@ -487,7 +489,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ServiceProxySystem.Register<TestClass>();
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "TestMethod", "json");
             er.Arguments = new object[] { new { }, new { } };
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ParameterCountMismatch));
             Message.PrintLine(result.Message);
@@ -498,7 +500,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxySystem.Register<TestClass>();
             ServiceProxyInvocation er = new ServiceProxyInvocation("TestClass", "ShouldWork", "json");
-            ValidationResult result = er.Validate();            
+            ServiceProxyInvocationValidationResult result = er.Validate();            
             Expect.IsTrue(result.Success);
             er.Execute();
             Expect.IsTrue(er.Result.Equals("Yay"));
@@ -622,7 +624,7 @@ namespace Bam.Net.ServiceProxy.Tests
             string data = ApiArguments.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
 
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             result.Success.IsFalse();
             List<ValidationFailures> failures = new List<ValidationFailures>(result.ValidationFailures);
             failures.Contains(ValidationFailures.InvalidApiKeyToken).IsTrue();
@@ -650,7 +652,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             er.ApiKeyResolver.SetKeyToken(er.Request.Headers, ApiArguments.GetStringToHash(className, method, data));
 
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             Expect.IsTrue(result.Success);
         }
 
@@ -680,7 +682,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             er.Request.Headers[Headers.KeyToken] = "bad token value";
 
-            ValidationResult result = er.Validate();
+            ServiceProxyInvocationValidationResult result = er.Validate();
             
             Expect.IsFalse(result.Success, "Validation should have failed");
             List<ValidationFailures> failures = new List<ValidationFailures>(result.ValidationFailures);            

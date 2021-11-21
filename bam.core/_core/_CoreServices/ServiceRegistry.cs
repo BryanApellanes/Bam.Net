@@ -13,7 +13,7 @@ namespace Bam.Net.CoreServices
         {
             Default = new ServiceRegistry { Name = "Default" };
             Default.Set<IObjectPersister>(NetCoreObjectPersister.Default);
-            Default.Set<IRepository>(new MongoRepository());
+            Default.Set<IRepository>(new MongoRepository()); // TODO: change this to something else
         }
     }
 }

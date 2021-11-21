@@ -144,7 +144,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             ServiceProxyInvocation execRequest = new ServiceProxyInvocation(req, res);
             execRequest.ServiceProvider.Set(typeof(ClassWithTestFilterOnAMethod), new ClassWithTestFilterOnAMethod());
-            ValidationResult validation = execRequest.Validate();
+            ServiceProxyInvocationValidationResult validation = execRequest.Validate();
             Expect.AreEqual(_failureMessage, validation.Message);
             Expect.IsFalse(validation.Success);
         }

@@ -42,7 +42,7 @@ namespace Bam.Net.Services
                 {
                     ClassName = request.ClassName,
                     MethodName = request.MethodName,
-                    Ext = "json",
+                    //Ext = "json",
                     ServiceProvider = ServiceProvider,
                     ArgumentsAsJsonArrayOfJsonStrings = request.JsonParams,
                     IsInitialized = true,
