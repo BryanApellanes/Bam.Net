@@ -8,7 +8,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 using Bam.Net.Server;
-using Bam.Net.ServiceProxy;
+using Bam.Net.Server.ServiceProxy;
 using Bam.Net.Services;
 
 namespace Bam.Net.Presentation

@@ -167,7 +167,7 @@ namespace Bam.Net.Services.Tests
         }
 
 
-        [UnitTest]
+/*        [UnitTest]
         public void ApiRouteParserGetsProtocolAndHostTest()
         {
             RouteParser parser = new RouteParser("{Protocol}://{Domain}/api/{PathAndQuery}");
@@ -177,8 +177,8 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("bam", requestDescriptor.Protocol);
             Expect.AreEqual("bamapps.net", requestDescriptor.Domain);
             Expect.AreEqual("v1/monkey/5", requestDescriptor.PathAndQuery);
-        }
-
+        }*/
+/*
         [UnitTest]
         public void ApiRouteDescriptorParseTest()
         {
@@ -190,8 +190,8 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("bamapps.net", route.Domain);
             Expect.AreEqual("v1/monkey/5", route.PathAndQuery);
         }
-
-        [UnitTest]
+*/
+/*        [UnitTest]
         public void RequestRouterTest()
         {
             RequestRouter router = new RequestRouter("api");
@@ -201,8 +201,8 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("api", route.PathName);
             Expect.AreEqual("v1/monkey/5?blah=one&blah2=two", route.PathAndQuery);
         }
-
-        [UnitTest]
+*/
+/*        [UnitTest]
         public void RequestParserCanTakeJustADomain()
         {
             RouteParser parser = new RouteParser("{Protocol}://{Domain}");
@@ -211,9 +211,9 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual(2, values.Count, $"Expected 2 but got {values.Count}");
             Expect.AreEqual("http", route.Protocol);
             Expect.AreEqual("v-o.bamapps.net", route.Domain);
-        }
+        }*/
         
-        [UnitTest]
+/*        [UnitTest]
         public void RequestParserCanTakeEmptyPath()
         {
             RouteParser parser = new RouteParser("{Protocol}://{Domain}/{PathAndQuery}");
@@ -223,9 +223,9 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("http", route.Protocol);
             Expect.AreEqual("v-o.bamapps.net", route.Domain);
             Expect.AreEqual("", route.PathAndQuery);
-        }
+        }*/
 
-        [UnitTest]
+/*        [UnitTest]
         public void ServiceRequestRouterTest()
         {
             RequestRouter router = new RequestRouter("api");
@@ -233,9 +233,9 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("http", route.Protocol);
             Expect.AreEqual("service.bamapps.net", route.Domain);
             Expect.AreEqual("echo/send", route.PathAndQuery);
-        }
+        }*/
         
-        [UnitTest]
+/*        [UnitTest]
         public void PathAndQueryRouteTest()
         {
             RouteParser parser = new RouteParser("{ClassName}/{MethodName}?{QueryParameters}");
@@ -244,9 +244,9 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("echo", typeMethodRoute.ClassName);
             Expect.AreEqual("send", typeMethodRoute.MethodName);
             Expect.IsNullOrEmpty(typeMethodRoute.QueryParameters);
-        }
+        }*/
         
-        [UnitTest]
+/*        [UnitTest]
         public void TypeMethodRequestRouterTest()
         {
             TypeMethodRequestRouter typeMethodRequestRouter = new TypeMethodRequestRouter("serviceproxy");
@@ -255,7 +255,7 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual("echo", typeMethodRoute.ClassName);
             Expect.AreEqual("send", typeMethodRoute.MethodName);
             Expect.IsNullOrEmpty(typeMethodRoute.QueryParameters);
-        }
+        }*/
 
 
         [UnitTest]

@@ -9,13 +9,12 @@ using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
-using Bam.Net.Server;
-using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Services.AsyncCallback;
 using Bam.Net.Services.AsyncCallback.Data;
 using Bam.Net.Web;
 using System.Reflection;
+using Bam.Net.Server.ServiceProxy;
 
 namespace Bam.Net.Services
 {
@@ -23,7 +22,7 @@ namespace Bam.Net.Services
     /// 
     /// </summary>
     /// <seealso cref="Bam.Net.CoreServices.ApplicationProxyableService" />
-    /// <seealso cref="Bam.Net.ServiceProxy.IHasServiceProvider" />
+    /// <seealso cref="Bam.Net.ServiceProxy.IHasServiceRegistry" />
     public abstract partial class AsyncProxyableService
     {
         /// <summary>
@@ -43,9 +42,9 @@ namespace Bam.Net.Services
                     ClassName = request.ClassName,
                     MethodName = request.MethodName,
                     //Ext = "json",
-                    ServiceProvider = ServiceProvider,
-                    ArgumentsAsJsonArrayOfJsonStrings = request.JsonParams,
-                    IsInitialized = true,
+                    ServiceRegistry = ServiceRegistry,
+                    //ArgumentsAsJsonArrayOfJsonStrings = request.JsonArgs,
+                    //IsInitialized = true,
                     Context = HttpContext
                 };
                 bool success = execRequest.Execute();

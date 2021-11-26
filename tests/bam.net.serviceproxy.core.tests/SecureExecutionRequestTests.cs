@@ -87,12 +87,12 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = CreateFakeContext(MethodInfo.GetCurrentMethod().Name);
 
             string input = "monkey";
-            string jsonParams = ApiArguments.ArgumentsToJsonArgumentsArray(new object[] { input }).ToJson();//.ParametersToJsonParamsArray(new object[] { input }).ToJson();
+            string jsonParams = ApiArgumentEncoder.ArgumentsToJsonArgumentsArray(new object[] { input }).ToJson();//.ParametersToJsonParamsArray(new object[] { input }).ToJson();
 
             ServiceRegistry testIncubator = new ServiceRegistry();
             testIncubator.Set<Echo>(new Echo());
             SecureExecutionRequest request = new SecureExecutionRequest(context, "Echo", "Send", jsonParams);
-            request.ServiceProvider = testIncubator;
+            request.ServiceRegistry = testIncubator;
 
             AesKeyVectorPair kvp = new AesKeyVectorPair();
             // ensure the symettric key is set

@@ -1,5 +1,5 @@
 ﻿using Bam.Net.Incubation;
-using Bam.Net.ServiceProxy;
+using Bam.Net.Server.ServiceProxy;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Server.JsonRpc
             }
             else
             {
-                ServiceProxyInvocation execRequest = ServiceProxyInvocation.Create(Incubator, mi, GetInputParameters(mi));
+                ServiceProxyInvocation execRequest = ServiceProxyInvocation.Create(ServiceRegistry, mi, null);//GetInputParameters(mi));
                 if (execRequest.Execute())
                 {
                     response.Result = execRequest.Result;

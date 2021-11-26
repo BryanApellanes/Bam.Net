@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Bam.Net.ServiceProxy;
+using Bam.Net.Server.ServiceProxy;
 
 namespace Bam.Net.Presentation
 {
@@ -17,6 +17,6 @@ namespace Bam.Net.Presentation
         string ContentType { get; set; }
         Stream OutputStream { get; set; }
         void Render(object toRender);        
-        void Respond(ServiceProxyInvocation request);
+        void Respond(ServiceProxyInvocation invocation);
     }
 }

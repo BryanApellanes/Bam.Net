@@ -7,6 +7,8 @@ using System.Reflection;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Web;
 using Bam.Net.Testing.Unit;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
