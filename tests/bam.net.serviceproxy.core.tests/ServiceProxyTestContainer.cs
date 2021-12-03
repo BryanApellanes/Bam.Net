@@ -765,7 +765,7 @@ namespace Bam.Net.ServiceProxy.Tests
         [ConsoleAction]
         public void LookAtGeneratedRsaPemKeys()
         {
-            AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(RsaKeyLength._1024);
+            AsymmetricCipherKeyPair keys = Rsa.GenerateKeyPair(RsaKeyLength._1024);
             OutLine(keys.Public.ToPem());
         }
 

@@ -73,5 +73,15 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.AreEqual("class", className);
             Expect.AreEqual("method", methodName);
         }
+
+        [UnitTest]
+        public void DeleteMe()
+        {
+            Uri testUri = new Uri("https://sub.domain.com/responder/handler/path/end?query=value");
+            Message.PrintLine("AbsolutePath: {0}", testUri.AbsolutePath);
+            Message.PrintLine("AbsoluteUri: {0}", testUri.AbsoluteUri);
+            Message.PrintLine("PathAndQuery: {0}", testUri.PathAndQuery);
+            Message.PrintLine("Query: {0}", testUri.Query);
+        }
     }
 }

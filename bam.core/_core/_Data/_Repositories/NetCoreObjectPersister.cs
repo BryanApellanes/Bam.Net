@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class NetCoreObjectPersister
+    public class NetCoreObjectPersister // TODO: delete this in favor of ObjectPersister.
     {
         static NetCoreObjectPersister()
         {

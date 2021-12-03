@@ -80,6 +80,8 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureChannel.InitializeDatabase(logger);
         }
 
+        public IApiArgumentEncoder ApiArgumentEncoder { get=> new ApiArgumentEncoder(); }
+
         [UnitTest]
         public void SecureExecutionRequest_ShouldExecute()
         {

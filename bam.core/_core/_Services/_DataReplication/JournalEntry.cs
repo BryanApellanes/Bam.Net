@@ -35,7 +35,7 @@ namespace Bam.Net.Services.DataReplication
             ulong typeId = TypeMap.GetTypeId(typeof(T));
             foreach (PropertyInfo prop in GetProperties(typeof(T)))
             {
-                JournalEntry entry = new JournalEntry { Journal = journal, TypeId = typeId, InstanceId = id, PropertyId = TypeMap.GetPropertyId(prop, out string ignore) };
+                JournalEntry entry = new JournalEntry { Journal = journal, TypeId = typeId, InstanceId = id, PropertyId = TypeMap.GetPropertyId(prop, out _) };
                 yield return entry.LoadLatestValue(journalDirectory, typeMap, loader) ?? entry;
             }
         }
