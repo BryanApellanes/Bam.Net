@@ -3,23 +3,25 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IntermediatePackDir>/opt/bam/build/tests/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
+    <IntermediatePackDir Condition=" '$(OS)' == 'UNIX' ">$(HOME)/.bam/build/pack/$(Configuration)/$(MSBuildThisFileName)/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
     <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <NuspecFile>$(MSBuildThisFileName).nuspec</NuspecFile>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>\opt\bam\build\tests\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'Windows_NT' ">$(HOMEDRIVE)$(HOMEPATH)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
+    <OutputPath Condition=" '$(OS)' == 'UNIX' ">$(HOME)\.bam\build\$(Configuration)\$(MSBuildThisFileName)\</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\_lib\bam.net.core\bam.net.core.csproj" />
-    <ProjectReference Include="..\..\_lib\daoref\daoref.csproj" />
-  </ItemGroup>
   <Target Name="PublishAll" BeforeTargets="GenerateNuspec">
     <ItemGroup>
       <_TargetFramework Include="$(TargetFrameworks)" />
       <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Publish" Properties="TargetFramework=%(_TargetFramework.Identity)" />
     </ItemGroup>
   </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
+    <ProjectReference Include="..\daoref\daoref.csproj" />
+  </ItemGroup>
 </Project>

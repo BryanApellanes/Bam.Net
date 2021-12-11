@@ -61,7 +61,7 @@ namespace Bam.Net.ServiceProxy.Tests
             RegisterDb();
             Db.For<UserAccounts.Data.Account>(UserAccounts.UserAccountsDatabase.Default);
             ConsoleLogger logger = new ConsoleLogger();
-            SecureChannel.InitializeDatabase(logger);            
+            //SecureChannel.InitializeDatabase(logger);            
             ClearApps();
         }
 

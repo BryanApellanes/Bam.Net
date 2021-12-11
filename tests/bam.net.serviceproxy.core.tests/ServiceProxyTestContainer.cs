@@ -534,7 +534,6 @@ namespace Bam.Net.ServiceProxy.Tests
         {
 			CleanUp();
             BamServer server;
-            SecureChannel.Debug = true;
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetApiKeyRequiredEchoClient(out server, out SecureServiceProxyClient<ApiKeyRequiredEcho> sspc);
             
             string value = "InputValue_".RandomLetters(8);
@@ -570,7 +569,6 @@ namespace Bam.Net.ServiceProxy.Tests
         {
 			CleanUp();
             string methodName = MethodBase.GetCurrentMethod().Name;
-            SecureChannel.Debug = true;
 
             ServiceProxyTestHelpers.CreateServer(out string baseAddress, out BamServer server);
             ServiceProxyTestHelpers.Servers.Add(server); // makes sure it gets stopped after test run

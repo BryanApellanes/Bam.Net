@@ -38,7 +38,7 @@ namespace Bam.Net.ServiceProxy.Secure
             SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters)
             {
                 ApiKeyResolver = ApiKeyResolver,
-                ServiceRegistry = ServiceProvider
+                ServiceRegistry = ServiceRegistry
             };
             bool success = request.Execute();
 

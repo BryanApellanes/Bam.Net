@@ -59,7 +59,7 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.AreEqual(data, decrypted);
         }
         
-        [UnitTest]
+/*        [UnitTest]
         public void Securesession_ShouldBeAbleToGetSecureSession()
         {
             ConsoleLogger logger = new ConsoleLogger();
@@ -67,7 +67,7 @@ namespace Bam.Net.ServiceProxy.Tests
             Cookie cookie = new Cookie(SecureSession.CookieName, "TestSecureSessionId");
             SecureSession session = SecureSession.Get(cookie);
             Expect.IsNotNull(session);
-        }
+        }*/
 
         [UnitTest]
         public void Securesession_StartSessionShouldCreateSecureSessionEntry()
@@ -99,7 +99,7 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.AreEqual(one.Data.SessionId, two.Data.SessionId, "Session Ids didn't match");
         }
 
-        [UnitTest]
+/*        [UnitTest]
         public void Securesession_ShouldBeAbleToSetValidationToken()
         {
             ConsoleLogger logger = new ConsoleLogger();
@@ -112,7 +112,7 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.IsNotNull(request.Headers[Headers.ValidationToken]);
 
             OutLine(request.Headers[Headers.ValidationToken]);
-        }
+        }*/
 
         private static IRequest CreateFakeRequest()
         {

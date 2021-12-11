@@ -77,7 +77,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void EnsureRepository()
         {
             ConsoleLogger logger = new ConsoleLogger();
-            SecureChannel.InitializeDatabase(logger);
+            //SecureChannel.InitializeDatabase(logger);
         }
 
         public IApiArgumentEncoder ApiArgumentEncoder { get=> new ApiArgumentEncoder(); }
