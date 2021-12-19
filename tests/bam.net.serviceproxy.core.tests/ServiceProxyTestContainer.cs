@@ -252,14 +252,14 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureServiceProxyClient<Echo> testSecureServiceProxyClient;
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out testSecureServiceProxyClient);
 
-            Expect.IsFalse(testSecureServiceProxyClient.IsSessionEstablished);
+            Expect.IsFalse(testSecureServiceProxyClient.IsSessionStarted);
             string value = "InputValue_".RandomLetters(8);
             string result = testSecureServiceProxyClient.InvokeServiceMethod<string>("Send", new object[] { value });
             server.Stop();
 
             string msg = testSecureServiceProxyClient.SessionStartException != null ? testSecureServiceProxyClient.SessionStartException.Message : string.Empty;
             Expect.IsNull(testSecureServiceProxyClient.SessionStartException, "SessionStartException: {0}"._Format(msg));
-            Expect.IsTrue(testSecureServiceProxyClient.IsSessionEstablished, "Session was not established");
+            Expect.IsTrue(testSecureServiceProxyClient.IsSessionStarted, "Session was not established");
 
             server.Stop();
         }
