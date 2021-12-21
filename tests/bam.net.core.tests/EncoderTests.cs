@@ -8,8 +8,25 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Tests
 {
-    public class Base64EncoderTests
+    public class EncoderTests : CommandLineTool
     {
+        [UnitTest]
+        public void JsonEncoderDecoderTest()
+        {
+            JsonEncoder<TestMonkey> encoder = new JsonEncoder<TestMonkey>();
+            TestMonkey testMonkey = new TestMonkey()
+            {
+                Name = "Fred"
+            };
+
+            string json = encoder.Encode(testMonkey);
+            IValueDecoder<string, TestMonkey> decoder = encoder.GetDecoder();
+
+            TestMonkey decoded = decoder.Decode(json);
+
+            Expect.AreEqual(testMonkey.Name, decoded.Name);
+        }
+
         [UnitTest]
         public void Base64EncoderDecoderTest()
         {
