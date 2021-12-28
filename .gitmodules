@@ -1,3 +1,6 @@
 [submodule "submodules/bam.net.shared"]
 	path = submodules/bam.net.shared
 	url = git@github.com:BryanApellanes/bam.net.shared.git
+[submodule "submodules/bam.net.presentation"]
+	path = submodules/bam.net.presentation
+	url = git@github.com:BryanApellanes/Bam.Net.Presentation.git
