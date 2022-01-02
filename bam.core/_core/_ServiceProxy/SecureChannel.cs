@@ -28,9 +28,9 @@ namespace Bam.Net.ServiceProxy.Secure
     /// </summary>
     public partial class SecureChannel : IRequiresHttpContext // fx
     {
-        public SecureChannelMessage<string> Invoke(string className, string methodName, string jsonArrayOfJsonStrings)
+        public SecureChannelResponseMessage<string> Invoke(string className, string methodName, string jsonArrayOfJsonStrings)
         {
-            SecureChannelMessage<string> response = new SecureChannelMessage<string>();
+            SecureChannelResponseMessage<string> response = new SecureChannelResponseMessage<string>();
 
             HttpArgs args = new HttpArgs();
             args.ParseJson(jsonArrayOfJsonStrings);
@@ -38,7 +38,7 @@ namespace Bam.Net.ServiceProxy.Secure
             SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters)
             {
                 ApiKeyResolver = ApiKeyResolver,
-                ServiceRegistry = ServiceRegistry
+                WebServiceRegistry = ServiceRegistry
             };
             bool success = request.Execute();
 

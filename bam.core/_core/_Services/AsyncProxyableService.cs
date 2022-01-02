@@ -42,7 +42,7 @@ namespace Bam.Net.Services
                     ClassName = request.ClassName,
                     MethodName = request.MethodName,
                     //Ext = "json",
-                    ServiceRegistry = ServiceRegistry,
+                    WebServiceRegistry = ServiceRegistry,
                     //ArgumentsAsJsonArrayOfJsonStrings = request.JsonArgs,
                     //IsInitialized = true,
                     Context = HttpContext

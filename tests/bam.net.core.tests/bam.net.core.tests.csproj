@@ -23,4 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\bam.core\bam.core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Monkey\" />
+  </ItemGroup>
 </Project>

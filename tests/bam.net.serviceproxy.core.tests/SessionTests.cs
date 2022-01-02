@@ -123,7 +123,7 @@ namespace Bam.Net.ServiceProxy.Tests
             request.Cookies.Add(sessionCookie);
             return request;
         }
-
+/*
         [UnitTest]
         public void Securesession_ShouldBeAbleToSetSessionKey()
         {
@@ -142,7 +142,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             SecureChannelMessage result = server.SetSessionKey(request);
             Expect.IsTrue(result.Success);
-        }
+        }*/
 
         [UnitTest]
         public void ShouldBeAbleToEncryptAndDecryptWithSecureSession()

@@ -99,7 +99,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             public void TestStartSession()
             {
-                base.StartSessionAsync();
+                base.StartClientSessionAsync(new Instant());
             }
         }
 
@@ -318,7 +318,7 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureServiceProxyClient<Echo> sspc;
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEchoClient(out server, out sspc);
 
-            sspc.StartSessionAsync();
+            sspc.StartClientSessionAsync(new Instant());
             server.Stop();
         }
         
@@ -365,7 +365,7 @@ namespace Bam.Net.ServiceProxy.Tests
             {
                 ServiceRegistry inc = new ServiceRegistry();
                 inc.Set(new Echo());
-                ServiceRegistry = inc;
+                WebServiceRegistry = inc;
                 InvocationTarget = new Echo();
                 MethodInfo = typeof(Echo).GetMethod(m);
                 Request = Substitute.For<IRequest>();
@@ -755,9 +755,9 @@ namespace Bam.Net.ServiceProxy.Tests
         public void GetPublicKeyXml()
         {
             OutLine("Public Key", ConsoleColor.Cyan);
-            OutLine(RsaKeyPair.Default.PublicKeyXml, ConsoleColor.Green);
+            OutLine(RsaKeyFile.Default.PublicKeyXml, ConsoleColor.Green);
             OutLine("Private Key", ConsoleColor.Cyan);
-            OutLine(RsaKeyPair.Default.PrivateKeyXml, ConsoleColor.Yellow);
+            OutLine(RsaKeyFile.Default.PrivateKeyXml, ConsoleColor.Yellow);
         }
 
         [ConsoleAction]

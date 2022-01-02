@@ -31,6 +31,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
+[assembly: InternalsVisibleTo("bam.net.core.tests")]
 [assembly: InternalsVisibleTo("bam.net.automation.core.tests")]
 [assembly: InternalsVisibleTo("bam.net.coreservices.core.tests")]
 [assembly: InternalsVisibleTo("bam.net.serviceproxy.core.tests")]

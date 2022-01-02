@@ -94,7 +94,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ServiceRegistry testIncubator = new ServiceRegistry();
             testIncubator.Set<Echo>(new Echo());
             SecureExecutionRequest request = new SecureExecutionRequest(context, "Echo", "Send", jsonParams);
-            request.ServiceRegistry = testIncubator;
+            request.WebServiceRegistry = testIncubator;
 
             AesKeyVectorPair kvp = new AesKeyVectorPair();
             // ensure the symettric key is set

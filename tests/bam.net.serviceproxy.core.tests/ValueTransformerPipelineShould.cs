@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
-    public class ValueEncoderPipelineShould
+    public class ValueTransformerPipelineShould
     {
         [UnitTest]
-        public void EncodeAndDecode()
+        public void TransformSecureChannelMessage()
         {
 
         }
